@@ -56,7 +56,7 @@ export function Header() {
       <div className="site-header__inner">
         <Link href="/" className="brand" aria-label="Nantes Breil Basket — accueil">
           <span className="brand__logo">
-            <Image src="/logo-nbb.png" alt="" width={701} height={570} loading="eager" />
+            <Image src="/logo-nbb.png" alt="" width={48} height={39} loading="eager" />
           </span>
           <span className="brand__name" aria-hidden="true">
             Nantes Breil

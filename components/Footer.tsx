@@ -41,7 +41,7 @@ export function Footer() {
       <div className="site-footer__grid">
         <div>
           <span className="footer-logo">
-            <Image src="/logo-nbb.png" alt="" width={701} height={570} />
+            <Image src="/logo-nbb.png" alt="" width={56} height={46} />
           </span>
           <p className="footer-name">{CLUB.nom}</p>
           <p className="footer-address">
