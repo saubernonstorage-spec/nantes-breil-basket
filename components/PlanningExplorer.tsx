@@ -1,182 +1,175 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { DAYS, SLOTS } from "@/data/planning";
-import { getDays, getGymnases, getTeams, plural, sortSlots } from "@/lib/planning";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { grille } from "@/lib/style";
+import type { Creneau, Jour } from "@/lib/types";
+import { lienGymnase, pluriel } from "@/lib/utils";
 
-const TEAMS = getTeams();
-const GYMNASES = getGymnases();
-const AVAILABLE_DAYS = getDays();
+type Filtres = { equipe: string; gym: string; jour: string };
+type Donnees = { creneaux: Creneau[]; equipes: string[]; gymnases: string[]; jours: Jour[] };
 
-type Props = {
-  initialTeam?: string;
-  initialGymnase?: string;
-  initialDay?: string;
-};
+const AUCUN_FILTRE: Filtres = { equipe: "", gym: "", jour: "" };
 
-type FieldProps = {
-  id: string;
-  label: string;
-  allLabel: string;
-  value: string;
-  options: readonly string[];
-  onChange: (value: string) => void;
-};
-
-function Field({ id, label, allLabel, value, options, onChange }: FieldProps) {
-  return (
-    <div className="field">
-      <label htmlFor={id}>{label}</label>
-      <select
-        id={id}
-        className="select"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      >
-        <option value="">{allLabel}</option>
-        {options.map((o) => (
-          <option key={o} value={o}>
-            {o}
-          </option>
-        ))}
-      </select>
-    </div>
+/** Affichage du planning pour des filtres donnés. */
+export function PlanningVue({
+  creneaux,
+  equipes,
+  gymnases,
+  jours,
+  filtres = AUCUN_FILTRE,
+  onChange,
+}: Donnees & { filtres?: Filtres; onChange?: (f: Filtres) => void }) {
+  const maj = (f: Filtres) => onChange?.(f);
+  const affiches = creneaux.filter(
+    (s) =>
+      (!filtres.equipe || s.equipes.includes(filtres.equipe)) &&
+      (!filtres.gym || s.gymnase === filtres.gym) &&
+      (!filtres.jour || s.jour === filtres.jour),
   );
-}
-
-export function PlanningExplorer({
-  initialTeam = "",
-  initialGymnase = "",
-  initialDay = "",
-}: Props) {
-  const [team, setTeam] = useState(initialTeam);
-  const [gymnase, setGymnase] = useState(initialGymnase);
-  const [day, setDay] = useState(initialDay);
-
-  const rows = useMemo(
-    () =>
-      sortSlots(
-        SLOTS.filter(
-          (s) =>
-            (!team || s.equipes.includes(team)) &&
-            (!gymnase || s.gymnase === gymnase) &&
-            (!day || s.jour === day),
-        ),
-      ),
-    [team, gymnase, day],
-  );
-
-  const reset = () => {
-    setTeam("");
-    setGymnase("");
-    setDay("");
-  };
+  const parJour = jours
+    .map((jour) => ({ jour, creneaux: affiches.filter((c) => c.jour === jour) }))
+    .filter((j) => j.creneaux.length > 0);
 
   return (
     <>
-      <section className="panel planning-filters" aria-label="Filtres du planning">
-        <div className="filter-grid">
-          <Field
-            id="teamFilter"
-            label="Équipe"
-            allLabel="Toutes les équipes"
-            value={team}
-            options={TEAMS}
-            onChange={setTeam}
-          />
-          <Field
-            id="roomFilter"
-            label="Gymnase"
-            allLabel="Tous les gymnases"
-            value={gymnase}
-            options={GYMNASES}
-            onChange={setGymnase}
-          />
-          <Field
-            id="dayFilter"
-            label="Jour"
-            allLabel="Tous les jours"
-            value={day}
-            options={AVAILABLE_DAYS}
-            onChange={setDay}
-          />
-          <button type="button" className="btn" onClick={reset}>
+      <section className="section section--tight" aria-label="Filtres du planning">
+        <div className="filters">
+          <div>
+            <label htmlFor="f-equipe" className="label">
+              Équipe
+            </label>
+            <select
+              id="f-equipe"
+              className="select"
+              value={filtres.equipe}
+              onChange={(e) => maj({ ...filtres, equipe: e.target.value })}
+            >
+              <option value="">Toutes les équipes</option>
+              {equipes.map((e) => (
+                <option key={e} value={e}>
+                  {e}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="f-gym" className="label">
+              Gymnase
+            </label>
+            <select
+              id="f-gym"
+              className="select"
+              value={filtres.gym}
+              onChange={(e) => maj({ ...filtres, gym: e.target.value })}
+            >
+              <option value="">Tous les gymnases</option>
+              {gymnases.map((g) => (
+                <option key={g} value={g}>
+                  {g}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="f-jour" className="label">
+              Jour
+            </label>
+            <select
+              id="f-jour"
+              className="select"
+              value={filtres.jour}
+              onChange={(e) => maj({ ...filtres, jour: e.target.value })}
+            >
+              <option value="">Tous les jours</option>
+              {jours.map((j) => (
+                <option key={j} value={j}>
+                  {j}
+                </option>
+              ))}
+            </select>
+          </div>
+          <button type="button" className="filters__reset" onClick={() => maj(AUCUN_FILTRE)}>
             Réinitialiser
           </button>
         </div>
-        <p className="hint">
-          Les filtres peuvent être combinés. Touchez le nom d’une équipe dans un
-          créneau pour ne voir que ses entraînements.
+        <p className="count" aria-live="polite">
+          {pluriel(affiches.length, "créneau affiché", "créneaux affichés")}
         </p>
       </section>
 
-      <div className="toolbar">
-        <p className="count" aria-live="polite">
-          {plural(rows.length, "créneau affiché", "créneaux affichés")}
-        </p>
-        <button
-          type="button"
-          className="btn btn-outline"
-          onClick={() => window.print()}
-        >
-          Imprimer
-        </button>
-      </div>
+      {parJour.map((j) => (
+        <section key={j.jour} className="section" style={{ paddingTop: 26 }} aria-labelledby={`jour-${j.jour}`}>
+          <h2 id={`jour-${j.jour}`} className="day-title">
+            {j.jour}
+          </h2>
+          <div className="grid" style={grille(255, { gap: "14px" })}>
+            {j.creneaux.map((c) => (
+              <article key={c.id} className="slot-card bar-card">
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
+                  <p className="slot-card__time">
+                    {c.debut} – {c.fin}
+                  </p>
+                  <p className="slot-card__duration">{c.duree}</p>
+                </div>
+                <p className="slot-card__gym">
+                  Gymnase{" "}
+                  <Link href={lienGymnase(c.gymnase)} className="link-inline">
+                    {c.gymnase}
+                  </Link>
+                </p>
+                <div className="slot-card__teams">
+                  {c.equipes.map((eq) => (
+                    <span key={eq} className="tag">
+                      {eq}
+                    </span>
+                  ))}
+                </div>
+                <p className="slot-card__coachs">
+                  <strong style={{ color: "#fff" }}>Encadrement :</strong> {c.coachs.join(", ")}
+                </p>
+              </article>
+            ))}
+          </div>
+        </section>
+      ))}
 
-      {rows.length === 0 && (
-        <div className="empty">
-          <strong>Aucun créneau trouvé</strong>
-          <p>Modifiez ou réinitialisez les filtres.</p>
-        </div>
+      {affiches.length === 0 && (
+        <section className="section" style={{ paddingTop: 26 }}>
+          <div className="empty-state">
+            <p style={{ fontWeight: 700, color: "#fff", fontSize: 19 }}>Aucun créneau trouvé</p>
+            <p style={{ marginTop: 8 }}>Modifiez ou réinitialisez les filtres.</p>
+          </div>
+        </section>
       )}
-
-      {DAYS.map((d) => {
-        const list = rows.filter((s) => s.jour === d);
-        if (list.length === 0) return null;
-        return (
-          <section key={d} className="day-section" aria-labelledby={`jour-${d}`}>
-            <h2 id={`jour-${d}`} className="section-title">
-              {d}
-            </h2>
-            <div className="slots">
-              {list.map((s) => (
-                <article key={s.id} className="slot">
-                  <div className="slot-top">
-                    <p className="slot-time">
-                      {s.debut} – {s.fin}
-                    </p>
-                    <p className="slot-duration">{s.duree}</p>
-                  </div>
-
-                  <p className="slot-room">
-                    Gymnase <strong>{s.gymnase}</strong>
-                  </p>
-
-                  <ul className="chips">
-                    {s.equipes.map((t) => (
-                      <li key={t}>
-                        <button
-                          type="button"
-                          className="chip"
-                          aria-pressed={team === t}
-                          onClick={() => setTeam(team === t ? "" : t)}
-                        >
-                          {t}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <p className="slot-coach">
-                    <strong>{s.coachs.length > 1 ? "Coachs" : "Coach"} :</strong>{" "}
-                    {s.coachs.length ? s.coachs.join(", ") : "Non renseigné"}
-                  </p>
-                </article>
-              ))}
-            </div>
-          </section>
-        );
-      })}
     </>
   );
+}
+
+/**
+ * Planning filtrable. Les filtres sont gardés dans l'adresse de la page
+ * (ex. /planning?equipe=U11F1) : on peut partager un lien déjà filtré.
+ */
+export function PlanningExplorer(donnees: Donnees) {
+  const params = useSearchParams();
+  const lire = (cle: string, valides: readonly string[]) => {
+    const v = params.get(cle) ?? "";
+    return valides.includes(v) ? v : "";
+  };
+  const filtres: Filtres = {
+    equipe: lire("equipe", donnees.equipes),
+    gym: lire("gym", donnees.gymnases),
+    jour: lire("jour", donnees.jours),
+  };
+
+  const onChange = (f: Filtres) => {
+    const q = new URLSearchParams();
+    if (f.equipe) q.set("equipe", f.equipe);
+    if (f.gym) q.set("gym", f.gym);
+    if (f.jour) q.set("jour", f.jour);
+    const s = q.toString();
+    window.history.replaceState(null, "", s ? `?${s}` : window.location.pathname);
+  };
+
+  return <PlanningVue {...donnees} filtres={filtres} onChange={onChange} />;
 }

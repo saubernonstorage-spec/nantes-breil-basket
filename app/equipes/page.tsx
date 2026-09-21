@@ -1,56 +1,39 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import { PageHero } from "@/components/PageHero";
-import { CATEGORY_LABELS, plural, slotsForTeam, teamsByCategory } from "@/lib/planning";
+import { EquipesExplorer } from "@/components/EquipesExplorer";
+import { CLUB, NOTE_HPB, STATS } from "@/data/nbb";
+import { equipesParCategorie, nbGroupes } from "@/lib/nbb";
+import { metaPage } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Équipes",
-  description:
-    "Toutes les équipes de Nantes Breil Basket, du micro-basket aux seniors, avec leurs créneaux d’entraînement.",
-};
+export const metadata = metaPage({
+  titre: "Nos équipes",
+  description: `Toutes les équipes du Nantes Breil Basket, du micro-basket aux seniors et loisirs : encadrement, créneaux d'entraînement et gymnases, saison ${CLUB.saison}.`,
+  chemin: "/equipes",
+});
 
-export default function EquipesPage() {
-  const groups = teamsByCategory();
+export default function PageEquipes() {
+  const groupes = equipesParCategorie().map(({ cle, nom, ages, resume, equipes }) => ({ cle, nom, ages, resume, equipes }));
 
   return (
-    <>
-      <PageHero
-        title="Nos équipes"
-        intro="Choisissez une équipe pour voir tous ses entraînements."
+    <div className="page">
+      <EquipesExplorer
+        groupes={groupes}
+        bandeau={
+          <>
+            <p className="kicker">Saison {CLUB.saison}</p>
+            <h1 className="title-page">Nos équipes</h1>
+            <p className="lead">
+              {STATS.equipes} équipes engagées en championnat, {nbGroupes()} groupes à l&apos;entraînement (loisirs
+              et groupement HPB compris). Chaque fiche indique l&apos;encadrement, les créneaux et le gymnase,
+              d&apos;après le planning officiel du club.
+            </p>
+          </>
+        }
       />
-      <div className="container page-body page-body--spaced">
-        {groups.map(({ category, teams }) => (
-          <section key={category} className="day-section" aria-labelledby={`cat-${category}`}>
-            <h2 id={`cat-${category}`} className="section-title">
-              {CATEGORY_LABELS[category]}
-            </h2>
-            <div className="team-grid">
-              {teams.map((team) => {
-                const slots = slotsForTeam(team);
-                return (
-                  <Link
-                    key={team}
-                    href={{ pathname: "/planning", query: { equipe: team } }}
-                    className="team-tile"
-                  >
-                    <span className="team-tile-name">{team}</span>
-                    <span className="team-tile-count">
-                      {plural(slots.length, "entraînement")} par semaine
-                    </span>
-                    <ul>
-                      {slots.map((s) => (
-                        <li key={s.id}>
-                          <strong>{s.jour}</strong> {s.debut}–{s.fin}, {s.gymnase}
-                        </li>
-                      ))}
-                    </ul>
-                  </Link>
-                );
-              })}
-            </div>
-          </section>
-        ))}
-      </div>
-    </>
+
+      <section className="section" style={{ paddingTop: "clamp(36px, 5vw, 64px)" }}>
+        <div className="card card--dashed">
+          <p className="text-soft text-md">{NOTE_HPB}</p>
+        </div>
+      </section>
+    </div>
   );
 }

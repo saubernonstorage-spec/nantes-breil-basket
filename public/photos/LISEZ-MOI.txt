@@ -1,0 +1,12 @@
+Déposez ici les photos du site (JPG, 1600 px de large maximum, moins de 300 Ko).
+
+Puis, dans data/nbb.ts, remplacez le texte "PHOTO — …" de l'emplacement voulu
+par le chemin de la photo, sans le mot "public" :
+
+    photo: "/photos/mini-basket-2026.jpg",
+
+Sous-dossiers conseillés : actus/, equipes/, partenaires/, galerie/.
+Noms de fichiers sans espace ni accent. Aucune photo de mineur sans autorisation
+de droit à l'image signée, et jamais de nom d'enfant dans le nom du fichier.
+
+Mode d'emploi complet : NOTICE.md (à la racine du projet).

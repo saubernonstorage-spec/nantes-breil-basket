@@ -1,52 +1,112 @@
-# Nantes Breil Basket – site web
+# Nantes Breil Basket — site web
 
-Site du club, construit avec **Next.js (App Router)**, **React** et **TypeScript**.
-Charte graphique reprise de la page « Planning des entraînements » (bleu marine + orange du logo).
+Site du club de basket Nantes Breil Basket (quartier Breil / Hauts-Pavés, Nantes), construit
+à partir de la maquette **Claude Design** « Site NBB » (12 pages, charte bleu nuit / orange,
+titres Anton, texte Barlow).
 
-## Démarrer
+- **Stack** : Next.js 16 (App Router, Turbopack), React 19, TypeScript, CSS simple (`app/globals.css`).
+- **Toutes les pages sont statiques** : rapides, bien référencées, hébergeables gratuitement.
+- **Contenu** : un seul fichier, `data/nbb.ts`, modifiable sans développeur — voir [`NOTICE.md`](NOTICE.md).
 
-Prérequis : [Node.js 20+](https://nodejs.org), [Git](https://git-scm.com) et [VS Code](https://code.visualstudio.com).
+## Démarrer en local
+
+Prérequis : [Node.js 20.9+](https://nodejs.org) (testé avec Node 24).
 
 ```bash
 npm install
 npm run dev
 ```
 
-Ouvrez <http://localhost:3000>. Les modifications s’affichent en direct.
+Puis ouvrez <http://localhost:3000>. Les modifications s'affichent en direct.
 
-## Où modifier quoi ?
+| Commande | Rôle |
+| --- | --- |
+| `npm run dev` | serveur de développement |
+| `npm run build` | build de production (vérifie aussi les types : à lancer avant de publier) |
+| `npm run start` | lance le build de production en local |
+| `npm run lint` | vérification ESLint (règles Next.js, accessibilité) |
 
-| Je veux…                                   | Fichier                    |
-| ------------------------------------------ | -------------------------- |
-| Changer le planning (créneaux, coachs…)    | `data/planning.ts`         |
-| Renseigner e-mail, téléphone, réseaux…     | `data/club.ts`             |
-| Modifier les couleurs / le style           | `app/globals.css` (`:root`) |
-| Ajouter une page au menu                   | `data/club.ts` (`NAV_LINKS`) + `app/<nom>/page.tsx` |
-| Remplacer le logo                          | `public/logo.png` et `app/icon.png` |
+## Pages
 
-Le planning est la **source unique** : la page Planning, la page Équipes, la liste des gymnases et
-les chiffres de l’accueil sont tous calculés à partir de `data/planning.ts`.
+| Page | Adresse | Contenu |
+| --- | --- | --- |
+| Accueil | `/` | accroche, chiffres clés, accès rapides (créneau, gymnases, boutique), actus, agenda, école de basket, école d'arbitrage, équipes, partenaires |
+| Le club | `/club` | histoire, valeurs, projet associatif, encadrement, bureau, commissions |
+| Équipes | `/equipes` | une fiche par équipe (encadrement, créneaux, gymnase), filtre par catégorie |
+| Planning | `/planning` | planning filtrable par équipe / gymnase / jour (`/planning?equipe=U11F1`) |
+| Calendrier | `/calendrier` | convocations, widget Score'n'co (après consentement), classements, lien FFBB |
+| Inscriptions | `/inscriptions` | étapes, tarifs, documents, aides, FAQ |
+| Stages | `/stages` | périodes, tarifs, journée type, formulaire d'inscription |
+| Galerie | `/galerie` | albums photos, droit à l'image |
+| Partenaires | `/partenaires` | partenaires, offre de partenariat |
+| Infos pratiques | `/infos` | carte OpenStreetMap, fiches gymnases (`/infos?gym=Breil`), règles, FAQ |
+| Contact | `/contact` | formulaire (`/contact?sujet=benevolat` présélectionne le sujet), coordonnées, réseaux |
+| Mentions légales | `/mentions-legales` | éditeur, hébergement, données personnelles, cookies, droit à l'image |
+
+Les anciennes adresses du précédent projet (`/le-club`, `/rejoindre`, `/confidentialite`…)
+sont redirigées vers les nouvelles (`next.config.ts`).
 
 ## Structure
 
 ```
-app/            pages (accueil, planning, équipes, contact) + styles globaux
-components/     Header, Footer, PageHero, PlanningExplorer (filtres interactifs)
-data/           contenu éditable : planning et infos du club
-lib/            fonctions utilitaires (tri, catégories, statistiques)
-public/         logo
+data/nbb.ts          tout le contenu éditable (textes, planning, stages, tarifs…)
+lib/                 calculs à partir du contenu (équipes, gymnases…), SEO, e-mail, consentement
+app/                 une page par dossier, layout, styles (globals.css), actions serveur des formulaires
+components/          en-tête, pied de page, planning filtrable, formulaires, bandeau cookies…
+public/              logo, image de partage (og-image.png), photos du club (public/photos/)
+NOTICE.md            mode d'emploi pour les bénévoles
 ```
 
-## Mettre en ligne (gratuit)
+Le **planning** (`SLOTS`) est la source unique : fiches équipes, filtres, liste des gymnases et
+chiffres de l'accueil en sont calculés (`lib/nbb.ts`).
 
-1. Poussez le code sur GitHub.
-2. Sur <https://vercel.com>, « Add New… > Project », choisissez le dépôt, puis « Deploy ».
-3. Chaque `git push` sur `main` redéploie automatiquement le site.
+## Mettre en ligne (Vercel, gratuit)
 
-## Commandes utiles
+1. Poussez le dossier sur un dépôt GitHub.
+2. Sur <https://vercel.com> : « Add New… → Project », choisissez le dépôt, puis « Deploy ».
+3. Ajoutez les variables d'environnement de l'envoi des formulaires (ci-dessous), puis redéployez.
+4. Branchez le nom de domaine `nantes-breil-basket.fr` (Vercel → Settings → Domains) et vérifiez
+   `CLUB.siteUrl` dans `data/nbb.ts` (sert au référencement et aux aperçus de partage).
 
-```bash
-npm run dev     # serveur de développement
-npm run build   # build de production (à lancer avant de publier pour détecter les erreurs)
-npm run start   # lance le build de production en local
-```
+Chaque modification enregistrée sur la branche principale (par exemple via l'éditeur de GitHub,
+comme décrit dans `NOTICE.md`) redéploie automatiquement le site. Si le build échoue, l'ancienne
+version reste en ligne.
+
+## Envoi des formulaires (contact et stages)
+
+Les formulaires sont traités par des **Server Actions** (`app/actions.ts`) : validation côté
+serveur, protection anti-spam (champ piège invisible + délai minimal de saisie, sans cookie ni
+service tiers) puis envoi d'un e-mail par **SMTP** (`lib/email.ts`, avec nodemailer).
+« Répondre » dans la messagerie du club répond directement à la famille.
+
+Variables à définir dans Vercel (Settings → Environment Variables), modèle dans `.env.example` :
+
+| Variable | Exemple | Rôle |
+| --- | --- | --- |
+| `SMTP_HOST` | `smtp.gmail.com`, `ssl0.ovh.net` | serveur d'envoi de la messagerie du club |
+| `SMTP_PORT` | `465` ou `587` | port (465 = SSL) |
+| `SMTP_USER` | `site@votre-domaine.fr` | compte utilisé pour envoyer |
+| `SMTP_PASS` | — | mot de passe (Gmail : « mot de passe d'application ») |
+| `FORM_TO` | `bureau@votre-domaine.fr` | destinataire(s) des messages, séparés par des virgules |
+| `FORM_TO_STAGES` | `stages@votre-domaine.fr` | facultatif : destinataire des inscriptions aux stages |
+| `FORM_FROM` | `site@votre-domaine.fr` | facultatif : adresse d'expédition (par défaut `SMTP_USER`) |
+
+Sans ces variables : en local, le message s'affiche dans le terminal (pour tester) ; en
+production, le visiteur est invité à écrire directement par e-mail ou WhatsApp.
+
+## Choix techniques
+
+- **Fidélité à la maquette** : couleurs, typographies, espacements et composants de l'export Claude
+  Design sont repris dans `app/globals.css` (variables sous `:root`). Les emplacements photo rayés
+  s'affichent tant qu'aucune photo n'est fournie (`components/Photo.tsx`).
+- **RGPD** : polices auto-hébergées (aucune requête vers Google pour les visiteurs), aucun cookie
+  publicitaire ni outil de mesure d'audience, widget Score'n'co chargé uniquement après accord
+  (bandeau + lien « Gérer les cookies », choix conservé 6 mois), carte OpenStreetMap.
+- **Accessibilité** : lien d'évitement, navigation clavier (menu mobile fermé par Échap), focus
+  visibles, libellés et messages d'erreur reliés aux champs, textes alternatifs, contrastes de la
+  charte, animations désactivées si l'utilisateur le demande (`prefers-reduced-motion`).
+- **Référencement local** : titres et descriptions par page, adresses canoniques, plan du site
+  (`/sitemap.xml`), `robots.txt`, données structurées `SportsClub` (schema.org), image de partage
+  (`public/og-image.png`), manifeste pour l'ajout à l'écran d'accueil du téléphone.
+- **Robustesse** : filtres du planning et des gymnases gardés dans l'adresse (liens partageables) ;
+  sans JavaScript, le planning complet et tous les gymnases restent affichés.

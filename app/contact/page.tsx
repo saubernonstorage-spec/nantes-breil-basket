@@ -1,81 +1,74 @@
-import type { Metadata } from "next";
+import Link from "next/link";
+import { Suspense } from "react";
+import { ContactForm, ContactFormDepuisUrl } from "@/components/formulaires/ContactForm";
 import { PageHero } from "@/components/PageHero";
-import { CLUB } from "@/data/club";
+import { Socials } from "@/components/Socials";
+import { CLUB } from "@/data/nbb";
+import { metaPage } from "@/lib/seo";
+import { grille } from "@/lib/style";
+import { estACompleter, estEmail, lienTelephone } from "@/lib/utils";
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description: `Contacter ${CLUB.name} : coordonnées, inscriptions et réseaux sociaux.`,
-};
+export const metadata = metaPage({
+  titre: "Contact",
+  description:
+    "Contacter le Nantes Breil Basket : formulaire, e-mail, réseaux sociaux et groupe WhatsApp du club de basket du quartier Breil à Nantes.",
+  chemin: "/contact",
+});
 
-export default function ContactPage() {
-  const items: { label: string; content: React.ReactNode }[] = [];
-
-  if (CLUB.email)
-    items.push({
-      label: "E-mail",
-      content: <a href={`mailto:${CLUB.email}`}>{CLUB.email}</a>,
-    });
-  if (CLUB.phone)
-    items.push({
-      label: "Téléphone",
-      content: <a href={`tel:${CLUB.phone.replace(/\s/g, "")}`}>{CLUB.phone}</a>,
-    });
-  if (CLUB.address)
-    items.push({ label: "Adresse", content: CLUB.address });
-  if (CLUB.facebook)
-    items.push({
-      label: "Facebook",
-      content: (
-        <a href={CLUB.facebook} target="_blank" rel="noopener noreferrer">
-          Page du club
-        </a>
-      ),
-    });
-  if (CLUB.instagram)
-    items.push({
-      label: "Instagram",
-      content: (
-        <a href={CLUB.instagram} target="_blank" rel="noopener noreferrer">
-          Compte du club
-        </a>
-      ),
-    });
+export default function PageContact() {
+  const email = CLUB.email.trim();
+  const telephone = CLUB.telephone.trim();
 
   return (
-    <>
-      <PageHero
-        title="Contact"
-        intro="Une question sur les inscriptions, les horaires ou les équipes ?"
-      />
-      <div className="container page-body page-body--spaced">
-        {items.length > 0 ? (
-          <dl className="contact-list">
-            {items.map((item) => (
-              <div key={item.label} className="contact-row">
-                <dt>{item.label}</dt>
-                <dd>{item.content}</dd>
-              </div>
-            ))}
-          </dl>
-        ) : (
-          <p className="empty-note">
-            Les coordonnées du club seront bientôt disponibles.
-          </p>
-        )}
+    <div className="page">
+      <PageHero kicker="Contact" title="On vous répond">
+        <p className="lead">
+          Une question sur une inscription, un créneau, un déplacement ? Écrivez-nous — mais jetez d&apos;abord un
+          œil à la <Link href="/inscriptions#faq">FAQ</Link>, la réponse y est peut-être déjà.
+        </p>
+      </PageHero>
 
-        {CLUB.inscriptionUrl && (
-          <p>
-            <a
-              className="btn btn-accent"
-              href={CLUB.inscriptionUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              S’inscrire au club
-            </a>
-          </p>
-        )}
-      </div>
-    </>
+      <section className="section">
+        <div className="grid" style={grille(300, { align: "start" })}>
+          <div className="card card--strong">
+            <Suspense fallback={<ContactForm delaiReponse={CLUB.delaiReponse} />}>
+              <ContactFormDepuisUrl delaiReponse={CLUB.delaiReponse} />
+            </Suspense>
+          </div>
+
+          <div className="stack">
+            <div className="card card--strong">
+              <h2 className="title-card title-card--lg" style={{ marginBottom: 16 }}>
+                Coordonnées
+              </h2>
+              <p className="text-soft text-md" style={{ marginBottom: 10 }}>
+                <strong style={{ color: "#fff" }}>E-mail :</strong>{" "}
+                {!estACompleter(email) && estEmail(email) ? <a href={`mailto:${email}`}>{email}</a> : email}
+              </p>
+              <p className="text-soft text-md" style={{ marginBottom: 10 }}>
+                <strong style={{ color: "#fff" }}>Téléphone :</strong>{" "}
+                {!estACompleter(telephone) ? <a href={lienTelephone(telephone)}>{telephone}</a> : telephone}
+              </p>
+              <p className="text-soft text-md">
+                <strong style={{ color: "#fff" }}>Adresse :</strong> {CLUB.adresse}
+              </p>
+            </div>
+            <div className="card card--strong">
+              <h2 className="title-card title-card--lg" style={{ marginBottom: 16 }}>
+                Suivre le club
+              </h2>
+              <Socials />
+            </div>
+            <div className="card card--accent" style={{ borderRadius: 22 }}>
+              <p className="accent-title">Urgence un jour de match ?</p>
+              <p className="accent-text">
+                Passez par le groupe WhatsApp du club : c&apos;est là que les changements d&apos;horaire et de gymnase
+                sont annoncés en premier.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }

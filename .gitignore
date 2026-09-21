@@ -5,10 +5,17 @@ node_modules
 .next/
 out/
 next-env.d.ts
+*.tsbuildinfo
+
+# secrets (identifiants SMTP…)
+.env
+.env*.local
+
+# réglages locaux de Claude Code
+.claude/settings.local.json
 
 # divers
 .DS_Store
+Thumbs.db
 *.log
-.env*.local
 .vercel
-*.tsbuildinfo

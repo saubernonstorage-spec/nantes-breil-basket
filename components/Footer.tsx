@@ -1,67 +1,78 @@
-import Link from "next/link";
-import { CLUB, NAV_LINKS } from "@/data/club";
+import Image from "next/image";
+import { CLUB } from "@/data/nbb";
+import { GererCookies } from "./CookieBanner";
+import { SmartLink } from "./SmartLink";
+import { Socials } from "./Socials";
+
+const COLONNES = [
+  {
+    titre: "Le club",
+    liens: [
+      { href: "/club", label: "Histoire et valeurs" },
+      { href: "/club#bureau", label: "Bureau et bénévoles" },
+      { href: "/equipes", label: "Nos équipes" },
+      { href: "/galerie", label: "Galerie photos" },
+    ],
+  },
+  {
+    titre: "Pratique",
+    liens: [
+      { href: "/planning", label: "Planning des entraînements" },
+      { href: "/calendrier", label: "Calendrier et résultats" },
+      { href: "/inscriptions", label: "Inscriptions et tarifs" },
+      { href: "/stages", label: "Stages des vacances" },
+      { href: CLUB.boutique, label: "Boutique du club" },
+    ],
+  },
+  {
+    titre: "Informations",
+    liens: [
+      { href: "/infos", label: "Salles et accès" },
+      { href: "/partenaires", label: "Devenir partenaire" },
+      { href: "/contact", label: "Nous contacter" },
+      { href: "/mentions-legales", label: "Mentions légales & RGPD" },
+    ],
+  },
+];
 
 export function Footer() {
-  const year = new Date().getFullYear();
-  const hasContact =
-    CLUB.email || CLUB.phone || CLUB.address || CLUB.facebook || CLUB.instagram;
-
   return (
     <footer className="site-footer">
-      <div className="container footer-grid">
+      <div className="site-footer__grid">
         <div>
-          <p className="footer-title">{CLUB.name}</p>
-          <p className="footer-text">{CLUB.tagline}</p>
+          <span className="footer-logo">
+            <Image src="/logo-nbb.png" alt="" width={701} height={570} />
+          </span>
+          <p className="footer-name">{CLUB.nom}</p>
+          <p className="footer-address">
+            Quartier {CLUB.quartier} · {CLUB.ville}
+            <br />
+            {CLUB.adresse}
+          </p>
+          <Socials compact />
         </div>
-
-        <nav aria-label="Pied de page">
-          <p className="footer-heading">Le site</p>
-          <ul>
-            {NAV_LINKS.map((link) => (
-              <li key={link.href}>
-                <Link href={link.href}>{link.label}</Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
-        {hasContact && (
-          <div>
-            <p className="footer-heading">Contact</p>
+        {COLONNES.map((col) => (
+          <nav key={col.titre} className="footer-col" aria-label={col.titre}>
+            <p className="footer-col__title">{col.titre}</p>
             <ul>
-              {CLUB.email && (
-                <li>
-                  <a href={`mailto:${CLUB.email}`}>{CLUB.email}</a>
+              {col.liens.map((l) => (
+                <li key={l.label}>
+                  <SmartLink href={l.href}>{l.label}</SmartLink>
                 </li>
-              )}
-              {CLUB.phone && (
-                <li>
-                  <a href={`tel:${CLUB.phone.replace(/\s/g, "")}`}>
-                    {CLUB.phone}
-                  </a>
-                </li>
-              )}
-              {CLUB.facebook && (
-                <li>
-                  <a href={CLUB.facebook} target="_blank" rel="noopener noreferrer">
-                    Facebook
-                  </a>
-                </li>
-              )}
-              {CLUB.instagram && (
-                <li>
-                  <a href={CLUB.instagram} target="_blank" rel="noopener noreferrer">
-                    Instagram
-                  </a>
-                </li>
-              )}
+              ))}
             </ul>
-          </div>
-        )}
+          </nav>
+        ))}
       </div>
-      <p className="container footer-legal">
-        © {year} {CLUB.name}
-      </p>
+      <div className="site-footer__bottom">
+        <div className="site-footer__bottom-inner">
+          <p>
+            © {new Date().getFullYear()} {CLUB.nom} — association loi 1901 · Photos des mineurs publiées avec
+            autorisation de droit à l&apos;image.
+          </p>
+          <GererCookies />
+        </div>
+      </div>
     </footer>
   );
 }
