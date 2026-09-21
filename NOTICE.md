@@ -11,12 +11,12 @@ Aucune connaissance technique n'est nécessaire : on ne change que du texte entr
 3. Cherchez le bloc à modifier avec `Ctrl+F` / `Cmd+F` (voir le tableau plus bas).
 4. Modifiez le texte **entre les guillemets**.
 5. Cliquez sur **Commit changes…**, écrivez en une phrase ce que vous avez changé, validez.
-6. Le site se met à jour tout seul en 1 à 2 minutes (Vercel le reconstruit).
+6. Le site se met à jour tout seul en 1 à 2 minutes (Netlify le reconstruit).
 
 **En cas d'erreur** (guillemet ou virgule oubliés…), la mise en ligne est refusée et
-**l'ancienne version reste en ligne** : personne ne voit de page cassée. Une croix rouge
-apparaît à côté de votre modification sur GitHub ; en cliquant dessus, Vercel indique le
-fichier et le numéro de ligne à corriger. Corrigez, réenregistrez, c'est reparti.
+**l'ancienne version reste en ligne** : personne ne voit de page cassée. Dans Netlify,
+l'onglet **Deploys** affiche la construction en échec ; son journal indique le fichier et
+le numéro de ligne à corriger. Corrigez, réenregistrez, c'est reparti.
 
 ## Les 3 règles à respecter
 
@@ -146,7 +146,7 @@ formulaire d'inscription en ligne. Pensez à mettre à jour `STAGE_TARIFS` et la
 
 Le formulaire de contact et l'inscription aux stages envoient un e-mail aux adresses
 choisies par le club (« Répondre » renvoie directement vers la famille). Ces adresses
-et le compte de messagerie utilisé se règlent **dans Vercel**, pas dans `data/nbb.ts` :
+et le compte de messagerie utilisé se règlent **dans Netlify**, pas dans `data/nbb.ts` :
 voir le `README.md` (partie « Envoi des formulaires »). Tant que ce réglage n'est pas
 fait, les visiteurs voient un message les invitant à écrire directement par e-mail.
 
@@ -154,8 +154,8 @@ fait, les visiteurs voient un message les invitant à écrire directement par e-
 
 1. **Coordonnées du club** : e-mail, téléphone, adresse (bloc `CLUB`) et délai de réponse annoncé.
 2. **Lien du formulaire d'inscription** en ligne (bloc `CLUB`, champ `inscription`).
-3. **Envoi des formulaires** : réglage de la messagerie dans Vercel (voir `README.md`).
-4. **Mentions légales** : RNA, SIRET, responsable de publication, hébergeur, durée de conservation (bloc `MENTIONS`).
+3. **Envoi des formulaires** : réglage de la messagerie dans Netlify (voir `README.md`).
+4. **Mentions légales** : RNA, SIRET, responsable de publication, durée de conservation (bloc `MENTIONS`).
 5. **Adresses des gymnases** (bloc `GYMNASES`), avec `lat` / `lon` pour les épingler sur la carte.
 6. **Tarifs** des licences et de l'offre partenaires, **bureau**, **histoire**, **projet associatif**.
 7. **Photos** : accueil, école de basket, club, stages, équipes, partenaires.

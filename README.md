@@ -60,17 +60,24 @@ NOTICE.md            mode d'emploi pour les bénévoles
 Le **planning** (`SLOTS`) est la source unique : fiches équipes, filtres, liste des gymnases et
 chiffres de l'accueil en sont calculés (`lib/nbb.ts`).
 
-## Mettre en ligne (Vercel, gratuit)
+## Mettre en ligne (Netlify, gratuit)
 
-1. Poussez le dossier sur un dépôt GitHub.
-2. Sur <https://vercel.com> : « Add New… → Project », choisissez le dépôt, puis « Deploy ».
-3. Ajoutez les variables d'environnement de l'envoi des formulaires (ci-dessous), puis redéployez.
-4. Branchez le nom de domaine `nantes-breil-basket.fr` (Vercel → Settings → Domains) et vérifiez
-   `CLUB.siteUrl` dans `data/nbb.ts` (sert au référencement et aux aperçus de partage).
+Le site est prévu pour **Netlify** : offre gratuite sans carte bancaire, **usage commercial
+autorisé** (partenaires, lien boutique), et prise en charge de Next.js sans configuration
+(adaptateur OpenNext : pages statiques, Server Actions, `next/image`). L'offre gratuite de Vercel
+est, elle, réservée à un usage non commercial.
 
-Chaque modification enregistrée sur la branche principale (par exemple via l'éditeur de GitHub,
-comme décrit dans `NOTICE.md`) redéploie automatiquement le site. Si le build échoue, l'ancienne
-version reste en ligne.
+1. Sur <https://app.netlify.com> : « Add new project → Import an existing project → GitHub »,
+   choisissez le dépôt `nantes-breil-basket`, branche `main`. Netlify détecte Next.js tout seul
+   (commande `npm run build`), puis « Deploy ».
+2. Ajoutez les variables d'environnement de l'envoi des formulaires (ci-dessous), puis redéployez.
+3. Branchez le nom de domaine `nantes-breil-basket.fr` (réglages du projet → Domain management) et
+   vérifiez `CLUB.siteUrl` dans `data/nbb.ts` (sert au référencement et aux aperçus de partage).
+
+Chaque modification enregistrée sur la branche `main` (par exemple via l'éditeur de GitHub, comme
+décrit dans `NOTICE.md`) redéploie automatiquement le site. Si la construction échoue, l'ancienne
+version reste en ligne et l'onglet « Deploys » de Netlify affiche l'erreur. En cas de dépassement
+des quotas gratuits, Netlify suspend le site jusqu'à la fin du mois, sans jamais facturer.
 
 ## Envoi des formulaires (contact et stages)
 
@@ -79,7 +86,8 @@ serveur, protection anti-spam (champ piège invisible + délai minimal de saisie
 service tiers) puis envoi d'un e-mail par **SMTP** (`lib/email.ts`, avec nodemailer).
 « Répondre » dans la messagerie du club répond directement à la famille.
 
-Variables à définir dans Vercel (Settings → Environment Variables), modèle dans `.env.example` :
+Variables à définir dans Netlify (réglages du projet → Environment variables), modèle dans
+`.env.example` :
 
 | Variable | Exemple | Rôle |
 | --- | --- | --- |

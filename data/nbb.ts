@@ -464,7 +464,7 @@ export const MENTIONS = {
   siret: "[À COMPLÉTER]",
   responsablePublication: "[À COMPLÉTER]",
   contact: "[À COMPLÉTER]",
-  hebergeur: "[À COMPLÉTER] — nom, adresse et téléphone de l'hébergeur (par exemple Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis, si le site est déployé sur Vercel).",
+  hebergeur: "Netlify, Inc., 101 2nd Street, San Francisco, CA 94105, États-Unis — www.netlify.com (contact : support@netlify.com).",
   conservationMois: "[À COMPLÉTER]",
 };
 
