@@ -94,7 +94,7 @@ export default function PageCalendrier() {
               </p>
             </div>
             <SmartLink href={CLUB.ffbb} className="link-underline">
-              Voir sur le site de la FFBB →
+              Voir sur le site de la FFBB <span className="fleche" aria-hidden="true">→</span>
             </SmartLink>
           </div>
         </div>

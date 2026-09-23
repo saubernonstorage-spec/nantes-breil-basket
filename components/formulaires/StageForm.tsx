@@ -23,7 +23,7 @@ export function StageForm(props: Props) {
         </p>
         <p>
           <Link href="/contact?sujet=stage" className="link-underline">
-            Être prévenu ou poser une question →
+            Être prévenu ou poser une question <span className="fleche" aria-hidden="true">→</span>
           </Link>
         </p>
       </div>

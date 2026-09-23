@@ -118,6 +118,10 @@ Deux règles :
 - **Droit à l'image** : aucune photo de mineur sans autorisation signée. Privilégiez
   les plans larges et ne mettez jamais de nom d'enfant en légende ou dans le nom du fichier.
 
+Bon à savoir : la photo du bandeau d'accueil et celle de l'école de basket glissent doucement
+quand on fait défiler la page. Elles sont pour cela agrandies d'environ 8 %, donc légèrement
+recadrées : évitez d'y placer un visage ou un texte tout au bord.
+
 Cas particuliers :
 
 - **Photos d'équipe** : bloc `PHOTOS_EQUIPES`, une ligne par équipe, par exemple

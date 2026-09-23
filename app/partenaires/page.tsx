@@ -54,7 +54,7 @@ export default function PagePartenaires() {
                 {estLienExterne(p.site) && (
                   <p style={{ marginTop: 10 }}>
                     <SmartLink href={p.site} className="link-underline text-sm">
-                      Voir le site <span aria-hidden="true">↗</span>
+                      Voir le site <span className="fleche fleche--diag" aria-hidden="true">↗</span>
                     </SmartLink>
                   </p>
                 )}

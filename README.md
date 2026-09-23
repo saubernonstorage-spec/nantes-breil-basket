@@ -116,5 +116,10 @@ production, le visiteur est invité à écrire directement par e-mail ou WhatsAp
 - **Référencement local** : titres et descriptions par page, adresses canoniques, plan du site
   (`/sitemap.xml`), `robots.txt`, données structurées `SportsClub` (schema.org), image de partage
   (`public/og-image.png`), manifeste pour l'ajout à l'écran d'accueil du téléphone.
+- **Animations** : apparition des blocs au défilement, parallaxe des photos, en-tête qui se densifie,
+  réponses de la FAQ qui se déplient, survols et lueur qui suit la souris. Tout est réuni à la fin de
+  `app/globals.css` (sauf la position de la souris, fournie par `components/EffetsPointeur.tsx`) et tout
+  s'efface si le visiteur a demandé moins d'animations. Les apparitions reposent sur les animations liées
+  au défilement du navigateur : aucun script, et rien ne reste caché sur un navigateur qui ne les gère pas.
 - **Robustesse** : filtres du planning et des gymnases gardés dans l'adresse (liens partageables) ;
   sans JavaScript, le planning complet et tous les gymnases restent affichés.

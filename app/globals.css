@@ -1090,6 +1090,23 @@ a.chip:hover {
   background: rgba(255, 255, 255, 0.12);
 }
 
+/* Les trois barres du bouton menu se replient en croix quand il est ouvert. */
+.icon-menu line {
+  transform-origin: 12px 12px;
+}
+
+.icon-menu--open line:nth-child(1) {
+  transform: translateY(5px) rotate(45deg);
+}
+
+.icon-menu--open line:nth-child(2) {
+  opacity: 0;
+}
+
+.icon-menu--open line:nth-child(3) {
+  transform: translateY(-5px) rotate(-45deg);
+}
+
 .nav-mobile {
   border-top: 1px solid var(--line);
   padding: 12px 16px 20px;
@@ -2081,19 +2098,34 @@ a.list-item:hover {
   border-radius: 16px;
 }
 
+/* Signe « + » fait de deux barres : la barre verticale pivote à l'ouverture. */
 .faq__sign {
+  position: relative;
   flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
   color: var(--orange);
-  font-size: 22px;
-  line-height: 1;
 }
 
-.faq__sign::before {
-  content: "+";
+.faq__sign::before,
+.faq__sign::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 20px;
+  height: 2.5px;
+  margin-top: -1.25px;
+  border-radius: 2px;
+  background: currentColor;
 }
 
-.faq__item[open] .faq__sign::before {
-  content: "−";
+.faq__sign::after {
+  transform: rotate(90deg);
+}
+
+.faq__item[open] .faq__sign::after {
+  transform: rotate(0deg);
 }
 
 .faq__answer {
@@ -2654,4 +2686,304 @@ a.album:hover {
   font-size: clamp(96px, 18vw, 180px);
   line-height: 0.9;
   color: var(--orange);
+}
+
+/* ==========================================================================
+   Animations et micro-interactions
+   Tout ce qui bouge est réuni ici, pour se régler (ou se retirer) d'un seul
+   endroit. Trois garde-fous :
+   — rien ne s'anime si le visiteur a demandé moins d'animations dans les
+     réglages de son appareil (« Réduire les animations ») ;
+   — les apparitions et les parallaxes s'appuient sur les animations liées au
+     défilement du navigateur (animation-timeline), sans JavaScript : un
+     navigateur qui ne les gère pas affiche la page normalement, sans mouvement ;
+   — les effets qui suivent la souris ne s'activent que sur les appareils
+     pointés (voir components/EffetsPointeur.tsx).
+   ========================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* ---------- Survol et clic : les éléments interactifs répondent ---------- */
+
+  .btn,
+  a.chip,
+  .filter-btn,
+  .filters__reset,
+  .social,
+  .social svg,
+  .cookie-btn,
+  .menu-toggle,
+  .icon-menu line,
+  .nav-desktop a,
+  .nav-mobile a.nav-mobile__link,
+  .header-join,
+  .header-stages,
+  .link-underline,
+  .link-inline,
+  .link-white,
+  .link-button,
+  .footer-col a,
+  .faq__question,
+  .faq__sign::before,
+  .faq__sign::after,
+  .fleche,
+  .input,
+  .select,
+  .textarea {
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, opacity 0.2s ease,
+      box-shadow 0.25s ease, transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .card,
+  .quick-card,
+  .cat-card,
+  .team-card,
+  .album,
+  .partner-tile,
+  .stage-card,
+  .slot-card,
+  .list-item,
+  .photo img {
+    transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.35s ease,
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Boutons : une pression perceptible. */
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+
+  .btn:active {
+    transform: translateY(0) scale(0.99);
+  }
+
+  .btn--primary:hover {
+    box-shadow: 0 12px 26px rgba(247, 166, 25, 0.24);
+  }
+
+  .btn--dark:hover {
+    box-shadow: 0 12px 26px rgba(7, 18, 40, 0.35);
+  }
+
+  a.chip:active,
+  .filter-btn:active,
+  .filters__reset:active,
+  .cookie-btn:active {
+    transform: scale(0.97);
+  }
+
+  /* Cartes cliquables : elles se soulèvent, leur photo respire. */
+  a.cat-card:hover,
+  a.cat-card:focus-visible,
+  a.album:hover,
+  a.album:focus-visible,
+  a.partner-tile:hover,
+  a.partner-tile:focus-visible {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.35);
+  }
+
+  a.cat-card:hover .photo img,
+  a.album:hover .photo img,
+  a.list-item:hover .list-item__thumb img {
+    transform: scale(1.05);
+  }
+
+  .social:hover svg {
+    transform: scale(1.1);
+  }
+
+  /* Flèches des liens « en savoir plus » : elles avancent d'un cran. */
+  .fleche {
+    display: inline-block;
+  }
+
+  a:hover .fleche {
+    transform: translateX(4px);
+  }
+
+  a:hover .fleche--diag {
+    transform: translate(3px, -3px);
+  }
+
+  /* Questions fréquentes : la réponse se déplie au lieu d'apparaître d'un coup. */
+  @supports selector(::details-content) {
+    :root {
+      interpolate-size: allow-keywords;
+    }
+
+    .faq__item::details-content {
+      block-size: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: block-size 0.3s ease, opacity 0.3s ease, content-visibility 0.3s;
+      transition-behavior: allow-discrete;
+    }
+
+    .faq__item[open]::details-content {
+      block-size: auto;
+      opacity: 1;
+    }
+  }
+
+  /* ---------- Apparition des blocs au défilement ---------- */
+
+  @keyframes nbbApparition {
+    from {
+      opacity: 0;
+      translate: 0 16px;
+    }
+    to {
+      opacity: 1;
+      translate: none;
+    }
+  }
+
+  @supports (animation-timeline: view()) {
+    .card,
+    .quick-card,
+    .cat-card,
+    .team-card,
+    .album,
+    .offer,
+    .partner-tile,
+    .stage-card,
+    .slot-card,
+    .faq__item,
+    .feature,
+    .cta-band,
+    .table-wrap,
+    .rows > * {
+      animation: nbbApparition linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry var(--nbb-course, 260px);
+    }
+
+    /* Les blocs d'une même rangée arrivent légèrement décalés. */
+    .grid > *:nth-child(3n + 2),
+    .rows > *:nth-child(3n + 2),
+    .faq__item:nth-child(3n + 2) {
+      --nbb-course: 330px;
+    }
+
+    .grid > *:nth-child(3n + 3),
+    .rows > *:nth-child(3n + 3),
+    .faq__item:nth-child(3n + 3) {
+      --nbb-course: 400px;
+    }
+
+    /* Une ligne déjà contenue dans une carte qui apparaît n'apparaît pas deux fois. */
+    .card .rows > * {
+      animation: none;
+    }
+  }
+
+  /* ---------- Parallaxe : les photos glissent un peu moins vite que la page ---------- */
+
+  @keyframes nbbParallaxe {
+    from {
+      translate: 0 -2.5%;
+    }
+    to {
+      translate: 0 2.5%;
+    }
+  }
+
+  @supports (animation-timeline: view()) {
+    /* La minuterie est posée sur le cadre : la photo, elle, est rognée (overflow),
+       ce qui l'empêcherait de suivre le défilement de la page. */
+    .hero {
+      view-timeline: --cadre-hero block;
+    }
+
+    .ecole__photo {
+      view-timeline: --cadre-ecole block;
+    }
+
+    .hero__img,
+    .hero__stripes,
+    .ecole__photo img {
+      animation: nbbParallaxe linear both;
+      animation-range: cover 0% cover 100%;
+      scale: 1.08;
+    }
+
+    /* La photo, ou le motif affiché tant qu'elle manque. */
+    .hero__img,
+    .hero__stripes {
+      animation-timeline: --cadre-hero;
+    }
+
+    .ecole__photo img {
+      animation-timeline: --cadre-ecole;
+    }
+  }
+
+  /* ---------- En-tête : il se densifie dès que la page défile ---------- */
+
+  @keyframes nbbEnTete {
+    from {
+      background-color: rgba(7, 18, 40, 0.78);
+      box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    }
+    to {
+      background-color: rgba(5, 14, 32, 0.96);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .site-header {
+      animation: nbbEnTete linear both;
+      animation-timeline: scroll();
+      animation-range: 0 140px;
+    }
+  }
+
+  /* ---------- Effets liés au curseur (souris seulement) ----------
+     La classe « curseur » est posée sur <html> par components/EffetsPointeur.tsx,
+     qui fournit aussi --px / --py, la position de la souris dans l'élément survolé. */
+
+  .curseur .hero::after,
+  .curseur a.cat-card::after,
+  .curseur a.album::after,
+  .curseur a.partner-tile::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 320px;
+    height: 320px;
+    margin: -160px 0 0 -160px;
+    border-radius: 50%;
+    background: radial-gradient(circle closest-side, rgba(247, 166, 25, 0.18), transparent);
+    translate: var(--px, 50%) var(--py, 50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  .curseur .hero::after {
+    z-index: 1;
+    width: 520px;
+    height: 520px;
+    margin: -260px 0 0 -260px;
+    background: radial-gradient(circle closest-side, rgba(247, 166, 25, 0.16), transparent);
+  }
+
+  .curseur a.partner-tile {
+    overflow: hidden;
+  }
+
+  .curseur a.cat-card,
+  .curseur a.album,
+  .curseur a.partner-tile {
+    position: relative;
+  }
+
+  .curseur .hero:hover::after,
+  .curseur a.cat-card:hover::after,
+  .curseur a.album:hover::after,
+  .curseur a.partner-tile:hover::after {
+    opacity: 1;
+  }
 }

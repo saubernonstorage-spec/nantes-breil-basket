@@ -31,7 +31,7 @@ export function GymnasesVue({ gymnases, selection = "" }: { gymnases: DetailGymn
             <strong>gymnase {epingle.nom}</strong>
             {!estACompleter(epingle.adresse) && <>, {epingle.adresse}</>}.{" "}
             <a href={carte.lien} target="_blank" rel="noopener" className="link-inline">
-              Ouvrir en grand <span aria-hidden="true">↗</span>
+              Ouvrir en grand <span className="fleche fleche--diag" aria-hidden="true">↗</span>
               <span className="visually-hidden"> (nouvel onglet)</span>
             </a>
             {choisi && choisi !== epingle && (
@@ -93,7 +93,7 @@ export function GymnasesVue({ gymnases, selection = "" }: { gymnases: DetailGymn
                   )}
                   {!estACompleter(g.adresse) && (
                     <a href={lienItineraire(g.adresse)} target="_blank" rel="noopener" className="link-inline">
-                      Itinéraire <span aria-hidden="true">↗</span>
+                      Itinéraire <span className="fleche fleche--diag" aria-hidden="true">↗</span>
                       <span className="visually-hidden"> vers le gymnase {g.nom} (nouvel onglet)</span>
                     </a>
                   )}

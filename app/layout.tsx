@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Anton, Barlow, Barlow_Condensed } from "next/font/google";
 import { AncreAuChargement } from "@/components/AncreAuChargement";
 import { CookieBanner } from "@/components/CookieBanner";
+import { EffetsPointeur } from "@/components/EffetsPointeur";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { CLUB, STATS } from "@/data/nbb";
@@ -80,6 +81,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <Footer />
         <CookieBanner />
         <AncreAuChargement />
+        <EffetsPointeur />
       </body>
     </html>
   );

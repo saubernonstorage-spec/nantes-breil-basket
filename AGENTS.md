@@ -18,4 +18,9 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Styles : `app/globals.css` (variables de la charte sous `:root`), fidèles à la maquette Claude Design.
 - Formulaires : Server Actions dans `app/actions.ts`, envoi SMTP dans `lib/email.ts` (variables dans `.env.example`).
 - Contenus tiers (Score'n'co) seulement après consentement : `components/EmbedConsenti.tsx`.
+- Animations : tout le mouvement est regroupé à la fin de `app/globals.css`, sous
+  `@media (prefers-reduced-motion: no-preference)`. Apparitions et parallaxes en CSS pur
+  (`animation-timeline`, aucun script, aucun bloc caché si le navigateur ne gère pas) ; seuls les effets
+  qui suivent la souris passent par `components/EffetsPointeur.tsx` (classe `curseur` + `--px`/`--py`).
+  Les animations utilisent `translate`/`scale`, jamais `transform`, réservé au survol.
 - Avant de livrer : `npm run lint` puis `npm run build`.

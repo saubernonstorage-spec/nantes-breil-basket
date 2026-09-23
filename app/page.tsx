@@ -115,7 +115,7 @@ export default function Accueil() {
             </ul>
             <p className="quick-card__foot" style={{ paddingTop: 16 }}>
               <Link href="/infos" className="link-underline">
-                Adresses et accès →
+                Adresses et accès <span className="fleche" aria-hidden="true">→</span>
               </Link>
             </p>
           </div>
@@ -131,7 +131,7 @@ export default function Accueil() {
               </p>
             </div>
             <SmartLink href={CLUB.boutique} className="btn btn--primary btn--block quick-card__foot">
-              Aller à la boutique <span aria-hidden="true">↗</span>
+              Aller à la boutique <span className="fleche fleche--diag" aria-hidden="true">↗</span>
             </SmartLink>
           </div>
         </div>
@@ -161,7 +161,7 @@ export default function Accueil() {
             <div className="section-head section-head--baseline">
               <h2 className="title-section">Agenda</h2>
               <Link href="/calendrier" className="link-underline text-sm">
-                Calendrier complet →
+                Calendrier complet <span className="fleche" aria-hidden="true">→</span>
               </Link>
             </div>
             <ul className="rows" style={{ marginTop: 18 }}>
@@ -318,7 +318,7 @@ export default function Accueil() {
             </p>
           </div>
           <Link href="/equipes" className="link-underline">
-            Toutes les fiches équipes →
+            Toutes les fiches équipes <span className="fleche" aria-hidden="true">→</span>
           </Link>
         </div>
         <div className="grid" style={grille(230)}>
