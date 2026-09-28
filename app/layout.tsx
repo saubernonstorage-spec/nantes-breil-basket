@@ -45,7 +45,13 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${titre.variable} ${texte.variable} ${mono.variable}`}>
+    // data-scroll-behavior : le défilement fluide (liens vers une section de la page) est coupé pendant les
+    // changements de page, sinon Next.js ne ramène pas toujours la nouvelle page tout en haut.
+    <html
+      lang="fr"
+      data-scroll-behavior="smooth"
+      className={`${titre.variable} ${texte.variable} ${mono.variable}`}
+    >
       <body>
         <Header liens={{ boutique: CLUB.boutique, facebook: CLUB.facebook, instagram: CLUB.instagram, whatsapp: CLUB.whatsapp }} />
         <main id="contenu" tabIndex={-1}>
