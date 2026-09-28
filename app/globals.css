@@ -1564,6 +1564,56 @@ a.badge-label:hover {
   color: var(--orange);
 }
 
+/* Réseaux sociaux + boutique : mêmes proportions que la rangée « Nos écoles »
+   (grande carte à gauche, petite à droite). */
+
+.reseaux {
+  flex: 2 1 520px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 18px;
+  padding: clamp(22px, 3vw, 36px);
+  border-radius: 30px;
+  background: var(--blanc);
+  border: 1px solid var(--bord);
+}
+
+.reseaux .surtitre {
+  margin-bottom: 12px;
+}
+
+.reseaux__cote {
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.acces--boutique {
+  flex: 1 1 320px;
+  min-height: 0;
+  padding: clamp(22px, 3vw, 34px);
+  border-radius: 30px;
+}
+
+.acces--boutique .acces__titre {
+  font-size: clamp(40px, 4vw, 56px);
+  line-height: 0.9;
+}
+
+.acces--boutique .acces__texte {
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+.reseaux__cote p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--gris);
+}
+
 /* Agenda de l'accueil */
 
 .banniere-photo {
@@ -1607,16 +1657,6 @@ a.badge-label:hover {
 
 .agenda-accueil__cote .surtitre {
   margin-bottom: 12px;
-}
-
-.agenda-accueil__reseaux {
-  margin-top: 48px;
-  padding-top: 32px;
-  border-top: 1px solid rgba(245, 243, 238, 0.15);
-}
-
-.agenda-accueil__reseaux .texte-clair {
-  margin-bottom: 22px;
 }
 
 .agenda-accueil .agenda {

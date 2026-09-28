@@ -110,11 +110,79 @@ export default function Accueil() {
               <span className="acces__texte">{a.texte}</span>
             </Link>
           ))}
-          <a href={CLUB.boutique} target="_blank" rel="noopener" className="acces acces--orange carte-lien">
+        </div>
+      </section>
+
+      <section aria-labelledby="reseaux-titre" className="section" style={{ paddingBottom: 24 }}>
+        {/* Mêmes proportions que la rangée « Nos écoles » : grande carte à gauche, petite à droite. */}
+        <div className="rangee">
+          <div className="reseaux">
+            <div>
+              <div className="surtitre">Réseaux sociaux</div>
+              <h2 id="reseaux-titre" className="titre-section titre-section--grand">
+                Le club en direct
+              </h2>
+            </div>
+            <div className="reseaux__cote">
+              <p>
+                Photos de match, rappels du week-end, coulisses des stages : suivez le NBB. Le groupe WhatsApp annonce en
+                premier les changements d'horaire.
+              </p>
+              <div className="rangee rangee--8">
+                <a href={CLUB.instagram} target="_blank" rel="noopener" className="btn btn--s btn--petit btn--orange">
+                  <IconeInstagram />
+                  Instagram
+                  <NouvelOnglet />
+                </a>
+                <a href={CLUB.facebook} target="_blank" rel="noopener" className="btn btn--s btn--petit btn--orange">
+                  <IconeFacebook />
+                  Facebook
+                  <NouvelOnglet />
+                </a>
+                <a href={CLUB.whatsapp} target="_blank" rel="noopener" className="btn btn--s btn--petit btn--contour">
+                  <IconeWhatsapp />
+                  WhatsApp
+                  <NouvelOnglet />
+                </a>
+              </div>
+            </div>
+          </div>
+          <a href={CLUB.boutique} target="_blank" rel="noopener" className="acces acces--orange acces--boutique carte-lien">
             <span className="acces__titre">Boutique du club</span>
             <span className="acces__texte">Portons nos couleurs</span>
             <NouvelOnglet />
           </a>
+        </div>
+      </section>
+
+      <section aria-labelledby="agenda-titre" className="bande-sombre" style={{ marginTop: 40 }}>
+        <div className="section" style={{ paddingTop: 80, paddingBottom: 80 }}>
+          <div className="banniere-photo">
+            <Photo
+              src={PHOTOS.accueilVieClub.src}
+              alt={PHOTOS.accueilVieClub.alt}
+              sizes="(max-width: 1360px) 100vw, 1300px"
+            />
+            <div aria-hidden="true" className="banniere-photo__voile" />
+            <div className="banniere-photo__texte">
+              On vient pour le basket, <span className="accent">on reste pour l'ambiance.</span>
+            </div>
+          </div>
+          <div className="agenda-accueil">
+            <div className="agenda-accueil__cote">
+              <div className="surtitre">Agenda</div>
+              <h2 id="agenda-titre" className="titre-section titre-section--grand" style={{ marginBottom: 18 }}>
+                Les dates à retenir
+              </h2>
+              <p className="texte-clair">
+                Soirées de match, tournois, Noël du NBB, stages : notez-les, venez encourager, donnez un coup de main.
+              </p>
+              <Link href="/agenda" className="btn btn--petit btn--clair">
+                Tout l'agenda
+              </Link>
+            </div>
+            <ListeAgenda dates={agenda} />
+          </div>
         </div>
       </section>
 
@@ -160,59 +228,6 @@ export default function Accueil() {
               Le parcours d'arbitrage
             </span>
           </Link>
-        </div>
-      </section>
-
-      <section aria-labelledby="agenda-titre" className="bande-sombre" style={{ marginTop: 40 }}>
-        <div className="section" style={{ paddingTop: 80, paddingBottom: 80 }}>
-          <div className="banniere-photo">
-            <Photo
-              src={PHOTOS.accueilVieClub.src}
-              alt={PHOTOS.accueilVieClub.alt}
-              sizes="(max-width: 1360px) 100vw, 1300px"
-            />
-            <div aria-hidden="true" className="banniere-photo__voile" />
-            <div className="banniere-photo__texte">
-              On vient pour le basket, <span className="accent">on reste pour l'ambiance.</span>
-            </div>
-          </div>
-          <div className="agenda-accueil">
-            <div className="agenda-accueil__cote">
-              <div className="surtitre">Agenda</div>
-              <h2 id="agenda-titre" className="titre-section titre-section--grand" style={{ marginBottom: 18 }}>
-                Les dates à retenir
-              </h2>
-              <p className="texte-clair">
-                Soirées de match, tournois, Noël du NBB, stages : notez-les, venez encourager, donnez un coup de main.
-              </p>
-              <Link href="/agenda" className="btn btn--petit btn--clair">
-                Tout l'agenda
-              </Link>
-              <div className="agenda-accueil__reseaux">
-                <div className="surtitre">Réseaux sociaux</div>
-                <h3 className="titre-bloc-grand">Le club en direct</h3>
-                <p className="texte-clair">
-                  Photos de match, rappels du week-end, coulisses des stages : suivez le NBB. Le groupe WhatsApp
-                  annonce en premier les changements d'horaire.
-                </p>
-                <div className="rangee rangee--8">
-                  <a href={CLUB.instagram} target="_blank" rel="noopener" className="btn btn--s btn--petit btn--orange">
-                    <IconeInstagram />
-                    Instagram
-                  </a>
-                  <a href={CLUB.facebook} target="_blank" rel="noopener" className="btn btn--s btn--petit btn--orange">
-                    <IconeFacebook />
-                    Facebook
-                  </a>
-                  <a href={CLUB.whatsapp} target="_blank" rel="noopener" className="btn btn--s btn--petit btn--clair">
-                    <IconeWhatsapp />
-                    WhatsApp
-                  </a>
-                </div>
-              </div>
-            </div>
-            <ListeAgenda dates={agenda} />
-          </div>
         </div>
       </section>
 

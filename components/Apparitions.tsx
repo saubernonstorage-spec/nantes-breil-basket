@@ -9,6 +9,7 @@ import { useEffect } from "react";
  */
 const CIBLES = [
   ".acces",
+  ".reseaux",
   ".carte-ecole",
   ".carte-arbitrage",
   ".banniere-photo",
