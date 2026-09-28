@@ -39,7 +39,7 @@ export default function Stages() {
           </p>
           <div className="rangee rangee--10">
             <a href="#inscription-stage" className="btn btn--xl btn--orange">
-              Inscrire mon enfant ↓
+              Inscrire mon enfant <span className="fleche fleche--bas" aria-hidden="true">↓</span>
             </a>
             <a href="#tarifs-stage" className="btn btn--xl btn--clair" style={{ borderColor: "rgba(245,243,238,.35)" }}>
               Tarifs &amp; journée type

@@ -264,7 +264,10 @@ export function StageForm({ semaines, prix, reductions, annees }: Props) {
               <span className="total__remise">−{taux} %</span>
             </>
           ) : null}
-          <strong className="total__valeur">{total}</strong>
+          {/* La clé change avec le montant : il « bat » brièvement à chaque mise à jour. */}
+          <strong key={total} className={f.jours.length ? "total__valeur total__valeur--maj" : "total__valeur"}>
+            {total}
+          </strong>
         </span>
       </div>
 

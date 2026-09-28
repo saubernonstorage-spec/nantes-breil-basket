@@ -23,8 +23,19 @@ function parJour<T extends { jourCle: string; jourLabel: string }>(liste: T[]) {
 }
 
 export function MatchsVue({ weekends, indexDefaut, equipes, whatsapp, equipeInitiale = "" }: Props & { equipeInitiale?: string }) {
-  const [sel, setSel] = useState(indexDefaut);
-  const [equipe, setEquipe] = useState(equipeInitiale);
+  const [sel, choisirSemaine] = useState(indexDefaut);
+  const [equipe, choisirEquipe] = useState(equipeInitiale);
+  // Chaque choix rejoue un fondu très court sur les tableaux : on voit qu'ils ont été mis à jour.
+  const [version, setVersion] = useState(0);
+  const setSel = (i: number) => {
+    choisirSemaine(i);
+    setVersion((v) => v + 1);
+  };
+  const setEquipe = (e: string) => {
+    choisirEquipe(e);
+    setVersion((v) => v + 1);
+  };
+  const rafraichi = version ? "rafraichi" : undefined;
   const rail = useRef<HTMLDivElement>(null);
   const premier = useRef(true);
 
@@ -110,6 +121,7 @@ export function MatchsVue({ weekends, indexDefaut, equipes, whatsapp, equipeInit
             Trouvez un remplaçant et prévenez votre coach.
           </p>
         </div>
+        <div key={version} className={rafraichi}>
         {dom.length > 0 ? (
           <div className="tableau-matchs" style={{ marginTop: 26 }}>
             <table style={{ minWidth: 1160 }}>
@@ -168,6 +180,7 @@ export function MatchsVue({ weekends, indexDefaut, equipes, whatsapp, equipeInit
             {w.vide ? "Le programme de ce week-end n'est pas encore publié." : `Pas de match à domicile${pour}ce week-end.`}
           </p>
         )}
+        </div>
       </section>
 
       <section aria-labelledby="ext-titre" className="section" style={{ paddingTop: 40 }}>
@@ -175,6 +188,7 @@ export function MatchsVue({ weekends, indexDefaut, equipes, whatsapp, equipeInit
         <h2 id="ext-titre" className="titre-section" style={{ marginBottom: 22 }}>
           On se déplace
         </h2>
+        <div key={version} className={rafraichi}>
         {ext.length > 0 ? (
           <div className="tableau-matchs tableau-matchs--ext">
             <table style={{ minWidth: 820 }}>
@@ -209,7 +223,8 @@ export function MatchsVue({ weekends, indexDefaut, equipes, whatsapp, equipeInit
                         <td className="tableau-matchs__lieu">{m.lieu}</td>
                         <td className="tableau-matchs__itineraire">
                           <a href={m.itineraire} target="_blank" rel="noopener">
-                            Itinéraire ↗<NouvelOnglet />
+                            Itinéraire <span className="fleche fleche--diag" aria-hidden="true">↗</span>
+                            <NouvelOnglet />
                           </a>
                         </td>
                       </tr>
@@ -224,6 +239,7 @@ export function MatchsVue({ weekends, indexDefaut, equipes, whatsapp, equipeInit
             Pas de match à l'extérieur{pour}ce week-end.
           </p>
         ) : null}
+        </div>
         <div className="note-bleue">
           Covoiturage : les déplacements sont organisés par les parents de l'équipe, à tour de rôle, rendez-vous sur{" "}
           <a href={whatsapp} target="_blank" rel="noopener">

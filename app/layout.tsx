@@ -3,6 +3,7 @@ import { Big_Shoulders, Instrument_Sans, JetBrains_Mono } from "next/font/google
 import { CLUB } from "@/data/nbb";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { Apparitions } from "@/components/Apparitions";
 import "./globals.css";
 
 // Polices téléchargées au moment de la construction et servies par le site : aucune requête vers Google.
@@ -51,6 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </main>
         <Footer />
+        <Apparitions />
       </body>
     </html>
   );

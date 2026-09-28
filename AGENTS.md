@@ -29,8 +29,12 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   Variables documentées dans `.env.example`.
 - Contenus tiers (carte Google Maps, widget de résultats) seulement après consentement :
   `ContenuConsenti` dans `components/Cookies.tsx`. Aucun outil de mesure d'audience.
-- Animations : tout le mouvement est regroupé à la fin de `app/globals.css`, sous
-  `@media (prefers-reduced-motion: no-preference)`. Apparitions et parallaxes en CSS pur
-  (`animation-timeline`, aucun script, aucun bloc caché si le navigateur ne gère pas). Les animations
-  utilisent `translate`/`scale` ; `transform` est réservé au survol et au placement des motifs de terrain.
+- Animations : tout le mouvement est regroupé à la fin de `app/globals.css` (section « Animations et
+  micro-interactions »), sous `@media (prefers-reduced-motion: no-preference)`. Chaque effet doit servir
+  (arrivée d'un contenu, lien cliquable, action confirmée, contenu mis à jour) : court, discret, jamais en
+  boucle. Apparition au défilement : `components/Apparitions.tsx` (liste `CIBLES`, contenu éditorial
+  seulement ; pas les listes utilitaires) — sans JavaScript ni animation demandée, rien n'est masqué.
+  Parallaxe et en-tête au défilement en CSS (`animation-timeline`). Les animations utilisent
+  `translate`/`scale`/`opacity` ; `transform` est réservé au survol et au placement des motifs de terrain.
+  Flèches animées : `<span className="fleche fleche--bas|diag|gauche" aria-hidden="true">`.
 - Avant de livrer : `npm run lint` puis `npm run build`.

@@ -180,13 +180,15 @@ export function Faq({ questions }: { questions: { q: string; r: string }[] }) {
                 onClick={() => setOuverte(open ? -1 : i)}
               >
                 {q.q}
-                <span aria-hidden="true" className="faq__signe">
-                  {open ? "−" : "+"}
-                </span>
+                {/* Un « + » dessiné en CSS : sa barre verticale pivote pour former le « − ». */}
+                <span aria-hidden="true" className="faq__signe" />
               </button>
             </h3>
-            <div id={`faq-${i}`} hidden={!open} className="faq__reponse">
-              <p>{q.r}</p>
+            {/* Toujours présent pour que la hauteur puisse s'animer ; fermé, il est inerte et masqué aux lecteurs d'écran. */}
+            <div id={`faq-${i}`} className="faq__reponse" data-ouvert={open} inert={!open} aria-hidden={!open}>
+              <div>
+                <p>{q.r}</p>
+              </div>
             </div>
           </div>
         );

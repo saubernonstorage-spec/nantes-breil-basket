@@ -400,7 +400,7 @@ export function InscriptionForm(props: Props) {
                 setErreurs({});
               }}
             >
-              ← Retour
+              <span className="fleche fleche--gauche" aria-hidden="true">←</span> Retour
             </button>
           ) : null}
           <button type="submit" className="btn btn--l btn--orange" style={{ marginLeft: "auto" }} disabled={enCours}>

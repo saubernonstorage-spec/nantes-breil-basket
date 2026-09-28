@@ -36,7 +36,7 @@ export default function Inscriptions() {
       >
         <div className="rangee rangee--10" style={{ marginTop: 28 }}>
           <a href="#formulaire" className="btn btn--xl btn--orange">
-            S'inscrire en ligne ↓
+            S'inscrire en ligne <span className="fleche fleche--bas" aria-hidden="true">↓</span>
           </a>
           <a href="#tarifs" className="btn btn--xl btn--clair">
             Voir les tarifs
@@ -140,7 +140,9 @@ export default function Inscriptions() {
                 <li key={p.nom}>
                   <a href={p.url} target="_blank" rel="noopener">
                     {p.nom}
-                    <span aria-hidden="true">PDF ↓</span>
+                    <span aria-hidden="true">
+                      PDF <span className="fleche fleche--bas">↓</span>
+                    </span>
                     <NouvelOnglet />
                   </a>
                 </li>

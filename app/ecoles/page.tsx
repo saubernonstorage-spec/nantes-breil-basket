@@ -60,7 +60,7 @@ export default function Ecoles() {
                 Demander une séance d'essai
               </Link>
               <a href="#arbitrage" className="btn btn--xl btn--clair">
-                École d'arbitrage ↓
+                École d'arbitrage <span className="fleche fleche--bas" aria-hidden="true">↓</span>
               </a>
             </div>
           </div>

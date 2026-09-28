@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useSyncExternalStore } from "react";
+import { useState, useSyncExternalStore } from "react";
 import type { Jour } from "@/lib/types";
 import type { CreneauPlanning } from "@/lib/nbb";
 
@@ -33,7 +33,13 @@ export function PlanningVue({
   onChange,
 }: Donnees & { filtres?: Filtres; onChange?: (f: Filtres) => void }) {
   const aujourdhui = useJourCourant();
-  const maj = (f: Partial<Filtres>) => onChange?.({ ...filtres, ...f });
+  // Chaque changement de filtre rejoue un fondu très court sur la liste : on voit qu'elle a été mise à jour.
+  const [version, setVersion] = useState(0);
+  const changer = (f: Filtres) => {
+    setVersion((v) => v + 1);
+    onChange?.(f);
+  };
+  const maj = (f: Partial<Filtres>) => changer({ ...filtres, ...f });
   const affiches = creneaux.filter(
     (s) =>
       (!filtres.equipe || s.equipes.includes(filtres.equipe)) &&
@@ -83,7 +89,7 @@ export function PlanningVue({
             </select>
           </label>
           <div className="filtres__boutons">
-            <button type="button" className="btn btn--contour" onClick={() => onChange?.(AUCUN)}>
+            <button type="button" className="btn btn--contour" onClick={() => changer(AUCUN)}>
               Réinitialiser
             </button>
             <button type="button" className="btn btn--nuit" onClick={() => window.print()}>
@@ -104,6 +110,7 @@ export function PlanningVue({
             <Link href="/infos">Gymnases &amp; accès</Link>
           </p>
         </div>
+        <div key={version} className={version ? "rafraichi" : undefined}>
         {parJour.map(({ jour, liste }) => (
           <div key={jour} className="planning__jour">
             <h2 className="planning__titre-jour">
@@ -137,6 +144,7 @@ export function PlanningVue({
             </div>
           </div>
         ))}
+        </div>
         {n === 0 ? (
           <div className="vide">
             <strong>Aucun créneau trouvé</strong>

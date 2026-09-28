@@ -104,6 +104,7 @@ export function Header({ liens }: { liens: LiensClub }) {
                 href={n.href}
                 onClick={fermer}
                 aria-current={chemin === n.href ? "page" : undefined}
+                style={{ "--i": i } as React.CSSProperties}
               >
                 <span>{n.label}</span>
                 <span className="menu-mobile__num">{String(i + 1).padStart(2, "0")}</span>

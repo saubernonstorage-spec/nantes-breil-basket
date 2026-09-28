@@ -44,7 +44,7 @@ export default function Matchs() {
       >
         <div className="rangee rangee--10" style={{ marginTop: 28 }}>
           <a href="#resultats" className="btn btn--l btn--petit btn--orange">
-            Résultats ↓
+            Résultats <span className="fleche fleche--bas" aria-hidden="true">↓</span>
           </a>
         </div>
       </EntetePage>

@@ -4687,15 +4687,50 @@ a.badge-label:hover {
 }
 
 .faq__signe {
+  position: relative;
   flex: none;
   width: 32px;
   height: 32px;
   border-radius: 50%;
   background: var(--creme);
+  transition: background-color 0.15s;
+}
+
+/* « + » dessiné : la barre verticale pivote à l'horizontale quand la réponse est ouverte (« − »). */
+.faq__signe::before,
+.faq__signe::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 2px;
+  margin: -1px 0 0 -6px;
+  border-radius: 2px;
+  background: var(--bleu);
+}
+
+.faq__signe::after {
+  rotate: 90deg;
+}
+
+.faq__question[aria-expanded="true"] .faq__signe::after {
+  rotate: 0deg;
+}
+
+/* La réponse reste dans la page (hauteur animable) ; fermée, elle est repliée et inerte. */
+.faq__reponse {
   display: grid;
-  place-items: center;
-  font-size: 18px;
-  color: var(--bleu);
+  grid-template-rows: 1fr;
+}
+
+.faq__reponse[data-ouvert="false"] {
+  grid-template-rows: 0fr;
+}
+
+.faq__reponse > div {
+  min-height: 0;
+  overflow: hidden;
 }
 
 .faq__reponse p {
@@ -5227,15 +5262,22 @@ a.badge-label:hover {
   }
 }
 
+
 /* ==========================================================================
-   Animations
-   Tout ce qui bouge est réuni ici. Rien ne s'anime si le visiteur a demandé
-   moins d'animations. Les apparitions et la parallaxe reposent sur les
-   animations liées au défilement (animation-timeline), sans JavaScript : un
-   navigateur qui ne les gère pas affiche la page normalement, sans mouvement.
-   Les animations utilisent `translate` / `scale` ; `transform` est réservé
-   au survol et au placement des motifs de terrain.
+   Animations et micro-interactions
+   Règle : chaque mouvement a une raison d'être — accompagner l'arrivée d'un
+   contenu, signaler ce qui est cliquable, confirmer une action, montrer que
+   quelque chose a changé. Courts (150 à 700 ms), de faible amplitude, jamais
+   en boucle. Tout s'arrête si le visiteur a demandé moins d'animations
+   (réglage « Réduire les animations » de son appareil).
+   Les animations utilisent `translate` / `scale` / `opacity` ; `transform` est
+   réservé au survol et au placement des motifs de terrain.
    ========================================================================== */
+
+:root {
+  /* Décélération douce : le mouvement part vite et se pose. */
+  --ease-pose: cubic-bezier(0.22, 1, 0.36, 1);
+}
 
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -5246,6 +5288,7 @@ a.badge-label:hover {
   *::before,
   *::after {
     transition: none !important;
+    animation: none !important;
   }
 
   .carte-lien:hover {
@@ -5254,61 +5297,125 @@ a.badge-label:hover {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .btn:active,
-  .choix:active,
-  .choix-weekend__semaine:active {
-    scale: 0.98;
+  @keyframes nbbPose {
+    from {
+      opacity: 0;
+      translate: 0 12px;
+    }
   }
 
   @keyframes nbbApparition {
     from {
       opacity: 0;
-      translate: 0 16px;
-    }
-    to {
-      opacity: 1;
-      translate: none;
+      translate: 0 18px;
     }
   }
 
-  @supports (animation-timeline: view()) {
-    .acces,
-    .carte-ecole,
-    .carte-arbitrage,
-    .portrait,
-    .appel,
-    .carte-categorie,
-    .agenda__item,
-    .frise li,
-    .valeur,
-    .carte,
-    .commission-recrute,
-    .commission,
-    .comite li,
-    .samedi,
-    .cotisation-mini,
-    .parcours__etape,
-    .equipe,
-    .creneau,
-    .carte-stage,
-    .tarifs-stage,
-    .journee-type,
-    .tarif,
-    .telechargements,
-    .album,
-    .gym,
-    .faq__item,
-    .partenaire,
-    .formule,
-    .offre,
-    .appel-orange,
-    .bandeau-orange,
-    .mentions__bloc {
-      animation: nbbApparition linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 260px;
+  @keyframes nbbFondu {
+    from {
+      opacity: 0;
     }
   }
+
+  @keyframes nbbRafraichi {
+    from {
+      opacity: 0.2;
+      translate: 0 4px;
+    }
+  }
+
+  @keyframes nbbFenetre {
+    from {
+      opacity: 0;
+      scale: 0.97;
+      translate: 0 8px;
+    }
+  }
+
+  @keyframes nbbMonte {
+    from {
+      opacity: 0;
+      translate: 0 16px;
+    }
+  }
+
+  @keyframes nbbBattement {
+    40% {
+      scale: 1.08;
+    }
+  }
+
+  @keyframes nbbCoche {
+    from {
+      opacity: 0;
+      scale: 0.5;
+    }
+  }
+
+  /* ---------- 1. Arrivée sur une page ----------
+     Fil d'Ariane, titre, chapeau puis boutons se posent l'un après l'autre :
+     l'œil suit l'ordre de lecture. Rejoué à chaque changement de page. */
+
+  .hero__texte > *,
+  .entete-page__inner:not(.ecoles-hero) > *,
+  .ecoles-hero__texte > * {
+    animation: nbbPose 0.55s var(--ease-pose) both;
+  }
+
+  .hero__texte > :nth-child(2),
+  .entete-page__inner:not(.ecoles-hero) > :nth-child(2),
+  .ecoles-hero__texte > :nth-child(2) {
+    animation-delay: 50ms;
+  }
+
+  .hero__texte > :nth-child(3),
+  .entete-page__inner:not(.ecoles-hero) > :nth-child(3),
+  .ecoles-hero__texte > :nth-child(3) {
+    animation-delay: 100ms;
+  }
+
+  .hero__texte > :nth-child(n + 4),
+  .entete-page__inner:not(.ecoles-hero) > :nth-child(n + 4),
+  .ecoles-hero__texte > :nth-child(n + 4) {
+    animation-delay: 150ms;
+  }
+
+  .ecoles-hero__photo {
+    animation: nbbFondu 0.7s ease-out 0.1s both;
+  }
+
+  /* ---------- 2. Apparition au défilement ----------
+     Une seule fois, quand le bloc entre à l'écran (components/Apparitions.tsx) ;
+     les cartes d'une même rangée arrivent avec un léger décalage. Réservé au
+     contenu à découvrir : les listes que l'on consulte (planning, matchs, FAQ,
+     formulaires) s'affichent sans attendre. */
+
+  .apparitions [data-apparition="attente"] {
+    opacity: 0;
+  }
+
+  [data-apparition="joue"] {
+    animation: nbbApparition 0.65s var(--ease-pose) var(--apparition-delai, 0ms) both;
+  }
+
+  /* ---------- 3. En-tête : il se détache du contenu dès que la page défile ---------- */
+
+  @keyframes nbbEntete {
+    to {
+      background-color: rgba(10, 23, 51, 0.94);
+      box-shadow: 0 10px 28px rgba(10, 23, 51, 0.22);
+    }
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .entete-site .verre {
+      animation: nbbEntete linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 160px;
+    }
+  }
+
+  /* ---------- 4. Photos : légère parallaxe sur les grands visuels ---------- */
 
   @keyframes nbbParallaxe {
     from {
@@ -5338,5 +5445,177 @@ a.badge-label:hover {
       animation-timeline: --cadre;
       animation-range: cover 0% cover 100%;
     }
+  }
+
+  /* ---------- 5. Survol : ce qui est cliquable répond ---------- */
+
+  /* Cartes-liens : la photo « respire » lentement (en plus du léger soulèvement de la maquette). */
+  .carte-ecole .photo,
+  .carte-categorie .photo,
+  .equipe__zoom .photo {
+    transition: transform 0.8s var(--ease-pose);
+  }
+
+  .carte-ecole:hover .photo,
+  .carte-categorie:hover .photo {
+    transform: scale(1.04);
+  }
+
+  /* Photo d'équipe agrandissable. */
+  .equipe__zoom:hover .photo,
+  .equipe__zoom:focus-visible .photo {
+    transform: scale(1.03);
+  }
+
+  /* Flèches : elles avancent d'un cran dans la direction annoncée. */
+  .fleche {
+    display: inline-block;
+    transition: translate 0.25s var(--ease-pose);
+  }
+
+  :is(a, button):is(:hover, :focus-visible) .fleche--bas {
+    translate: 0 2px;
+  }
+
+  :is(a, button):is(:hover, :focus-visible) .fleche--diag {
+    translate: 2px -2px;
+  }
+
+  :is(a, button):is(:hover, :focus-visible) .fleche--gauche {
+    translate: -3px 0;
+  }
+
+  /* Liens dans le texte : le soulignement s'épaissit. */
+  main :is(p, li, dd) a:not(.btn) {
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: color 0.15s, text-decoration-thickness 0.15s;
+  }
+
+  main :is(p, li, dd) a:not(.btn):hover {
+    text-decoration-thickness: 2px;
+  }
+
+  /* Boutons : couleur en douceur, léger enfoncement au clic. */
+  .btn {
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, scale 0.12s;
+  }
+
+  .btn:active,
+  .choix:active,
+  .option:active,
+  .puce-choix:active,
+  .choix-weekend__semaine:active,
+  .choix-weekend__fleche:active:not(:disabled) {
+    scale: 0.97;
+  }
+
+  /* Sélections (jours de stage, options, semaines, onglets, champs) : l'état change sans à-coup. */
+  .choix,
+  .option,
+  .puce-choix,
+  .semaine-stage,
+  .choix-weekend__semaine,
+  .choix-weekend__fleche,
+  .onglets__lien,
+  .saisie,
+  .nav-principale__lien,
+  .pied__col a,
+  .pied__partenaire,
+  .fil a,
+  .creneau__gymnase strong,
+  .lien-orange,
+  .tableau-matchs tbody tr {
+    transition: background-color 0.15s, border-color 0.15s, color 0.15s, scale 0.12s;
+  }
+
+  /* FAQ : la question survolée s'éclaire, la réponse se déplie, le « + » devient « − ». */
+  .faq__question:hover .faq__signe {
+    background: var(--bleu-pale);
+  }
+
+  .faq__signe::before,
+  .faq__signe::after {
+    transition: rotate 0.3s var(--ease-pose);
+  }
+
+  .faq__reponse {
+    transition: grid-template-rows 0.3s var(--ease-pose);
+  }
+
+  .faq__reponse > div > p {
+    transition: opacity 0.25s;
+  }
+
+  .faq__reponse[data-ouvert="false"] > div > p {
+    opacity: 0;
+  }
+
+  /* ---------- 6. Contenu mis à jour ---------- */
+
+  /* Planning filtré, autre week-end ou autre équipe : fondu très court de la liste. */
+  .rafraichi {
+    animation: nbbRafraichi 0.3s ease-out;
+  }
+
+  /* Montant du stage : il « bat » quand il change. */
+  .total__valeur--maj {
+    animation: nbbBattement 0.35s ease-out;
+    transform-origin: right center;
+  }
+
+  /* Barre de progression de la préinscription. */
+  .assistant__barre div {
+    transition: width 0.4s var(--ease-pose);
+  }
+
+  /* Messages d'erreur et confirmation d'envoi. */
+  .erreur:not(:empty),
+  .erreur-globale:not(:empty) {
+    animation: nbbFondu 0.2s ease-out;
+  }
+
+  .confirmation {
+    animation: nbbPose 0.45s var(--ease-pose) both;
+  }
+
+  .confirmation__coche {
+    animation: nbbCoche 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+  }
+
+  /* ---------- 7. Fenêtres, menu et bandeau ---------- */
+
+  .fenetre[open] {
+    animation: nbbFenetre 0.25s var(--ease-pose);
+  }
+
+  .fenetre[open]::backdrop,
+  .fenetre-zoom[open],
+  .fenetre-album[open],
+  .menu-mobile[open] {
+    animation: nbbFondu 0.2s ease-out;
+  }
+
+  .fenetre-zoom[open] .fenetre-zoom__cadre {
+    animation: nbbFenetre 0.3s var(--ease-pose);
+  }
+
+  /* Liens du menu mobile : en cascade, de haut en bas. */
+  .menu-mobile[open] .menu-mobile__nav a {
+    animation: nbbPose 0.4s var(--ease-pose) both;
+    animation-delay: calc(var(--i, 0) * 22ms);
+  }
+
+  /* Bandeau cookies : il monte après l'arrivée de la page, sans la masquer brutalement. */
+  .cookies {
+    animation: nbbMonte 0.45s var(--ease-pose) 0.4s both;
+  }
+}
+
+/* Impression : tout est visible, rien ne bouge. */
+@media print {
+  [data-apparition] {
+    opacity: 1 !important;
+    animation: none !important;
   }
 }

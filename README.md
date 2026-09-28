@@ -125,7 +125,12 @@ Pour brancher `nantes-breil-basket.fr` : réglages du projet → Domain manageme
   si l'utilisateur le demande (`prefers-reduced-motion`).
 - **Référencement local** : titres et descriptions par page, adresses canoniques, `sitemap.xml`,
   `robots.txt`, données structurées `SportsClub` (schema.org), image de partage, manifeste.
-- **Animations** : apparition des blocs au défilement et légère parallaxe des photos, en CSS pur
-  (`animation-timeline`), regroupées à la fin de `app/globals.css`.
+- **Animations** : discrètes et utiles — en-tête de page qui se pose dans l'ordre de lecture, blocs
+  éditoriaux qui apparaissent une fois à l'entrée dans l'écran (légère cascade dans une rangée),
+  photos qui « respirent » au survol des cartes cliquables, flèches qui avancent d'un cran, FAQ qui se
+  déplie, fondu court quand un filtre met à jour une liste, montant du stage qui signale son changement,
+  fenêtres et bandeau cookies qui entrent en douceur, en-tête qui se détache au défilement. Tout est
+  regroupé à la fin de `app/globals.css` (+ `components/Apparitions.tsx`) et désactivé si le visiteur a
+  demandé moins d'animations ; sans JavaScript, rien n'est masqué.
 - **Robustesse** : filtres du planning gardés dans l'adresse (liens partageables) ; sans
   JavaScript, le planning complet reste affiché.
