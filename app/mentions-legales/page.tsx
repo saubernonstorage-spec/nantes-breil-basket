@@ -1,91 +1,102 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { PageHero } from "@/components/PageHero";
 import { CLUB, MENTIONS } from "@/data/nbb";
-import { metaPage } from "@/lib/seo";
+import { BoutonCookies } from "@/components/Cookies";
+import { FilAriane } from "@/components/Page";
 
-export const metadata = metaPage({
-  titre: "Mentions légales et confidentialité",
-  description:
-    "Mentions légales, politique de confidentialité, cookies et droit à l'image du site du Nantes Breil Basket.",
-  chemin: "/mentions-legales",
-});
+export const metadata: Metadata = {
+  title: "Mentions légales et confidentialité",
+  description: "Mentions légales, politique de confidentialité, cookies et droit à l'image du site du Nantes Breil Basket.",
+  alternates: { canonical: "/mentions-legales" },
+};
 
-export default function PageMentions() {
+export default function Mentions() {
   return (
-    <div className="page">
-      <PageHero kicker="Informations légales" title="Mentions légales & confidentialité" />
-
-      <section className="section legal">
-        <h2 id="editeur" className="anchor-target">
-          Éditeur du site
-        </h2>
-        <p>
-          {CLUB.nom}, association loi 1901. Siège : {MENTIONS.siege}. Numéro RNA : {MENTIONS.rna}. SIRET :{" "}
-          {MENTIONS.siret}. Responsable de la publication : {MENTIONS.responsablePublication}. Contact :{" "}
-          {MENTIONS.contact}.
-        </p>
-
-        <h2 id="hebergement" className="anchor-target">
-          Hébergement
-        </h2>
-        <p>{MENTIONS.hebergeur}</p>
-
-        <h2 id="donnees" className="anchor-target">
-          Données personnelles
-        </h2>
-        <p>
-          Les informations envoyées via le formulaire de contact (nom, e-mail, message) servent uniquement à répondre à
-          votre demande. Celles du formulaire d&apos;inscription aux stages (identité et année de naissance de
-          l&apos;enfant, coordonnées du parent, informations utiles à sa sécurité) servent uniquement à organiser le
-          stage. Elles sont transmises par e-mail aux dirigeants du club, ne sont ni revendues ni utilisées à des fins
-          publicitaires, et sont conservées {MENTIONS.conservationMois} mois maximum.
-        </p>
-        <p>
-          Vous pouvez demander l&apos;accès, la rectification ou la suppression de vos données à tout moment en écrivant à{" "}
-          {MENTIONS.contact}. Réclamation possible auprès de la{" "}
-          <a href="https://www.cnil.fr/fr/plaintes" target="_blank" rel="noopener">
-            CNIL<span className="visually-hidden"> (nouvel onglet)</span>
-          </a>
-          .
-        </p>
-
-        <h2 id="cookies" className="anchor-target">
-          Cookies
-        </h2>
-        <p>
-          Le site ne dépose aucun cookie publicitaire et n&apos;utilise pas d&apos;outil de mesure d&apos;audience.
-          Seuls sont utilisés : l&apos;enregistrement de votre choix sur les cookies (dans votre navigateur, pendant 6
-          mois), et les contenus intégrés (résultats sportifs Score&apos;n&apos;co) qui ne se chargent qu&apos;après
-          votre accord via le bandeau. La carte des gymnases provient d&apos;OpenStreetMap, service sans cookie
-          publicitaire. Vous pouvez modifier votre choix à tout moment avec le lien « Gérer les cookies » en bas de
-          chaque page.
-        </p>
-
-        <h2 id="droit-image" className="anchor-target">
-          Droit à l&apos;image
-        </h2>
-        <p>
-          Aucune photo de mineur n&apos;est publiée sans autorisation écrite des représentants légaux, recueillie à
-          l&apos;inscription. Les photos sont retirées sur simple demande, sans justification à fournir :{" "}
-          <Link href="/contact?sujet=image">nous écrire</Link>.
-        </p>
-
-        <h2 id="propriete" className="anchor-target">
-          Propriété intellectuelle
-        </h2>
-        <p>
-          Le logo, les textes et les photos du site appartiennent au {CLUB.nom} ou à leurs auteurs. Toute réutilisation
-          nécessite une autorisation préalable.
-        </p>
-
-        <h2 id="accessibilite" className="anchor-target">
-          Accessibilité
-        </h2>
-        <p>
-          Le site vise un contraste suffisant, une navigation complète au clavier et des textes alternatifs sur les
-          images. Un problème d&apos;accès ? Signalez-le, nous corrigeons : <Link href="/contact">nous contacter</Link>.
-        </p>
+    <>
+      <section className="entete-page" style={{ paddingBottom: 56 }}>
+        <div className="entete-page__inner" style={{ maxWidth: 900 }}>
+          <FilAriane page="Informations légales" />
+          <h1 className="titre-page" style={{ margin: 0, fontSize: "clamp(46px, 6.4vw, 92px)", lineHeight: 0.88 }}>
+            Mentions légales <span className="accent">&amp; confidentialité</span>
+          </h1>
+        </div>
       </section>
-    </div>
+      <div className="mentions">
+        <section className="mentions__bloc">
+          <h2>Éditeur du site</h2>
+          <p>
+            {CLUB.nom}, association loi 1901. Siège :
+            {CLUB.adresse.split("\n").map((l) => (
+              <span key={l}>
+                <br />
+                {l}
+              </span>
+            ))}
+            <br />
+            Numéro RNA : {MENTIONS.rna}. SIRET : {MENTIONS.siret}. Responsable de la publication :{" "}
+            {MENTIONS.responsablePublication}. Contact : <a href={`mailto:${CLUB.email}`}>{CLUB.email}</a>.
+          </p>
+        </section>
+        <section className="mentions__bloc">
+          <h2>Hébergement</h2>
+          <p>{MENTIONS.hebergeur}</p>
+        </section>
+        <section id="confidentialite" className="mentions__bloc">
+          <h2>Données personnelles</h2>
+          <p>
+            Le club collecte uniquement les données nécessaires : formulaires d'inscription, de stage et de contact.
+            Finalités : gestion des adhésions et de la licence FFBB, organisation des stages, réponse à vos messages. Base
+            légale : l'exécution de l'adhésion et votre consentement.
+          </p>
+          <p>
+            Les demandes envoyées depuis le site sont conservées dans un espace réservé aux dirigeants du club, protégé
+            par mot de passe et hébergé par Netlify dans l'Union européenne (Francfort) ; elles peuvent aussi être
+            transmises par e-mail à la messagerie du club.
+          </p>
+          <p>
+            Destinataires : les membres du bureau et des commissions concernées, et la FFBB pour la licence. Les données
+            ne sont ni vendues ni utilisées à des fins publicitaires. Durée de conservation : la saison en cours plus{" "}
+            {MENTIONS.conservationAdhesions} pour les adhésions, {MENTIONS.conservationMessages} pour les messages.
+          </p>
+          <p>
+            Vous pouvez demander l'accès, la rectification ou la suppression de vos données à{" "}
+            <a href={`mailto:${CLUB.email}`}>{CLUB.email}</a>. Réclamation possible auprès de la CNIL (cnil.fr).
+          </p>
+        </section>
+        <section id="cookies" className="mentions__bloc">
+          <h2>Cookies</h2>
+          <p>
+            Aucun cookie publicitaire ni outil de mesure d'audience. Sont utilisés : un stockage technique qui mémorise
+            vos choix (6 mois, dans votre navigateur), un cookie de session pour l'Espace dirigeants (réservé au bureau
+            du club), et les contenus intégrés — carte Google Maps, widget des résultats de matchs — qui ne se chargent
+            qu'après votre accord. Refuser ne limite en rien l'accès aux informations du site.
+          </p>
+          <BoutonCookies className="btn btn--bleu">Modifier mes choix de cookies</BoutonCookies>
+        </section>
+        <section className="mentions__bloc mentions__bloc--bleu">
+          <h2>Droit à l'image</h2>
+          <p>
+            Aucune photo de mineur n'est publiée sans autorisation écrite des représentants légaux, recueillie à
+            l'inscription (oui ou non, modifiable à tout moment). Les photos sont retirées sur simple demande, sans
+            justification : <Link href="/contact?sujet=image">nous écrire</Link>.
+          </p>
+        </section>
+        <section className="mentions__bloc">
+          <h2>Propriété intellectuelle</h2>
+          <p>
+            Le logo, les textes et les photos appartiennent au Nantes Breil Basket ou à leurs auteurs (dont EMMATITIA
+            pour les photos crédités). Toute réutilisation nécessite une autorisation préalable.
+          </p>
+        </section>
+        <section className="mentions__bloc">
+          <h2>Accessibilité</h2>
+          <p>
+            Le site vise des contrastes suffisants, une navigation complète au clavier (lien « Aller au contenu », focus
+            visible) et des textes alternatifs sur les images. Un problème ? <Link href="/contact">Signalez-le</Link>,
+            nous corrigeons.
+          </p>
+        </section>
+      </div>
+    </>
   );
 }

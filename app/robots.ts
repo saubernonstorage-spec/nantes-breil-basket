@@ -3,7 +3,7 @@ import { CLUB } from "@/data/nbb";
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: { userAgent: "*", allow: "/" },
-    sitemap: `${CLUB.siteUrl.replace(/\/$/, "")}/sitemap.xml`,
+    rules: { userAgent: "*", allow: "/", disallow: "/espace-dirigeants" },
+    sitemap: `${CLUB.siteUrl}/sitemap.xml`,
   };
 }

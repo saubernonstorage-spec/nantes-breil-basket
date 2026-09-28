@@ -1,194 +1,195 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { PageHero } from "@/components/PageHero";
+import { BUREAU, CLUB, COMITE, COMMISSIONS, ENGAGEMENTS, HISTOIRE, PHOTOS, PROJET, STATS, VALEURS } from "@/data/nbb";
+import { enLettres, majuscule } from "@/lib/utils";
+import { EntetePage } from "@/components/Page";
 import { Photo } from "@/components/Photo";
-import { BUREAU, COMMISSIONS, ENCADREMENT, HISTOIRE, PHOTOS, PROJET, STATS, VALEURS } from "@/data/nbb";
-import { metaPage } from "@/lib/seo";
-import { grille } from "@/lib/style";
-import { enLettres, estACompleter, majuscule } from "@/lib/utils";
 
-export const metadata = metaPage({
-  titre: "Le club",
+export const metadata: Metadata = {
+  title: "Le club — histoire, valeurs, bureau et bénévoles",
   description:
-    "Histoire, valeurs et projet associatif du Nantes Breil Basket, club de basket du quartier Breil / Hauts-Pavés à Nantes : entraîneurs, bureau et commissions de bénévoles.",
-  chemin: "/club",
-});
+    "Le Nantes Breil Basket, club de basket nantais depuis 1932 : histoire, valeurs, projet associatif, bureau, comité directeur et commissions de bénévoles.",
+  alternates: { canonical: "/club" },
+};
 
-export default function PageClub() {
-  const bureauIncomplet = BUREAU.some((b) => estACompleter(b.nom));
+const ORDRE_BUREAU = ["Président", "Secrétaire", "Trésorier", "Vice-président", "Secrétaire adjoint", "Trésorier adjoint"];
+
+export default function Club() {
+  const bureau = [...BUREAU].sort((a, b) => {
+    const ia = ORDRE_BUREAU.indexOf(a.role);
+    const ib = ORDRE_BUREAU.indexOf(b.role);
+    return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
+  });
+  const recrutent = COMMISSIONS.filter((c) => c.recrute);
+  const autres = COMMISSIONS.filter((c) => !c.recrute);
 
   return (
-    <div className="page">
-      <PageHero
-        kicker="Le club"
-        title={
+    <>
+      <EntetePage
+        fil="Le club"
+        style={{ paddingBottom: 0 }}
+        largeurTitre={1000}
+        decor={
+          <div aria-hidden="true" className="annee-geante">
+            {CLUB.fondation}
+          </div>
+        }
+        titre={
           <>
-            Un club de quartier,
-            <br />
-            une ambition de club formateur
+            Un club de quartier, <span className="accent">une ambition de club formateur</span>
           </>
         }
       >
-        <p className="lead">
-          Association loi 1901 installée entre le Breil et les Hauts-Pavés, le Nantes Breil Basket fait jouer{" "}
-          {STATS.adherents} adhérents dans {STATS.equipes} équipes. Ici, on vient apprendre le basket — et on reste
-          pour l&apos;ambiance.
+        <p className="chapo" style={{ marginBottom: 48 }}>
+          Association loi 1901 installée quartier des Hauts-Pavés, le Nantes Breil Basket fait jouer {STATS.adherents}{" "}
+          adhérents dans {STATS.equipes} équipes. Ici, on vient apprendre le basket — et on reste pour l'ambiance.
         </p>
-      </PageHero>
+        <div className="club-photo">
+          <Photo src={PHOTOS.club.src} alt={PHOTOS.club.alt} sizes="(max-width: 1360px) 100vw, 1300px" prioritaire />
+        </div>
+      </EntetePage>
 
-      <section className="section section--club" aria-labelledby="histoire">
-        <h2 id="histoire" className="title-section" style={{ marginBottom: 24 }}>
-          Notre histoire
+      <section aria-labelledby="histoire-titre" className="section" style={{ paddingTop: 72, paddingBottom: 40 }}>
+        <div className="surtitre">Notre histoire</div>
+        <h2 id="histoire-titre" className="titre-section" style={{ marginBottom: 28 }}>
+          Presque un siècle de basket
         </h2>
-        <ol className="rows">
-          {HISTOIRE.map((h, i) => (
-            <li key={i} className="timeline-row">
-              <p className="timeline-row__year">{h.annee}</p>
-              <p className="text-soft pretty">{h.texte}</p>
+        <ol className="frise">
+          {HISTOIRE.map((h) => (
+            <li key={h.annee}>
+              <div className="frise__annee">{h.annee}</div>
+              <h3>{h.titre}</h3>
+              <p>{h.texte}</p>
             </li>
           ))}
         </ol>
       </section>
 
-      <section className="section section--club" aria-labelledby="valeurs">
-        <h2 id="valeurs" className="title-section" style={{ marginBottom: 24 }}>
-          Nos valeurs
+      <section aria-labelledby="valeurs-titre" className="section" style={{ paddingTop: 40, paddingBottom: 40 }}>
+        <div className="surtitre">Valeurs &amp; projet associatif</div>
+        <h2 id="valeurs-titre" className="titre-section" style={{ marginBottom: 24 }}>
+          Ce qui nous fait avancer
         </h2>
-        <div className="grid" style={grille(250)}>
+        <div className="grille" style={{ "--min": "280px" } as React.CSSProperties}>
           {VALEURS.map((v) => (
-            <div key={v.titre} className="card">
-              <h3 className="title-card" style={{ marginBottom: 10, lineHeight: 1.15 }}>
-                {v.titre}
-              </h3>
-              <p className="text-muted text-md">{v.texte}</p>
+            <div key={v.titre} className="valeur">
+              <div>
+                <h3>{v.titre}</h3>
+                <p>{v.texte}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="grille" style={{ "--min": "280px", marginTop: 12 } as React.CSSProperties}>
+          {PROJET.map((p) => (
+            <div key={p.titre} className="carte" style={{ borderRadius: 26 }}>
+              <div className="surtitre">{p.titre}</div>
+              <p className="texte-carte">{p.texte}</p>
             </div>
           ))}
         </div>
       </section>
 
-      <section id="projet" className="section section--club anchor-target" aria-labelledby="projet-titre">
-        <div className="grid" style={grille(280, { gap: "clamp(24px, 4vw, 44px)", align: "center" })}>
-          <div>
-            <h2 id="projet-titre" className="title-section" style={{ marginBottom: 16 }}>
-              Le projet associatif
-            </h2>
-            <p className="text-soft pretty">{PROJET.texte}</p>
-            <div className="stack" style={{ marginTop: 22, gap: 10 }}>
-              <div className="label-box label-box--accent">
-                <span className="label-box__icon" aria-hidden="true">
-                  ★★★
-                </span>
-                <p>
-                  <strong>École de Mini-Basket 3 étoiles</strong> — label FFBB pour la qualité de l&apos;accueil des
-                  plus jeunes.
-                </p>
-              </div>
-              <div className="label-box">
-                <span className="label-box__icon" aria-hidden="true">
-                  ◆
-                </span>
-                <p>
-                  <strong>Label Citoyen</strong> — {PROJET.labelCitoyen}
-                </p>
-              </div>
-            </div>
-          </div>
-          <Photo photo={PHOTOS.club.photo} alt={PHOTOS.club.alt} className="club-photo" />
-        </div>
-      </section>
-
-      <section className="section section--club" aria-labelledby="encadrement">
-        <h2 id="encadrement" className="title-section" style={{ marginBottom: 10 }}>
-          L&apos;équipe d&apos;encadrement
+      <section aria-labelledby="charte-titre" className="section" style={{ paddingTop: 40, paddingBottom: 40 }}>
+        <div className="surtitre">La charte</div>
+        <h2 id="charte-titre" className="titre-section" style={{ marginBottom: 24 }}>
+          Nos engagements, les vôtres
         </h2>
-        <p className="intro">Les entraîneurs et entraîneuses qui animent les créneaux de la semaine.</p>
-        <div className="grid" style={grille(280)}>
-          {ENCADREMENT.map((c) => (
-            <div key={c.prenom} className="card person">
-              <Photo photo={c.photo} alt={`Portrait de ${c.prenom}`} className="portrait" sizes="88px" />
-              <span>
-                <span className="person__name">{c.prenom}</span>
-                <span className="person__meta">
-                  <span className="badge">{c.role}</span>
-                  <span>Au club depuis {c.depuis}</span>
-                </span>
-                <span className="person__text">{c.presentation}</span>
-              </span>
+        <div className="grille" style={{ "--min": "340px" } as React.CSSProperties}>
+          {ENGAGEMENTS.map((g) => (
+            <div key={g.titre} className="carte" style={{ padding: 26, borderRadius: 26 }}>
+              <h3 className="titre-bloc" style={{ marginBottom: 14 }}>
+                {g.titre}
+              </h3>
+              <ul className="liste-traits">
+                {g.points.map((p) => (
+                  <li key={p}>{p}</li>
+                ))}
+              </ul>
             </div>
           ))}
         </div>
       </section>
 
-      <section id="bureau" className="section section--club anchor-target" aria-labelledby="bureau-titre">
-        <h2 id="bureau-titre" className="title-section" style={{ marginBottom: 10 }}>
+      <section id="bureau" aria-labelledby="bureau-titre" className="section" style={{ paddingBottom: 40 }}>
+        <div className="surtitre">Organigramme</div>
+        <h2 id="bureau-titre" className="titre-section" style={{ marginBottom: 24 }}>
           Le bureau
         </h2>
-        <p className="intro">
-          {bureauIncomplet
-            ? "Les fonctions sont prêtes : ajoutez les prénoms et noms des élus dans le fichier de contenu."
-            : "Les élus bénévoles qui pilotent l'association."}
-        </p>
-        <div className="grid" style={grille(380)}>
-          {BUREAU.map((b) => (
-            <div key={b.role} className="card person">
-              <Photo
-                photo={b.photo}
-                alt={estACompleter(b.nom) ? "" : `Portrait de ${b.nom}`}
-                className="portrait"
-                sizes="88px"
-              />
-              <span>
-                <span className="person__name">{b.nom}</span>
-                <span className="person__meta">
-                  <span className="badge">{b.role}</span>
-                </span>
-              </span>
-            </div>
+        <div className="grille-bureau">
+          {bureau.map((b) => (
+            <article key={b.nom} className="portrait">
+              <div className="portrait__rond">
+                <Photo src={b.photo} alt={`Portrait de ${b.nom}, ${b.role}`} sizes="132px" vide={{ initiales: b.nom }} />
+              </div>
+              <div className="portrait__corps">
+                <span className="etiquette">{b.role}</span>
+                <h3 className="portrait__nom">{b.nom}</h3>
+                <p className="portrait__detail">{b.detail}</p>
+              </div>
+            </article>
           ))}
         </div>
-      </section>
-
-      <section className="section section--club" aria-labelledby="commissions">
-        <h2 id="commissions" className="title-section" style={{ marginBottom: 10 }}>
-          Les commissions
-        </h2>
-        <p className="intro">
-          {COMMISSIONS.length > 1 ? `${majuscule(enLettres(COMMISSIONS.length))} commissions` : "Une commission"} de
-          bénévoles se partagent le travail. Chacune cherche des bras : dites-nous celle qui vous tente.
-        </p>
-        <div className="grid" style={grille(300, { gap: "14px" })}>
-          {COMMISSIONS.map((c) => (
-            <div key={c.nom} className="card stack" style={{ borderRadius: 18, padding: 22, gap: 10, alignContent: "start" }}>
-              <h3 className="title-card">{c.nom}</h3>
-              <p className="text-soft text-sm pretty">{c.role}</p>
-              {c.referent && (
-                <p className="text-muted text-sm">
-                  Référent : <strong style={{ color: "#fff" }}>{c.referent}</strong>
-                </p>
-              )}
-            </div>
+        <h3 className="titre-bloc" style={{ fontSize: 32, margin: "36px 0 14px" }}>
+          Comité directeur &amp; bénévoles
+        </h3>
+        <ul className="comite">
+          {COMITE.map((c) => (
+            <li key={c.nom}>
+              <strong>{c.nom}</strong>
+              <span>{c.detail}</span>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
-      <section className="section section--club">
-        <div className="cta-band">
-          <div>
-            <h2 className="title-section" style={{ fontSize: "clamp(24px, 3.6vw, 40px)" }}>
-              Donner un coup de main ?
-            </h2>
-            <p className="text-soft" style={{ marginTop: 14, maxWidth: "34em" }}>
-              Table de marque, arbitrage, transports, bar, photos, communication : deux heures de temps en temps, et
-              le club tourne. Aucune compétence requise, on vous forme.
+      <section id="commissions" aria-labelledby="comm-titre" className="bande-sombre" style={{ marginTop: 40 }}>
+        <div className="section" style={{ paddingTop: 80, paddingBottom: 80 }}>
+          <div className="tete-section" style={{ marginBottom: 28 }}>
+            <div>
+              <div className="surtitre">Les commissions</div>
+              <h2 id="comm-titre" className="titre-section" style={{ fontSize: "clamp(40px, 5vw, 72px)", maxWidth: 780 }}>
+                Parents, le club a besoin de <span className="accent">vous</span>
+              </h2>
+            </div>
+            <p className="texte-clair" style={{ maxWidth: 420, margin: 0 }}>
+              {majuscule(enLettres(recrutent.length, true))} commission{recrutent.length > 1 ? "s cherchent" : " cherche"}{" "}
+              des bras en ce moment. Pas besoin d'expérience, ni de beaucoup de temps : dites-nous ce qui vous tente.
             </p>
           </div>
-          <div className="cta-band__actions">
-            <Link href="/contact?sujet=benevolat" className="btn btn--primary">
-              Devenir bénévole
+          <div className="grille" style={{ "--min": "280px", gap: 14 } as React.CSSProperties}>
+            {recrutent.map((c) => (
+              <Link
+                key={c.nom}
+                href={`/contact?sujet=benevolat&commission=${encodeURIComponent(c.nom)}`}
+                className="commission-recrute carte-lien"
+              >
+                <span className="commission-recrute__badge">On recrute</span>
+                <h3>{c.nom}</h3>
+                <p>{c.role}</p>
+                <span className="commission-recrute__temps">{c.temps}</span>
+              </Link>
+            ))}
+          </div>
+          <div className="bandeau-orange">
+            <p>Table de marque, arbitrage, bar : une formation courte est proposée.</p>
+            <Link href="/contact?sujet=benevolat" className="btn btn--l btn--nuit">
+              Je deviens bénévole
             </Link>
+          </div>
+          <h3 className="titre-bloc" style={{ fontSize: 32, margin: "56px 0 16px" }}>
+            Les autres commissions
+          </h3>
+          <div className="grille grille--remplir" style={{ "--min": "260px", gap: 10 } as React.CSSProperties}>
+            {autres.map((c) => (
+              <div key={c.nom} className="commission">
+                <h4>{c.nom}</h4>
+                <p>{c.role}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
-    </div>
+    </>
   );
 }
-

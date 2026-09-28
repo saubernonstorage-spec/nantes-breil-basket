@@ -1,29 +1,27 @@
 import Link from "next/link";
-
-export const metadata = { title: "Page introuvable" };
+import { Terrain } from "@/components/Terrain";
 
 export default function PageIntrouvable() {
   return (
-    <div className="page not-found">
-      <div>
-        <p className="not-found__code" aria-hidden="true">
-          404
-        </p>
-        <h1 className="title-page" style={{ fontSize: "clamp(28px, 4vw, 44px)", marginTop: 12 }}>
-          Air ball : page introuvable
+    <section className="entete-page introuvable">
+      <Terrain motif="raquette" style={{ top: 0, left: "50%", width: "min(90%, 640px)", transform: "translateX(-50%)" }} />
+      <div className="entete-page__inner" style={{ textAlign: "center" }}>
+        <div className="introuvable__code">404</div>
+        <h1 className="titre-page" style={{ fontSize: "clamp(40px, 6vw, 72px)" }}>
+          Hors du <span className="accent">terrain</span>
         </h1>
-        <p className="lead" style={{ marginLeft: "auto", marginRight: "auto" }}>
-          Cette page n&apos;existe pas ou a changé d&apos;adresse. Reprenez le jeu depuis l&apos;accueil ou le planning.
+        <p className="chapo" style={{ margin: "0 auto 28px" }}>
+          Cette page n'existe pas ou a changé d'adresse. Reprenez le jeu depuis l'accueil ou le planning.
         </p>
-        <div className="btn-row" style={{ justifyContent: "center" }}>
-          <Link href="/" className="btn btn--primary">
-            Retour à l&apos;accueil
+        <div className="rangee rangee--10" style={{ justifyContent: "center" }}>
+          <Link href="/" className="btn btn--l btn--orange">
+            Retour à l'accueil
           </Link>
-          <Link href="/planning" className="btn btn--ghost">
-            Voir le planning
+          <Link href="/planning" className="btn btn--l btn--clair">
+            Planning des entraînements
           </Link>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

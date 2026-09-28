@@ -1,135 +1,108 @@
-import Link from "next/link";
+import type { Metadata } from "next";
+import { CLUB, PHOTOS, STAGES, STAGE_A_PREVOIR, STAGE_CONTACT, STAGE_JOURNEE, STAGE_REDUCTIONS, STAGE_TARIFS } from "@/data/nbb";
+import { anneesStage, prixStage, semainesOuvertes } from "@/lib/nbb";
+import { lienTel, majuscule } from "@/lib/utils";
+import { FilAriane } from "@/components/Page";
 import { Photo } from "@/components/Photo";
-import { BoutonInscrireStage, StageChoixProvider } from "@/components/formulaires/StageChoix";
 import { StageForm } from "@/components/formulaires/StageForm";
-import { CLUB, PHOTOS, STAGE_A_PREVOIR, STAGE_INFOS, STAGE_JOURNEE, STAGE_TARIFS, STAGES } from "@/data/nbb";
-import { anneeSaison, libelleSemaine, semainesOuvertes, stageOuvert } from "@/lib/nbb";
-import { metaPage } from "@/lib/seo";
-import { grille } from "@/lib/style";
 
-export const metadata = metaPage({
-  titre: "Stages des vacances",
+export const metadata: Metadata = {
+  title: "Stages de basket vacances scolaires",
   description:
-    "Stages de basket pendant les vacances scolaires (zone B) au gymnase Joël Paon, à Nantes : dates, tarifs, journée type et inscription en ligne. Ouverts aux licenciés et aux non-licenciés.",
-  chemin: "/stages",
-});
+    "Stages de basket pendant les vacances scolaires à Nantes (gymnase Joël Paon) : dates, tarifs, journée type et inscription en ligne. Ouverts aux licenciés et non-licenciés.",
+  alternates: { canonical: "/stages" },
+};
 
-export default function PageStages() {
+/** "Stages d'automne" → "Automne". */
+function titreCarte(periode: string): string {
+  return majuscule(periode.replace(/^stages?\s+d(e\s+|')/i, ""));
+}
+
+export default function Stages() {
   const semaines = semainesOuvertes();
 
   return (
-    <StageChoixProvider initial={semaines[0] ?? ""}>
-      <div className="page">
-        <section className="stage-hero">
-          <div className="stage-hero__inner">
-            <div>
-              <p className="label-tag" style={{ marginBottom: 14 }}>
-                Vacances scolaires · zone B
-              </p>
-              <h1 className="title-page">
-                Stages des
-                <br />
-                vacances
-              </h1>
-              <p className="lead" style={{ maxWidth: "40em" }}>
-                Trois à cinq jours de basket à chaque période de vacances, au gymnase Joël Paon. Ouverts aux licenciés
-                du club <strong style={{ color: "#fff" }}>et aux enfants non licenciés</strong> qui veulent essayer.
-                Encadrement par les entraîneurs du NBB.
-              </p>
-              <div className="btn-row" style={{ marginTop: 28 }}>
-                <a href="#inscription-stage" className="btn btn--primary">
-                  S&apos;inscrire en ligne
-                </a>
-                <Link href="/contact?sujet=stage" className="btn btn--ghost">
-                  Poser une question
-                </Link>
-              </div>
-            </div>
-            <Photo photo={PHOTOS.stages.photo} alt={PHOTOS.stages.alt} className="stage-photo" />
-          </div>
-        </section>
-
-        <section className="section" aria-labelledby="dates">
-          <div className="notice">
-            <span className="notice__icon" aria-hidden="true">
-              !
-            </span>
-            <div className="notice__body">
-              <p className="display" style={{ fontSize: 20, marginBottom: 6 }}>
-                Licenciés de la Similienne
-              </p>
-              <p className="accent-text pretty">
-                Si un stage de la Similienne a lieu sur la même période, les licenciés de la Similienne
-                s&apos;inscrivent auprès de leur club et non auprès du NBB. En cas de doute sur la période,{" "}
-                <Link href="/contact?sujet=stage" className="link-white">
-                  écrivez-nous
-                </Link>
-                .
-              </p>
-            </div>
-          </div>
-
-          <h2 id="dates" className="title-section title-section--sm" style={{ marginBottom: 6 }}>
-            Les dates de la saison
-          </h2>
-          <p className="intro">
-            Les dates définitives sont publiées environ trois semaines avant chaque période. Les places sont limitées
-            et attribuées dans l&apos;ordre d&apos;arrivée des inscriptions.
+    <>
+      <section className="entete-page stages-hero">
+        <div className="couvrir">
+          <Photo src={PHOTOS.stages.src} alt={PHOTOS.stages.alt} sizes="100vw" prioritaire />
+        </div>
+        <div aria-hidden="true" className="stages-hero__voile" />
+        <div className="entete-page__inner stages-hero__contenu">
+          <FilAriane page="Stages · vacances scolaires zone B" />
+          <h1 className="titre-page" style={{ maxWidth: 900 }}>
+            Les stages <span className="accent">des vacances</span>
+          </h1>
+          <p className="chapo" style={{ maxWidth: 560, marginBottom: 28, color: "rgba(245,243,238,.88)" }}>
+            Une semaine de basket à chaque période de vacances, encadrée par les entraîneurs du NBB. Ouverts aux
+            licenciés du club et aux enfants qui veulent découvrir le basket.
           </p>
-          <div className="stack" style={{ gap: 14 }}>
-            {STAGES.map((s) => {
-              const ouvert = stageOuvert(s);
-              return (
-                <article key={s.periode} className="stage-card bar-card">
-                  <div className="row-between" style={{ alignItems: "baseline" }}>
-                    <div>
-                      <h3 className="title-card title-card--lg">{s.periode}</h3>
-                      <p className="text-muted text-sm" style={{ marginTop: 8, maxWidth: "44em" }}>
-                        {s.contenu}
-                      </p>
+          <div className="rangee rangee--10">
+            <a href="#inscription-stage" className="btn btn--xl btn--orange">
+              Inscrire mon enfant ↓
+            </a>
+            <a href="#tarifs-stage" className="btn btn--xl btn--clair" style={{ borderColor: "rgba(245,243,238,.35)" }}>
+              Tarifs &amp; journée type
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="dates-titre" className="section" style={{ paddingTop: 64, paddingBottom: 32 }}>
+        <div className="tete-section" style={{ marginBottom: 24 }}>
+          <div>
+            <div className="surtitre">Calendrier {CLUB.saison}</div>
+            <h2 id="dates-titre" className="titre-section">
+              Les dates de la saison
+            </h2>
+          </div>
+          <p className="tete-section__texte" style={{ maxWidth: 440, fontSize: 14 }}>
+            Places limitées, attribuées dans l'ordre de réception des règlements.
+          </p>
+        </div>
+        <div className="grille" style={{ "--min": "260px" } as React.CSSProperties}>
+          {STAGES.map((s) => (
+            <article key={s.id} className="carte-stage">
+              {s.ouvert ? (
+                <span className="pastille pastille--orange">Inscriptions ouvertes</span>
+              ) : (
+                <span className="pastille pastille--grise">Programme à venir</span>
+              )}
+              <h3 className="carte-stage__titre">{titreCarte(s.periode)}</h3>
+              <ul className="carte-stage__semaines">
+                {(s.semaines.length ? s.semaines : [{ id: "vide", nom: "Dates", dates: "[À COMPLÉTER]" }]).map((w) => (
+                  <li key={w.id}>
+                    <div className="carte-stage__ligne">
+                      <strong>{w.nom}</strong>
+                      <span>{w.dates}</span>
                     </div>
-                    <p className={ouvert ? "pill" : "pill pill--closed"}>{s.statut}</p>
-                  </div>
-                  <div className="stage-card__facts">
-                    <span>
-                      <strong>Pour qui :</strong> {s.public}
-                    </span>
-                    <span>
-                      <strong>Lieu :</strong> {s.lieu}
-                    </span>
-                  </div>
-                  <ul className="stack" style={{ gap: 10, marginTop: 18 }}>
-                    {s.semaines.map((w) => (
-                      <li key={w.nom + w.dates} className="week">
-                        <div>
-                          <p className="week__name">{w.nom}</p>
-                          <p className="week__dates">{w.dates}</p>
-                          <p className="week__places">{w.places}</p>
-                        </div>
-                        {ouvert ? (
-                          <BoutonInscrireStage valeur={libelleSemaine(s, w)} />
-                        ) : (
-                          <p className="week__closed">Inscriptions non ouvertes</p>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </article>
-              );
-            })}
-          </div>
-        </section>
+                    {"nesDe" in w && w.nesDe ? (
+                      <div className="carte-stage__ligne carte-stage__ligne--public">
+                        <span>
+                          Né(e)s de {w.nesDe} à {w.nesA}
+                        </span>
+                        <span className={w.licenciesFFBB ? "pastille pastille--bleue" : "pastille pastille--orange"}>
+                          {w.licenciesFFBB ? "Licenciés FFBB uniquement" : "Tout public"}
+                        </span>
+                      </div>
+                    ) : null}
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </section>
 
-        <section className="section" aria-labelledby="tarifs-stages">
-          <h2 id="tarifs-stages" className="title-section title-section--sm" style={{ marginBottom: 6 }}>
-            Les tarifs
-          </h2>
-          <p className="intro" style={{ marginBottom: 22 }}>
-            {STAGE_INFOS.tarifsNote}
-          </p>
-          <div className="table-wrap">
-            <div className="table-scroll">
-              <table className="tarifs">
+      <section id="tarifs-stage" aria-labelledby="tarifs-titre" className="section" style={{ paddingTop: 48, paddingBottom: 48 }}>
+        <div className="rangee">
+          <div className="tarifs-stage">
+            <div className="surtitre">Tarifs</div>
+            <h2 id="tarifs-titre" className="titre-bloc-grand" style={{ fontSize: "clamp(36px, 4vw, 52px)", marginBottom: 20 }}>
+              Combien ça coûte
+            </h2>
+            <div className="defilement">
+              <table className="tableau-tarifs">
                 <thead>
                   <tr>
                     <th scope="col">Formule</th>
@@ -142,7 +115,7 @@ export default function PageStages() {
                   {STAGE_TARIFS.map((t) => (
                     <tr key={t.formule}>
                       <th scope="row">{t.formule}</th>
-                      <td className="tarifs__main">{t.licencies}</td>
+                      <td className="accent">{t.licencies}</td>
                       <td>{t.carteBlanche}</td>
                       <td>{t.nonLicencies}</td>
                     </tr>
@@ -150,75 +123,90 @@ export default function PageStages() {
                 </tbody>
               </table>
             </div>
-          </div>
-        </section>
-
-        <section className="section">
-          <div className="grid" style={grille(290, { align: "start" })}>
-            <div className="card card--strong">
-              <h2 className="title-card title-card--lg" style={{ marginBottom: 18 }}>
-                Une journée type
-              </h2>
-              <ol className="rows">
-                {STAGE_JOURNEE.map((j) => (
-                  <li key={j.heure} className="day-row" style={{ borderTopColor: "var(--line)" }}>
-                    <p className="day-row__time">{j.heure}</p>
-                    <p className="text-soft text-md">{j.texte}</p>
-                  </li>
-                ))}
-              </ol>
+            <div className="tarifs-stage__etiquette">Plusieurs enfants inscrits</div>
+            <div className="rangee rangee--10" style={{ marginTop: 10 }}>
+              {STAGE_REDUCTIONS.map((r) => (
+                <div key={r.enfants} className="reduction">
+                  <strong>−{r.taux} %</strong>
+                  <span>{r.texte}</span>
+                </div>
+              ))}
             </div>
-            <div className="card card--strong">
-              <h2 className="title-card title-card--lg" style={{ marginBottom: 18 }}>
-                À prévoir dans le sac
-              </h2>
-              <ul className="checklist">
-                {STAGE_A_PREVOIR.map((a) => (
-                  <li key={a}>{a}</li>
-                ))}
-              </ul>
-            </div>
+            <p className="tarifs-stage__note">« Carte blanche » : dispositif de la Ville de Nantes, sur présentation du justificatif.</p>
           </div>
-        </section>
+          <div className="journee-type">
+            <div className="surtitre">Une journée type</div>
+            <ol className="journee-type__liste">
+              {STAGE_JOURNEE.map((j) => (
+                <li key={j.heure}>
+                  <strong>{j.heure}</strong>
+                  <span>{j.texte}</span>
+                </li>
+              ))}
+            </ol>
+            <div className="surtitre">Dans le sac</div>
+            <ul className="liste-coches">
+              {STAGE_A_PREVOIR.map((a) => (
+                <li key={a}>
+                  <span aria-hidden="true">✓</span>
+                  {a}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
 
-        <section id="inscription-stage" className="section anchor-target">
-          <div className="grid" style={grille(300, { align: "start" })}>
-            <div className="card card--raised" style={{ borderColor: "rgba(255,255,255,.14)" }}>
+      <section id="inscription-stage" aria-labelledby="insc-titre" className="section" style={{ paddingTop: 48, paddingBottom: 88 }}>
+        <div className="bloc-formulaire">
+          <div className="bloc-formulaire__cote">
+            <div className="surtitre" style={{ margin: 0 }}>
+              Inscription en ligne
+            </div>
+            <h2 id="insc-titre" className="titre-section">
+              Réserver une place
+            </h2>
+            <ol className="etapes-numeros">
+              <li>
+                <strong>1</strong>Vous remplissez le formulaire.
+              </li>
+              <li>
+                <strong>2</strong>Vous déposez le règlement : à l'entraînement si l'enfant est licencié au NBB, ou dans la
+                boîte aux lettres du club ({CLUB.boiteAuxLettres.replace(" — ", ", ")}).
+              </li>
+              <li>
+                <strong>3</strong>L'inscription est effective à réception du règlement : un SMS vous confirme la place.
+              </li>
+            </ol>
+            <p className="note-orange">
+              <strong>Licenciés de la Similienne :</strong> si votre club organise un stage sur la même période,
+              inscrivez-vous auprès de lui.
+            </p>
+            <p className="petit-texte">
+              Une question ? {STAGE_CONTACT.nom} · <a href={lienTel(STAGE_CONTACT.telephone)}>{STAGE_CONTACT.telephone}</a>
+            </p>
+          </div>
+          <div className="bloc-formulaire__carte">
+            {semaines.length > 0 ? (
               <StageForm
                 semaines={semaines}
-                delaiReponse={CLUB.delaiReponse}
-                anneeMin={anneeSaison() - 21}
-                anneeMax={anneeSaison() - 2}
+                prix={{
+                  licencies: prixStage("licencies"),
+                  carteBlanche: prixStage("carteBlanche"),
+                  nonLicencies: prixStage("nonLicencies"),
+                }}
+                reductions={STAGE_REDUCTIONS}
+                annees={anneesStage()}
               />
-            </div>
-
-            <div className="stack">
-              <div className="card card--strong">
-                <h2 className="title-card title-card--lg" style={{ marginBottom: 14 }}>
-                  Comment ça marche
-                </h2>
-                <ol className="numbered">
-                  <li>Vous remplissez le formulaire ci-contre.</li>
-                  <li>Le club confirme la place par e-mail (les places sont limitées).</li>
-                  <li>Vous réglez le stage — moyens acceptés : {STAGE_INFOS.paiement}.</li>
-                  <li>Rendez-vous au gymnase, autorisation parentale signée en main.</li>
-                </ol>
-              </div>
-              <div className="card card--accent" style={{ borderRadius: 22 }}>
-                <p className="accent-title">Non licencié, c&apos;est possible</p>
-                <p className="accent-text">
-                  Les stages sont ouverts aux enfants qui ne jouent pas encore au club : c&apos;est souvent le meilleur
-                  moyen de tester le basket avant de s&apos;inscrire. Une attestation d&apos;assurance suffit.
-                </p>
-              </div>
-              <div className="card card--soft" style={{ borderRadius: 22 }}>
-                <p className="accent-title">Annulation</p>
-                <p className="text-muted text-md">{STAGE_INFOS.annulation}</p>
-              </div>
-            </div>
+            ) : (
+              <p className="petit-texte" style={{ fontSize: 16 }}>
+                Les inscriptions en ligne ouvriront avec le programme des prochains stages. En attendant, écrivez-nous
+                depuis la page Contact.
+              </p>
+            )}
           </div>
-        </section>
-      </div>
-    </StageChoixProvider>
+        </div>
+      </section>
+    </>
   );
 }

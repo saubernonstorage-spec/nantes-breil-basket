@@ -7,7 +7,10 @@ out/
 next-env.d.ts
 *.tsbuildinfo
 
-# secrets (identifiants SMTP…)
+# demandes reçues en local (Espace dirigeants hors Netlify)
+.donnees/
+
+# secrets (identifiants SMTP, mot de passe de l’Espace dirigeants…)
 .env
 .env*.local
 

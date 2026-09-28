@@ -1,68 +1,79 @@
-import { Suspense } from "react";
-import { Faq } from "@/components/Faq";
-import { GymnasesVue, InfosGymnases } from "@/components/InfosGymnases";
-import { PageHero } from "@/components/PageHero";
-import { FAQ, INFOS_PRATIQUES } from "@/data/nbb";
-import { detailGymnases, gymnasesUtilises } from "@/lib/nbb";
-import { metaPage } from "@/lib/seo";
-import { grille } from "@/lib/style";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { FAQ } from "@/data/nbb";
+import { fichesGymnases, gymnasesNantes } from "@/lib/nbb";
 import { enLettres, majuscule } from "@/lib/utils";
+import { EntetePage } from "@/components/Page";
+import { Terrain } from "@/components/Terrain";
+import { Faq, InfosGymnases } from "@/components/InfosGymnases";
 
-export const metadata = metaPage({
-  titre: "Infos pratiques",
+export const metadata: Metadata = {
+  title: "Infos pratiques — gymnases, adresses et accès",
   description:
-    "Adresses et accès des gymnases du Nantes Breil Basket à Nantes (Joël Paon, Breil, Dervallières…), carte, règles des salles et questions fréquentes.",
-  chemin: "/infos",
-});
+    "Les gymnases du Nantes Breil Basket à Nantes : Joël Paon (Hauts-Pavés), Breil, Floreska-Guépin, Dervallières, Coubertin, Lucien David, Victor Hugo, Similienne. Adresses, carte et accès.",
+  alternates: { canonical: "/infos" },
+};
 
-export default function PageInfos() {
-  const gymnases = detailGymnases();
-  const nbFaq = enLettres(FAQ.length);
+export default function Infos() {
+  const fiches = fichesGymnases();
+  const n = gymnasesNantes().length;
+  const partenaire = fiches.some((f) => f.partenaire);
 
   return (
-    <div className="page">
-      <PageHero
-        kicker="Infos pratiques"
-        title={
+    <>
+      <EntetePage
+        fil="Infos pratiques"
+        largeurChapo={600}
+        decor={
+          <Terrain motif="bout" style={{ right: 0, bottom: 0, width: "min(70%, 820px)", transform: "scaleY(-1)" }} />
+        }
+        titre={
           <>
-            Gymnases, accès
-            <br />
-            et FAQ
+            Où l'on <span className="accent">joue</span>
           </>
         }
-      >
-        <p className="lead">
-          {majuscule(enLettres(gymnasesUtilises().length))} gymnases nantais, un seul endroit pour savoir où aller. Le
-          gymnase Joël Paon est la maison du club.
-        </p>
-      </PageHero>
+        chapo={`${majuscule(enLettres(n))} gymnases nantais${partenaire ? " et un gymnase partenaire" : ""}, une seule page pour savoir où aller. Le gymnase Joël Paon, quartier des Hauts-Pavés, est la maison du club.`}
+      />
 
-      <Suspense fallback={<GymnasesVue gymnases={gymnases} />}>
-        <InfosGymnases gymnases={gymnases} />
-      </Suspense>
+      <InfosGymnases fiches={fiches} />
 
-      <section className="section">
-        <div className="grid" style={grille(260)}>
-          <div className="card card--soft">
-            <h2 className="accent-title">Règles dans les gymnases</h2>
-            <p className="text-muted text-md">{INFOS_PRATIQUES.regles}</p>
+      <section className="section" style={{ paddingTop: 40, paddingBottom: 40 }}>
+        <div className="grille" style={{ "--min": "300px" } as React.CSSProperties}>
+          <div className="encart encart--nuit-bleu">
+            <h2 className="titre-bloc" style={{ fontSize: 28, marginBottom: 10 }}>
+              Règles au gymnase
+            </h2>
+            <p>
+              Chaussures de basket propres obligatoires, gourde personnelle et tenue adaptée (short - T-shirt). Parents :
+              vérifiez la présence du coach avant de repartir.
+            </p>
           </div>
-          <div className="card card--soft">
-            <h2 className="accent-title">Objets trouvés</h2>
-            <p className="text-muted text-md">{INFOS_PRATIQUES.objetsTrouves}</p>
+          <div className="encart encart--blanc">
+            <h2 className="titre-bloc" style={{ fontSize: 28, marginBottom: 10 }}>
+              Objets trouvés
+            </h2>
+            <p>
+              Les objets trouvés sont consignés à l'accueil des différents gymnases. Renseignez-vous auprès des gardiens ou
+              au bar de Joël Paon.
+            </p>
           </div>
         </div>
       </section>
 
-      <section id="faq" className="section anchor-target" aria-labelledby="faq-titre">
-        <h2 id="faq-titre" className="title-section title-section--sm" style={{ marginBottom: 6 }}>
-          Questions fréquentes
-        </h2>
-        <p className="intro" style={{ marginBottom: 22 }}>
-          {majuscule(nbFaq)} réponses qui évitent {nbFaq} messages aux dirigeants.
-        </p>
-        <Faq items={FAQ} groupe="faq-infos" />
+      <section id="faq" aria-labelledby="faq-titre" className="section" style={{ paddingBottom: 88 }}>
+        <div className="bloc-faq">
+          <div className="bloc-faq__cote">
+            <div className="surtitre">Questions fréquentes</div>
+            <h2 id="faq-titre" className="titre-section" style={{ marginBottom: 16 }}>
+              Vos questions, nos réponses
+            </h2>
+            <p className="petit-texte" style={{ fontSize: 16 }}>
+              Pas trouvé ? <Link href="/contact">Écrivez-nous</Link>, un bénévole vous répond.
+            </p>
+          </div>
+          <Faq questions={FAQ} />
+        </div>
       </section>
-    </div>
+    </>
   );
 }

@@ -1,126 +1,188 @@
-/**
- * Formes des données du fichier de contenu `data/nbb.ts`.
- * Si un bloc est mal rempli (champ oublié, faute de frappe dans un nom de champ),
- * la vérification de la mise en ligne s'arrête et indique la ligne fautive.
- */
+/** Types du contenu (data/nbb.ts). Rien à modifier ici pour mettre à jour le site. */
 
 export type Jour = "Lundi" | "Mardi" | "Mercredi" | "Jeudi" | "Vendredi" | "Samedi" | "Dimanche";
 
-/**
- * Champ « photo » : soit le texte affiché dans l'emplacement gris rayé
- * (ex. "PHOTO — 1200×750 px"), soit le chemin d'une vraie photo déposée
- * dans `public/photos/` (ex. "/photos/actus/tournoi.jpg").
- */
-export type Photo = string;
+export type CleCategorie = "mini" | "jeunes" | "seniors" | "loisirs";
+
+/** Une photo : chemin dans public/ (ex. "/photos/accueil.jpg") et description pour les personnes malvoyantes. */
+export type Photo = { src: string; alt: string };
 
 export type Club = {
   nom: string;
   sigle: string;
   quartier: string;
   ville: string;
-  baseline: string;
+  saison: string;
+  fondation: string;
   siteUrl: string;
   adresse: string;
+  boiteAuxLettres: string;
   email: string;
   telephone: string;
   facebook: string;
   instagram: string;
+  linkedin: string;
   whatsapp: string;
   boutique: string;
-  inscription: string;
   ffbb: string;
-  scorenco: string;
-  saison: string;
-  delaiReponse: string;
+  widgetResultats: string;
+  emailLicenceFFBB: string;
+  memoArbitrage: string;
+  delaiReponseContact: string;
+  delaiReponseInscription: string;
+  plaquettePartenaires: string;
 };
 
-export type PhotoPage = { photo: Photo; alt: string };
+export type Chiffre = { valeur: string; label: string };
 
-export type Valeur = { titre: string; texte: string };
-export type EtapeHistoire = { annee: string; texte: string };
-export type MembreBureau = { role: string; nom: string; photo: Photo };
+export type DateAgenda = {
+  date: string;
+  jour: string;
+  num: string;
+  mois: string;
+  titre: string;
+  texte: string;
+  lieu: string;
+  type: string;
+  lien?: string;
+};
+
+export type MatchDomicile = {
+  salle: string;
+  equipe: string;
+  jour: string;
+  heure: string;
+  adversaire: string;
+  arbitres: string;
+  table: string;
+  otm: string;
+};
+
+export type MatchExterieur = {
+  equipe: string;
+  jour: string;
+  heure: string;
+  adversaire: string;
+  lieu: string;
+};
+
+export type WeekEnd = {
+  titre: string;
+  semaine: string;
+  samedi: string;
+  domicile: MatchDomicile[];
+  exterieur: MatchExterieur[];
+};
+
+export type Diplome = { nom: string; url?: string };
+
 export type Entraineur = {
   prenom: string;
+  nom: string;
   role: string;
-  depuis: string;
+  photo: string;
   presentation: string;
-  photo: Photo;
-};
-export type Commission = { nom: string; role: string; referent?: string };
-
-export type Actu = {
-  titre: string;
-  tag: string;
-  date: string;
-  chapo: string;
-  photo: Photo;
-  lien: string;
+  diplomes: Diplome[];
+  arrivee: string;
 };
 
-export type DateAgenda = { date: string; titre: string; lieu: string };
+export type MembreBureau = { nom: string; role: string; detail: string; photo: string };
+export type MembreComite = { nom: string; detail: string };
 
-export type Arbitrage = {
-  intro: string;
-  objectifs: string[];
-  formation: string[];
-  seancesTitre: string;
-  seancesIntro: string;
-  seances: { date: string; lieu: string }[];
-  contact: { nom: string; email: string; telephone: string };
-  memo: string;
+export type Commission = { nom: string; role: string; temps: string; recrute?: boolean };
+
+export type EtapeHistoire = { annee: string; titre: string; texte: string };
+export type BlocTexte = { titre: string; texte: string };
+export type Engagement = { titre: string; points: string[] };
+
+export type Tarif = {
+  cle: string;
+  categorie: string;
+  detail: string;
+  prix: number;
+  prixB: number;
 };
 
-export type Tarif = { categorie: string; age: string; prix: string };
-export type Aide = { titre: string; texte: string };
+export type Lien = { nom: string; url: string };
+
+/** [entraînements par semaine, matchs le week-end, effectif maximum] */
+export type Capacite = [number, boolean, number];
+
 export type QuestionFaq = { q: string; r: string };
+
+export type Transport = { mode: string; arret: string; lignes: string[] };
 
 export type Gymnase = {
   nom: string;
   role: string;
   adresse: string;
   acces: string;
-  /** Coordonnées GPS (facultatives) pour épingler la carte. */
-  lat?: number;
-  lon?: number;
+  transports?: Transport[];
+  parking?: boolean;
+  partenaire?: boolean;
 };
 
-export type Partenaire = { nom: string; activite: string; logo: Photo; site: string };
-export type OffrePartenariat = { nom: string; montant: string; inclus: string[] };
+export type Partenaire = { nom: string; activite: string; ville: string; logo: string; site?: string };
 
-export type SemaineStage = { nom: string; dates: string; places: string };
+export type OffrePartenariat = { nom: string; montant: string; inclus: string[]; vedette?: boolean };
+
+export type SemaineStage = {
+  id: string;
+  nom: string;
+  dates: string;
+  debut?: string;
+  nesDe?: number;
+  nesA?: number;
+  licenciesFFBB?: boolean;
+};
+
 export type Stage = {
+  id: string;
   periode: string;
   public: string;
   lieu: string;
-  statut: string;
-  contenu: string;
+  ouvert: boolean;
   semaines: SemaineStage[];
 };
-export type TarifStage = {
-  formule: string;
-  licencies: string;
-  carteBlanche: string;
-  nonLicencies: string;
-};
 
-export type Album = { titre: string; meta: string; photo: Photo; lien: string };
+export type StatutStage = "licencies" | "carteBlanche" | "nonLicencies";
+
+export type TarifStage = { formule: string } & Record<StatutStage, string>;
+
+export type ReductionStage = { enfants: number; taux: number; texte: string };
+
+export type SeanceArbitrage = { date: string; heure: string; lieu: string };
+
+export type Album = { id: string; titre: string; couverture: string; photos: Photo[] };
+
+/** [gymnase, jour, début, fin, équipes, coachs] */
+export type LigneCreneau = [string, Jour, string, string, string[], string[]];
 
 export type Creneau = {
-  id: string;
   gymnase: string;
   jour: Jour;
   debut: string;
   fin: string;
-  duree: string;
   equipes: string[];
   coachs: string[];
 };
 
-export type CleCategorie = "mini" | "jeunes" | "seniors" | "loisirs";
 export type Categorie = {
   cle: CleCategorie;
   nom: string;
   ages: string;
   resume: string;
-  photo: Photo;
+  image: string;
 };
+
+export type LigneClassement = {
+  rang: number;
+  equipe: string;
+  j: number;
+  v: number;
+  d: number;
+  pts: number;
+  nbb?: boolean;
+};
+
+export type Classement = { championnat: string; maj: string; lignes: LigneClassement[] };

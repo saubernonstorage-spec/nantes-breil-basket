@@ -1,16 +1,18 @@
 # Nantes Breil Basket — site web
 
-Site du club de basket Nantes Breil Basket (quartier Breil / Hauts-Pavés, Nantes), construit
-à partir de la maquette **Claude Design** « Site NBB » (12 pages, charte bleu nuit / orange,
-titres Anton, texte Barlow).
+Site du club de basket Nantes Breil Basket (quartier Breil / Hauts-Pavés, Nantes), construit à
+partir de l'export **Claude Design** « Site Nantes Breil Basket » (15 pages, charte bleu nuit /
+orange, titres Big Shoulders, texte Instrument Sans, étiquettes JetBrains Mono, lignes de terrain
+en filigrane).
 
 - **Stack** : Next.js 16 (App Router, Turbopack), React 19, TypeScript, CSS simple (`app/globals.css`).
-- **Toutes les pages sont statiques** : rapides, bien référencées, hébergeables gratuitement.
 - **Contenu** : un seul fichier, `data/nbb.ts`, modifiable sans développeur — voir [`NOTICE.md`](NOTICE.md).
+- **Formulaires** (préinscription, stages, contact) : Server Actions ; les demandes sont enregistrées
+  et consultables dans l'**Espace dirigeants**, et envoyées par e-mail si un SMTP est configuré.
 
 ## Démarrer en local
 
-Prérequis : [Node.js 20.9+](https://nodejs.org) (testé avec Node 24).
+Prérequis : [Node.js 22.12+](https://nodejs.org) (testé avec Node 24).
 
 ```bash
 npm install
@@ -26,100 +28,104 @@ Puis ouvrez <http://localhost:3000>. Les modifications s'affichent en direct.
 | `npm run start` | lance le build de production en local |
 | `npm run lint` | vérification ESLint (règles Next.js, accessibilité) |
 
+Pour tester l'Espace dirigeants en local, créez un fichier `.env.local` avec `ADMIN_PASSWORD=…`
+(modèle : `.env.example`). En local, les demandes sont enregistrées dans `.donnees/demandes.json`
+(ignoré par Git) et les e-mails non configurés s'affichent dans le terminal.
+
 ## Pages
 
 | Page | Adresse | Contenu |
 | --- | --- | --- |
-| Accueil | `/` | accroche, chiffres clés, accès rapides (créneau, gymnases, boutique), actus, agenda, école de basket, école d'arbitrage, équipes, partenaires |
-| Le club | `/club` | histoire, valeurs, projet associatif, encadrement, bureau, commissions |
-| Équipes | `/equipes` | une fiche par équipe (encadrement, créneaux, gymnase), filtre par catégorie |
-| Planning | `/planning` | planning filtrable par équipe / gymnase / jour (`/planning?equipe=U11F1`) |
-| Calendrier | `/calendrier` | convocations, widget Score'n'co (après consentement), classements, lien FFBB |
-| Inscriptions | `/inscriptions` | étapes, tarifs, documents, aides, FAQ |
-| Stages | `/stages` | périodes, tarifs, journée type, formulaire d'inscription |
+| Accueil | `/` | bandeau et chiffres clés, accès rapides, écoles, agenda, réseaux, encadrement, bénévolat et partenariat, catégories d'équipes |
+| Le club | `/club` | histoire, valeurs et projet, charte, bureau et comité (`#bureau`), commissions (`#commissions`) |
+| Écoles | `/ecoles` | école de mini-basket 3 étoiles, samedi matin, cotisation, école d'arbitrage (`#arbitrage`) |
+| Équipes | `/equipes` | une fiche par équipe (coachs, créneaux, gymnases), photo agrandissable, classement |
+| Entraînements | `/planning` | planning filtrable par équipe / gymnase / jour (`/planning?equipe=U11F1`), impression |
+| Matchs | `/matchs` | matchs du week-end à domicile et à l'extérieur, convocations, itinéraires, résultats (après accord) |
+| Stages | `/stages` | dates, tarifs, réduction famille, journée type, inscription à la semaine ou à la journée |
+| Agenda | `/agenda` | temps forts à venir |
+| Infos pratiques | `/infos` | carte (après accord), gymnases et lignes Naolib (`/infos#gym-breil`), règles, FAQ (`#faq`) |
+| Inscriptions | `/inscriptions` | étapes, tarifs, documents, PDF, préinscription en 4 étapes |
 | Galerie | `/galerie` | albums photos, droit à l'image |
-| Partenaires | `/partenaires` | partenaires, offre de partenariat |
-| Infos pratiques | `/infos` | carte OpenStreetMap, fiches gymnases (`/infos?gym=Breil`), règles, FAQ |
-| Contact | `/contact` | formulaire (`/contact?sujet=benevolat` présélectionne le sujet), coordonnées, réseaux |
-| Mentions légales | `/mentions-legales` | éditeur, hébergement, données personnelles, cookies, droit à l'image |
+| Partenaires | `/partenaires` | partenaires, partenariat et mécénat, formules |
+| Contact | `/contact` | réponses rapides, formulaire (`/contact?sujet=benevolat` présélectionne le sujet), coordonnées |
+| Mentions légales | `/mentions-legales` | éditeur, hébergement, données personnelles (`#confidentialite`), cookies (`#cookies`) |
+| Espace dirigeants | `/espace-dirigeants` | demandes reçues, statuts, suppression, export CSV (accès par mot de passe, non référencé) |
 
-Les anciennes adresses du précédent projet (`/le-club`, `/rejoindre`, `/confidentialite`…)
-sont redirigées vers les nouvelles (`next.config.ts`).
+Les anciennes adresses (`/calendrier`, `/le-club`, `/rejoindre`, `/actualites`…) sont redirigées
+vers les nouvelles (`next.config.ts`).
 
 ## Structure
 
 ```
-data/nbb.ts          tout le contenu éditable (textes, planning, stages, tarifs…)
-lib/                 calculs à partir du contenu (équipes, gymnases…), SEO, e-mail, consentement
-app/                 une page par dossier, layout, styles (globals.css), actions serveur des formulaires
-components/          en-tête, pied de page, planning filtrable, formulaires, bandeau cookies…
-public/              logo, image de partage (og-image.png), photos du club (public/photos/)
-NOTICE.md            mode d'emploi pour les bénévoles
+data/nbb.ts            tout le contenu éditable (textes, planning, matchs, stages, tarifs…)
+lib/nbb.ts             calculs à partir du contenu (équipes, gymnases, week-ends…) — serveur uniquement
+lib/utils.ts           petites fonctions pures (formats, calcul des stages, cotisation) — aussi côté navigateur
+lib/stockage.ts        enregistrement des demandes (Netlify Blobs en ligne, fichier local sinon)
+lib/session.ts         connexion à l'Espace dirigeants
+lib/email.ts           envoi des e-mails (SMTP)
+lib/consentement.ts    choix du visiteur sur les contenus externes (carte, résultats)
+app/                   une page par dossier, layout, styles, actions serveur des formulaires
+components/            en-tête, pied de page, bandeau cookies, planning, matchs, formulaires…
+public/                logo, image de partage, photos (public/photos/), lignes de terrain (public/terrain/)
+NOTICE.md              mode d'emploi pour les bénévoles
 ```
 
-Le **planning** (`SLOTS`) est la source unique : fiches équipes, filtres, liste des gymnases et
-chiffres de l'accueil en sont calculés (`lib/nbb.ts`).
+Le **planning** (`SLOTS`) est la source unique : fiches équipes, filtres, créneaux du samedi,
+nombre de créneaux par gymnase en sont calculés.
 
 ## Mettre en ligne (Netlify, gratuit)
 
-Le site est prévu pour **Netlify** : offre gratuite sans carte bancaire, **usage commercial
-autorisé** (partenaires, lien boutique), et prise en charge de Next.js sans configuration
-(adaptateur OpenNext : pages statiques, Server Actions, `next/image`). L'offre gratuite de Vercel
-est, elle, réservée à un usage non commercial.
+Le site est hébergé sur **Netlify** : offre gratuite sans carte bancaire, usage commercial
+autorisé (partenaires, boutique), Next.js pris en charge sans configuration (pages statiques,
+régénération horaire de l'accueil, de l'agenda et des matchs, Server Actions, `next/image`).
+Chaque modification enregistrée sur la branche `main` redéploie le site automatiquement ; si la
+construction échoue, l'ancienne version reste en ligne.
 
-1. Sur <https://app.netlify.com> : « Add new project → Import an existing project → GitHub »,
-   choisissez le dépôt `nantes-breil-basket`, branche `main`. Netlify détecte Next.js tout seul
-   (commande `npm run build`), puis « Deploy ».
-2. Ajoutez les variables d'environnement de l'envoi des formulaires (ci-dessous), puis redéployez.
-3. Branchez le nom de domaine `nantes-breil-basket.fr` (réglages du projet → Domain management) et
-   vérifiez `CLUB.siteUrl` dans `data/nbb.ts` (sert au référencement et aux aperçus de partage).
+### Variables d'environnement (Netlify → Project configuration → Environment variables)
 
-Chaque modification enregistrée sur la branche `main` (par exemple via l'éditeur de GitHub, comme
-décrit dans `NOTICE.md`) redéploie automatiquement le site. Si la construction échoue, l'ancienne
-version reste en ligne et l'onglet « Deploys » de Netlify affiche l'erreur. En cas de dépassement
-des quotas gratuits, Netlify suspend le site jusqu'à la fin du mois, sans jamais facturer.
-
-## Envoi des formulaires (contact et stages)
-
-Les formulaires sont traités par des **Server Actions** (`app/actions.ts`) : validation côté
-serveur, protection anti-spam (champ piège invisible + délai minimal de saisie, sans cookie ni
-service tiers) puis envoi d'un e-mail par **SMTP** (`lib/email.ts`, avec nodemailer).
-« Répondre » dans la messagerie du club répond directement à la famille.
-
-Variables à définir dans Netlify (réglages du projet → Environment variables), modèle dans
-`.env.example` :
-
-| Variable | Exemple | Rôle |
+| Variable | Obligatoire | Rôle |
 | --- | --- | --- |
-| `SMTP_HOST` | `smtp.gmail.com`, `ssl0.ovh.net` | serveur d'envoi de la messagerie du club |
-| `SMTP_PORT` | `465` ou `587` | port (465 = SSL) |
-| `SMTP_USER` | `site@votre-domaine.fr` | compte utilisé pour envoyer |
-| `SMTP_PASS` | — | mot de passe (Gmail : « mot de passe d'application ») |
-| `FORM_TO` | `bureau@votre-domaine.fr` | destinataire(s) des messages, séparés par des virgules |
-| `FORM_TO_STAGES` | `stages@votre-domaine.fr` | facultatif : destinataire des inscriptions aux stages |
-| `FORM_FROM` | `site@votre-domaine.fr` | facultatif : adresse d'expédition (par défaut `SMTP_USER`) |
+| `ADMIN_PASSWORD` | oui, pour l'Espace dirigeants | mot de passe du bureau (phrase longue) ; le changer déconnecte tout le monde |
+| `ADMIN_SECRET` | non | chaîne aléatoire supplémentaire pour signer la session |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` | non | serveur d'envoi de la messagerie du club (Gmail : mot de passe d'application) |
+| `FORM_TO` | avec SMTP | destinataire(s) des messages, séparés par des virgules |
+| `FORM_TO_INSCRIPTIONS`, `FORM_TO_STAGES` | non | destinataires des préinscriptions et des stages (sinon `FORM_TO`) |
+| `FORM_FROM` | non | adresse d'expédition (sinon `SMTP_USER`) |
 
-Sans ces variables : en local, le message s'affiche dans le terminal (pour tester) ; en
-production, le visiteur est invité à écrire directement par e-mail ou WhatsApp.
+Après avoir ajouté ou modifié une variable, relancez un déploiement (Deploys → Trigger deploy).
+
+### Où vont les demandes ?
+
+Les demandes des formulaires sont enregistrées dans **Netlify Blobs** (stockage inclus dans
+Netlify, données hébergées dans l'Union européenne, à Francfort) et consultées dans l'Espace
+dirigeants. Sans SMTP, rien n'est envoyé par e-mail mais rien n'est perdu. En cas d'échec des deux,
+le visiteur est invité à écrire directement par e-mail ou WhatsApp.
+
+### Nom de domaine
+
+Pour brancher `nantes-breil-basket.fr` : réglages du projet → Domain management. Vérifiez
+`CLUB.siteUrl` dans `data/nbb.ts` (référencement, aperçus de partage, plan du site).
 
 ## Choix techniques
 
-- **Fidélité à la maquette** : couleurs, typographies, espacements et composants de l'export Claude
-  Design sont repris dans `app/globals.css` (variables sous `:root`). Les emplacements photo rayés
-  s'affichent tant qu'aucune photo n'est fournie (`components/Photo.tsx`).
+- **Fidélité à la maquette** : couleurs, typographies, espacements, rayons et composants de l'export
+  Claude Design sont repris dans `app/globals.css` (variables sous `:root`). Sans photo fournie, un
+  motif aux couleurs du club (ou des initiales) s'affiche à la place (`components/Photo.tsx`).
 - **RGPD** : polices auto-hébergées (aucune requête vers Google pour les visiteurs), aucun cookie
-  publicitaire ni outil de mesure d'audience, widget Score'n'co chargé uniquement après accord
-  (bandeau + lien « Gérer les cookies », choix conservé 6 mois), carte OpenStreetMap.
-- **Accessibilité** : lien d'évitement, navigation clavier (menu mobile fermé par Échap), focus
-  visibles, libellés et messages d'erreur reliés aux champs, textes alternatifs, contrastes de la
-  charte, animations désactivées si l'utilisateur le demande (`prefers-reduced-motion`).
-- **Référencement local** : titres et descriptions par page, adresses canoniques, plan du site
-  (`/sitemap.xml`), `robots.txt`, données structurées `SportsClub` (schema.org), image de partage
-  (`public/og-image.png`), manifeste pour l'ajout à l'écran d'accueil du téléphone.
-- **Animations** : apparition des blocs au défilement, parallaxe des photos, en-tête qui se densifie,
-  réponses de la FAQ qui se déplient, survols et lueur qui suit la souris. Tout est réuni à la fin de
-  `app/globals.css` (sauf la position de la souris, fournie par `components/EffetsPointeur.tsx`) et tout
-  s'efface si le visiteur a demandé moins d'animations. Les apparitions reposent sur les animations liées
-  au défilement du navigateur : aucun script, et rien ne reste caché sur un navigateur qui ne les gère pas.
-- **Robustesse** : filtres du planning et des gymnases gardés dans l'adresse (liens partageables) ;
-  sans JavaScript, le planning complet et tous les gymnases restent affichés.
+  publicitaire ni outil de mesure d'audience ; carte Google Maps et widget de résultats chargés
+  uniquement après accord (bandeau, choix conservé 6 mois, « Gérer les cookies » en pied de page).
+  La maquette prévoyait une option « mesure d'audience » : aucun outil de ce type n'étant installé,
+  elle n'est pas proposée.
+- **Sécurité** : Espace dirigeants protégé par mot de passe (cookie signé, `httpOnly`, 12 h), non
+  indexé ; formulaires validés côté serveur, anti-spam sans service tiers (champ piège, délai
+  minimal, question anti-robot pour le contact) ; export CSV protégé contre les formules Excel.
+- **Accessibilité** : lien d'évitement, navigation clavier, fenêtres modales natives (`<dialog>` :
+  focus conservé, Échap), erreurs reliées aux champs, textes alternatifs, animations désactivées
+  si l'utilisateur le demande (`prefers-reduced-motion`).
+- **Référencement local** : titres et descriptions par page, adresses canoniques, `sitemap.xml`,
+  `robots.txt`, données structurées `SportsClub` (schema.org), image de partage, manifeste.
+- **Animations** : apparition des blocs au défilement et légère parallaxe des photos, en CSS pur
+  (`animation-timeline`), regroupées à la fin de `app/globals.css`.
+- **Robustesse** : filtres du planning gardés dans l'adresse (liens partageables) ; sans
+  JavaScript, le planning complet reste affiché.

@@ -1,97 +1,143 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
-import type { EtatFormulaire } from "@/lib/formulaires";
+import { useId } from "react";
 
-/**
- * Champs cachés anti-spam : un champ piège que seuls les robots remplissent,
- * et l'heure d'affichage du formulaire (un humain met plus de 3 secondes à le remplir).
- */
-export function ChampsAntiSpam({ prefixe }: { prefixe: string }) {
-  const horodatage = useRef<HTMLInputElement>(null);
-  useEffect(() => {
-    if (horodatage.current && !horodatage.current.value) horodatage.current.value = String(Date.now());
-  }, []);
-
+/** Message d'erreur relié à son champ (lu par les lecteurs d'écran dès qu'il apparaît). */
+export function Erreur({ id, message }: { id?: string; message?: string }) {
   return (
-    <>
-      <div className="hp" aria-hidden="true">
-        <label htmlFor={`${prefixe}-site`}>Ne remplissez pas ce champ</label>
-        <input id={`${prefixe}-site`} name="website" type="text" tabIndex={-1} autoComplete="off" defaultValue="" />
-      </div>
-      <input ref={horodatage} type="hidden" name="t" defaultValue="" />
-    </>
+    <span id={id} className="erreur" role="alert">
+      {message ?? ""}
+    </span>
   );
 }
 
-/** Libellé + champ + message d'erreur éventuel. */
-export function Champ({
-  id,
+type Base = {
+  label: React.ReactNode;
+  erreur?: string;
+  aide?: React.ReactNode;
+  className?: string;
+};
+
+export function ChampTexte({
   label,
   erreur,
-  children,
-}: {
-  id: string;
-  label: string;
-  erreur?: string;
-  children: ReactNode;
-}) {
+  aide,
+  className,
+  ...input
+}: Base & React.InputHTMLAttributes<HTMLInputElement>) {
+  const id = useId();
   return (
-    <div>
-      <label htmlFor={id} className="label">
-        {label}
+    <div className={`champ ${className ?? ""}`}>
+      <label htmlFor={id}>{label}</label>
+      <input
+        id={id}
+        className="saisie"
+        aria-invalid={erreur ? true : undefined}
+        aria-describedby={`${id}-e${aide ? ` ${id}-a` : ""}`}
+        {...input}
+      />
+      {aide ? (
+        <span id={`${id}-a`} className="champ__aide">
+          {aide}
+        </span>
+      ) : null}
+      <Erreur id={`${id}-e`} message={erreur} />
+    </div>
+  );
+}
+
+export function ChampZone({
+  label,
+  erreur,
+  className,
+  ...zone
+}: Base & React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
+  const id = useId();
+  return (
+    <div className={`champ ${className ?? ""}`}>
+      <label htmlFor={id}>{label}</label>
+      <textarea
+        id={id}
+        className="saisie saisie--zone"
+        aria-invalid={erreur ? true : undefined}
+        aria-describedby={`${id}-e`}
+        {...zone}
+      />
+      <Erreur id={`${id}-e`} message={erreur} />
+    </div>
+  );
+}
+
+export function ChampListe({
+  label,
+  erreur,
+  aide,
+  className,
+  children,
+  ...select
+}: Base & React.SelectHTMLAttributes<HTMLSelectElement>) {
+  const id = useId();
+  return (
+    <div className={`champ ${className ?? ""}`}>
+      <label htmlFor={id}>{label}</label>
+      <select
+        id={id}
+        className="saisie"
+        aria-invalid={erreur ? true : undefined}
+        aria-describedby={`${id}-e${aide ? ` ${id}-a` : ""}`}
+        {...select}
+      >
+        {children}
+      </select>
+      {aide ? (
+        <span id={`${id}-a`} className="champ__aide">
+          {aide}
+        </span>
+      ) : null}
+      {erreur !== undefined ? <Erreur id={`${id}-e`} message={erreur} /> : null}
+    </div>
+  );
+}
+
+export function CaseACocher({
+  children,
+  erreur,
+  encadree,
+  ...input
+}: { children: React.ReactNode; erreur?: string; encadree?: boolean } & React.InputHTMLAttributes<HTMLInputElement>) {
+  const id = useId();
+  return (
+    <div className="case-bloc">
+      <label className={encadree ? "case case--encadree" : "case"}>
+        <input type="checkbox" aria-invalid={erreur ? true : undefined} aria-describedby={`${id}-e`} {...input} />
+        <span>{children}</span>
       </label>
+      {erreur !== undefined ? <Erreur id={`${id}-e`} message={erreur} /> : null}
+    </div>
+  );
+}
+
+/** Champ invisible : seuls les robots le remplissent. */
+export function Piege({ valeur, onChange, label = "Ne pas remplir" }: { valeur: string; onChange: (v: string) => void; label?: string }) {
+  return (
+    <div aria-hidden="true" className="piege">
+      <label>
+        {label}
+        <input tabIndex={-1} autoComplete="off" value={valeur} onChange={(e) => onChange(e.target.value)} />
+      </label>
+    </div>
+  );
+}
+
+/** Confirmation après envoi. */
+export function Confirmation({ titre, children }: { titre: string; children: React.ReactNode }) {
+  return (
+    <div role="status" className="confirmation">
+      <span aria-hidden="true" className="confirmation__coche">
+        ✓
+      </span>
+      <h3 className="confirmation__titre">{titre}</h3>
       {children}
-      {erreur && (
-        <p id={`${id}-erreur`} className="field-error">
-          {erreur}
-        </p>
-      )}
-    </div>
-  );
-}
-
-/** Attributs d'accessibilité d'un champ en erreur. */
-export function aria(id: string, erreur?: string) {
-  return erreur ? { "aria-invalid": true as const, "aria-describedby": `${id}-erreur` } : {};
-}
-
-/** Encadré d'erreur générale (en haut du formulaire). */
-export function AlerteFormulaire({ etat }: { etat: EtatFormulaire }) {
-  if (etat.statut !== "erreur" || !etat.message) return null;
-  return (
-    <div role="alert" className="form-alert">
-      {etat.message}
-    </div>
-  );
-}
-
-/** Message de confirmation, qui reçoit le focus pour être lu par les lecteurs d'écran. */
-export function Confirmation({
-  titre,
-  children,
-  bouton,
-  onNouveau,
-}: {
-  titre: string;
-  children: ReactNode;
-  bouton: string;
-  onNouveau: () => void;
-}) {
-  const boite = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    boite.current?.focus();
-  }, []);
-
-  return (
-    <div ref={boite} role="status" tabIndex={-1} className="status-box">
-      <p className="title-card" style={{ fontSize: 22, marginBottom: 8 }}>
-        {titre}
-      </p>
-      <p style={{ color: "var(--cream)" }}>{children}</p>
-      <button type="button" className="btn btn--quiet btn--sm" style={{ marginTop: 16 }} onClick={onNouveau}>
-        {bouton}
-      </button>
     </div>
   );
 }

@@ -1,50 +1,57 @@
 "use client";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { grille } from "@/lib/style";
-import type { Creneau, Jour } from "@/lib/types";
-import { lienGymnase, pluriel } from "@/lib/utils";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useSyncExternalStore } from "react";
+import type { Jour } from "@/lib/types";
+import type { CreneauPlanning } from "@/lib/nbb";
 
-type Filtres = { equipe: string; gym: string; jour: string };
-type Donnees = { creneaux: Creneau[]; equipes: string[]; gymnases: string[]; jours: Jour[] };
+type Filtres = { equipe: string; gymnase: string; jour: string };
+type Donnees = { creneaux: CreneauPlanning[]; equipes: string[]; gymnases: string[]; jours: Jour[] };
 
-const AUCUN_FILTRE: Filtres = { equipe: "", gym: "", jour: "" };
+const AUCUN: Filtres = { equipe: "", gymnase: "", jour: "" };
+const JOURS_SEMAINE: Jour[] = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
 
-/** Affichage du planning pour des filtres donnés. */
+const sansAbonnement = () => () => {};
+
+/** Jour de la semaine chez le visiteur (null pendant le rendu serveur). */
+function useJourCourant(): Jour | null {
+  return useSyncExternalStore(
+    sansAbonnement,
+    () => JOURS_SEMAINE[new Date().getDay()],
+    () => null,
+  );
+}
+
+/** Planning affiché pour des filtres donnés (sans filtre : tout le planning, y compris sans JavaScript). */
 export function PlanningVue({
   creneaux,
   equipes,
   gymnases,
   jours,
-  filtres = AUCUN_FILTRE,
+  filtres = AUCUN,
   onChange,
 }: Donnees & { filtres?: Filtres; onChange?: (f: Filtres) => void }) {
-  const maj = (f: Filtres) => onChange?.(f);
+  const aujourdhui = useJourCourant();
+  const maj = (f: Partial<Filtres>) => onChange?.({ ...filtres, ...f });
   const affiches = creneaux.filter(
     (s) =>
       (!filtres.equipe || s.equipes.includes(filtres.equipe)) &&
-      (!filtres.gym || s.gymnase === filtres.gym) &&
+      (!filtres.gymnase || s.gymnase === filtres.gymnase) &&
       (!filtres.jour || s.jour === filtres.jour),
   );
   const parJour = jours
-    .map((jour) => ({ jour, creneaux: affiches.filter((c) => c.jour === jour) }))
-    .filter((j) => j.creneaux.length > 0);
+    .map((jour) => ({ jour, liste: affiches.filter((c) => c.jour === jour) }))
+    .filter((j) => j.liste.length > 0);
+  const n = affiches.length;
 
   return (
     <>
-      <section className="section section--tight" aria-label="Filtres du planning">
-        <div className="filters">
-          <div>
-            <label htmlFor="f-equipe" className="label">
-              Équipe
-            </label>
-            <select
-              id="f-equipe"
-              className="select"
-              value={filtres.equipe}
-              onChange={(e) => maj({ ...filtres, equipe: e.target.value })}
-            >
+      <div className="filtres-planning" data-noprint="">
+        <form role="search" aria-label="Filtrer le planning" onSubmit={(e) => e.preventDefault()} className="filtres">
+          <label className="filtres__champ">
+            Équipe
+            <select className="saisie" value={filtres.equipe} onChange={(e) => maj({ equipe: e.target.value })}>
               <option value="">Toutes les équipes</option>
               {equipes.map((e) => (
                 <option key={e} value={e}>
@@ -52,17 +59,10 @@ export function PlanningVue({
                 </option>
               ))}
             </select>
-          </div>
-          <div>
-            <label htmlFor="f-gym" className="label">
-              Gymnase
-            </label>
-            <select
-              id="f-gym"
-              className="select"
-              value={filtres.gym}
-              onChange={(e) => maj({ ...filtres, gym: e.target.value })}
-            >
+          </label>
+          <label className="filtres__champ">
+            Gymnase
+            <select className="saisie" value={filtres.gymnase} onChange={(e) => maj({ gymnase: e.target.value })}>
               <option value="">Tous les gymnases</option>
               {gymnases.map((g) => (
                 <option key={g} value={g}>
@@ -70,17 +70,10 @@ export function PlanningVue({
                 </option>
               ))}
             </select>
-          </div>
-          <div>
-            <label htmlFor="f-jour" className="label">
-              Jour
-            </label>
-            <select
-              id="f-jour"
-              className="select"
-              value={filtres.jour}
-              onChange={(e) => maj({ ...filtres, jour: e.target.value })}
-            >
+          </label>
+          <label className="filtres__champ">
+            Jour
+            <select className="saisie" value={filtres.jour} onChange={(e) => maj({ jour: e.target.value })}>
               <option value="">Tous les jours</option>
               {jours.map((j) => (
                 <option key={j} value={j}>
@@ -88,88 +81,102 @@ export function PlanningVue({
                 </option>
               ))}
             </select>
+          </label>
+          <div className="filtres__boutons">
+            <button type="button" className="btn btn--contour" onClick={() => onChange?.(AUCUN)}>
+              Réinitialiser
+            </button>
+            <button type="button" className="btn btn--nuit" onClick={() => window.print()}>
+              Imprimer
+            </button>
           </div>
-          <button type="button" className="filters__reset" onClick={() => maj(AUCUN_FILTRE)}>
-            Réinitialiser
-          </button>
+        </form>
+      </div>
+
+      <section aria-live="polite" className="section" style={{ paddingTop: 28, paddingBottom: 80 }}>
+        <div className="planning__resume">
+          <p className="planning__compte">
+            {n} créneau{n > 1 ? "x" : ""} affiché{n > 1 ? "s" : ""}
+            {filtres.equipe ? ` pour ${filtres.equipe}` : ""}
+          </p>
+          <p className="planning__liens">
+            Pour la fiche complète d'une équipe : <Link href="/equipes">Nos équipes</Link> · Adresses :{" "}
+            <Link href="/infos">Gymnases &amp; accès</Link>
+          </p>
         </div>
-        <p className="count" aria-live="polite">
-          {pluriel(affiches.length, "créneau affiché", "créneaux affichés")}
-        </p>
-      </section>
-
-      {parJour.map((j) => (
-        <section key={j.jour} className="section" style={{ paddingTop: 26 }} aria-labelledby={`jour-${j.jour}`}>
-          <h2 id={`jour-${j.jour}`} className="day-title">
-            {j.jour}
-          </h2>
-          <div className="grid" style={grille(255, { gap: "14px" })}>
-            {j.creneaux.map((c) => (
-              <article key={c.id} className="slot-card bar-card">
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
-                  <p className="slot-card__time">
-                    {c.debut} – {c.fin}
-                  </p>
-                  <p className="slot-card__duration">{c.duree}</p>
-                </div>
-                <p className="slot-card__gym">
-                  Gymnase{" "}
-                  <Link href={lienGymnase(c.gymnase)} className="link-inline">
-                    {c.gymnase}
+        {parJour.map(({ jour, liste }) => (
+          <div key={jour} className="planning__jour">
+            <h2 className="planning__titre-jour">
+              {jour}
+              {jour === aujourdhui ? <span className="planning__aujourdhui">Aujourd'hui</span> : null}
+              <span className="planning__trait" />
+              <span className="planning__nb">
+                {liste.length} créneau{liste.length > 1 ? "x" : ""}
+              </span>
+            </h2>
+            <div className="grille grille--remplir" style={{ "--min": "290px" } as React.CSSProperties}>
+              {liste.map((c) => (
+                <article key={c.cle} className="creneau">
+                  <div className="creneau__tete">
+                    <div className="creneau__horaire">{c.horaire}</div>
+                    <span className="creneau__duree">{c.duree}</span>
+                  </div>
+                  <Link href={c.lienGymnase} className="creneau__gymnase">
+                    Gymnase <strong>{c.gymnase}</strong>
                   </Link>
-                </p>
-                <div className="slot-card__teams">
-                  {c.equipes.map((eq) => (
-                    <span key={eq} className="tag">
-                      {eq}
-                    </span>
-                  ))}
-                </div>
-                <p className="slot-card__coachs">
-                  <strong style={{ color: "#fff" }}>Encadrement :</strong> {c.coachs.join(", ")}
-                </p>
-              </article>
-            ))}
+                  <div className="creneau__equipes">
+                    {c.etiquettes.map((e) => (
+                      <span key={e}>{e}</span>
+                    ))}
+                  </div>
+                  <div className="creneau__coach">
+                    Coach : <strong>{c.coachs}</strong>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
-        </section>
-      ))}
-
-      {affiches.length === 0 && (
-        <section className="section" style={{ paddingTop: 26 }}>
-          <div className="empty-state">
-            <p style={{ fontWeight: 700, color: "#fff", fontSize: 19 }}>Aucun créneau trouvé</p>
-            <p style={{ marginTop: 8 }}>Modifiez ou réinitialisez les filtres.</p>
+        ))}
+        {n === 0 ? (
+          <div className="vide">
+            <strong>Aucun créneau trouvé</strong>
+            Modifiez ou réinitialisez les filtres.
           </div>
-        </section>
-      )}
+        ) : null}
+        <div className="encart-bleu-large" data-noprint="">
+          <p>
+            Vérifiez toujours la présence du coach avant de laisser votre enfant au gymnase. Un changement de dernière
+            minute ? Il est annoncé sur le groupe WhatsApp du club.
+          </p>
+          <Link href="/contact?sujet=creneau" className="btn btn--s btn--petit btn--bleu">
+            Signaler une erreur
+          </Link>
+        </div>
+      </section>
     </>
   );
 }
 
-/**
- * Planning filtrable. Les filtres sont gardés dans l'adresse de la page
- * (ex. /planning?equipe=U11F1) : on peut partager un lien déjà filtré.
- */
-export function PlanningExplorer(donnees: Donnees) {
+/** Planning dont les filtres sont gardés dans l'adresse (/planning?equipe=U11F1) : liens partageables. */
+export function PlanningAvecAdresse(props: Donnees) {
   const params = useSearchParams();
-  const lire = (cle: string, valides: readonly string[]) => {
+  const chemin = usePathname();
+  const lire = (cle: string, valides: string[]) => {
     const v = params.get(cle) ?? "";
     return valides.includes(v) ? v : "";
   };
   const filtres: Filtres = {
-    equipe: lire("equipe", donnees.equipes),
-    gym: lire("gym", donnees.gymnases),
-    jour: lire("jour", donnees.jours),
+    equipe: lire("equipe", props.equipes),
+    gymnase: lire("gymnase", props.gymnases),
+    jour: lire("jour", props.jours),
   };
-
-  const onChange = (f: Filtres) => {
+  const changer = (f: Filtres) => {
     const q = new URLSearchParams();
     if (f.equipe) q.set("equipe", f.equipe);
-    if (f.gym) q.set("gym", f.gym);
+    if (f.gymnase) q.set("gymnase", f.gymnase);
     if (f.jour) q.set("jour", f.jour);
-    const s = q.toString();
-    window.history.replaceState(null, "", s ? `?${s}` : window.location.pathname);
+    const texte = q.toString();
+    window.history.replaceState(null, "", texte ? `${chemin}?${texte}` : chemin);
   };
-
-  return <PlanningVue {...donnees} filtres={filtres} onChange={onChange} />;
+  return <PlanningVue {...props} filtres={filtres} onChange={changer} />;
 }

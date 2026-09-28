@@ -1,74 +1,52 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { PageHero } from "@/components/PageHero";
-import { Photo } from "@/components/Photo";
-import { SmartLink } from "@/components/SmartLink";
 import { ALBUMS } from "@/data/nbb";
-import { metaPage } from "@/lib/seo";
-import { grille } from "@/lib/style";
-import { estLienExterne } from "@/lib/utils";
+import { EntetePage } from "@/components/Page";
+import { Terrain } from "@/components/Terrain";
+import { Albums } from "@/components/Albums";
 
-export const metadata = metaPage({
-  titre: "Galerie photos",
-  description:
-    "Les photos du Nantes Breil Basket : matchs, journée du mini-basket, tournois, stages et vie du club, saison après saison.",
-  chemin: "/galerie",
-});
+export const metadata: Metadata = {
+  title: "Galerie photos",
+  description: "Galerie photos du Nantes Breil Basket : mini-basket, stages, matchs et vie du club à Nantes.",
+  alternates: { canonical: "/galerie" },
+};
 
-export default function PageGalerie() {
+export default function Galerie() {
   return (
-    <div className="page">
-      <PageHero kicker="Photos" title="Galerie">
-        <p className="lead">
-          Les moments du club, saison après saison. Merci à EMMATITIA et aux parents photographes.
-        </p>
-      </PageHero>
-
-      <section className="section">
-        <ul className="grid" style={grille(260)}>
-          {ALBUMS.map((a) => {
-            const contenu = (
-              <>
-                <Photo
-                  photo={a.photo}
-                  alt={`Album : ${a.titre}`}
-                  className="album__photo"
-                  sizes="(max-width: 600px) 100vw, (max-width: 1100px) 50vw, 33vw"
-                />
-                <span className="album__body" style={{ display: "block" }}>
-                  <span className="album__title" style={{ display: "block" }}>
-                    {a.titre}
-                  </span>
-                  <span className="album__meta" style={{ display: "block" }}>
-                    {a.meta}
-                  </span>
-                </span>
-              </>
-            );
-            return (
-              <li key={a.titre}>
-                {estLienExterne(a.lien) || a.lien.startsWith("/") ? (
-                  <SmartLink href={a.lien} className="album">
-                    {contenu}
-                  </SmartLink>
-                ) : (
-                  <div className="album">{contenu}</div>
-                )}
-              </li>
-            );
-          })}
-        </ul>
+    <>
+      <EntetePage
+        fil="Galerie"
+        largeurChapo={600}
+        decor={
+          <Terrain motif="cote" style={{ top: "50%", right: 0, height: "112%", transform: "translateY(-50%)" }} />
+        }
+        titre={
+          <>
+            La <span className="accent">galerie</span>
+          </>
+        }
+        chapo="Les moments du club, saison après saison. Merci à EMMATITIA, notre partenaire photographe, et aux parents qui immortalisent les matchs."
+      />
+      <section className="section" style={{ paddingTop: 48, paddingBottom: 40 }}>
+        <Albums albums={ALBUMS} />
       </section>
-
-      <section className="section">
-        <div className="card card--accent">
-          <p className="accent-title">Droit à l&apos;image des mineurs</p>
-          <p className="accent-text">
-            Aucune photo d&apos;un enfant n&apos;est publiée sans autorisation écrite de ses représentants légaux. Les
-            photos de groupe privilégient les plans larges et ne comportent ni nom ni information personnelle. Pour
-            faire retirer une photo, un message suffit : <Link href="/contact?sujet=image">nous contacter</Link>.
-          </p>
+      <section className="section" style={{ paddingTop: 24, paddingBottom: 88 }}>
+        <div className="encart-bleu-large" style={{ marginTop: 0, padding: 26, borderRadius: 26 }}>
+          <div style={{ maxWidth: 800 }}>
+            <h2 className="titre-bloc" style={{ fontSize: 28, marginBottom: 8 }}>
+              Droit à l'image des mineurs
+            </h2>
+            <p>
+              Aucune photo d'enfant n'est publiée sans autorisation écrite de ses représentants légaux, recueillie à
+              l'inscription. Les photos de groupe privilégient les plans larges et ne comportent ni nom ni information
+              personnelle.
+            </p>
+          </div>
+          <Link href="/contact?sujet=image" className="btn btn--petit btn--bleu">
+            Demander un retrait
+          </Link>
         </div>
       </section>
-    </div>
+    </>
   );
 }

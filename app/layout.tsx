@@ -1,87 +1,56 @@
 import type { Metadata, Viewport } from "next";
-import { Anton, Barlow, Barlow_Condensed } from "next/font/google";
-import { AncreAuChargement } from "@/components/AncreAuChargement";
-import { CookieBanner } from "@/components/CookieBanner";
-import { EffetsPointeur } from "@/components/EffetsPointeur";
-import { Footer } from "@/components/Footer";
+import { Big_Shoulders, Instrument_Sans, JetBrains_Mono } from "next/font/google";
+import { CLUB } from "@/data/nbb";
 import { Header } from "@/components/Header";
-import { CLUB, STATS } from "@/data/nbb";
-import { IMAGE_PARTAGE } from "@/lib/seo";
+import { Footer } from "@/components/Footer";
 import "./globals.css";
 
-// Polices téléchargées à la construction du site puis servies par le site lui-même :
-// aucune requête vers Google pour les visiteurs (RGPD).
-const anton = Anton({ weight: "400", subsets: ["latin"], variable: "--font-anton", display: "swap" });
-const barlow = Barlow({
-  weight: ["400", "500", "600", "700"],
+// Polices téléchargées au moment de la construction et servies par le site : aucune requête vers Google.
+// (Pas de police de repli ajustée pour Big Shoulders : Next ne connaît pas ses métriques.)
+const titre = Big_Shoulders({
   subsets: ["latin"],
-  variable: "--font-barlow",
+  axes: ["opsz"],
+  variable: "--font-titre",
   display: "swap",
+  adjustFontFallback: false,
 });
-const barlowCondensed = Barlow_Condensed({
-  weight: ["600", "700"],
-  subsets: ["latin"],
-  variable: "--font-barlow-condensed",
-  display: "swap",
-});
+const texte = Instrument_Sans({ subsets: ["latin"], variable: "--font-texte", display: "swap" });
+const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["500", "600"], variable: "--font-mono", display: "swap" });
 
-const DESCRIPTION = `Nantes Breil Basket : club de basket à Nantes, quartier Breil / Hauts-Pavés. École de mini-basket labellisée 3 étoiles, ${STATS.equipes} équipes du micro-basket aux seniors, planning des entraînements, stages des vacances et inscriptions.`;
+const description =
+  "Club de basket associatif à Nantes (Breil / Hauts-Pavés) : école de mini-basket labellisée 3 étoiles et Micro Basket, école d'arbitrage, 28 équipes du micro-basket aux seniors, stages vacances et inscriptions en ligne.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(CLUB.siteUrl),
   title: {
-    default: "Nantes Breil Basket — club de basket à Nantes, quartier Breil / Hauts-Pavés",
-    template: `%s — ${CLUB.nom}`,
+    default: "Nantes Breil Basket — club de basket à Nantes, Breil / Hauts-Pavés",
+    template: "%s — Nantes Breil Basket",
   },
-  description: DESCRIPTION,
+  description,
   applicationName: CLUB.nom,
-  keywords: [
-    "basket Nantes",
-    "club de basket Nantes",
-    "Nantes Breil Basket",
-    "NBB",
-    "Breil",
-    "Hauts-Pavés",
-    "mini-basket Nantes",
-    "école de basket",
-    "stage basket vacances Nantes",
-  ],
   openGraph: {
     type: "website",
     locale: "fr_FR",
     siteName: CLUB.nom,
-    title: "Nantes Breil Basket — club de basket à Nantes",
-    description: DESCRIPTION,
-    url: "/",
-    images: [IMAGE_PARTAGE],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Nantes Breil Basket — club de basket à Nantes" }],
   },
   twitter: { card: "summary_large_image" },
+  formatDetection: { telephone: false },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#071228",
-  colorScheme: "dark",
+  themeColor: "#0A1733",
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="fr"
-      data-scroll-behavior="smooth"
-      className={`${anton.variable} ${barlow.variable} ${barlowCondensed.variable}`}
-    >
+    <html lang="fr" className={`${titre.variable} ${texte.variable} ${mono.variable}`}>
       <body>
-        <a className="skip-link" href="#contenu">
-          Aller au contenu
-        </a>
-        <Header />
+        <Header liens={{ boutique: CLUB.boutique, facebook: CLUB.facebook, instagram: CLUB.instagram, whatsapp: CLUB.whatsapp }} />
         <main id="contenu" tabIndex={-1}>
           {children}
         </main>
         <Footer />
-        <CookieBanner />
-        <AncreAuChargement />
-        <EffetsPointeur />
       </body>
     </html>
   );

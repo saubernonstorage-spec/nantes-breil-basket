@@ -1,45 +1,27 @@
-import { CLUB, GYMNASES } from "@/data/nbb";
-import { estACompleter, estEmail } from "@/lib/utils";
+import { CLUB } from "@/data/nbb";
 
-/**
- * Données structurées (schema.org) pour le référencement local :
- * Google comprend qu'il s'agit d'un club de basket à Nantes.
- * Les informations encore « [À COMPLÉTER] » sont simplement omises.
- */
+/** Données structurées schema.org (SportsClub) pour les moteurs de recherche. */
 export function JsonLdClub() {
-  const principal = GYMNASES[0];
-  const adresse =
-    principal && !estACompleter(principal.adresse) ? principal.adresse.match(/^(.*),\s*(\d{5})\s+(.+)$/) : null;
-
-  const donnees: Record<string, unknown> = {
+  const [, rue, cpVille] = CLUB.adresse.split("\n");
+  const [codePostal, ...ville] = (cpVille ?? "").split(" ");
+  const donnees = {
     "@context": "https://schema.org",
     "@type": "SportsClub",
     name: CLUB.nom,
-    alternateName: CLUB.sigle,
+    sport: "Basketball",
+    email: CLUB.email,
     url: CLUB.siteUrl,
     logo: `${CLUB.siteUrl}/logo-nbb.png`,
-    image: `${CLUB.siteUrl}/logo-nbb.png`,
-    description: `Club de basket associatif du quartier ${CLUB.quartier} à ${CLUB.ville}. École de mini-basket labellisée 3 étoiles par la FFBB.`,
-    sport: "Basketball",
-    areaServed: { "@type": "City", name: CLUB.ville },
-    sameAs: [CLUB.facebook, CLUB.instagram].filter((u) => u.startsWith("http")),
-  };
-
-  if (adresse) {
-    donnees.address = {
+    foundingDate: CLUB.fondation,
+    address: {
       "@type": "PostalAddress",
-      streetAddress: adresse[1],
-      postalCode: adresse[2],
-      addressLocality: adresse[3],
+      streetAddress: rue,
+      postalCode: codePostal,
+      addressLocality: ville.join(" "),
       addressCountry: "FR",
-    };
-  }
-  if (principal?.lat && principal?.lon) {
-    donnees.geo = { "@type": "GeoCoordinates", latitude: principal.lat, longitude: principal.lon };
-  }
-  if (!estACompleter(CLUB.email) && estEmail(CLUB.email)) donnees.email = CLUB.email.trim();
-  if (!estACompleter(CLUB.telephone)) donnees.telephone = CLUB.telephone;
-
+    },
+    sameAs: [CLUB.facebook, CLUB.instagram, CLUB.linkedin],
+  };
   return (
     <script
       type="application/ld+json"

@@ -1,39 +1,109 @@
-import { EquipesExplorer } from "@/components/EquipesExplorer";
-import { CLUB, NOTE_HPB, STATS } from "@/data/nbb";
-import { equipesParCategorie, nbGroupes } from "@/lib/nbb";
-import { metaPage } from "@/lib/seo";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { CLUB, STATS } from "@/data/nbb";
+import { equipesParCategorie, toutesLesEquipes } from "@/lib/nbb";
+import { EntetePage } from "@/components/Page";
+import { Photo } from "@/components/Photo";
+import { Terrain } from "@/components/Terrain";
+import { BoutonClassement, ZoomPhoto } from "@/components/EquipeFenetres";
 
-export const metadata = metaPage({
-  titre: "Nos équipes",
-  description: `Toutes les équipes du Nantes Breil Basket, du micro-basket aux seniors et loisirs : encadrement, créneaux d'entraînement et gymnases, saison ${CLUB.saison}.`,
-  chemin: "/equipes",
-});
+export const metadata: Metadata = {
+  title: `Nos équipes ${CLUB.saison}`,
+  description:
+    "Les équipes du Nantes Breil Basket : micro-basket, U7, U9, U11, U13, U15, U18, seniors et loisirs. Entraîneurs, horaires, gymnases et cotisation de chaque équipe.",
+  alternates: { canonical: "/equipes" },
+};
 
-export default function PageEquipes() {
-  const groupes = equipesParCategorie().map(({ cle, nom, ages, resume, equipes }) => ({ cle, nom, ages, resume, equipes }));
+export default function Equipes() {
+  const groupes = equipesParCategorie();
 
   return (
-    <div className="page">
-      <EquipesExplorer
-        groupes={groupes}
-        bandeau={
+    <>
+      <EntetePage
+        fil={`Équipes · saison ${CLUB.saison}`}
+        decor={<Terrain motif="angle" style={{ top: 0, right: 0, width: "min(50%, 600px)" }} />}
+        titre={
           <>
-            <p className="kicker">Saison {CLUB.saison}</p>
-            <h1 className="title-page">Nos équipes</h1>
-            <p className="lead">
-              {STATS.equipes} équipes engagées en championnat, {nbGroupes()} groupes à l&apos;entraînement (loisirs
-              et groupement HPB compris). Chaque fiche indique l&apos;encadrement, les créneaux et le gymnase,
-              d&apos;après le planning officiel du club.
-            </p>
+            Nos <span className="accent">équipes</span>
           </>
         }
+        chapo={`${STATS.equipes} équipes engagées en championnat et ${toutesLesEquipes().length} groupes à l'entraînement. Chaque fiche reprend le planning officiel : coachs, créneaux, gymnases et cotisation.`}
       />
 
-      <section className="section" style={{ paddingTop: "clamp(36px, 5vw, 64px)" }}>
-        <div className="card card--dashed">
-          <p className="text-soft text-md">{NOTE_HPB}</p>
+      <div className="section" style={{ paddingTop: 24, paddingBottom: 88 }}>
+        {groupes.map((g) => (
+          <section key={g.cle} id={g.cle} aria-labelledby={`t-${g.cle}`} className="groupe-equipes">
+            <div className="groupe-equipes__tete">
+              <div>
+                <div className="surtitre">
+                  {g.ages} · {g.nb}
+                </div>
+                <h2 id={`t-${g.cle}`} className="titre-section" style={{ fontSize: "clamp(40px, 5vw, 68px)" }}>
+                  {g.nom}
+                </h2>
+              </div>
+              <p className="tete-section__texte" style={{ maxWidth: 460 }}>
+                {g.resume}
+              </p>
+            </div>
+            <div className="grille grille--remplir" style={{ "--min": "310px", gap: 16 } as React.CSSProperties}>
+              {g.equipes.map((t) => (
+                <article key={t.nom} id={t.ancre} className="equipe">
+                  <div className="equipe__photo">
+                    {t.photo ? <ZoomPhoto src={t.photo} nom={t.nom} libelle={t.libelle} /> : <Photo alt="" sizes="1px" />}
+                    <span className="equipe__nom">{t.nom}</span>
+                    {t.ctc ? <span className="equipe__ctc">CTC · La Similienne</span> : null}
+                  </div>
+                  <div className="equipe__corps">
+                    <div>
+                      <h3 className="equipe__libelle">{t.libelle}</h3>
+                      <div className="equipe__coach">
+                        Coach : <strong>{t.coachs}</strong>
+                      </div>
+                    </div>
+                    <ul className="equipe__creneaux">
+                      {t.creneaux.map((c) => (
+                        <li key={`${c.jour}-${c.horaire}`}>
+                          <strong>{c.jour}</strong>
+                          <span>
+                            {c.horaire} ·{" "}
+                            <Link href={c.lienGymnase} className="lien-orange">
+                              {c.gymnase}
+                            </Link>
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                    <BoutonClassement libelle={t.libelle} classement={t.classement} lienFFBB={CLUB.ffbb} />
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        ))}
+
+        <div className="rangee" style={{ marginTop: 56 }}>
+          <div className="encart encart--bleu">
+            <h2 className="titre-bloc" style={{ fontSize: 28, marginBottom: 8 }}>
+              Groupes CTC
+            </h2>
+            <p>
+              Les groupes U13, U15 et U18 « HPB » évoluent en CTC (Coopération Territoriale de Clubs) avec La Similienne,
+              avec 3 entraînements par semaine et une perspective de championnat accès région. Les places y sont
+              attribuées sur sélection de la Commission technique.
+            </p>
+          </div>
+          <div className="encart encart--blanc">
+            <h2 className="titre-bloc" style={{ fontSize: 28, marginBottom: 8 }}>
+              Droit à l'image
+            </h2>
+            <p>
+              Les photos d'équipe ne sont publiées qu'avec l'autorisation de droit à l'image de chaque joueur mineur. Une
+              photo à retirer ? <Link href="/contact?sujet=image">Écrivez-nous</Link>, c'est fait sous 48 h.
+            </p>
+          </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </>
   );
 }

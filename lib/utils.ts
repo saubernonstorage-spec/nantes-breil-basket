@@ -1,81 +1,169 @@
 /**
- * Petites fonctions sans données, utilisables partout (y compris côté navigateur).
+ * Petites fonctions pures (sans accès au contenu), utilisables côté serveur
+ * comme dans les composants du navigateur.
  */
 
-export const A_COMPLETER = "[À COMPLÉTER]";
-
-/** Vrai si le texte est vide ou contient encore "[À COMPLÉTER]". */
-export function estACompleter(texte: string | undefined | null): boolean {
-  return !texte || texte.includes(A_COMPLETER);
+/** Texte encore à fournir par le club. */
+export function aCompleter(texte: string | undefined | null): boolean {
+  return !texte || texte.includes("[À COMPLÉTER") || texte.includes("[À CONFIRMER");
 }
 
-/** Adresse web complète (https://…) : ouverte dans un nouvel onglet. */
-export function estLienExterne(lien: string): boolean {
-  return /^https?:\/\//i.test(lien.trim());
+/** "Floreska-Guépin" → "floreska-guepin" ; "Micro 1" → "micro-1". */
+export function slug(texte: string): string {
+  return texte
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 }
 
-/** Vraie photo (chemin "/photos/…" ou adresse web) plutôt qu'un texte d'emplacement. */
-export function estPhoto(valeur: string | undefined | null): valeur is string {
-  if (!valeur) return false;
-  const v = valeur.trim();
-  return v.startsWith("/") || estLienExterne(v);
+export function pluriel(n: number, singulier: string, pluriel = `${singulier}s`): string {
+  return `${n} ${n > 1 ? pluriel : singulier}`;
 }
 
-/** Adresse e-mail utilisable dans un lien mailto. */
-export function estEmail(valeur: string): boolean {
-  return /^[^\s@<>()[\]",;:]+@[^\s@<>()[\]",;:]+\.[a-z]{2,}$/i.test(valeur.trim());
+const UNITES = ["zéro", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf", "dix", "onze", "douze", "treize", "quatorze", "quinze", "seize", "dix-sept", "dix-huit", "dix-neuf", "vingt"];
+
+/** 3 → "trois", 1 → "un" / "une" ; au-delà de vingt, le nombre en chiffres. */
+export function enLettres(n: number, feminin = false): string {
+  if (n === 1 && feminin) return "une";
+  return UNITES[n] ?? String(n);
 }
 
-/** Pluriel simple : "1 créneau", "3 créneaux". */
-export function pluriel(n: number, singulier: string, plurielForme = `${singulier}s`): string {
-  return `${n} ${n > 1 ? plurielForme : singulier}`;
-}
-
-/** 9 → "neuf" (jusqu'à vingt ; au-delà, le nombre en chiffres). */
-export function enLettres(n: number): string {
-  const mots = ["zéro", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf", "dix", "onze", "douze", "treize", "quatorze", "quinze", "seize", "dix-sept", "dix-huit", "dix-neuf", "vingt"];
-  return mots[n] ?? String(n);
-}
-
-/** "neuf" → "Neuf" */
 export function majuscule(texte: string): string {
   return texte.charAt(0).toUpperCase() + texte.slice(1);
 }
 
-/** Lien vers la fiche d'un gymnase (page Infos pratiques). */
-export function lienGymnase(nom: string): string {
-  return `/infos?gym=${encodeURIComponent(nom)}#gymnases`;
+/** "18:30" → "18h30" ; "09:00" → "09h00". */
+export function heure(h: string): string {
+  return h.replace(":", "h");
 }
 
-/** Lien vers le planning filtré. */
-export function lienPlanning(filtres: { equipe?: string; gym?: string; jour?: string }): string {
-  const params = new URLSearchParams();
-  if (filtres.equipe) params.set("equipe", filtres.equipe);
-  if (filtres.gym) params.set("gym", filtres.gym);
-  if (filtres.jour) params.set("jour", filtres.jour);
-  const q = params.toString();
-  return q ? `/planning?${q}` : "/planning";
+/** "18:00" → "18h", "18:30" → "18h30" (écriture courte). */
+export function heureCourte(h: string): string {
+  return h.replace(":00", "h").replace(":", "h");
 }
 
-/** Lien d'itinéraire (ouvre l'application de cartes du téléphone). */
-export function lienItineraire(adresse: string): string {
-  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(adresse)}`;
+function minutes(h: string): number {
+  const [hh, mm] = h.split(":").map(Number);
+  return hh * 60 + mm;
 }
 
-/** Carte OpenStreetMap intégrable, centrée sur un point. */
-export function carteOsm(lat: number, lon: number) {
-  const dLon = 0.018;
-  const dLat = 0.009;
-  const bbox = [lon - dLon, lat - dLat, lon + dLon, lat + dLat].map((n) => n.toFixed(5)).join("%2C");
-  return {
-    embed: `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat}%2C${lon}`,
-    lien: `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=17/${lat}/${lon}`,
-  };
+/** Durée d'un créneau : "1 h 30". */
+export function duree(debut: string, fin: string): string {
+  const x = minutes(fin) - minutes(debut);
+  const h = Math.floor(x / 60);
+  const m = x % 60;
+  return `${h} h${m ? " " + String(m).padStart(2, "0") : ""}`;
 }
 
-/** "06 04 45 11 65" → "tel:+33604451165" */
-export function lienTelephone(numero: string): string {
-  const chiffres = numero.replace(/[^\d+]/g, "");
-  if (chiffres.startsWith("0")) return `tel:+33${chiffres.slice(1)}`;
-  return `tel:${chiffres}`;
+export function euros(n: number): string {
+  return Number.isInteger(n) ? `${n} €` : `${n.toFixed(2).replace(".", ",")} €`;
+}
+
+export function estEmail(texte: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(texte);
+}
+
+export function estTelephone(texte: string): boolean {
+  return texte.replace(/\D/g, "").length >= 10;
+}
+
+/** "06 34 37 09 72" → "tel:0634370972". */
+export function lienTel(numero: string): string {
+  return `tel:${numero.replace(/[^\d+]/g, "")}`;
+}
+
+/** Itinéraire Google Maps vers une adresse (s'ouvre dans l'application du téléphone). */
+export function itineraire(adresse: string): string {
+  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(adresse.replace(/\n/g, ", "))}`;
+}
+
+export function initiales(nom: string): string {
+  return nom
+    .split(/[\s-]+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((m) => m[0]?.toUpperCase())
+    .join("");
+}
+
+/* ───────── Stages : calcul du montant (formulaire et serveur) ───────── */
+
+export type PrixStage = { jour: number; semaine: number };
+
+/** "18 €" → 18. */
+export function montant(texte: string): number {
+  return parseInt(texte, 10) || 0;
+}
+
+/** Prix d'une semaine selon le nombre de jours choisis : jamais plus cher que la semaine complète. */
+export function coutSemaine(nJours: number, joursDansLaSemaine: number, prix: PrixStage): number {
+  if (nJours === 0) return 0;
+  if (nJours >= joursDansLaSemaine) return prix.semaine;
+  return Math.min(nJours * prix.jour, prix.semaine);
+}
+
+/** Réduction famille (en %) selon le nombre d'enfants inscrits. */
+export function tauxReduction(reductions: { enfants: number; taux: number }[], enfants: number): number {
+  return reductions.filter((r) => enfants >= r.enfants).reduce((m, r) => Math.max(m, r.taux), 0);
+}
+
+export function appliquerReduction(brut: number, taux: number): number {
+  return Math.round(brut * (100 - taux)) / 100;
+}
+
+/* ───────── Inscriptions : catégorie selon l'année de naissance ───────── */
+
+export function categorieParAnnee(
+  table: { categorie: string; nesDe: number; nesA: number }[],
+  annee: number,
+): string {
+  if (!annee) return "";
+  const ligne = table.find((c) => annee >= c.nesDe && annee <= c.nesA);
+  if (ligne) return ligne.categorie;
+  const plusJeune = Math.max(...table.map((c) => c.nesA));
+  return annee > plusJeune ? "Trop jeune pour cette saison" : "";
+}
+
+export type PrixCotisation = { prix: number; prixB: number };
+
+/** Cotisation estimée d'après la catégorie, l'équipe souhaitée et l'option d'assurance B. */
+export function estimerCotisation({
+  categorie,
+  tarifEquipe,
+  mini,
+  seniors,
+  jeunes,
+  assuranceB,
+}: {
+  categorie: string;
+  tarifEquipe: PrixCotisation | null;
+  mini: PrixCotisation;
+  seniors: PrixCotisation;
+  /** Fourchette des tarifs jeunes, quand l'équipe n'est pas encore choisie. */
+  jeunes: { min: PrixCotisation; max: PrixCotisation };
+  assuranceB: boolean;
+}): string {
+  let t: PrixCotisation | null = null;
+  if (/^Micro|^U7$/.test(categorie)) t = mini;
+  else if (tarifEquipe) t = tarifEquipe;
+  else if (categorie === "Seniors") t = seniors;
+  if (!t) {
+    return assuranceB ? `${jeunes.min.prixB} à ${jeunes.max.prixB} €` : `${jeunes.min.prix} à ${jeunes.max.prix} €`;
+  }
+  return `${assuranceB ? t.prixB : t.prix} €`;
+}
+
+/** Équipes à proposer pour une catégorie d'âge et un sexe (« F », « M » ou vide). */
+export function equipesProposees(equipes: string[], categorie: string, sexe: string): string[] {
+  if (!categorie) return [];
+  if (categorie === "Seniors") {
+    const motif = sexe === "F" ? /^SF|^Loisirs/ : sexe === "M" ? /^SM|^Loisirs/ : /^S[FM]|^Loisirs/;
+    return equipes.filter((e) => motif.test(e));
+  }
+  if (/^Micro|^U7$/.test(categorie)) return equipes.filter((e) => e === categorie);
+  const suffixe = sexe === "F" ? "F" : sexe === "M" ? "(M|HPB)" : "";
+  const motif = new RegExp(`^${categorie.replace(/[^A-Za-z0-9]/g, "")}${suffixe}`);
+  return equipes.filter((e) => motif.test(e));
 }

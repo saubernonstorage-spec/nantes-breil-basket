@@ -1,78 +1,152 @@
 import Image from "next/image";
-import { CLUB } from "@/data/nbb";
-import { GererCookies } from "./CookieBanner";
-import { SmartLink } from "./SmartLink";
-import { Socials } from "./Socials";
+import Link from "next/link";
+import { CLUB, PARTENAIRES } from "@/data/nbb";
+import { BandeauCookies, BoutonCookies } from "@/components/Cookies";
+import { Terrain } from "@/components/Terrain";
+import { IconeFacebook, IconeInstagram, IconeWhatsapp, NouvelOnglet } from "@/components/icons";
 
 const COLONNES = [
   {
     titre: "Le club",
     liens: [
-      { href: "/club", label: "Histoire et valeurs" },
-      { href: "/club#bureau", label: "Bureau et bénévoles" },
-      { href: "/equipes", label: "Nos équipes" },
-      { href: "/galerie", label: "Galerie photos" },
+      { label: "Histoire & valeurs", href: "/club" },
+      { label: "Bureau & commissions", href: "/club#bureau" },
+      { label: "École de mini-basket", href: "/ecoles" },
+      { label: "École d'arbitrage", href: "/ecoles#arbitrage" },
+      { label: "Agenda", href: "/agenda" },
+      { label: "Galerie", href: "/galerie" },
     ],
   },
   {
     titre: "Pratique",
     liens: [
-      { href: "/planning", label: "Planning des entraînements" },
-      { href: "/calendrier", label: "Calendrier et résultats" },
-      { href: "/inscriptions", label: "Inscriptions et tarifs" },
-      { href: "/stages", label: "Stages des vacances" },
-      { href: CLUB.boutique, label: "Boutique du club" },
+      { label: "Planning des entraînements", href: "/planning" },
+      { label: "Matchs & convocations", href: "/matchs" },
+      { label: "Équipes", href: "/equipes" },
+      { label: "Gymnases & accès", href: "/infos" },
+      { label: "Stages vacances", href: "/stages" },
     ],
   },
   {
-    titre: "Informations",
+    titre: "Adhérer & soutenir",
     liens: [
-      { href: "/infos", label: "Salles et accès" },
-      { href: "/partenaires", label: "Devenir partenaire" },
-      { href: "/contact", label: "Nous contacter" },
-      { href: "/mentions-legales", label: "Mentions légales & RGPD" },
+      { label: "Inscriptions & tarifs", href: "/inscriptions" },
+      { label: "Questions fréquentes", href: "/infos#faq" },
+      { label: "Devenir bénévole", href: "/club#commissions" },
+      { label: "Devenir partenaire", href: "/partenaires" },
+      { label: "Boutique", href: CLUB.boutique, externe: true },
+      { label: "Contact", href: "/contact" },
     ],
   },
 ];
 
 export function Footer() {
   return (
-    <footer className="site-footer">
-      <div className="site-footer__grid">
-        <div>
-          <span className="footer-logo">
-            <Image src="/logo-nbb.png" alt="" width={56} height={46} />
-          </span>
-          <p className="footer-name">{CLUB.nom}</p>
-          <p className="footer-address">
-            Quartier {CLUB.quartier} · {CLUB.ville}
-            <br />
-            {CLUB.adresse}
-          </p>
-          <Socials compact />
+    <footer className="pied">
+      <Terrain motif="bout" className="pied__terrain" />
+      <div className="pied__inner">
+        <div className="pied__partenaires">
+          <span className="pied__etiquette">Partenaires</span>
+          {PARTENAIRES.map((p) => (
+            <Link key={p.nom} href="/partenaires" className="pied__partenaire">
+              {p.nom}
+            </Link>
+          ))}
+          <Link href="/partenaires" className="btn btn--s btn--petit btn--orange pied__devenir">
+            Devenir partenaire
+          </Link>
         </div>
-        {COLONNES.map((col) => (
-          <nav key={col.titre} className="footer-col" aria-label={col.titre}>
-            <p className="footer-col__title">{col.titre}</p>
-            <ul>
-              {col.liens.map((l) => (
-                <li key={l.label}>
-                  <SmartLink href={l.href}>{l.label}</SmartLink>
-                </li>
+
+        <div className="pied__question">
+          <div>
+            <div className="surtitre">Une question ?</div>
+            <p className="pied__slogan">On vous répond.</p>
+          </div>
+          <div className="rangee rangee--10">
+            <Link href="/contact" className="btn btn--l btn--orange">
+              Nous écrire
+            </Link>
+            <Link href="/infos#faq" className="btn btn--l btn--clair">
+              Lire la FAQ
+            </Link>
+          </div>
+        </div>
+
+        <div className="pied__colonnes">
+          <div className="pied__club">
+            <div className="pied__marque">
+              <span className="pied__logo">
+                <Image src="/logo-nbb.png" alt="Logo du Nantes Breil Basket" width={46} height={37} />
+              </span>
+              <span className="marque__nom pied__nom">
+                Nantes Breil
+                <br />
+                <span>Basket</span>
+              </span>
+            </div>
+            <p className="pied__adresse">
+              Association loi 1901
+              {CLUB.adresse.split("\n").map((ligne) => (
+                <span key={ligne}>
+                  <br />
+                  {ligne}
+                </span>
               ))}
-            </ul>
-          </nav>
-        ))}
-      </div>
-      <div className="site-footer__bottom">
-        <div className="site-footer__bottom-inner">
-          <p>
-            © {new Date().getFullYear()} {CLUB.nom} — association loi 1901 · Photos des mineurs publiées avec
-            autorisation de droit à l&apos;image.
-          </p>
-          <GererCookies />
+            </p>
+            <a href={`mailto:${CLUB.email}`} className="pied__email">
+              {CLUB.email}
+            </a>
+            <div className="rangee rangee--8">
+              <a href={CLUB.facebook} target="_blank" rel="noopener" className="reseau reseau--petit">
+                <IconeFacebook />
+                Facebook
+              </a>
+              <a href={CLUB.instagram} target="_blank" rel="noopener" className="reseau reseau--petit">
+                <IconeInstagram />
+                Instagram
+              </a>
+              <a href={CLUB.whatsapp} target="_blank" rel="noopener" className="reseau reseau--petit">
+                <IconeWhatsapp />
+                WhatsApp
+              </a>
+            </div>
+          </div>
+          {COLONNES.map((col) => (
+            <nav key={col.titre} aria-label={col.titre} className="pied__col">
+              <div className="pied__etiquette">{col.titre}</div>
+              {col.liens.map((l) =>
+                "externe" in l ? (
+                  <a key={l.label} href={l.href} target="_blank" rel="noopener">
+                    {l.label}
+                    <NouvelOnglet />
+                  </a>
+                ) : (
+                  <Link key={l.label} href={l.href}>
+                    {l.label}
+                  </Link>
+                ),
+              )}
+            </nav>
+          ))}
+        </div>
+
+        <div aria-hidden="true" className="pied__geant">
+          Nantes Breil
         </div>
       </div>
+
+      <div className="pied__bas">
+        <div className="pied__bas-inner">
+          <span>© {new Date().getFullYear()} Nantes Breil Basket — association loi 1901</span>
+          <Link href="/mentions-legales">Mentions légales</Link>
+          <Link href="/mentions-legales#confidentialite">Confidentialité</Link>
+          <BoutonCookies className="lien-bouton">Gérer les cookies</BoutonCookies>
+          <Link href="/espace-dirigeants" className="pied__dirigeants" prefetch={false}>
+            Espace dirigeants
+          </Link>
+        </div>
+      </div>
+      <BandeauCookies />
     </footer>
   );
 }

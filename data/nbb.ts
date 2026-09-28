@@ -1,36 +1,43 @@
 /**
- * ─────────────────────────────────────────────────────────────
- *  CONTENU DU SITE — NANTES BREIL BASKET
- *  Tout le texte modifiable du site est dans ce seul fichier.
- *  Remplacez les "[À COMPLÉTER]" par vos informations.
- *  Aucune connaissance technique requise : ne changez que le texte
- *  entre guillemets, gardez les virgules et les accolades en place.
+ * ═══════════════════════════════════════════════════════════════
+ *  CONTENU DU SITE — NANTES BREIL BASKET (saison 2026-2027)
+ *  Tout le contenu « qui bouge » est dans ce fichier : matchs, agenda,
+ *  planning, tarifs, stages, bureau, partenaires, FAQ, photos…
+ *  Règles : ne changez que le texte entre guillemets "…", gardez les
+ *  guillemets, les virgules et les accolades. Remplacez les
+ *  « [À COMPLÉTER] ». Une ligne = un élément : copiez-collez pour ajouter.
  *  Mode d'emploi détaillé : NOTICE.md
- * ─────────────────────────────────────────────────────────────
+ * ═══════════════════════════════════════════════════════════════
  */
 
 import type {
-  Actu,
-  Aide,
   Album,
-  Arbitrage,
+  Capacite,
   Categorie,
+  Chiffre,
+  Classement,
   Club,
   Commission,
-  Creneau,
   DateAgenda,
+  Engagement,
   Entraineur,
   EtapeHistoire,
   Gymnase,
+  LigneCreneau,
+  Lien,
   MembreBureau,
+  MembreComite,
   OffrePartenariat,
   Partenaire,
-  PhotoPage,
+  Photo,
   QuestionFaq,
+  ReductionStage,
+  SeanceArbitrage,
   Stage,
   Tarif,
   TarifStage,
-  Valeur,
+  BlocTexte,
+  WeekEnd,
 } from "@/lib/types";
 
 export const CLUB: Club = {
@@ -38,505 +45,448 @@ export const CLUB: Club = {
   sigle: "NBB",
   quartier: "Breil / Hauts-Pavés",
   ville: "Nantes",
-  baseline: "Le basket de quartier, version grand club.",
-  // Adresse du site une fois en ligne (sert au référencement et aux aperçus de partage).
+  saison: "2026-2027",
+  fondation: "1932",
+  // Adresse du site une fois en ligne (référencement, aperçus de partage).
   siteUrl: "https://nantes-breil-basket.fr",
-  adresse: "Gymnase Joël Paon — [À COMPLÉTER] adresse complète, 44000 Nantes",
-  email: "[À COMPLÉTER] contact@nantes-breil-basket.fr",
+  adresse: "Gymnase Joël Paon\n42 bis rue des Hauts-Pavés\n44000 Nantes",
+  boiteAuxLettres: "42 rue des Hauts-Pavés — 1re boîte en haut à gauche, sur le petit parking",
+  email: "contact@nbb44.fr",
   telephone: "[À COMPLÉTER]",
   facebook: "https://www.facebook.com/people/Nantes-Breil-Basket/100063796590330/",
   instagram: "https://www.instagram.com/nantesbreilbasket44/",
+  linkedin: "https://fr.linkedin.com/company/nantes-breil-basket",
   whatsapp: "https://chat.whatsapp.com/J4An3XN8EZXG0BbuQFjzvC",
   boutique: "https://app.grinta.eu/nbb44/adult/official",
-  // Lien du formulaire d'inscription en ligne (commence par https://).
-  inscription: "[À COMPLÉTER] lien du formulaire d'inscription en ligne",
   ffbb: "https://resultats.ffbb.com/",
-  // Widget Score'n'co des matchs de la semaine (page Calendrier).
-  scorenco: "https://widgets.scorenco.com/week-events/194332",
-  saison: "2026-2027",
-  // Délai de réponse annoncé après l'envoi d'un formulaire, ex. "48 h".
-  delaiReponse: "[À COMPLÉTER] h",
+  // Widget de résultats affiché sur la page Matchs après accord du visiteur (laisser "" pour le masquer).
+  widgetResultats: "https://widgets.scorenco.com/week-events/194332",
+  emailLicenceFFBB: "pdl0044034@ffbb.com",
+  memoArbitrage: "https://nantes-breil-basket.fr/public/5071/upload/files/arbitrage/memo-de-l-arbitrage-2.pdf",
+  // Délais de réponse annoncés après l'envoi d'un formulaire, ex. "48 h" ou "5 jours".
+  delaiReponseContact: "[À COMPLÉTER]",
+  delaiReponseInscription: "[À COMPLÉTER]",
+  // Lien vers la plaquette partenaires (PDF), commençant par https://.
+  plaquettePartenaires: "[À COMPLÉTER]",
+};
+
+/** Mentions légales (page /mentions-legales). */
+export const MENTIONS = {
+  rna: "[À COMPLÉTER]",
+  siret: "[À COMPLÉTER]",
+  responsablePublication: "Sébastien Aubernon, président [À CONFIRMER]",
+  hebergeur: "Netlify, Inc., 101 2nd Street, San Francisco, CA 94105, États-Unis — www.netlify.com (contact : support@netlify.com).",
+  conservationAdhesions: "[À COMPLÉTER] ans",
+  conservationMessages: "[À COMPLÉTER] mois",
 };
 
 /**
- * Chiffres de l'accueil.
- * Seuls ces deux-là se saisissent à la main : le nombre de gymnases est
- * calculé automatiquement depuis le planning.
+ * Chiffres clés de l'accueil. Le nombre de gymnases est calculé
+ * automatiquement à partir de la liste GYMNASES (hors gymnase partenaire).
  */
 export const STATS = {
   adherents: "411",
   equipes: "28", // équipes engagées en championnat
 };
+export const LABEL_ECOLE: Chiffre = { valeur: "★★★", label: "label École de Mini-Basket" };
 
 /**
- * Grandes photos des pages. Remplacez le texte "PHOTO — …" par le chemin
- * de votre photo déposée dans public/photos/ (ex. "/photos/accueil.jpg").
+ * Grandes photos des pages. `src` = chemin de la photo déposée dans public/photos/,
  * `alt` = description de la photo pour les personnes malvoyantes.
  */
-export const PHOTOS: Record<"accueil" | "ecole" | "club" | "stages", PhotoPage> = {
+export const PHOTOS: Record<"accueil" | "accueilEcole" | "accueilVieClub" | "club" | "ecoles" | "stages", Photo> = {
   accueil: {
-    photo: "PHOTO PLEIN CADRE — action en match, paysage, 2400×1400 px",
-    alt: "Action de match au gymnase Joël Paon",
+    src: "/photos/jeunes-dribble.jpg",
+    alt: "Deux jeunes joueuses et joueurs du NBB enchaînent un exercice de dribble au gymnase",
   },
-  ecole: {
-    photo: "PHOTO — séance de mini-basket, paysage, 1600×1200 px",
-    alt: "Séance de mini-basket au Nantes Breil Basket",
+  accueilEcole: {
+    src: "/photos/mini-basket-seance.jpg",
+    alt: "Séance de mini-basket au gymnase Joël Paon : enfants, parents et éducateurs sur le terrain",
+  },
+  accueilVieClub: {
+    src: "/photos/club-gymnase-groupe.jpg",
+    alt: "Une centaine de jeunes licenciés du NBB, bras levés sur les gradins du gymnase, sous la bannière Nantes Breil Basket",
   },
   club: {
-    photo: "PHOTO — vie de club (bar, tournoi, remise de récompenses), 1400×1100 px",
-    alt: "Vie du club au Nantes Breil Basket",
+    src: "/photos/club-groupe-jeunes.jpg",
+    alt: "Les jeunes licenciés du NBB réunis sous la bannière du club",
+  },
+  ecoles: {
+    src: "/photos/mini-basket-coach.jpg",
+    alt: "Une entraîneure du NBB entourée d'un groupe d'enfants à l'entraînement",
   },
   stages: {
-    photo: "PHOTO — stage des vacances, paysage, 1600×1100 px",
-    alt: "Stage des vacances au gymnase Joël Paon",
+    src: "/photos/mini-basket-coach.jpg",
+    alt: "Une entraîneure du NBB donne des consignes à un groupe d'enfants pendant un stage",
   },
 };
 
-/** Grands axes affichés sur la page « Le club ». */
-export const VALEURS: Valeur[] = [
-  { titre: "Accueillir tout le monde", texte: "Du micro-basket dès 3 ans aux loisirs adultes, filles et garçons, débutants ou confirmés : chacun trouve son niveau et son créneau." },
-  { titre: "Former avant tout", texte: "Une école de basket labellisée 3 étoiles par la FFBB et des entraîneurs identifiés sur chaque créneau." },
-  { titre: "Faire vivre le quartier", texte: "[À COMPLÉTER] — actions menées avec les écoles, la maison de quartier et les partenaires du Breil et des Hauts-Pavés." },
-  { titre: "Compter sur les bénévoles", texte: "Table de marque, arbitrage, transports, bar : le club tourne grâce aux parents et aux joueurs volontaires." },
+/** Agenda du club — le plus proche en premier. Les dates passées disparaissent seules. */
+export const AGENDA: DateAgenda[] = [
+  { date: "2026-09-26", jour: "Sam", num: "26", mois: "sept", titre: "Soirée grillades & match RM2", texte: "Premier match à domicile de l'équipe fanion (SM1, 20 h 30).", lieu: "Gymnase Joël Paon · NBB vs Moine Basket", type: "Soirée" },
+  { date: "2026-10-19", jour: "Lun", num: "19", mois: "oct", titre: "Stages d'automne", texte: "Deux semaines de stage, du 19 au 30 octobre.", lieu: "Gymnase Joël Paon", type: "Stage", lien: "/stages" },
+  { date: "2026-11-11", jour: "Mer", num: "11", mois: "nov", titre: "Tournoi jeunes", texte: "Tournoi du club pour les équipes U9 à U13.", lieu: "Gymnases Joël Paon et Similienne", type: "Tournoi" },
+  { date: "2026-11-21", jour: "Sam", num: "21", mois: "nov", titre: "Soirée burgers & derby RM2", texte: "Un burger, des tribunes pleines, le derby contre Rezé.", lieu: "NBB vs Basket Club Rezé", type: "Soirée" },
+  { date: "2026-12-12", jour: "Sam", num: "12", mois: "déc", titre: "Noël du NBB", texte: "Animations et jeux pour les enfants l'après-midi.", lieu: "Gymnase Joël Paon", type: "Fête" },
+  { date: "2027-05-06", jour: "Jeu", num: "6", mois: "mai", titre: "Challenge Éric Canonnet", texte: "Challenge U11M Élite entre seize équipes.", lieu: "Joël Paon, Similienne, Breil et Coubertin", type: "Tournoi" },
+];
+
+/**
+ * MATCHS PAR WEEK-END + CONVOCATIONS (arbitres, table de marque, OTM).
+ * Un bloc par week-end, dans l'ordre chronologique. samedi : date du samedi (AAAA-MM-JJ).
+ * Un week-end encore vide (domicile et exterieur vides) s'affiche « à venir ».
+ * table : équipe qui fournit 2 joueur·ses pour la table de marque.
+ * Adresses des salles à domicile : ADRESSES_SALLES ci-dessous.
+ */
+export const WEEKENDS: WeekEnd[] = [
+  {
+    titre: "Week-end du 26 & 27 septembre 2026", semaine: "Semaine 39", samedi: "2026-09-26",
+    domicile: [
+      { salle: "Joël Paon", equipe: "U11M1", jour: "Sam. 26", heure: "13h30", adversaire: "Carquefou Basket 1", arbitres: "Paul P., Hugo C.", table: "2 × U11F2", otm: "Clément M." },
+      { salle: "Joël Paon", equipe: "U11F2", jour: "Sam. 26", heure: "14h45", adversaire: "Chabossière Basket Club 2", arbitres: "Paul P., Hugo C.", table: "2 × U11M1", otm: "Clément M." },
+      { salle: "Joël Paon", equipe: "U13F1", jour: "Sam. 26", heure: "16h00", adversaire: "ALPC Moulin Nantes Basket 1", arbitres: "Dorian N., Bastien T.", table: "2 × U11F2", otm: "Hugo B." },
+      { salle: "Joël Paon", equipe: "U18M1", jour: "Sam. 26", heure: "18h00", adversaire: "Erdre 2", arbitres: "Officiels", table: "2 × U13F1", otm: "Hugo B." },
+      { salle: "Joël Paon", equipe: "SM1", jour: "Sam. 26", heure: "20h30", adversaire: "Moine Basket Club 1", arbitres: "Officiels", table: "Clara J., Inès A.", otm: "—" },
+      { salle: "Joël Paon", equipe: "U18F2", jour: "Dim. 27", heure: "09h00", adversaire: "Saint-Herblain Basket Club 2", arbitres: "Tadeusz P., Yannick D.", table: "2 × U15F1", otm: "Clément M." },
+      { salle: "Joël Paon", equipe: "U15F1", jour: "Dim. 27", heure: "11h00", adversaire: "ES Pornichet 1", arbitres: "Officiels", table: "2 × U18F2", otm: "Clément M." },
+      { salle: "Similienne", equipe: "U13M1", jour: "Dim. 27", heure: "09h00", adversaire: "ABC des Trois Rivières 1", arbitres: "—", table: "—", otm: "—" },
+      { salle: "Breil Malville", equipe: "U11M2", jour: "Sam. 26", heure: "13h30", adversaire: "Bouguenais Basket 2", arbitres: "Abdel Y., Arthur G.", table: "2 × U18M2", otm: "Romane P." },
+      { salle: "Breil Malville", equipe: "U18M2", jour: "Sam. 26", heure: "14h45", adversaire: "EB Sorinières 1", arbitres: "Abdel Y.", table: "2 × U15M3", otm: "Romane P." },
+      { salle: "Breil Malville", equipe: "U15M3", jour: "Sam. 26", heure: "16h45", adversaire: "AL Garennes Nantes 2", arbitres: "Jonathan-Enzo L., Léo C.", table: "2 × U18M2", otm: "Romane P." },
+    ],
+    exterieur: [
+      { equipe: "U9M1", jour: "Sam. 26", heure: "12h30", adversaire: "Carquefou Basket", lieu: "Rue Louis Armand, 44470 Carquefou" },
+      { equipe: "U11F1", jour: "Sam. 26", heure: "13h00", adversaire: "Orvault Sports Basket 1", lieu: "14 rue du Raffuneau, 44700 Orvault" },
+      { equipe: "U13M3", jour: "Sam. 26", heure: "13h50", adversaire: "Saint-Herblain Basket Club 2", lieu: "15 bis rue Théophile Guillou, 44800 Saint-Herblain" },
+      { equipe: "U13F2", jour: "Sam. 26", heure: "14h15", adversaire: "Orvault Sports Basket 2", lieu: "14 rue du Raffuneau, 44700 Orvault" },
+      { equipe: "U15M2", jour: "Sam. 26", heure: "15h00", adversaire: "Vertou Basket 2", lieu: "Allée de la Vigne de Pâques, 44120 Vertou" },
+      { equipe: "U13M2", jour: "Sam. 26", heure: "17h45", adversaire: "Bouguenais Basket 2", lieu: "Rue de la Neustrie, 44340 Bouguenais" },
+      { equipe: "U15F2", jour: "Sam. 26", heure: "18h00", adversaire: "Orvault Sports Basket 2", lieu: "14 rue du Raffuneau, 44700 Orvault" },
+      { equipe: "U18M3", jour: "Sam. 26", heure: "18h30", adversaire: "Nantes Sully Basket 3", lieu: "Rue Henri Cochard, 44000 Nantes" },
+      { equipe: "U15M1", jour: "Dim. 27", heure: "09h45", adversaire: "Hirondelle Basket 1", lieu: "Route Félix Praud, 44450 Saint-Julien-de-Concelles" },
+      { equipe: "U11M3", jour: "Dim. 27", heure: "11h00", adversaire: "Bouguenais Basket", lieu: "Rue de la Neustrie, 44340 Bouguenais" },
+      { equipe: "SF2", jour: "Dim. 27", heure: "13h15", adversaire: "Erdre Basket Club 2", lieu: "Boulevard du Gesvres, 44240 La Chapelle-sur-Erdre" },
+      { equipe: "SM3", jour: "Dim. 27", heure: "15h30", adversaire: "Golf Basket Club Herblinois 2", lieu: "Avenue de l'Angevinière, 44800 Saint-Herblain" },
+      { equipe: "SM2", jour: "Dim. 27", heure: "16h15", adversaire: "IBC Indre Basket Club 2", lieu: "7 rue de l'Allier, 44610 Indre" },
+      { equipe: "SF1", jour: "Dim. 27", heure: "17h45", adversaire: "Orvault Sports Basket 2", lieu: "14 rue du Raffuneau, 44700 Orvault" },
+    ],
+  },
+  { titre: "Week-end du 3 & 4 octobre 2026", semaine: "Semaine 40", samedi: "2026-10-03", domicile: [], exterieur: [] },
+  { titre: "Week-end du 10 & 11 octobre 2026", semaine: "Semaine 41", samedi: "2026-10-10", domicile: [], exterieur: [] },
+];
+
+/** Adresses des salles où le club reçoit (colonne « Gymnase » des matchs à domicile). */
+export const ADRESSES_SALLES: Record<string, string> = {
+  "Joël Paon": "42 bis rue des Hauts-Pavés, Nantes",
+  "Similienne": "26 bis rue des Hauts-Pavés, Nantes",
+  "Breil Malville": "34 rue du Breil, Nantes",
+};
+
+/** Encadrement technique (d'après le planning). Complétez diplômes et présentations. */
+export const ENCADREMENT: Entraineur[] = [
+  { prenom: "Clément", nom: "", role: "Entraîneur salarié", photo: "/photos/coachs/clement.png", presentation: "[À COMPLÉTER] — diplôme et parcours.", diplomes: [{ nom: "BPJEPS", url: "https://www.ffbb.com/bpjeps" }, { nom: "DETB", url: "https://pdlbasket.fr/detb" }], arrivee: "Au club depuis 2022" },
+  { prenom: "Romane", nom: "", role: "Entraîneure salariée", photo: "/photos/coachs/romane.jpg", presentation: "[À COMPLÉTER] — diplôme et parcours.", diplomes: [{ nom: "[À COMPLÉTER] Diplôme" }], arrivee: "Au club depuis [À COMPLÉTER]" },
+  { prenom: "Hugo", nom: "", role: "Entraîneur salarié", photo: "/photos/coachs/hugo.jpg", presentation: "[À COMPLÉTER] — diplôme et parcours.", diplomes: [{ nom: "BPJEPS", url: "https://www.ffbb.com/bpjeps" }, { nom: "DETB", url: "https://pdlbasket.fr/detb" }], arrivee: "Au club depuis 2025" },
+  { prenom: "Célia", nom: "", role: "Entraîneure apprentie", photo: "/photos/coachs/celia.jpg", presentation: "[À COMPLÉTER] — diplôme et parcours.", diplomes: [{ nom: "[À COMPLÉTER] Diplôme" }], arrivee: "Au club depuis [À COMPLÉTER]" },
+];
+
+/** Bureau. photo : chemin d'un portrait dans public/photos/ (ex. "/photos/bureau/sebastien.jpg"), ou "". */
+export const BUREAU: MembreBureau[] = [
+  { nom: "Sébastien Aubernon", role: "Président", detail: "Ressources humaines, communication, technique, sponsoring", photo: "" },
+  { nom: "Christophe Jan", role: "Vice-président", detail: "Commission évènements", photo: "" },
+  { nom: "Séverine Jan", role: "Secrétaire", detail: "Commission secrétariat", photo: "" },
+  { nom: "Hervé Deleaune", role: "Secrétaire adjoint", detail: "Ressources humaines, secrétariat", photo: "" },
+  { nom: "Jérôme Fournier", role: "Trésorier", detail: "Commission trésorerie", photo: "" },
+  { nom: "Jean-Bernard Canin", role: "Trésorier adjoint", detail: "Commission trésorerie", photo: "" },
+];
+export const COMITE: MembreComite[] = [
+  { nom: "Nathalie Calvet", detail: "Commission technique" },
+  { nom: "Cyril Cellier", detail: "Commission évènements" },
+  { nom: "Clara Jan", detail: "Commission communication" },
+  { nom: "Arnaud Le Bras", detail: "Commission tournois" },
+  { nom: "Frédéric Ringeard", detail: "Commission trésorerie" },
+  { nom: "Sami Saoudi", detail: "Commission sponsoring" },
+  { nom: "Jessica Baranowksy", detail: "Bénévole · trésorerie, communication" },
+];
+
+/** Commissions : les bénévoles qui font tourner le club. recrute: true = mise en avant « On recrute ». */
+export const COMMISSIONS: Commission[] = [
+  { nom: "Évènements", recrute: true, role: "Soirées de match, Noël du NBB, fête de fin de saison.", temps: "1 à 2 évènements par trimestre" },
+  { nom: "Communication", role: "Site, réseaux sociaux, affiches, photos de match.", temps: "À distance, à votre rythme" },
+  { nom: "Matériel", role: "Ballons, maillots, chasubles : stocks et commandes.", temps: "Ponctuel" },
+  { nom: "Secrétariat", role: "Licences, dossiers d'inscription, courriers et lien avec le comité et la ligue.", temps: "Surtout mai à septembre" },
+  { nom: "Sponsoring", role: "Trouver et accompagner les entreprises qui soutiennent le club.", temps: "Réseau local bienvenu" },
+  { nom: "Trésorerie", role: "Budget, cotisations, subventions et suivi des comptes du club.", temps: "Régulier" },
+  { nom: "Ressources humaines", recrute: true, role: "Salariés et bénévoles : recrutement, plannings et accompagnement.", temps: "Ponctuel" },
+  { nom: "Technique", role: "Projet sportif, constitution des groupes, suivi des entraîneurs.", temps: "Réunions mensuelles" },
+  { nom: "Tournois", role: "Organiser les tournois et plateaux accueillis par le club.", temps: "Temps forts ponctuels" },
+  { nom: "Arbitrage", role: "Former et accompagner arbitres et officiels de table de marque.", temps: "Formation courte proposée" },
+  { nom: "Parents", recrute: true, role: "Le relais entre les familles et le club : déplacements, accompagnements, coups de main.", temps: "Quelques heures par saison" },
 ];
 
 export const HISTOIRE: EtapeHistoire[] = [
-  { annee: "[À COMPLÉTER]", texte: "Création du club dans le quartier du Breil. [À COMPLÉTER] : quelques lignes sur les débuts, les fondateurs et le premier gymnase." },
-  { annee: "[À COMPLÉTER]", texte: "[À COMPLÉTER] — étape marquante : montée d'une équipe, ouverture de l'école de basket, fusion ou changement de nom." },
-  { annee: "[À COMPLÉTER]", texte: "Obtention du label École de Mini-Basket 3 étoiles de la FFBB." },
-  { annee: CLUB.saison, texte: "411 adhérents, 28 équipes engagées et 8 gymnases utilisés chaque semaine." },
+  { annee: "1932", titre: "Les débuts", texte: "La section basket de l'Amicale Laïque naît à l'école de la Rue Noire. Faute de gymnase, on joue dans les cours d'école." },
+  { annee: "1949", titre: "Les heures de gloire", texte: "Montée en championnat national. Juniors et cadets brillent en Coupe de France et ancrent la culture de formation du club." },
+  { annee: "1980–2000", titre: "Les temps difficiles", texte: "D'autres clubs nantais se créent, les joueurs s'éparpillent. Naissent l'Entente Rue Noire Quai Hoche, puis le NAB." },
+  { annee: "2000", titre: "Le renouveau", texte: "Accession à la R1. La fusion du NAB avec le Serpette Omni Sport donne naissance au NBB." },
+  { annee: "2004", titre: "Place aux filles", texte: "Création des premières équipes féminines, en U9 et U11." },
+  { annee: "2025", titre: "Trois étoiles", texte: "Obtention du label École Française de Mini-Basket 3 étoiles de la FFBB." },
+  { annee: "2026", titre: "Aujourd'hui", texte: "411 adhérents, 28 équipes engagées et 7 gymnases utilisés chaque semaine." },
 ];
 
-/** Projet associatif et labels (page « Le club »). */
-export const PROJET = {
-  texte: "[À COMPLÉTER] — résumez ici les grands axes votés par le bureau : formation des jeunes, féminisation, arbitrage, santé et citoyenneté, ouverture au quartier. Trois à cinq phrases suffisent ; un document PDF complet peut être joint.",
-  labelCitoyen: "[À COMPLÉTER] : niveau obtenu et actions valorisées.",
-};
-
-/** Bureau : les intitulés sont prêts, ajoutez les prénoms/noms. */
-export const BUREAU: MembreBureau[] = [
-  { role: "Président·e", nom: "[À COMPLÉTER]", photo: "PORTRAIT" },
-  { role: "Vice-président·e", nom: "[À COMPLÉTER]", photo: "PORTRAIT" },
-  { role: "Trésorier·ère", nom: "[À COMPLÉTER]", photo: "PORTRAIT" },
-  { role: "Secrétaire", nom: "[À COMPLÉTER]", photo: "PORTRAIT" },
-  { role: "Responsable école de basket", nom: "[À COMPLÉTER]", photo: "PORTRAIT" },
-  { role: "Responsable arbitrage", nom: "[À COMPLÉTER]", photo: "PORTRAIT" },
+export const VALEURS: BlocTexte[] = [
+  { titre: "Accueillir tout le monde", texte: "Du micro-basket dès 3 ans aux loisirs adultes, filles et garçons, débutants ou confirmés : chacun trouve son niveau et son créneau." },
+  { titre: "Former avec exigence", texte: "Une école labellisée 3 étoiles, des entraîneurs professionnels et une école d'arbitrage pour faire grandir joueurs, coachs et arbitres." },
+  { titre: "Vivre ensemble", texte: "Un lieu de partage et de convivialité, qui tient grâce à l'implication et à la bienveillance de chacun." },
 ];
 
-/**
- * Entraîneurs présentés sur la page « Le club ».
- * `depuis` = année d'arrivée au club. `presentation` = une phrase, deux maxi.
- */
-export const ENCADREMENT: Entraineur[] = [
-  {
-    prenom: "Clément",
-    role: "Entraîneur",
-    depuis: "[À COMPLÉTER]",
-    presentation:
-      "Du mini-basket aux seniors : il encadre les U9, U11, U13, U15 et l'équipe SF1. [À COMPLÉTER] — diplôme et rôle exact dans le club.",
-    photo: "PORTRAIT",
-  },
-  {
-    prenom: "Romane",
-    role: "Entraîneure",
-    depuis: "[À COMPLÉTER]",
-    presentation:
-      "Elle accueille les plus jeunes au micro-basket le samedi matin et suit les U9, U13, U18 et SM3. [À COMPLÉTER] — diplôme et rôle exact.",
-    photo: "PORTRAIT",
-  },
-  {
-    prenom: "Hugo",
-    role: "Entraîneur",
-    depuis: "[À COMPLÉTER]",
-    presentation:
-      "Des U11 aux seniors masculins SM1, avec les groupes du groupement HPB. [À COMPLÉTER] — diplôme et rôle exact.",
-    photo: "PORTRAIT",
-  },
-  {
-    prenom: "Célia",
-    role: "Entraîneure",
-    depuis: "[À COMPLÉTER]",
-    presentation:
-      "Elle encadre les U9, U15 et U18 et épaule les séances du samedi matin. [À COMPLÉTER] — diplôme et rôle exact.",
-    photo: "PORTRAIT",
-  },
+export const PROJET: BlocTexte[] = [
+  { titre: "Projet club", texte: "Garantir l'accès au basket pour tous, dans les meilleures conditions d'accueil, avec des équipes jeunes au niveau régional pour assurer une continuité jusqu'aux seniors." },
+  { titre: "Projet sportif", texte: "Construire dès les U9 une identité de jeu collective et dynamique, et accompagner la formation des entraîneurs et des arbitres." },
+  { titre: "Organisation", texte: "Une vision à 4 ou 5 saisons : des groupes par niveau pour que chacun progresse à son rythme, et des effectifs anticipés pour garder des groupes équilibrés." },
+];
+
+export const ENGAGEMENTS: Engagement[] = [
+  { titre: "Joueurs et joueuses", points: ["Assiduité aux entraînements et aux matchs", "Ponctualité, et prévenir le coach en cas d'absence", "Respect des coachs, adversaires, arbitres et officiels", "Répondre aux convocations d'arbitrage et de table de marque", "Soutenir les autres équipes du NBB"] },
+  { titre: "Parents", points: ["Vérifier la présence du coach avant de laisser son enfant", "Participer aux déplacements selon l'organisation prévue", "Laver les maillots à tour de rôle", "Encourager dans un esprit positif et respectueux", "Donner un coup de main à la vie du club (bar, évènements…)"] },
 ];
 
 /**
- * Commissions : les groupes de bénévoles qui font tourner le club.
- * `nom` = intitulé de la commission, `role` = sa mission en une phrase.
- * Ajoutez `referent: "Prénom Nom"` si vous voulez afficher un nom de contact.
+ * Tarifs 2026-2027 — votés par le bureau (source : nantes-breil-basket.fr).
+ * Gardez cet ordre : mini-basket, jeunes 1, 2 et 3 entraînements, seniors, loisirs.
  */
-export const COMMISSIONS: Commission[] = [
-  { nom: "Évènements", role: "Organise les temps forts du club : fête de fin de saison, soirées, animations au gymnase." },
-  { nom: "Communication", role: "Site internet, réseaux sociaux, affiches et relations avec la presse locale." },
-  { nom: "Matériel", role: "Ballons, maillots, chasubles et équipements : suivi des stocks et des commandes." },
-  { nom: "Secrétariat", role: "Licences, dossiers d'inscription, courriers et lien avec le comité et la ligue." },
-  { nom: "Sponsoring", role: "Recherche et suivi des partenaires et des contreparties." },
-  { nom: "Trésorerie", role: "Budget, cotisations, subventions et suivi des comptes du club." },
-  { nom: "Ressources humaines", role: "Salariés et bénévoles : recrutement, plannings et accompagnement." },
-  { nom: "Technique", role: "Projet sportif, constitution des groupes et suivi des entraîneurs." },
-  { nom: "Tournois", role: "Préparation et organisation des tournois et plateaux accueillis par le club." },
-  { nom: "Arbitrage", role: "Formation et accompagnement des arbitres et des officiels de table." },
-  { nom: "Parents", role: "Relais entre les familles et le club : accompagnements, déplacements, coups de main." },
-];
-
-/**
- * Actualités : la plus récente en haut (les trois premières s'affichent sur l'accueil).
- * Pour en ajouter une, copiez un bloc complet (de { à },) et collez-le en haut.
- * `lien` : une page du site ("/planning", "/stages"…) ou une adresse web complète.
- */
-export const ACTUS: Actu[] = [
-  {
-    titre: "Planning des entraînements 2026-2027",
-    tag: "Saison " + CLUB.saison,
-    date: "[À COMPLÉTER]",
-    chapo: "Tous les créneaux par équipe et par gymnase, filtrables en un clic sur la page Planning.",
-    photo: "PHOTO — 1200×750 px",
-    lien: "/planning",
-  },
-  {
-    titre: "Ouverture de la boutique du club",
-    tag: "Boutique",
-    date: "[À COMPLÉTER]",
-    chapo: "Maillots, sweats et accessoires aux couleurs du NBB, à commander en ligne.",
-    photo: "PHOTO — 1200×750 px",
-    lien: CLUB.boutique,
-  },
-  {
-    titre: "En route vers la saison " + CLUB.saison + " !",
-    tag: "Vie du club",
-    date: "[À COMPLÉTER]",
-    chapo: "Reprise des entraînements, équipes engagées et nouveautés de l'année.",
-    photo: "PHOTO — 1200×750 px",
-    lien: "/planning",
-  },
-  {
-    titre: "[À COMPLÉTER] — titre de votre prochain article",
-    tag: "[À COMPLÉTER]",
-    date: "[À COMPLÉTER]",
-    chapo: "[À COMPLÉTER] — deux ou trois phrases de résumé.",
-    photo: "PHOTO — 1200×750 px",
-    lien: "/",
-  },
-];
-
-/**
- * Agenda du club : les dates importantes à venir, affichées sur l'accueil.
- * La première de la liste est la plus proche. Pour en retirer une, supprimez
- * son bloc ; pour en ajouter une, copiez un bloc et changez les trois champs.
- */
-export const AGENDA: DateAgenda[] = [
-  { date: "[À COMPLÉTER]", titre: "Reprise des entraînements", lieu: "Tous les gymnases" },
-  { date: "[À COMPLÉTER]", titre: "Stage des vacances de la Toussaint", lieu: "Gymnase Joël Paon" },
-  { date: "[À COMPLÉTER]", titre: "Assemblée générale du club", lieu: "[À COMPLÉTER]" },
-  { date: "[À COMPLÉTER]", titre: "Journée du mini-basket", lieu: "[À COMPLÉTER]" },
-];
-
-/** École d'arbitrage (section de l'accueil). Les séances changent chaque saison. */
-export const ARBITRAGE: Arbitrage = {
-  intro:
-    "Siffler, c'est encore jouer. L'école d'arbitrage fait découvrir les règles à tous les licenciés, élève le niveau des arbitrages du club et accompagne les plus motivés jusqu'au statut d'officiel.",
-  objectifs: [
-    "Promouvoir l'arbitrage en interne et faire découvrir cette facette du jeu",
-    "Découvrir les aspects réglementaires du basket",
-    "Améliorer le niveau de l'arbitrage au club",
-    "Amener les plus motivés à devenir officiels",
-  ],
-  formation: [
-    "Tous les U15 et U18 ont un entraînement consacré à l'arbitrage avant chaque période de vacances.",
-    "Une formation complémentaire est menée avec le club de la Similienne, 4 samedis dans l'année, pour celles et ceux qui veulent approfondir.",
-  ],
-  seancesTitre: "Séances 2026/2027",
-  seancesIntro:
-    "Ouvertes des U13 aux séniors, animées par les arbitres officiels et les entraîneurs. Le parcours complet est recommandé.",
-  seances: [
-    { date: "Sam. 05/09 · 14h-17h", lieu: "La Similienne" },
-    { date: "Sam. 17/10 · 10h-12h", lieu: "Joël Paon" },
-    { date: "Sam. 20/02 · 10h-12h", lieu: "La Similienne" },
-    { date: "Sam. 17/04 · 10h-12h", lieu: "Joël Paon" },
-  ],
-  contact: {
-    nom: "Clément Meunier",
-    email: "clement.meunier@nbb44.fr",
-    telephone: "06 04 45 11 65",
-  },
-  memo: "https://nantes-breil-basket.fr/public/5071/upload/files/arbitrage/memo-de-l-arbitrage-2.pdf",
-};
-
-/** Étapes d'inscription (page Inscriptions). */
-export const ETAPES_INSCRIPTION: string[] = [
-  "Viens essayer : deux séances découverte sur le créneau de ta catégorie.",
-  "Remplissez le formulaire d'inscription en ligne — lien : [À COMPLÉTER].",
-  "Fournissez les documents : justificatif de santé, photo, droit à l'image.",
-  "Réglez la cotisation — montants par catégorie dans le tableau ci-dessous.",
-];
-
-/** Tarifs : n'inventez rien, complétez avec les montants votés par le bureau. */
 export const TARIFS: Tarif[] = [
-  { categorie: "Micro-basket (2021-2023)", age: "3 à 5 ans", prix: "[À COMPLÉTER] €" },
-  { categorie: "U7 / U9", age: "6 à 8 ans", prix: "[À COMPLÉTER] €" },
-  { categorie: "U11 / U13", age: "9 à 12 ans", prix: "[À COMPLÉTER] €" },
-  { categorie: "U15 / U18", age: "13 à 17 ans", prix: "[À COMPLÉTER] €" },
-  { categorie: "Seniors", age: "18 ans et +", prix: "[À COMPLÉTER] €" },
-  { categorie: "Loisirs", age: "18 ans et +", prix: "[À COMPLÉTER] €" },
+  { cle: "mini", categorie: "Mini-basket", detail: "Jusqu'à U7", prix: 160, prixB: 165 },
+  { cle: "jeunes1", categorie: "Jeunes loisirs", detail: "1 entraînement / semaine", prix: 180, prixB: 185 },
+  { cle: "jeunes2", categorie: "Jeunes compétition", detail: "2 entraînements / semaine", prix: 200, prixB: 205 },
+  { cle: "jeunes3", categorie: "Jeunes CTC", detail: "3 entraînements / semaine", prix: 220, prixB: 225 },
+  { cle: "seniors", categorie: "Seniors", detail: "Championnat", prix: 220, prixB: 225 },
+  { cle: "loisirs", categorie: "Loisirs adultes", detail: "Basket détente", prix: 160, prixB: 165 },
 ];
+export const TARIF_NOTE = "Les options d'assurance de base (formules A et C) sont comprises. Formule B (indemnités journalières) : +5 €.";
+export const AIDES = "Aides possibles : Pass'Sport, dispositif Carte blanche de la Ville de Nantes, comités d'entreprise — [À COMPLÉTER : dispositifs acceptés et montants].";
 
+export const PIECES: Lien[] = [
+  { nom: "Formulaire d'adhésion", url: "https://nantes-breil-basket.fr/public/5071/upload/files/articles/94/20260501-adhesion.pdf" },
+  { nom: "Charte de l'adhérent", url: "https://nantes-breil-basket.fr/public/5071/upload/files/articles/94/20260501-charte.pdf" },
+  { nom: "Tarifs 2026-2027", url: "https://nantes-breil-basket.fr/public/5071/upload/files/articles/94/20260501-tarifs.pdf" },
+  { nom: "Résumé de l'assurance", url: "https://nantes-breil-basket.fr/public/5071/upload/files/articles/94/resume-assurance.pdf" },
+  { nom: "Assurance individuelle accident", url: "https://nantes-breil-basket.fr/public/5071/upload/files/articles/94/assurance-individuelle-accident-sportive.pdf" },
+];
 export const DOCUMENTS: string[] = [
-  "Formulaire d'inscription complété et signé",
-  "Certificat médical ou questionnaire de santé, selon l'âge et la situation",
-  "Une photo d'identité récente",
-  "Autorisation de droit à l'image (obligatoire pour les mineurs)",
-  "Règlement de la cotisation — moyens acceptés : [À COMPLÉTER]",
-];
-
-export const AIDES: Aide[] = [
-  { titre: "Pass'Sport", texte: "[À COMPLÉTER] — préciser si le club accepte le Pass'Sport et le montant déduit." },
-  { titre: "Aides de la Ville / du CCAS", texte: "[À COMPLÉTER] — dispositifs nantais acceptés par le club." },
-  { titre: "Coupons sport / comité d'entreprise", texte: "[À COMPLÉTER]" },
-];
-
-/** Questions fréquentes (pages Inscriptions et Infos pratiques). */
-export const FAQ: QuestionFaq[] = [
-  { q: "À partir de quel âge mon enfant peut-il commencer ?", r: "Dès 3 ans au micro-basket, le samedi matin au gymnase Joël Paon. Les groupes sont constitués par année de naissance : Micro 1 (2021) et Micro 2 (2022-2023)." },
-  { q: "Peut-on essayer avant de s'inscrire ?", r: "Oui. Deux séances d'essai sont possibles sur le créneau de la catégorie concernée. Prévenez l'entraîneur ou écrivez-nous avant de venir." },
-  { q: "Combien coûte la licence ?", r: "Les montants varient selon la catégorie — voir le tableau des tarifs sur la page Inscriptions. [À COMPLÉTER] : préciser ce que comprend la cotisation (licence FFBB, assurance, équipement)." },
-  { q: "Quels documents faut-il fournir ?", r: "Formulaire d'inscription, justificatif de santé, photo, autorisation de droit à l'image pour les mineurs, et le règlement de la cotisation." },
-  { q: "Où et quand mon enfant s'entraîne-t-il ?", r: "Tout est sur la page Planning : filtrez par équipe, par gymnase ou par jour. Le club utilise 8 gymnases nantais, les créneaux changent selon la catégorie." },
-  { q: "Comment sont organisés les déplacements du week-end ?", r: "[À COMPLÉTER] — préciser l'organisation du covoiturage, les horaires de rendez-vous et le rôle des parents accompagnateurs." },
-  { q: "Faut-il être bénévole quand on inscrit son enfant ?", r: "Ce n'est pas obligatoire, mais le club vit grâce aux parents : table de marque, arbitrage, transports, bar. Une formation courte est proposée pour la table de marque." },
-  { q: "Où acheter les maillots et les tenues du club ?", r: "Sur la boutique en ligne officielle du NBB, accessible depuis l'accueil et le bas de chaque page." },
-  { q: "Mon enfant apparaît sur une photo, comment la faire retirer ?", r: "Écrivez-nous : toute photo est retirée du site sur simple demande. Aucune photo de mineur n'est publiée sans autorisation de droit à l'image signée." },
+  "Formulaire d'adhésion complété et signé",
+  "Questionnaire de santé (mineurs) ou certificat médical selon la situation",
+  "Autorisation de droit à l'image — obligatoire pour les mineurs, oui ou non",
+  "Charte de l'adhérent signée",
+  "Règlement de la cotisation (chèques encaissés à partir du 1er septembre ou selon votre échéancier)",
 ];
 
 /**
- * Gymnases : le nom doit être écrit exactement comme dans le planning (SLOTS).
- * `lat` / `lon` (facultatifs) : coordonnées GPS pour épingler le gymnase sur la carte
- * (clic droit sur openstreetmap.org → « Afficher l'adresse »).
+ * Capacités d'accueil par équipe (article « En route vers la saison 2026-2027 ») :
+ * [entraînements par semaine, matchs le week-end (true/false), effectif maximum].
+ */
+export const CAPACITES: Record<string, Capacite> = {
+  U7: [1, false, 20], U9M1: [2, true, 9], U9M2: [1, true, 9], U9M3: [1, false, 20], U9F1: [2, true, 9],
+  U11M1: [2, true, 9], U11M2: [2, true, 9], U11M3: [1, true, 15], U11F1: [2, true, 9], U11F2: [1, true, 15],
+  U13HPB: [3, true, 6], U13M2: [2, true, 10], U13M3: [1, true, 12], U13F1: [2, true, 12], U13F2: [1, true, 12],
+  U15HPB: [3, true, 6], U15M2: [2, true, 10], U15M3: [1, true, 12], U15F1: [2, true, 12], U15F2: [1, true, 12],
+  U18HPB: [3, true, 6], U18M2: [2, true, 10], U18M3: [1, true, 12], U18F1: [2, true, 12], U18F2: [1, true, 12],
+};
+
+export const FAQ: QuestionFaq[] = [
+  { q: "À partir de quel âge peut-on commencer ?", r: "Dès 3 ans au micro-basket, le samedi matin au gymnase Joël Paon : Micro 1 pour les enfants né(e)s en 2021, Micro 2 pour les enfants né(e)s en 2022 et 2023. Ensuite U7, U9, U11… jusqu'aux seniors et aux loisirs adultes." },
+  { q: "Peut-on essayer avant de s'inscrire ?", r: "Oui, deux séances d'essai sont possibles dans la catégorie concernée. Écrivez à contact@nbb44.fr pour les planifier." },
+  { q: "Combien coûte la licence ?", r: "De 160 € (mini-basket, loisirs adultes) à 220 € (jeunes CTC, seniors), selon le nombre d'entraînements par semaine. Assurance de base comprise ; formule B : +5 €." },
+  { q: "Y a-t-il de la place dans toutes les équipes ?", r: "Non : chaque équipe a un effectif maximum et certaines catégories sont complètes. Les réinscriptions sont prioritaires ; en cas de saturation, une liste d'attente est proposée." },
+  { q: "Comment est créée la licence FFBB ?", r: "Après réception du règlement, vous recevez un lien personnalisé envoyé par pdl0044034@ffbb.com. Ajoutez cette adresse à vos contacts pour éviter les indésirables." },
+  { q: "Où et quand mon enfant s'entraîne-t-il ?", r: "Tout est sur la page Entraînements : filtrez par équipe, par gymnase ou par jour. Le club utilise sept gymnases nantais, plus le gymnase partenaire de la Similienne." },
+  { q: "Où trouver les horaires de match du week-end ?", r: "Sur la page Matchs, mise à jour chaque semaine avec les rendez-vous, les lieux et les convocations d'arbitrage et de table." },
+  { q: "Faut-il être bénévole quand on inscrit son enfant ?", r: "Ce n'est pas obligatoire, mais le club vit grâce aux parents : table de marque, transports, bar. Une formation courte est proposée pour la table de marque." },
+  { q: "Mon enfant apparaît sur une photo, comment la faire retirer ?", r: "Écrivez-nous : la photo est retirée sur simple demande. Aucune photo de mineur n'est publiée sans autorisation de droit à l'image." },
+];
+
+/**
+ * Couleurs officielles des lignes Naolib : [fond, texte].
+ * transports d'un gymnase : { mode, arret, lignes: ["12", "C2"] } ; parking: false = « Pas de parking ».
+ */
+export const LIGNES_NAOLIB: Record<string, [string, string]> = {
+  "1": ["#007A45", "#FFFFFF"], "2": ["#E53138", "#FFFFFF"], "3": ["#0079BC", "#FFFFFF"], "4": ["#FFCD1C", "#000000"], "5": ["#0BBBEF", "#FFFFFF"], "10": ["#FFED00", "#000000"],
+  "11": ["#E8B975", "#000000"], "12": ["#A1DAF8", "#000000"], "23": ["#0BBBEF", "#FFFFFF"], "26": ["#009640", "#FFFFFF"], "27": ["#A1DAF8", "#000000"], "28": ["#A1DAF8", "#000000"],
+  "30": ["#FFED00", "#000000"], "33": ["#F5B5D3", "#000000"], "36": ["#65C2C4", "#FFFFFF"], "38": ["#009640", "#FFFFFF"], "40": ["#FFED00", "#000000"], "42": ["#C8D300", "#000000"],
+  "47": ["#BCA3CE", "#FFFFFF"], "50": ["#FFED00", "#000000"], "59": ["#F5B5D3", "#000000"], "60": ["#FFED00", "#000000"], "66": ["#2581C4", "#FFFFFF"], "67": ["#2581C4", "#FFFFFF"],
+  "69": ["#D39E46", "#FFFFFF"], "71": ["#C8D300", "#000000"], "75": ["#E8B975", "#000000"], "77": ["#A1DAF8", "#000000"], "78": ["#F7A600", "#000000"], "79": ["#F5B5D3", "#000000"],
+  "80": ["#FFED00", "#000000"], "81": ["#65C2C4", "#FFFFFF"], "85": ["#F5B5D3", "#000000"], "86": ["#0BBBEF", "#FFFFFF"], "87": ["#F7A600", "#000000"], "88": ["#A877B2", "#FFFFFF"],
+  "89": ["#76B82A", "#FFFFFF"], "91": ["#009640", "#FFFFFF"], "95": ["#C8D300", "#000000"], "96": ["#F7A600", "#000000"], "97": ["#BCA3CE", "#FFFFFF"], "98": ["#F7A600", "#000000"],
+  "1B": ["#00A754", "#FFFFFF"], "3B": ["#2581C4", "#FFFFFF"], "C1": ["#0BBBEF", "#FFFFFF"], "C2": ["#EE7402", "#FFFFFF"], "C3": ["#F7A600", "#000000"], "C4": ["#76B82A", "#FFFFFF"],
+  "C6": ["#A877B2", "#FFFFFF"], "C7": ["#C8D300", "#000000"], "C8": ["#C8D300", "#000000"], "C9": ["#F5B5D3", "#000000"], "C20": ["#FFED00", "#000000"], "E1": ["#E30613", "#FFFFFF"],
+  "E4": ["#E30613", "#FFFFFF"], "E5": ["#E30613", "#FFFFFF"], "E8": ["#E30613", "#FFFFFF"], "NA": ["#A1DAF8", "#000000"], "TE1": ["#502391", "#FFFFFF"], "TE2": ["#2581C4", "#FFFFFF"],
+  "TE3": ["#2581C4", "#FFFFFF"], "N1": ["#2AAAB6", "#FFFFFF"], "N2": ["#2AAAB6", "#FFFFFF"], "N3": ["#2AAAB6", "#FFFFFF"], "NC": ["#FFFFFF", "#232C77"], "NN": ["#F91AFF", "#FFFFFF"],
+  "NO": ["#FFFA3E", "#232C77"], "NS": ["#00FFC2", "#232C77"], "LCE": ["#00A754", "#FFFFFF"], "CNO": ["#2581C4", "#FFFFFF"],
+};
+
+/**
+ * Gymnases. Le nom doit être écrit exactement comme dans le planning (SLOTS).
+ * partenaire: true = gymnase partenaire (affiché à part).
  */
 export const GYMNASES: Gymnase[] = [
-  { nom: "Joël Paon", role: "Gymnase principal du club", adresse: "42 rue des Hauts Pavés, 44000 Nantes", acces: "Bus lignes 3, 12, 23 et C2", lat: 47.22448, lon: -1.56495 },
-  { nom: "Floreska-Guépin", role: "Jeunes et seniors", adresse: "[À COMPLÉTER]", acces: "[À COMPLÉTER]" },
-  { nom: "Breil", role: "Jeunes", adresse: "[À COMPLÉTER]", acces: "[À COMPLÉTER]" },
-  { nom: "Dervallières", role: "Seniors et loisirs", adresse: "[À COMPLÉTER]", acces: "[À COMPLÉTER]" },
-  { nom: "Coubertin", role: "Jeunes", adresse: "[À COMPLÉTER]", acces: "[À COMPLÉTER]" },
-  { nom: "Lucien David", role: "Jeunes et seniors", adresse: "[À COMPLÉTER]", acces: "[À COMPLÉTER]" },
-  { nom: "Victor Hugo", role: "Jeunes et seniors", adresse: "[À COMPLÉTER]", acces: "[À COMPLÉTER]" },
-  { nom: "Similienne", role: "Groupement HPB", adresse: "[À COMPLÉTER]", acces: "[À COMPLÉTER]" },
+  { nom: "Joël Paon", role: "La maison du club", adresse: "42 bis rue des Hauts-Pavés\n44000 Nantes", acces: "Bus 12 et 23 : arrêt Bruneau · Chronobus C2 : arrêt Bruneau · Tram 3 : arrêt Poitou · Pas de parking",
+    transports: [{ mode: "Bus", arret: "Bruneau", lignes: ["12", "23"] }, { mode: "Chronobus", arret: "Bruneau", lignes: ["C2"] }, { mode: "Tram", arret: "Poitou", lignes: ["3"] }], parking: false },
+  { nom: "Breil", role: "Gymnase Breil Malville — matchs et entraînements", adresse: "34 rue du Breil\n44100 Nantes", acces: "Bus 10 : arrêt Stade SNUC · Chronobus C8 : arrêt Suzanne Lenglen · Parking",
+    transports: [{ mode: "Bus", arret: "Stade SNUC", lignes: ["10"] }, { mode: "Chronobus", arret: "Suzanne Lenglen", lignes: ["C8"] }], parking: true },
+  { nom: "Floreska-Guépin", role: "Jeunes et seniors", adresse: "Impasse de la Nobilière\n44000 Nantes", acces: "Bus 26 : arrêt Harouys · Chronobus C6 et C8 : arrêt Harouys · Tram 3 : arrêt Jean Jaurès · Pas de parking",
+    transports: [{ mode: "Bus", arret: "Harouys", lignes: ["26"] }, { mode: "Chronobus", arret: "Harouys", lignes: ["C6", "C8"] }, { mode: "Tram", arret: "Jean Jaurès", lignes: ["3"] }], parking: false },
+  { nom: "Dervallières", role: "Seniors et loisirs", adresse: "19 rue Jean-Marc Nattier\n44100 Nantes", acces: "[À COMPLÉTER]" },
+  { nom: "Coubertin", role: "Jeunes", adresse: "115 boulevard du Massacre\n44100 Nantes", acces: "Chronobus C20 : arrêt Grand Carcouët · Parking",
+    transports: [{ mode: "Chronobus", arret: "Grand Carcouët", lignes: ["C20"] }], parking: true },
+  { nom: "Lucien David", role: "Jeunes et seniors", adresse: "4B rue des Renards\n44300 Nantes", acces: "Tram 2 : arrêt Boissière · Bus 96 : arrêt Boissière · Parking",
+    transports: [{ mode: "Tram", arret: "Boissière", lignes: ["2"] }, { mode: "Bus", arret: "Boissière", lignes: ["96"] }], parking: true },
+  { nom: "Victor Hugo", role: "Jeunes et seniors", adresse: "29 rue Paul Bellamy\n44000 Nantes", acces: "Bus 12 et 23 : arrêt St-Stanislas · Chronobus C2 : arrêt St-Stanislas · Pas de parking",
+    transports: [{ mode: "Bus", arret: "St-Stanislas", lignes: ["12", "23"] }, { mode: "Chronobus", arret: "St-Stanislas", lignes: ["C2"] }], parking: false },
+  { nom: "Similienne", role: "Gymnase partenaire — groupes CTC", adresse: "26 bis rue des Hauts-Pavés\n44000 Nantes", acces: "Bus 12 et 23 : arrêt Bruneau · Chronobus C2 : arrêt Bruneau · Tram 3 : arrêt Poitou · Parking",
+    transports: [{ mode: "Bus", arret: "Bruneau", lignes: ["12", "23"] }, { mode: "Chronobus", arret: "Bruneau", lignes: ["C2"] }, { mode: "Tram", arret: "Poitou", lignes: ["3"] }], parking: true, partenaire: true },
 ];
 
-/** Encadrés de la page Infos pratiques. */
-export const INFOS_PRATIQUES = {
-  regles: "Chaussures de salle propres obligatoires, gourde personnelle, pas de chewing-gum. [À COMPLÉTER] — ajouter les consignes propres à chaque salle (vestiaires, tribunes, accès parents).",
-  objetsTrouves: "Une caisse est à la table de marque du gymnase Joël Paon. [À COMPLÉTER] — préciser la personne à contacter.",
-};
-
-/** Texte affiché sous les fiches équipes, à propos du groupement HPB. */
-export const NOTE_HPB =
-  "Les équipes HPB (U13HPB, U15HPB, U18HPB) sont issues d'un groupement — [À COMPLÉTER] : préciser les clubs partenaires et le championnat concerné.";
-
-/**
- * Partenaires. `logo` : chemin du logo déposé dans public/photos/partenaires/
- * (PNG à fond transparent), `site` : adresse de leur site (facultatif).
- */
+/** Partenaires. logo : chemin d'un logo dans public/photos/partenaires/ (ex. "/photos/partenaires/mooders.png"), ou "". */
 export const PARTENAIRES: Partenaire[] = [
-  { nom: "AR'PAYSAGE", activite: "Aménagement paysager — Le Temple-de-Bretagne", logo: "LOGO — PNG fond transparent", site: "" },
-  { nom: "MOODERS", activite: "Enregistrement sonore et édition musicale — Nantes", logo: "LOGO — PNG fond transparent", site: "" },
-  { nom: "EMMATITIA", activite: "Atelier photo — Nantes", logo: "LOGO — PNG fond transparent", site: "" },
-  { nom: "Perspectives Renov' Habitat", activite: "Menuiserie bois et PVC — Port-Saint-Père", logo: "LOGO — PNG fond transparent", site: "" },
+  { nom: "AR'PAYSAGE", activite: "Aménagement paysager", ville: "Le Temple-de-Bretagne", logo: "" },
+  { nom: "MOODERS", activite: "Enregistrement sonore et édition musicale", ville: "Nantes", logo: "" },
+  { nom: "EMMATITIA", activite: "Atelier photo", ville: "Nantes", logo: "" },
+  { nom: "Perspectives Renov' Habitat", activite: "Menuiserie bois et PVC", ville: "Port-Saint-Père", logo: "" },
 ];
-
 export const OFFRE_PARTENARIAT: OffrePartenariat[] = [
-  { nom: "Soutien", montant: "[À COMPLÉTER] €", inclus: ["Logo sur le site du club", "Mention sur les réseaux sociaux", "[À COMPLÉTER]"] },
-  { nom: "Partenaire", montant: "[À COMPLÉTER] €", inclus: ["Logo sur le site et en bas de page", "Panneau au gymnase Joël Paon", "Invitations aux événements du club", "[À COMPLÉTER]"] },
-  { nom: "Partenaire majeur", montant: "[À COMPLÉTER] €", inclus: ["Logo sur les maillots", "Visibilité sur tous les supports du club", "Soirée entreprise au gymnase", "[À COMPLÉTER]"] },
+  { nom: "Soutien", montant: "[À COMPLÉTER] €", inclus: ["Logo sur le site du club", "Mention sur les réseaux sociaux"] },
+  { nom: "Partenaire", montant: "[À COMPLÉTER] €", inclus: ["Logo sur le site et en pied de page", "Panneau au gymnase Joël Paon", "Invitations aux soirées de match"], vedette: true },
+  { nom: "Partenaire majeur", montant: "[À COMPLÉTER] €", inclus: ["Logo sur les maillots", "Visibilité sur tous les supports", "Soirée entreprise au gymnase"] },
 ];
-
-export const NOTE_PARTENARIAT =
-  "Le club est une association loi 1901 : votre soutien peut ouvrir droit à une réduction d'impôt. [À COMPLÉTER] — préciser le régime applicable avec votre comptable.";
 
 /**
- * ─────────────────────────────────────────────────────────────
- *  STAGES DES VACANCES SCOLAIRES (académie de Nantes, zone B)
- *  Un bloc par période. Le premier de la liste s'affiche en haut.
- *  `statut` : "Inscriptions ouvertes" affiche les boutons d'inscription ;
- *  tout autre texte ("Complet", "Programme à venir"…) les masque.
- *  Seules les périodes « Inscriptions ouvertes » apparaissent dans le
- *  formulaire d'inscription.
- * ─────────────────────────────────────────────────────────────
+ * STAGES DES VACANCES (zone B).
+ * ouvert: true = inscriptions en ligne ouvertes.
+ * debut : date du lundi (AAAA-MM-JJ) — sert à proposer l'inscription à la journée (lundi → vendredi).
+ * nesDe / nesA : années de naissance acceptées ; licenciesFFBB : true = réservé aux licenciés FFBB, false = tout public.
  */
 export const STAGES: Stage[] = [
-  {
-    periode: "Stages d'automne 2026",
-    public: "U9 à U13 (garçons et filles)",
-    lieu: "Gymnase Joël Paon",
-    statut: "Inscriptions ouvertes",
-    contenu: "Technique individuelle le matin, tournois et jeux l'après-midi.",
-    // Une entrée par semaine de stage. Ajoutez-en autant que nécessaire.
+  { id: "automne-2026", periode: "Stages d'automne", public: "Filles et garçons", lieu: "Gymnase Joël Paon", ouvert: true,
     semaines: [
-      { nom: "Semaine 1", dates: "Du 19 au 23 octobre", places: "[À COMPLÉTER] places" },
-      { nom: "Semaine 2", dates: "Du 26 au 30 octobre", places: "[À COMPLÉTER] places" },
-    ],
-  },
-  {
-    periode: "Vacances de Noël",
-    public: "[À COMPLÉTER]",
-    lieu: "[À COMPLÉTER]",
-    statut: "Programme à venir",
-    contenu: "[À COMPLÉTER] — contenu du stage.",
-    semaines: [{ nom: "Semaine 1", dates: "[À COMPLÉTER]", places: "[À COMPLÉTER] places" }],
-  },
-  {
-    periode: "Vacances d'hiver",
-    public: "[À COMPLÉTER]",
-    lieu: "[À COMPLÉTER]",
-    statut: "Programme à venir",
-    contenu: "[À COMPLÉTER] — contenu du stage.",
-    semaines: [{ nom: "Semaine 1", dates: "[À COMPLÉTER]", places: "[À COMPLÉTER] places" }],
-  },
-  {
-    periode: "Vacances de printemps",
-    public: "[À COMPLÉTER]",
-    lieu: "[À COMPLÉTER]",
-    statut: "Programme à venir",
-    contenu: "[À COMPLÉTER] — contenu du stage.",
-    semaines: [{ nom: "Semaine 1", dates: "[À COMPLÉTER]", places: "[À COMPLÉTER] places" }],
-  },
-  {
-    periode: "Stage d'été",
-    public: "[À COMPLÉTER]",
-    lieu: "[À COMPLÉTER]",
-    statut: "Programme à venir",
-    contenu: "[À COMPLÉTER] — contenu du stage.",
-    semaines: [{ nom: "Semaine 1", dates: "[À COMPLÉTER]", places: "[À COMPLÉTER] places" }],
-  },
+      { id: "aut-s1", nom: "Semaine 1", dates: "Du 19 au 23 octobre", debut: "2026-10-19", nesDe: 2012, nesA: 2019, licenciesFFBB: true },
+      { id: "aut-s2", nom: "Semaine 2", dates: "Du 26 au 30 octobre", debut: "2026-10-26", nesDe: 2012, nesA: 2020, licenciesFFBB: false },
+    ] },
+  { id: "noel-2026", periode: "Stages de Noël", public: "[À COMPLÉTER]", lieu: "[À COMPLÉTER]", ouvert: false, semaines: [] },
+  { id: "hiver-2027", periode: "Stages d'hiver", public: "[À COMPLÉTER]", lieu: "[À COMPLÉTER]", ouvert: false, semaines: [] },
+  { id: "printemps-2027", periode: "Stages de printemps", public: "[À COMPLÉTER]", lieu: "[À COMPLÉTER]", ouvert: false, semaines: [] },
 ];
-
-/** Journée type et affaires à prévoir, affichées sur la page Stages. */
-export const STAGE_JOURNEE: { heure: string; texte: string }[] = [
-  { heure: "9 h 00", texte: "Accueil au gymnase par les encadrants." },
-  { heure: "9 h 30 – 12 h 00", texte: "Ateliers techniques : dribble, tir, passe, jeu à deux." },
-  { heure: "12 h 00 – 14 h 00", texte: "Pause déjeuner — repas tiré du sac (pique-nique), non fourni par le club." },
-  { heure: "14 h 00 – 16 h 30", texte: "Tournois, concours de tirs et jeux collectifs." },
-  { heure: "17 h 00", texte: "Goûter, fermeture du gymnase et départ." },
-];
-
-/**
- * Tarifs des stages. Une ligne par formule, une colonne par statut.
- * « Carte blanche » = dispositif de la Ville de Nantes.
- */
+/** Gardez l'ordre : à la journée, puis semaine (5 jours). */
 export const STAGE_TARIFS: TarifStage[] = [
   { formule: "À la journée", licencies: "18 €", carteBlanche: "12 €", nonLicencies: "22 €" },
-  { formule: "Forfait semaine (5 jours)", licencies: "80 €", carteBlanche: "50 €", nonLicencies: "100 €" },
+  { formule: "Semaine (5 jours)", licencies: "80 €", carteBlanche: "50 €", nonLicencies: "100 €" },
 ];
+/** Réduction famille sur les stages : taux (%) appliqué dès « enfants » inscrits. */
+export const STAGE_REDUCTIONS: ReductionStage[] = [
+  { enfants: 2, taux: 15, texte: "à partir de deux enfants inscrits" },
+  { enfants: 3, taux: 30, texte: "pour trois enfants inscrits" },
+];
+export const STAGE_JOURNEE: { heure: string; texte: string }[] = [
+  { heure: "9 h 00", texte: "Accueil au gymnase" },
+  { heure: "9 h 30", texte: "Ateliers techniques : dribble, tir, passe, jeu à deux" },
+  { heure: "12 h 00", texte: "Pique-nique tiré du sac (non fourni)" },
+  { heure: "14 h 00", texte: "Tournois, concours de tirs, jeux collectifs" },
+  { heure: "17 h 00", texte: "Goûter et départ" },
+];
+export const STAGE_A_PREVOIR: string[] = ["Chaussures de salle propres et tenue de sport", "Gourde (1 L minimum) et goûter", "Pique-nique pour le midi", "Licence FFBB ou attestation d'assurance (non-licenciés)", "Autorisation parentale signée"];
+export const STAGE_CONTACT = { nom: "Hervé Deleaune", telephone: "06 34 37 09 72" };
 
-export const STAGE_INFOS = {
-  tarifsNote: "Tarifs des stages d'automne 2026. « Carte blanche » : dispositif de la Ville de Nantes, sur présentation du justificatif.",
-  paiement: "[À COMPLÉTER]", // moyens de paiement acceptés
-  annulation: "[À COMPLÉTER] — conditions de remboursement en cas d'absence ou d'annulation du stage par le club.",
-};
-
-export const STAGE_A_PREVOIR: string[] = [
-  "Chaussures de salle propres et tenue de sport",
-  "Gourde d'eau (1 L minimum) et goûter",
-  "Repas du midi tiré du sac (pique-nique)",
-  "Licence FFBB à jour ou attestation d'assurance pour les non-licenciés",
-  "Autorisation parentale signée, fournie à l'inscription",
+export const ARBITRAGE_SEANCES: SeanceArbitrage[] = [
+  { date: "Sam. 5 sept.", heure: "14h–17h", lieu: "Similienne" },
+  { date: "Sam. 17 oct.", heure: "10h–12h", lieu: "Joël Paon" },
+  { date: "Sam. 20 févr.", heure: "10h–12h", lieu: "Similienne" },
+  { date: "Sam. 17 avril", heure: "10h–12h", lieu: "Joël Paon" },
 ];
 
 /**
- * Albums de la galerie. `photo` : photo de couverture ;
- * `lien` : adresse de l'album complet (Google Photos, Facebook…), facultatif.
+ * Albums de la galerie. couverture : photo de couverture ("" = motif du club).
+ * photos : les photos de l'album, ex. { src: "/photos/albums/noel/01.jpg", alt: "Le père Noël au gymnase" }.
+ * Mineurs : uniquement avec autorisation de droit à l'image « Oui ».
  */
 export const ALBUMS: Album[] = [
-  { titre: "Journée du mini-basket", meta: "[À COMPLÉTER] photos · [À COMPLÉTER] date", photo: "PHOTO DE COUVERTURE", lien: "" },
-  { titre: "Match SM1 à domicile", meta: "[À COMPLÉTER] photos · [À COMPLÉTER] date", photo: "PHOTO DE COUVERTURE", lien: "" },
-  { titre: "Tournoi de fin de saison", meta: "[À COMPLÉTER] photos · [À COMPLÉTER] date", photo: "PHOTO DE COUVERTURE", lien: "" },
-  { titre: "Stage des vacances", meta: "[À COMPLÉTER] photos · [À COMPLÉTER] date", photo: "PHOTO DE COUVERTURE", lien: "" },
-  { titre: "Soirée des bénévoles", meta: "[À COMPLÉTER] photos · [À COMPLÉTER] date", photo: "PHOTO DE COUVERTURE", lien: "" },
-  { titre: "[À COMPLÉTER] nouvel album", meta: "[À COMPLÉTER]", photo: "PHOTO DE COUVERTURE", lien: "" },
+  { id: "album-mini", titre: "Samedi matin au mini-basket", couverture: "/photos/mini-basket-seance.jpg", photos: [] },
+  { id: "album-stage", titre: "Stage des vacances", couverture: "/photos/club-groupe-jeunes.jpg", photos: [] },
+  { id: "album-u15f", titre: "Entraînement jeunes", couverture: "/photos/jeunes-dribble.jpg", photos: [] },
+  { id: "album-coach", titre: "Au cœur du groupe", couverture: "/photos/mini-basket-coach.jpg", photos: [] },
+  { id: "album-sm1", titre: "Soirée de match SM1", couverture: "", photos: [] },
+  { id: "album-noel", titre: "Noël du NBB", couverture: "", photos: [] },
 ];
 
-/** Mentions légales (page « Mentions légales & confidentialité »). */
-export const MENTIONS = {
-  siege: "Gymnase Joël Paon, [À COMPLÉTER] 44000 Nantes",
-  rna: "[À COMPLÉTER]",
-  siret: "[À COMPLÉTER]",
-  responsablePublication: "[À COMPLÉTER]",
-  contact: "[À COMPLÉTER]",
-  hebergeur: "Netlify, Inc., 101 2nd Street, San Francisco, CA 94105, États-Unis — www.netlify.com (contact : support@netlify.com).",
-  conservationMois: "[À COMPLÉTER]",
+/**
+ * Photos des équipes (fiches de la page Équipes), par nom d'équipe tel qu'écrit dans le planning.
+ * Uniquement avec l'autorisation de droit à l'image de chaque joueur mineur.
+ */
+export const PHOTOS_EQUIPES: Record<string, string> = {
+  "Micro 1": "/photos/equipes/micro-1.webp",
 };
 
 /**
- * Catégories de la page Équipes. Une équipe est rangée automatiquement
- * selon son nom : Micro…/U7/U9…/U11… en mini-basket, U13…/U15…/U18… en jeunes,
- * SF…/SM… en seniors, le reste en loisirs.
+ * PLANNING DES ENTRAÎNEMENTS — source unique (pages Entraînements, Équipes, Écoles, Infos).
+ * Une ligne = un créneau : [gymnase, jour, début, fin, [équipes], [coachs]].
  */
+export const SLOTS: LigneCreneau[] = [
+  ["Breil", "Jeudi", "18:30", "19:30", ["U11M2"], ["Romane"]], ["Breil", "Jeudi", "19:30", "20:45", ["U15HPB"], ["Hugo"]],
+  ["Breil", "Mardi", "18:30", "20:00", ["U15F1", "U13F1"], ["Clément", "Célia"]], ["Breil", "Mercredi", "17:15", "18:30", ["U11F2"], ["Clément"]],
+  ["Coubertin", "Vendredi", "18:00", "19:00", ["U11M1", "U11F1"], ["Hugo", "CC"]], ["Coubertin", "Vendredi", "19:00", "20:00", ["U15M3", "U18M2", "U18M3"], ["Hugo", "CC"]],
+  ["Dervallières", "Jeudi", "20:30", "22:00", ["SM2", "SM3"], ["Lionel"]], ["Dervallières", "Mardi", "20:00", "22:00", ["Loisirs"], ["En autonomie"]],
+  ["Dervallières", "Mercredi", "20:00", "22:00", ["Loisirs"], ["En autonomie"]],
+  ["Floreska-Guépin", "Lundi", "18:15", "19:45", ["U13F2"], ["Romane", "Lucy"]], ["Floreska-Guépin", "Lundi", "19:45", "21:00", ["U15M2", "U13M2"], ["Clément", "Romane"]],
+  ["Floreska-Guépin", "Mardi", "18:15", "19:30", ["U18F1", "U18F2"], ["Romane"]], ["Floreska-Guépin", "Mardi", "19:30", "20:45", ["U18HPB"], ["Romane"]],
+  ["Floreska-Guépin", "Mardi", "20:45", "22:15", ["SM3"], ["Romane"]], ["Floreska-Guépin", "Mercredi", "17:30", "19:00", ["U11M1"], ["Hugo"]],
+  ["Floreska-Guépin", "Mercredi", "19:00", "20:30", ["U15HPB"], ["Hugo"]],
+  ["Joël Paon", "Jeudi", "17:30", "19:00", ["U13M3"], ["Hugo"]], ["Joël Paon", "Jeudi", "19:00", "20:30", ["U18M2"], ["Célia"]],
+  ["Joël Paon", "Jeudi", "20:30", "22:30", ["SM1"], ["Hugo"]], ["Joël Paon", "Lundi", "17:30", "18:30", ["U11F1", "U9F1"], ["Clément"]],
+  ["Joël Paon", "Lundi", "18:30", "19:30", ["U9M1", "U11M2"], ["Clément"]], ["Joël Paon", "Lundi", "21:00", "22:30", ["U18HPB"], ["Romane"]],
+  ["Joël Paon", "Mardi", "18:00", "19:30", ["U13M2", "U15M2"], ["Hugo"]], ["Joël Paon", "Mardi", "19:30", "21:00", ["U15HPB"], ["Hugo"]],
+  ["Joël Paon", "Mardi", "21:00", "22:30", ["SM1"], ["Hugo"]], ["Joël Paon", "Mercredi", "13:00", "14:15", ["U9M3"], ["Romane", "CC"]],
+  ["Joël Paon", "Mercredi", "14:15", "15:30", ["U11M3"], ["Romane", "CC"]], ["Joël Paon", "Mercredi", "15:30", "17:00", ["U13F1"], ["Clément"]],
+  ["Joël Paon", "Mercredi", "17:00", "18:15", ["U9M2"], ["Romane"]], ["Joël Paon", "Mercredi", "18:15", "19:30", ["U9M1", "U9F1"], ["Romane", "Célia"]],
+  ["Joël Paon", "Mercredi", "19:30", "21:00", ["U15M3"], ["Célia"]], ["Joël Paon", "Mercredi", "21:00", "22:30", ["SM2"], ["Lionel"]],
+  ["Joël Paon", "Samedi", "09:00", "10:00", ["U7"], ["Clément", "Romane"]], ["Joël Paon", "Samedi", "10:00", "11:00", ["Micro 1"], ["Clément", "Romane"]],
+  ["Joël Paon", "Samedi", "11:00", "12:00", ["Micro 2"], ["Clément", "Romane", "Célia"]],
+  ["Joël Paon", "Vendredi", "17:30", "19:00", ["U15F1"], ["Clément", "Célia"]], ["Joël Paon", "Vendredi", "19:00", "20:30", ["U15F2"], ["Clément"]],
+  ["Joël Paon", "Vendredi", "20:30", "22:30", ["SF1", "U18F1"], ["Clément"]],
+  ["Lucien David", "Mercredi", "19:30", "21:00", ["U18M3"], ["Clément"]], ["Lucien David", "Mercredi", "21:00", "22:30", ["SF1"], ["Clément"]],
+  ["Similienne", "Jeudi", "18:30", "19:45", ["U13HPB"], ["Clément (Similienne)"]], ["Similienne", "Mardi", "18:30", "19:45", ["U13HPB"], ["Clément (Similienne)"]],
+  ["Victor Hugo", "Jeudi", "20:00", "21:00", ["U18HPB"], ["Romane"]], ["Victor Hugo", "Mardi", "21:00", "22:30", ["SF2"], ["Steeve"]],
+  ["Victor Hugo", "Vendredi", "18:00", "19:00", ["U13HPB"], ["Clément (Similienne)"]],
+];
+
 export const CATEGORIES: Categorie[] = [
-  { cle: "mini", nom: "Mini-basket", ages: "3 à 10 ans", resume: "Micro-basket, U7, U9 et U11 — l'école de basket labellisée 3 étoiles.", photo: "PHOTO — groupe mini-basket" },
-  { cle: "jeunes", nom: "Jeunes", ages: "11 à 17 ans", resume: "U13, U15 et U18, en championnat départemental et régional.", photo: "PHOTO — équipe jeunes" },
-  { cle: "seniors", nom: "Seniors", ages: "18 ans et +", resume: "Deux équipes féminines et trois masculines engagées en championnat.", photo: "PHOTO — équipe senior" },
-  { cle: "loisirs", nom: "Loisirs", ages: "18 ans et +", resume: "Basket détente en autonomie, deux soirs par semaine aux Dervallières.", photo: "PHOTO — section loisirs" },
+  { cle: "mini", nom: "École de mini-basket", ages: "3 à 10 ans", resume: "Micro-basket, U7, U9 et U11 : l'école labellisée 3 étoiles.", image: "/photos/mini-basket-gymnase-zoom.jpg" },
+  { cle: "jeunes", nom: "Jeunes", ages: "11 à 17 ans", resume: "U13, U15 et U18, du championnat départemental à l'accès région (groupes CTC).", image: "/photos/jeunes-dribble.jpg" },
+  { cle: "seniors", nom: "Seniors", ages: "18 ans et +", resume: "Deux équipes féminines et trois masculines, dont l'équipe fanion en RM2.", image: "" },
+  { cle: "loisirs", nom: "Loisirs", ages: "Adultes", resume: "Basket détente en autonomie, deux soirs par semaine aux Dervallières.", image: "" },
+];
+
+/** Années de naissance des groupes de micro-basket. */
+export const NAISSANCE: Record<string, string> = { "Micro 1": "2021", "Micro 2": "2022 et 2023" };
+
+/**
+ * Catégorie FFBB selon l'année de naissance (saison 2026-2027) : décalez toutes
+ * les années d'un an à chaque nouvelle saison.
+ */
+export const CATEGORIES_AGE: { categorie: string; nesDe: number; nesA: number }[] = [
+  { categorie: "Seniors", nesDe: 1900, nesA: 2008 },
+  { categorie: "U18", nesDe: 2009, nesA: 2011 },
+  { categorie: "U15", nesDe: 2012, nesA: 2013 },
+  { categorie: "U13", nesDe: 2014, nesA: 2015 },
+  { categorie: "U11", nesDe: 2016, nesA: 2017 },
+  { categorie: "U9", nesDe: 2018, nesA: 2019 },
+  { categorie: "U7", nesDe: 2020, nesA: 2020 },
+  { categorie: "Micro 1", nesDe: 2021, nesA: 2021 },
+  { categorie: "Micro 2", nesDe: 2022, nesA: 2023 },
 ];
 
 /**
- * Photos d'équipe (page Équipes), par nom d'équipe tel qu'écrit dans le planning.
- * Exemple : "U11F1": "/photos/equipes/u11f1.jpg",
+ * CLASSEMENTS — un bloc par équipe engagée, à recopier depuis resultats.ffbb.com
+ * (fenêtre « Voir le classement » de la page Équipes). nbb: true sur la ligne du club.
+ * Exemple :
+ * SM1: { championnat: "Régionale masculine 2 · Poule B", maj: "28 septembre 2026",
+ *   lignes: [ { rang: 1, equipe: "Nantes Breil Basket", j: 3, v: 3, d: 0, pts: 6, nbb: true }, … ] },
  */
-export const PHOTOS_EQUIPES: Record<string, string> = {};
-
-/**
- * ─────────────────────────────────────────────────────────────
- *  PLANNING DES ENTRAÎNEMENTS — source unique du site.
- *  Les pages Planning, Équipes, la liste des gymnases et les
- *  chiffres de l'accueil sont calculés à partir de ce tableau.
- * ─────────────────────────────────────────────────────────────
- */
-export const SLOTS: Creneau[] = [
-  { id: "Bre_JE_1830", gymnase: "Breil", jour: "Jeudi", debut: "18:30", fin: "19:30", duree: "1 h", equipes: ["U11M2"], coachs: ["Romane"] },
-  { id: "Bre_JE_1930", gymnase: "Breil", jour: "Jeudi", debut: "19:30", fin: "20:45", duree: "1 h 15", equipes: ["U15HPB"], coachs: ["Hugo"] },
-  { id: "Bre_MA_1830", gymnase: "Breil", jour: "Mardi", debut: "18:30", fin: "20:00", duree: "1 h 30", equipes: ["U15F1", "U13F1"], coachs: ["Clément", "Célia"] },
-  { id: "Bre_ME_1715", gymnase: "Breil", jour: "Mercredi", debut: "17:15", fin: "18:30", duree: "1 h 15", equipes: ["U11F2"], coachs: ["Clément"] },
-  { id: "Cou_VE_1800", gymnase: "Coubertin", jour: "Vendredi", debut: "18:00", fin: "19:00", duree: "1 h", equipes: ["U11M1", "U11F1"], coachs: ["Hugo", "CC"] },
-  { id: "Cou_VE_1900", gymnase: "Coubertin", jour: "Vendredi", debut: "19:00", fin: "20:00", duree: "1 h", equipes: ["U15M3", "U18M2", "U18M3"], coachs: ["Hugo", "CC"] },
-  { id: "Der_JE_2030", gymnase: "Dervallières", jour: "Jeudi", debut: "20:30", fin: "22:00", duree: "1 h 30", equipes: ["SM2", "SM3"], coachs: ["Lionel"] },
-  { id: "Der_MA_2000", gymnase: "Dervallières", jour: "Mardi", debut: "20:00", fin: "22:00", duree: "2 h", equipes: ["Loisirs"], coachs: ["Autonomie"] },
-  { id: "Der_ME_2000", gymnase: "Dervallières", jour: "Mercredi", debut: "20:00", fin: "22:00", duree: "2 h", equipes: ["Loisirs"], coachs: ["Autonomie"] },
-  { id: "Flo_LU_1815", gymnase: "Floreska-Guépin", jour: "Lundi", debut: "18:15", fin: "19:45", duree: "1 h 30", equipes: ["U13F2"], coachs: ["Romane", "Lucy"] },
-  { id: "Flo_LU_1945", gymnase: "Floreska-Guépin", jour: "Lundi", debut: "19:45", fin: "21:00", duree: "1 h 15", equipes: ["U15M2", "U13M2"], coachs: ["Clément", "Romane"] },
-  { id: "Flo_MA_1815", gymnase: "Floreska-Guépin", jour: "Mardi", debut: "18:15", fin: "19:30", duree: "1 h 15", equipes: ["U18F1", "U18F2"], coachs: ["Romane"] },
-  { id: "Flo_MA_1930", gymnase: "Floreska-Guépin", jour: "Mardi", debut: "19:30", fin: "20:45", duree: "1 h 15", equipes: ["U18HPB"], coachs: ["Romane"] },
-  { id: "Flo_MA_2045", gymnase: "Floreska-Guépin", jour: "Mardi", debut: "20:45", fin: "22:15", duree: "1 h 30", equipes: ["SM3"], coachs: ["Romane"] },
-  { id: "Flo_ME_1730", gymnase: "Floreska-Guépin", jour: "Mercredi", debut: "17:30", fin: "19:00", duree: "1 h 30", equipes: ["U11M1"], coachs: ["Hugo"] },
-  { id: "Flo_ME_1900", gymnase: "Floreska-Guépin", jour: "Mercredi", debut: "19:00", fin: "20:30", duree: "1 h 30", equipes: ["U15HPB"], coachs: ["Hugo"] },
-  { id: "Joe_JE_1730", gymnase: "Joël Paon", jour: "Jeudi", debut: "17:30", fin: "19:00", duree: "1 h 30", equipes: ["U13M3"], coachs: ["Hugo"] },
-  { id: "Joe_JE_1900", gymnase: "Joël Paon", jour: "Jeudi", debut: "19:00", fin: "20:30", duree: "1 h 30", equipes: ["U18M2"], coachs: ["Célia"] },
-  { id: "Joe_JE_2030", gymnase: "Joël Paon", jour: "Jeudi", debut: "20:30", fin: "22:30", duree: "2 h", equipes: ["SM1"], coachs: ["Hugo"] },
-  { id: "Joe_LU_1730", gymnase: "Joël Paon", jour: "Lundi", debut: "17:30", fin: "18:30", duree: "1 h", equipes: ["U11F1", "U9F1"], coachs: ["Clément"] },
-  { id: "Joe_LU_1830", gymnase: "Joël Paon", jour: "Lundi", debut: "18:30", fin: "19:30", duree: "1 h", equipes: ["U9M1", "U11M2"], coachs: ["Clément"] },
-  { id: "Joe_LU_2100", gymnase: "Joël Paon", jour: "Lundi", debut: "21:00", fin: "22:30", duree: "1 h 30", equipes: ["U18HPB"], coachs: ["Romane"] },
-  { id: "Joe_MA_1800", gymnase: "Joël Paon", jour: "Mardi", debut: "18:00", fin: "19:30", duree: "1 h 30", equipes: ["U13M2", "U15M2"], coachs: ["Hugo"] },
-  { id: "Joe_MA_1930", gymnase: "Joël Paon", jour: "Mardi", debut: "19:30", fin: "21:00", duree: "1 h 30", equipes: ["U15HPB"], coachs: ["Hugo"] },
-  { id: "Joe_MA_2100", gymnase: "Joël Paon", jour: "Mardi", debut: "21:00", fin: "22:30", duree: "1 h 30", equipes: ["SM1"], coachs: ["Hugo"] },
-  { id: "Joe_ME_1300", gymnase: "Joël Paon", jour: "Mercredi", debut: "13:00", fin: "14:15", duree: "1 h 15", equipes: ["U9M3"], coachs: ["Romane", "CC"] },
-  { id: "Joe_ME_1415", gymnase: "Joël Paon", jour: "Mercredi", debut: "14:15", fin: "15:30", duree: "1 h 15", equipes: ["U11M3"], coachs: ["Romane", "CC"] },
-  { id: "Joe_ME_1530", gymnase: "Joël Paon", jour: "Mercredi", debut: "15:30", fin: "17:00", duree: "1 h 30", equipes: ["U13F1"], coachs: ["Clément"] },
-  { id: "Joe_ME_1700", gymnase: "Joël Paon", jour: "Mercredi", debut: "17:00", fin: "18:15", duree: "1 h 15", equipes: ["U9M2"], coachs: ["Romane"] },
-  { id: "Joe_ME_1815", gymnase: "Joël Paon", jour: "Mercredi", debut: "18:15", fin: "19:30", duree: "1 h 15", equipes: ["U9M1", "U9F1"], coachs: ["Romane", "Célia"] },
-  { id: "Joe_ME_1930", gymnase: "Joël Paon", jour: "Mercredi", debut: "19:30", fin: "21:00", duree: "1 h 30", equipes: ["U15M3"], coachs: ["Célia"] },
-  { id: "Joe_ME_2100", gymnase: "Joël Paon", jour: "Mercredi", debut: "21:00", fin: "22:30", duree: "1 h 30", equipes: ["SM2"], coachs: ["Lionel"] },
-  { id: "Joe_SA_0900", gymnase: "Joël Paon", jour: "Samedi", debut: "09:00", fin: "10:00", duree: "1 h", equipes: ["U7"], coachs: ["Clément", "Romane"] },
-  { id: "Joe_SA_1000", gymnase: "Joël Paon", jour: "Samedi", debut: "10:00", fin: "11:00", duree: "1 h", equipes: ["Micro 1 (2021)"], coachs: ["Clément", "Romane"] },
-  { id: "Joe_SA_1100", gymnase: "Joël Paon", jour: "Samedi", debut: "11:00", fin: "12:00", duree: "1 h", equipes: ["Micro 2 (2022-23)"], coachs: ["Clément", "Romane", "Célia"] },
-  { id: "Joe_VE_1730", gymnase: "Joël Paon", jour: "Vendredi", debut: "17:30", fin: "19:00", duree: "1 h 30", equipes: ["U15F1"], coachs: ["Clément", "Célia"] },
-  { id: "Joe_VE_1900", gymnase: "Joël Paon", jour: "Vendredi", debut: "19:00", fin: "20:30", duree: "1 h 30", equipes: ["U15F2"], coachs: ["Clément"] },
-  { id: "Joe_VE_2030", gymnase: "Joël Paon", jour: "Vendredi", debut: "20:30", fin: "22:30", duree: "2 h", equipes: ["SF1", "U18F1"], coachs: ["Clément"] },
-  { id: "Luc_ME_1930", gymnase: "Lucien David", jour: "Mercredi", debut: "19:30", fin: "21:00", duree: "1 h 30", equipes: ["U18M3"], coachs: ["Clément"] },
-  { id: "Luc_ME_2100", gymnase: "Lucien David", jour: "Mercredi", debut: "21:00", fin: "22:30", duree: "1 h 30", equipes: ["SF1"], coachs: ["Clément"] },
-  { id: "Sim_JE_1830", gymnase: "Similienne", jour: "Jeudi", debut: "18:30", fin: "19:45", duree: "1 h 15", equipes: ["U13HPB"], coachs: ["Clément (Sim)"] },
-  { id: "Sim_MA_1830", gymnase: "Similienne", jour: "Mardi", debut: "18:30", fin: "19:45", duree: "1 h 15", equipes: ["U13HPB"], coachs: ["Clément (Sim)"] },
-  { id: "Vic_JE_2000", gymnase: "Victor Hugo", jour: "Jeudi", debut: "20:00", fin: "21:00", duree: "1 h", equipes: ["U18HPB"], coachs: ["Romane"] },
-  { id: "Vic_MA_2100", gymnase: "Victor Hugo", jour: "Mardi", debut: "21:00", fin: "22:30", duree: "1 h 30", equipes: ["SF2"], coachs: ["Steeve"] },
-  { id: "Vic_VE_1800", gymnase: "Victor Hugo", jour: "Vendredi", debut: "18:00", fin: "19:00", duree: "1 h", equipes: ["U13HPB"], coachs: ["Clément Sim"] },
-];
+export const CLASSEMENTS: Record<string, Classement> = {};

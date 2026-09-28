@@ -10,17 +10,27 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # Site du Nantes Breil Basket — repères pour les agents
 
-- Site en français, maintenu par des bénévoles. Tout le contenu est dans `data/nbb.ts` ; toute
+- Site en français, maintenu par des bénévoles, fidèle à l'export Claude Design « Site Nantes Breil Basket ».
+  Tout le contenu (listes, chiffres, dates, tarifs, noms, liens, photos) est dans `data/nbb.ts` ; toute
   nouvelle information éditable y va aussi (jamais en dur dans une page), et `NOTICE.md` est mis à jour.
+  Les pages ne gardent que les textes fixes de la maquette (titres, paragraphes).
 - Ne jamais inventer de tarif, de score, de date ni de nom : laisser `[À COMPLÉTER]`.
-- Le planning (`SLOTS`) est la source unique ; équipes, gymnases et chiffres sont calculés dans `lib/nbb.ts`
-  (réservé au serveur). Les composants client reçoivent les données en props et n'importent que `lib/utils.ts`.
-- Styles : `app/globals.css` (variables de la charte sous `:root`), fidèles à la maquette Claude Design.
-- Formulaires : Server Actions dans `app/actions.ts`, envoi SMTP dans `lib/email.ts` (variables dans `.env.example`).
-- Contenus tiers (Score'n'co) seulement après consentement : `components/EmbedConsenti.tsx`.
+- Le planning (`SLOTS`) est la source unique ; équipes, gymnases, week-ends et chiffres sont calculés dans
+  `lib/nbb.ts` (réservé au serveur, `import "server-only"`). Les composants client reçoivent les données en
+  props et n'importent que `lib/utils.ts` (fonctions pures), `lib/formulaires.ts`, `lib/consentement.ts`
+  et des types (`import type`).
+- Styles : `app/globals.css` (variables de la charte sous `:root`, une section par page). Les pages
+  intérieures commencent par `EntetePage` (`components/Page.tsx`), qui remonte sous l'en-tête collant.
+- Photos : `components/Photo.tsx` (next/image, motif de remplacement si le chemin est vide) ; lignes de
+  terrain décoratives : `components/Terrain.tsx`. Fenêtres modales : `components/Fenetre.tsx` (`<dialog>`).
+- Formulaires : Server Actions dans `app/actions.ts` (validation serveur, anti-spam), enregistrement dans
+  `lib/stockage.ts` (Netlify Blobs, région UE ; fichier `.donnees/` en local) et e-mail facultatif
+  (`lib/email.ts`). Espace dirigeants : `app/espace-dirigeants/` + `lib/session.ts` (`ADMIN_PASSWORD`).
+  Variables documentées dans `.env.example`.
+- Contenus tiers (carte Google Maps, widget de résultats) seulement après consentement :
+  `ContenuConsenti` dans `components/Cookies.tsx`. Aucun outil de mesure d'audience.
 - Animations : tout le mouvement est regroupé à la fin de `app/globals.css`, sous
   `@media (prefers-reduced-motion: no-preference)`. Apparitions et parallaxes en CSS pur
-  (`animation-timeline`, aucun script, aucun bloc caché si le navigateur ne gère pas) ; seuls les effets
-  qui suivent la souris passent par `components/EffetsPointeur.tsx` (classe `curseur` + `--px`/`--py`).
-  Les animations utilisent `translate`/`scale`, jamais `transform`, réservé au survol.
+  (`animation-timeline`, aucun script, aucun bloc caché si le navigateur ne gère pas). Les animations
+  utilisent `translate`/`scale` ; `transform` est réservé au survol et au placement des motifs de terrain.
 - Avant de livrer : `npm run lint` puis `npm run build`.

@@ -1,39 +1,55 @@
 import Image from "next/image";
-import { estLienExterne, estPhoto } from "@/lib/utils";
+import { initiales } from "@/lib/utils";
+import { Terrain } from "@/components/Terrain";
 
 type Props = {
-  /** Chemin d'une vraie photo ("/photos/…") ou texte de l'emplacement gris rayé. */
-  photo: string;
+  src?: string;
   alt: string;
-  className?: string;
-  sizes?: string;
-  preload?: boolean;
-  /** Texte court à afficher dans l'emplacement à la place de `photo` (petites vignettes). */
-  label?: string;
+  /** Largeur d'affichage, pour que le navigateur télécharge la bonne taille (ex. "(max-width: 700px) 100vw, 400px"). */
+  sizes: string;
+  /** Photo visible dès l'arrivée sur la page (grand bandeau) : chargée en priorité. */
+  prioritaire?: boolean;
+  /** Afficher la photo entière (logos, zoom) plutôt que de remplir le cadre. */
+  entiere?: boolean;
+  /** Ce qui s'affiche tant qu'aucune photo n'est fournie. */
+  vide?: "terrain" | "rien" | { initiales: string } | { texte: string };
 };
 
 /**
- * Affiche la photo si elle a été fournie, sinon l'emplacement rayé
- * qui indique le format attendu (comme sur la maquette).
+ * Photo qui remplit son cadre (le parent doit être positionné et dimensionné).
+ * Sans photo : un fond aux couleurs du club, pour que la page reste propre en attendant.
  */
-export function Photo({ photo, alt, className = "", sizes = "(max-width: 768px) 100vw, 50vw", preload, label }: Props) {
-  if (estPhoto(photo)) {
+export function Photo({ src, alt, sizes, prioritaire, entiere, vide = "terrain" }: Props) {
+  if (src) {
     return (
-      <span className={`photo ${className}`}>
-        <Image
-          src={photo.trim()}
-          alt={alt}
-          fill
-          sizes={sizes}
-          preload={preload}
-          unoptimized={estLienExterne(photo)}
-        />
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes={sizes}
+        preload={prioritaire}
+        className={entiere ? "photo photo--entiere" : "photo"}
+      />
+    );
+  }
+  if (vide === "rien") return null;
+  if (vide === "terrain") {
+    return (
+      <span className="photo-vide" aria-hidden="true">
+        <Terrain motif="raquette" className="photo-vide__terrain" />
+      </span>
+    );
+  }
+  if ("initiales" in vide) {
+    return (
+      <span className="photo-vide photo-vide--initiales" aria-hidden="true">
+        {initiales(vide.initiales)}
       </span>
     );
   }
   return (
-    <span className={`photo photo--placeholder ${className}`} aria-hidden="true">
-      <span className="photo__label">{label ?? photo}</span>
+    <span className="photo-vide photo-vide--texte" aria-hidden="true">
+      {vide.texte}
     </span>
   );
 }

@@ -1,74 +1,90 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
-import { ContactForm, ContactFormDepuisUrl } from "@/components/formulaires/ContactForm";
-import { PageHero } from "@/components/PageHero";
-import { Socials } from "@/components/Socials";
 import { CLUB } from "@/data/nbb";
-import { metaPage } from "@/lib/seo";
-import { grille } from "@/lib/style";
-import { estACompleter, estEmail, lienTelephone } from "@/lib/utils";
+import { EntetePage } from "@/components/Page";
+import { Terrain } from "@/components/Terrain";
+import { ContactAvecAdresse, ContactForm } from "@/components/formulaires/ContactForm";
+import { IconeWhatsapp, NouvelOnglet } from "@/components/icons";
 
-export const metadata = metaPage({
-  titre: "Contact",
-  description:
-    "Contacter le Nantes Breil Basket : formulaire, e-mail, réseaux sociaux et groupe WhatsApp du club de basket du quartier Breil à Nantes.",
-  chemin: "/contact",
-});
+export const metadata: Metadata = {
+  title: "Contact",
+  description: `Contacter le Nantes Breil Basket, club de basket à Nantes : formulaire, e-mail ${CLUB.email}, réseaux sociaux et groupe WhatsApp.`,
+  alternates: { canonical: "/contact" },
+};
 
-export default function PageContact() {
-  const email = CLUB.email.trim();
-  const telephone = CLUB.telephone.trim();
+const RAPIDES = [
+  { href: "/planning", etiquette: "Horaires", texte: "Quand s'entraîne mon enfant ?" },
+  { href: "/matchs", etiquette: "Week-end", texte: "À quelle heure est le match ?" },
+  { href: "/inscriptions#tarifs", etiquette: "Tarifs", texte: "Combien coûte la licence ?" },
+  { href: "/infos#faq", etiquette: "FAQ", texte: "Toutes les questions fréquentes" },
+];
 
+export default function Contact() {
   return (
-    <div className="page">
-      <PageHero kicker="Contact" title="On vous répond">
-        <p className="lead">
-          Une question sur une inscription, un créneau, un déplacement ? Écrivez-nous — mais jetez d&apos;abord un
-          œil à la <Link href="/inscriptions#faq">FAQ</Link>, la réponse y est peut-être déjà.
-        </p>
-      </PageHero>
+    <>
+      <EntetePage
+        fil="Contact"
+        style={{ paddingBottom: 48 }}
+        largeurChapo={620}
+        decor={<Terrain motif="raquette" style={{ top: 0, right: "12%", width: "min(40%, 500px)" }} />}
+        titre={
+          <>
+            On vous <span className="accent">répond</span>
+          </>
+        }
+        chapo="Le club est géré par des bénévoles : jetez d'abord un œil aux réponses rapides ci-dessous, la vôtre y est peut-être déjà."
+      >
+        <nav aria-label="Réponses rapides" className="grille reponses-rapides" style={{ "--min": "200px", gap: 10 } as React.CSSProperties}>
+          {RAPIDES.map((r) => (
+            <Link key={r.href} href={r.href} className="reponse-rapide">
+              <span>{r.etiquette}</span>
+              {r.texte}
+            </Link>
+          ))}
+        </nav>
+      </EntetePage>
 
-      <section className="section">
-        <div className="grid" style={grille(300, { align: "start" })}>
-          <div className="card card--strong">
-            <Suspense fallback={<ContactForm delaiReponse={CLUB.delaiReponse} />}>
-              <ContactFormDepuisUrl delaiReponse={CLUB.delaiReponse} />
+      <section className="section" style={{ paddingBottom: 88 }}>
+        <div className="rangee" style={{ gap: 16, alignItems: "flex-start" }}>
+          <div className="carte-formulaire">
+            <Suspense fallback={<ContactForm delaiReponse={CLUB.delaiReponseContact} />}>
+              <ContactAvecAdresse delaiReponse={CLUB.delaiReponseContact} />
             </Suspense>
           </div>
-
-          <div className="stack">
-            <div className="card card--strong">
-              <h2 className="title-card title-card--lg" style={{ marginBottom: 16 }}>
-                Coordonnées
+          <aside className="contact-cote">
+            <div className="contact-bloc contact-bloc--nuit">
+              <h2 className="titre-bloc">Coordonnées</h2>
+              <a href={`mailto:${CLUB.email}`} className="contact-bloc__email">
+                {CLUB.email}
+              </a>
+              <p>
+                {CLUB.adresse.split("\n").map((l, i) => (
+                  <span key={l}>
+                    {i > 0 ? <br /> : null}
+                    {l}
+                  </span>
+                ))}
+              </p>
+            </div>
+            <div className="contact-bloc">
+              <h2 className="titre-bloc" style={{ marginBottom: 10 }}>
+                Boîte aux lettres
               </h2>
-              <p className="text-soft text-md" style={{ marginBottom: 10 }}>
-                <strong style={{ color: "#fff" }}>E-mail :</strong>{" "}
-                {!estACompleter(email) && estEmail(email) ? <a href={`mailto:${email}`}>{email}</a> : email}
-              </p>
-              <p className="text-soft text-md" style={{ marginBottom: 10 }}>
-                <strong style={{ color: "#fff" }}>Téléphone :</strong>{" "}
-                {!estACompleter(telephone) ? <a href={lienTelephone(telephone)}>{telephone}</a> : telephone}
-              </p>
-              <p className="text-soft text-md">
-                <strong style={{ color: "#fff" }}>Adresse :</strong> {CLUB.adresse}
-              </p>
+              <p className="texte-doux">{CLUB.boiteAuxLettres}. Pour les dossiers, chèques et règlements de stage.</p>
             </div>
-            <div className="card card--strong">
-              <h2 className="title-card title-card--lg" style={{ marginBottom: 16 }}>
-                Suivre le club
-              </h2>
-              <Socials />
+            <div className="contact-bloc contact-bloc--orange">
+              <h2 className="titre-bloc">Urgence un jour de match ?</h2>
+              <p>Les changements d'horaire et de gymnase sont annoncés en premier sur le groupe WhatsApp du club.</p>
+              <a href={CLUB.whatsapp} target="_blank" rel="noopener" className="btn btn--nuit" style={{ alignSelf: "flex-start" }}>
+                <IconeWhatsapp />
+                Rejoindre le groupe
+                <NouvelOnglet />
+              </a>
             </div>
-            <div className="card card--accent" style={{ borderRadius: 22 }}>
-              <p className="accent-title">Urgence un jour de match ?</p>
-              <p className="accent-text">
-                Passez par le groupe WhatsApp du club : c&apos;est là que les changements d&apos;horaire et de gymnase
-                sont annoncés en premier.
-              </p>
-            </div>
-          </div>
+          </aside>
         </div>
       </section>
-    </div>
+    </>
   );
 }

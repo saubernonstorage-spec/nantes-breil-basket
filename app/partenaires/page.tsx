@@ -1,100 +1,155 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { PageHero } from "@/components/PageHero";
+import { CLUB, GYMNASES, OFFRE_PARTENARIAT, PARTENAIRES, STATS } from "@/data/nbb";
+import { EntetePage } from "@/components/Page";
 import { Photo } from "@/components/Photo";
-import { SmartLink } from "@/components/SmartLink";
-import { NOTE_PARTENARIAT, OFFRE_PARTENARIAT, PARTENAIRES, STATS } from "@/data/nbb";
-import { gymnasesUtilises } from "@/lib/nbb";
-import { metaPage } from "@/lib/seo";
-import { grille } from "@/lib/style";
-import { enLettres, estACompleter, estLienExterne, estPhoto } from "@/lib/utils";
+import { Terrain } from "@/components/Terrain";
+import { NouvelOnglet } from "@/components/icons";
 
-export const metadata = metaPage({
-  titre: "Partenaires",
-  description:
-    "Les partenaires et sponsors du Nantes Breil Basket, et l'offre de partenariat pour associer votre entreprise à un club formateur nantais.",
-  chemin: "/partenaires",
-});
+export const metadata: Metadata = {
+  title: "Partenaires et mécénat",
+  description: `Devenez partenaire du Nantes Breil Basket, club de basket nantais de ${STATS.adherents} adhérents : visibilité au gymnase, sur les maillots et en ligne, ou mécénat avec reçu fiscal.`,
+  alternates: { canonical: "/partenaires" },
+};
 
-export default function PagePartenaires() {
-  const offresIncompletes = OFFRE_PARTENARIAT.some((o) => estACompleter(o.montant));
+export default function Partenaires() {
+  const chiffres = [
+    { label: "Adhérents", valeur: STATS.adherents },
+    { label: "Équipes", valeur: STATS.equipes },
+    { label: "Gymnases", valeur: String(GYMNASES.length) },
+    { label: "Depuis", valeur: CLUB.fondation, accent: true },
+  ];
+  const plaquette = /^https?:\/\//.test(CLUB.plaquettePartenaires) ? CLUB.plaquettePartenaires : "";
 
   return (
-    <div className="page">
-      <PageHero
-        kicker="Partenaires"
-        title={
+    <>
+      <EntetePage
+        fil="Partenaires"
+        style={{ paddingBottom: 72 }}
+        largeurTitre={1000}
+        largeurChapo={620}
+        decor={<Terrain motif="angle" style={{ right: 0, bottom: 0, width: "min(50%, 600px)", transform: "scaleY(-1)" }} />}
+        titre={
           <>
-            Ils font vivre
-            <br />
-            le club
+            Jouez collectif <span className="accent">avec le NBB</span>
           </>
         }
       >
-        <p className="lead">
-          Grâce à eux, {STATS.adherents} adhérents jouent, se déplacent et s&apos;équipent. Merci à nos partenaires
-          locaux.
+        <p className="chapo" style={{ maxWidth: 620, marginBottom: 30 }}>
+          Entreprise, commerçant ou particulier : votre soutien finance l'école de basket, le matériel, les stages et la
+          formation des coachs et arbitres.
         </p>
-      </PageHero>
-
-      <section className="section" aria-label="Nos partenaires">
-        <ul className="grid" style={grille(250)}>
-          {PARTENAIRES.map((p) => (
-            <li key={p.nom} className="card stack" style={{ padding: 22, gap: 14, alignContent: "start" }}>
-              <Photo
-                photo={p.logo}
-                alt={`Logo ${p.nom}`}
-                className={estPhoto(p.logo) ? "logo-slot logo-slot--image" : "logo-slot"}
-                sizes="260px"
-              />
-              <div>
-                <h2 style={{ fontSize: 19, fontWeight: 700 }}>{p.nom}</h2>
-                <p className="text-muted text-sm" style={{ marginTop: 4 }}>
-                  {p.activite}
-                </p>
-                {estLienExterne(p.site) && (
-                  <p style={{ marginTop: 10 }}>
-                    <SmartLink href={p.site} className="link-underline text-sm">
-                      Voir le site <span className="fleche fleche--diag" aria-hidden="true">↗</span>
-                    </SmartLink>
-                  </p>
-                )}
-              </div>
-            </li>
+        <dl className="chiffres-partenaires">
+          {chiffres.map((c) => (
+            <div key={c.label}>
+              <dt>{c.label}</dt>
+              <dd className={c.accent ? "accent" : undefined}>{c.valeur}</dd>
+            </div>
           ))}
-        </ul>
+        </dl>
+      </EntetePage>
+
+      <section aria-labelledby="actuels-titre" className="section" style={{ paddingTop: 64, paddingBottom: 40 }}>
+        <div className="surtitre">Ils nous soutiennent</div>
+        <h2 id="actuels-titre" className="titre-section" style={{ marginBottom: 24 }}>
+          Merci à nos partenaires
+        </h2>
+        <div className="grille" style={{ "--min": "250px" } as React.CSSProperties}>
+          {PARTENAIRES.map((p) => {
+            const contenu = (
+              <>
+                <div className="partenaire__logo">
+                  <Photo src={p.logo} alt={`Logo de ${p.nom}`} sizes="300px" entiere vide={{ texte: p.nom }} />
+                </div>
+                <div>
+                  <h3 className="partenaire__nom">{p.nom}</h3>
+                  <p className="partenaire__activite">
+                    {p.activite} · {p.ville}
+                  </p>
+                </div>
+              </>
+            );
+            return p.site ? (
+              <a key={p.nom} href={p.site} target="_blank" rel="noopener" className="partenaire carte-lien">
+                {contenu}
+                <NouvelOnglet />
+              </a>
+            ) : (
+              <article key={p.nom} className="partenaire">
+                {contenu}
+              </article>
+            );
+          })}
+        </div>
       </section>
 
-      <section className="section" aria-labelledby="devenir">
-        <h2 id="devenir" className="title-section title-section--sm" style={{ marginBottom: 6 }}>
-          Devenir partenaire
+      <section aria-labelledby="formules-titre" className="section" style={{ paddingTop: 40, paddingBottom: 40 }}>
+        <div className="surtitre">Deux façons de s'engager</div>
+        <h2 id="formules-titre" className="titre-section" style={{ marginBottom: 24 }}>
+          Partenariat ou mécénat
         </h2>
-        <p className="intro">
-          Trois formules, une seule idée : associer votre nom à un club formateur du centre-ville nantais, visible
-          chaque week-end dans {enLettres(gymnasesUtilises().length)} gymnases.
-          {offresIncompletes && " Montants et contreparties à valider par le bureau."}
-        </p>
-        <div className="grid" style={grille(260)}>
+        <div className="rangee">
+          <div className="formule formule--bleue">
+            <div className="surtitre">Entreprises</div>
+            <h3 className="formule__titre">Partenariat</h3>
+            <p>Un contrat avec le club, en échange d'un soutien financier ou matériel.</p>
+            <ul>
+              <li>Visibilité au gymnase et sur les maillots</li>
+              <li>Présence sur le site et les réseaux du club</li>
+              <li>Invitations aux temps forts de la saison</li>
+            </ul>
+          </div>
+          <div className="formule">
+            <div className="surtitre">Entreprises et particuliers</div>
+            <h3 className="formule__titre">Mécénat</h3>
+            <p>Un don sans contrepartie commerciale, pour soutenir directement le projet du club.</p>
+            <ul>
+              <li>Réduction d'impôt possible (association loi 1901) [À CONFIRMER : éligibilité]</li>
+              <li>Reçu fiscal délivré par le club</li>
+              <li>Don fléché : école de basket, matériel, stages…</li>
+            </ul>
+          </div>
+        </div>
+        <div className="grille" style={{ "--min": "280px", marginTop: 14 } as React.CSSProperties}>
           {OFFRE_PARTENARIAT.map((o) => (
-            <div key={o.nom} className="offer">
-              <h3 className="title-card title-card--md">{o.nom}</h3>
-              <p className="offer__price">{o.montant}</p>
-              <ul className="checklist checklist--sm">
-                {o.inclus.map((i, n) => (
-                  <li key={n}>{i}</li>
+            <div key={o.nom} className="offre">
+              {o.vedette ? <span className="pastille pastille--orange">La plus choisie</span> : null}
+              <h3 className="titre-bloc">{o.nom}</h3>
+              <div className="offre__montant">{o.montant}</div>
+              <ul className="liste-coches liste-coches--traits">
+                {o.inclus.map((i) => (
+                  <li key={i}>
+                    <span aria-hidden="true">✓</span>
+                    {i}
+                  </li>
                 ))}
               </ul>
             </div>
           ))}
         </div>
-        <div className="card card--soft row-between" style={{ marginTop: 20 }}>
-          <p className="text-soft" style={{ maxWidth: "44em" }}>
-            {NOTE_PARTENARIAT}
-          </p>
-          <Link href="/contact?sujet=partenariat" className="btn btn--primary btn--md">
-            Demander le dossier
+      </section>
+
+      <section className="section" style={{ paddingTop: 40, paddingBottom: 88 }}>
+        <div className="appel-orange">
+          <div style={{ maxWidth: 700 }}>
+            <h2 className="appel-orange__titre">Parlons de votre projet</h2>
+            <p>
+              La commission Partenaires vous présente la plaquette et construit avec vous la formule adaptée.{" "}
+              {plaquette ? (
+                <a href={plaquette} target="_blank" rel="noopener">
+                  Télécharger la plaquette (PDF)
+                  <NouvelOnglet />
+                </a>
+              ) : (
+                "[À COMPLÉTER : lien vers la plaquette PDF.]"
+              )}
+            </p>
+          </div>
+          <Link href="/contact?sujet=partenariat" className="btn btn--xl btn--nuit">
+            Contacter la commission
           </Link>
         </div>
       </section>
-    </div>
+    </>
   );
 }
