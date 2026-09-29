@@ -52,9 +52,6 @@ export function Footer() {
               {p.nom}
             </Link>
           ))}
-          <Link href="/partenaires" className="btn btn--s btn--petit btn--orange pied__devenir">
-            Devenir partenaire
-          </Link>
         </div>
 
         <div className="pied__question">

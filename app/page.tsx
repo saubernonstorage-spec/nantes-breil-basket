@@ -114,12 +114,12 @@ export default function Accueil() {
       </section>
 
       <section aria-labelledby="reseaux-titre" className="section" style={{ paddingBottom: 24 }}>
-        {/* Mêmes proportions que la rangée « Nos écoles » : grande carte à gauche, petite à droite. */}
+        {/* Deux cartes de même largeur (50/50), l'une sous l'autre sur mobile. */}
         <div className="rangee">
           <div className="reseaux">
             <div>
               <div className="surtitre">Réseaux sociaux</div>
-              <h2 id="reseaux-titre" className="titre-section titre-section--grand">
+              <h2 id="reseaux-titre" className="titre-section titre-section--carte">
                 Le club en direct
               </h2>
             </div>
@@ -151,7 +151,7 @@ export default function Accueil() {
           <a href={CLUB.boutique} target="_blank" rel="noopener" className="boutique carte-lien">
             <div>
               <div className="surtitre">Boutique du club</div>
-              <h2 className="titre-section titre-section--grand">Portons nos couleurs</h2>
+              <h2 className="titre-section titre-section--carte">Portons nos couleurs</h2>
             </div>
             <div className="boutique__bas">
               <p>Maillots, sweats et accessoires aux couleurs du NBB, à commander en ligne.</p>
