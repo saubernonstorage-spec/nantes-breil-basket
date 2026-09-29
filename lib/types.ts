@@ -18,7 +18,6 @@ export type Club = {
   adresse: string;
   boiteAuxLettres: string;
   email: string;
-  telephone: string;
   facebook: string;
   instagram: string;
   linkedin: string;
@@ -31,6 +30,7 @@ export type Club = {
   delaiReponseContact: string;
   delaiReponseInscription: string;
   plaquettePartenaires: string;
+  reductionImpot: string;
 };
 
 export type Chiffre = { valeur: string; label: string };
@@ -81,7 +81,6 @@ export type Entraineur = {
   nom: string;
   role: string;
   photo: string;
-  presentation: string;
   diplomes: Diplome[];
   arrivee: string;
 };
@@ -140,7 +139,6 @@ export type SemaineStage = {
 export type Stage = {
   id: string;
   periode: string;
-  public: string;
   semaines: SemaineStage[];
 };
 

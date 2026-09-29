@@ -932,6 +932,12 @@ textarea {
   color: var(--creme);
 }
 
+/* Corps du pied de page (« Une question ? », colonnes) : le dessin de terrain part de son bord haut,
+   sous la bande des partenaires. */
+.pied__corps {
+  position: relative;
+}
+
 .pied__terrain {
   top: 0;
   right: 0;
@@ -946,13 +952,16 @@ textarea {
   padding: 72px var(--gouttiere) 0;
 }
 
-/* Avec la bande des partenaires : elle porte seule sa marge haute, égale à sa marge basse. */
-.pied__inner:has(> .pied__partenaires) {
-  padding-top: 0;
+.pied__inner--partenaires {
+  padding-top: 40px;
+}
+
+.pied__inner--partenaires + .pied__corps > .pied__inner {
+  padding-top: 48px;
 }
 
 /* Partenaires : grille de 5 cases de même largeur ; une rangée incomplète reste centrée.
-   Mêmes marges au-dessus et en dessous : les cases sont centrées en hauteur dans la bande. */
+   Une ligne au-dessus et une en dessous, à égale distance : les cases sont centrées dans la bande. */
 .pied__partenaires {
   --colonnes: 5;
   --ecart: 12px;
@@ -960,9 +969,10 @@ textarea {
   flex-wrap: wrap;
   justify-content: center;
   gap: var(--ecart);
-  margin: 0 0 48px;
+  margin: 0;
   padding: 28px 0;
   list-style: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
@@ -1988,6 +1998,51 @@ a.badge-label:hover {
   text-wrap: pretty;
 }
 
+/* Accueil sur mobile : accès rapides en 2 × 2, entraîneurs dans une rangée qui défile de côté
+   (la carte suivante dépasse pour montrer qu'il y en a d'autres). */
+@media (max-width: 699px) {
+  .acces-grille {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .acces-grille .acces {
+    min-height: 104px;
+    padding: 16px 14px 16px;
+    border-radius: 20px;
+  }
+
+  .acces-grille .acces__titre {
+    font-size: 21px;
+    overflow-wrap: break-word;
+  }
+
+  .acces-grille .acces__texte {
+    font-size: 13px;
+    line-height: 1.35;
+  }
+
+  .portraits-defilants {
+    display: flex;
+    margin-inline: calc(var(--gouttiere) * -1);
+    padding: 4px var(--gouttiere) 12px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gouttiere);
+    scrollbar-width: none;
+  }
+
+  .portraits-defilants::-webkit-scrollbar {
+    display: none;
+  }
+
+  .portraits-defilants > .portrait {
+    flex: 0 0 76%;
+    scroll-snap-align: start;
+  }
+}
+
 /* On a besoin de vous */
 
 .appel {
@@ -2891,6 +2946,13 @@ a.badge-label:hover {
   overflow: hidden;
 }
 
+/* Sans photo : bande compacte aux couleurs du club (la carte reste courte et lisible). */
+.equipe__photo--bande {
+  aspect-ratio: auto;
+  height: 66px;
+  background: linear-gradient(90deg, var(--bleu), var(--nuit));
+}
+
 .equipe__zoom {
   position: absolute;
   inset: 0;
@@ -3371,116 +3433,9 @@ a.badge-label:hover {
    Matchs
    ========================================================================== */
 
-.choix-weekend {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: stretch;
-  gap: 12px;
-}
-
-.choix-weekend__rail-bloc {
-  flex: 1 1 480px;
-  min-width: 0;
-  display: flex;
-  align-items: stretch;
-  gap: 8px;
-}
-
-.choix-weekend__fleche {
-  flex: none;
-  width: 48px;
-  border-radius: 16px;
-  border: 1px solid rgba(14, 26, 51, 0.12);
-  background: var(--blanc);
-  color: var(--nuit);
-  font-size: 22px;
-  line-height: 1;
-  cursor: pointer;
-}
-
-.choix-weekend__fleche:disabled {
-  opacity: 0.35;
-  cursor: default;
-}
-
-.choix-weekend__rail {
-  position: relative;
-  flex: 1 1 auto;
-  min-width: 0;
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.choix-weekend__rail::-webkit-scrollbar {
-  display: none;
-}
-
-.choix-weekend__semaine {
-  flex: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 3px;
-  min-height: 64px;
-  padding: 10px 16px;
-  border-radius: 16px;
-  border: 1px solid rgba(14, 26, 51, 0.12);
-  background: var(--blanc);
-  color: var(--nuit);
-  text-align: left;
-  cursor: pointer;
-}
-
-.choix-weekend__semaine[aria-pressed="true"] {
-  background: var(--orange);
-  border-color: var(--orange);
-}
-
-.choix-weekend__num {
-  font-family: var(--f-mono);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  opacity: 0.8;
-}
-
-.choix-weekend__dates {
-  font-size: 16px;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.choix-weekend__avenir {
-  font-size: 12px;
-  opacity: 0.75;
-}
-
-.choix-weekend__equipe {
-  flex: none;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 64px;
-  padding: 6px 8px 6px 18px;
-  border-radius: 16px;
-  background: var(--blanc);
-  border: 1px solid rgba(14, 26, 51, 0.12);
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--nuit);
-}
-
-.choix-weekend__equipe select {
-  height: 46px;
-  padding: 0 12px;
-  border-radius: 12px;
-  border: 0;
-  background: var(--creme);
-  color: var(--nuit);
-  font-weight: 600;
+/* Filtres : même barre que la page Entraînements (.filtres-planning, .filtres). */
+.filtres--matchs {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
 }
 
 .tableau-matchs {
@@ -3674,28 +3629,26 @@ a.badge-label:hover {
   color: var(--nuit);
 }
 
-/* Choix de l'affichage des matchs : tableau ou cartes. */
+/* Choix de l'affichage des matchs (tableau ou cartes) : même cadre et même hauteur que les listes de la barre. */
 .choix-vue {
-  flex: none;
   display: flex;
-  align-items: center;
   gap: 4px;
-  min-height: 64px;
-  padding: 8px;
-  border-radius: 16px;
+  height: 48px;
+  padding: 4px;
+  border-radius: 14px;
+  border: 1.5px solid var(--bord-champ);
   background: var(--blanc);
-  border: 1px solid rgba(14, 26, 51, 0.12);
 }
 
 .choix-vue__bouton {
+  flex: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  height: 46px;
-  padding: 0 16px;
+  padding: 0 14px;
   border: 0;
-  border-radius: 12px;
+  border-radius: 10px;
   background: transparent;
   color: var(--nuit);
   font-size: 14px;
@@ -3745,16 +3698,6 @@ a.badge-label:hover {
   .tableau-matchs .fixe-1,
   .tableau-matchs .fixe-2 {
     position: static;
-  }
-
-  .choix-weekend__equipe,
-  .choix-vue {
-    flex: 1 1 auto;
-  }
-
-  .choix-weekend__equipe select,
-  .choix-vue__bouton {
-    flex: 1;
   }
 }
 
@@ -4024,6 +3967,13 @@ a.badge-label:hover {
 
 .carte-stage__ligne--public .pastille {
   padding: 4px 10px;
+}
+
+/* Fin des inscriptions d'une semaine ouverte (la veille du dernier jour, à midi). */
+.carte-stage__cloture {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--orange-texte);
 }
 
 /* Période terminée (inscriptions fermées) : carte grise, en retrait des périodes à venir. */
@@ -4479,6 +4429,13 @@ a.badge-label:hover {
   color: var(--gris);
 }
 
+.semaine-stage__cloture {
+  margin-top: 3px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--orange-texte);
+}
+
 .semaine-stage__resume {
   font-size: 13px;
   font-weight: 700;
@@ -4702,6 +4659,17 @@ a.badge-label:hover {
 .tarif h3 {
   margin: 0 0 4px;
   font-size: 17px;
+}
+
+/* Tarifs de la page Inscriptions : grille 3 × 2 (six formules), 2 colonnes sur petit écran. */
+.tarifs-grille {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 899px) {
+  .tarifs-grille {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .tarif__detail {
@@ -5604,6 +5572,84 @@ a.badge-label:hover {
   color: var(--gris);
 }
 
+/* Espace dirigeants : informations que le site attend encore. */
+.manques {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.manques__intro {
+  margin: 0;
+  max-width: 760px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--gris);
+}
+
+.manques__groupe {
+  padding: 20px;
+  border-radius: 22px;
+  background: var(--blanc);
+  border: 1px solid var(--bord);
+}
+
+.manques__tete {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px 16px;
+  margin-bottom: 8px;
+}
+
+.manques__tete h2 {
+  margin: 0;
+  font-family: var(--f-titre);
+  font-weight: 800;
+  font-size: 22px;
+  text-transform: uppercase;
+}
+
+.manques__tete a {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--bleu);
+}
+
+.manques__liste {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.manques__liste li {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.4fr) minmax(0, 1fr);
+  align-items: baseline;
+  gap: 4px 16px;
+  padding: 10px 0;
+  border-top: 1px solid var(--bord);
+  font-size: 14px;
+}
+
+.manques__valeur {
+  color: var(--gris);
+  overflow-wrap: anywhere;
+}
+
+.manques__chemin {
+  font-size: 11px;
+  color: var(--gris);
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 699px) {
+  .manques__liste li {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 .demande__champs {
   margin: 0;
   display: grid;
@@ -5852,6 +5898,14 @@ a.badge-label:hover {
     animation-name: nbbApparitionHaut;
   }
 
+  /* Entraîneurs de l'accueil sur mobile : la rangée défile de côté, ses cartes restent visibles. */
+  @media (max-width: 699px) {
+    .apparitions .portraits-defilants > [data-apparition] {
+      opacity: 1;
+      animation: none;
+    }
+  }
+
   /* ---------- 3. En-tête : il se détache du contenu dès que la page défile ---------- */
 
   @keyframes nbbEntete {
@@ -5959,8 +6013,6 @@ a.badge-label:hover {
   .choix:active,
   .option:active,
   .puce-choix:active,
-  .choix-weekend__semaine:active,
-  .choix-weekend__fleche:active:not(:disabled),
   .choix-vue__bouton:active {
     scale: 0.97;
   }
@@ -5970,8 +6022,6 @@ a.badge-label:hover {
   .option,
   .puce-choix,
   .semaine-stage,
-  .choix-weekend__semaine,
-  .choix-weekend__fleche,
   .choix-vue__bouton,
   .onglets__lien,
   .saisie,

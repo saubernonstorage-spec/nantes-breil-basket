@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CLUB, MENTIONS } from "@/data/nbb";
+import { aCompleter } from "@/lib/utils";
 import { BoutonCookies } from "@/components/Cookies";
 import { FilAriane } from "@/components/Page";
 
@@ -33,8 +34,13 @@ export default function Mentions() {
               </span>
             ))}
             <br />
-            Numéro RNA : {MENTIONS.rna}. SIRET : {MENTIONS.siret}. Responsable de la publication :{" "}
-            {MENTIONS.responsablePublication}. Contact : <a href={`mailto:${CLUB.email}`}>{CLUB.email}</a>.
+            {/* Chaque information n'apparaît qu'une fois renseignée dans data/nbb.ts (sans « [À COMPLÉTER] »). */}
+            {aCompleter(MENTIONS.rna) ? null : <>Numéro RNA : {MENTIONS.rna}. </>}
+            {aCompleter(MENTIONS.siret) ? null : <>SIRET : {MENTIONS.siret}. </>}
+            {aCompleter(MENTIONS.responsablePublication) ? null : (
+              <>Responsable de la publication : {MENTIONS.responsablePublication}. </>
+            )}
+            Contact : <a href={`mailto:${CLUB.email}`}>{CLUB.email}</a>.
           </p>
         </section>
         <section className="mentions__bloc">
@@ -55,8 +61,13 @@ export default function Mentions() {
           </p>
           <p>
             Destinataires : les membres du bureau et des commissions concernées, et la FFBB pour la licence. Les données
-            ne sont ni vendues ni utilisées à des fins publicitaires. Durée de conservation : la saison en cours plus{" "}
-            {MENTIONS.conservationAdhesions} pour les adhésions, {MENTIONS.conservationMessages} pour les messages.
+            ne sont ni vendues ni utilisées à des fins publicitaires.
+            {aCompleter(MENTIONS.conservationAdhesions) ? null : (
+              <> Durée de conservation des adhésions : la saison en cours plus {MENTIONS.conservationAdhesions}.</>
+            )}
+            {aCompleter(MENTIONS.conservationMessages) ? null : (
+              <> Durée de conservation des messages : {MENTIONS.conservationMessages}.</>
+            )}
           </p>
           <p>
             Vous pouvez demander l'accès, la rectification ou la suppression de vos données à{" "}

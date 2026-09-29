@@ -3,7 +3,6 @@ import Link from "next/link";
 import { CLUB, STATS } from "@/data/nbb";
 import { equipesParCategorie, toutesLesEquipes } from "@/lib/nbb";
 import { EntetePage } from "@/components/Page";
-import { Photo } from "@/components/Photo";
 import { Terrain } from "@/components/Terrain";
 import { BoutonClassement, ZoomPhoto } from "@/components/EquipeFenetres";
 
@@ -49,17 +48,20 @@ export default function Equipes() {
             <div className="grille grille--remplir" style={{ "--min": "310px", gap: 16 } as React.CSSProperties}>
               {g.equipes.map((t) => (
                 <article key={t.nom} id={t.ancre} className="equipe">
-                  <div className="equipe__photo">
-                    {t.photo ? <ZoomPhoto src={t.photo} nom={t.nom} libelle={t.libelle} /> : <Photo alt="" sizes="1px" />}
+                  {/* Sans photo : une bande compacte plutôt qu'un grand motif de terrain. */}
+                  <div className={t.photo ? "equipe__photo" : "equipe__photo equipe__photo--bande"}>
+                    {t.photo ? <ZoomPhoto src={t.photo} nom={t.nom} libelle={t.libelle} /> : null}
                     <span className="equipe__nom">{t.nom}</span>
                     {t.ctc ? <span className="equipe__ctc">CTC · La Similienne</span> : null}
                   </div>
                   <div className="equipe__corps">
                     <div>
                       <h3 className="equipe__libelle">{t.libelle}</h3>
-                      <div className="equipe__coach">
-                        Coach : <strong>{t.coachs}</strong>
-                      </div>
+                      {t.coachs ? (
+                        <div className="equipe__coach">
+                          Coach : <strong>{t.coachs}</strong>
+                        </div>
+                      ) : null}
                     </div>
                     <ul className="equipe__creneaux">
                       {t.creneaux.map((c) => (

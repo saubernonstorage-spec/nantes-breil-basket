@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CLUB, GYMNASES, OFFRE_PARTENARIAT, PARTENAIRES, STATS } from "@/data/nbb";
+import { aCompleter } from "@/lib/utils";
 import { EntetePage } from "@/components/Page";
 import { Photo } from "@/components/Photo";
 import { Terrain } from "@/components/Terrain";
@@ -103,7 +104,7 @@ export default function Partenaires() {
             <h3 className="formule__titre">Mécénat</h3>
             <p>Un don sans contrepartie commerciale, pour soutenir directement le projet du club.</p>
             <ul>
-              <li>Réduction d'impôt possible (association loi 1901) [À CONFIRMER : éligibilité]</li>
+              {aCompleter(CLUB.reductionImpot) ? null : <li>{CLUB.reductionImpot}</li>}
               <li>Reçu fiscal délivré par le club</li>
               <li>Don fléché : école de basket, matériel, stages…</li>
             </ul>
@@ -114,7 +115,7 @@ export default function Partenaires() {
             <div key={o.nom} className="offre">
               {o.vedette ? <span className="pastille pastille--orange">La plus choisie</span> : null}
               <h3 className="titre-bloc">{o.nom}</h3>
-              <div className="offre__montant">{o.montant}</div>
+              {aCompleter(o.montant) ? null : <div className="offre__montant">{o.montant}</div>}
               <ul className="liste-coches liste-coches--traits">
                 {o.inclus.map((i) => (
                   <li key={i}>
@@ -139,9 +140,7 @@ export default function Partenaires() {
                   Télécharger la plaquette (PDF)
                   <NouvelOnglet />
                 </a>
-              ) : (
-                "[À COMPLÉTER : lien vers la plaquette PDF.]"
-              )}
+              ) : null}
             </p>
           </div>
           <Link href="/contact?sujet=partenariat" className="btn btn--xl btn--nuit">

@@ -25,7 +25,8 @@ import {
   WEEKENDS,
 } from "@/data/nbb";
 import type { Chiffre, CleCategorie, Creneau, Jour, SemaineStage, Stage, StatutStage, Tarif } from "@/lib/types";
-import { duree, heure, heureCourte, itineraire, majuscule, montant, pluriel, slug, type PrixCotisation, type PrixStage } from "@/lib/utils";
+import * as DONNEES from "@/data/nbb";
+import { duree, heure, heureCourte, itineraire, majuscule, MARQUE_A_COMPLETER, montant, pluriel, slug, type PrixCotisation, type PrixStage } from "@/lib/utils";
 
 export const JOURS: Jour[] = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
 
@@ -138,7 +139,8 @@ export function ficheEquipe(nom: string): FicheEquipe {
     nom,
     libelle: libelleEquipe(nom),
     ancre: `equipe-${slug(nom)}`,
-    coachs: [...new Set(cr.flatMap((s) => s.coachs))].join(", ") || "[À COMPLÉTER]",
+    // "" si aucun coach n'est indiqué dans le planning : la ligne « Coach » n'est alors pas affichée.
+    coachs: [...new Set(cr.flatMap((s) => s.coachs))].join(", "),
     creneaux: cr.map((s) => ({
       jour: s.jour,
       horaire: `${heure(s.debut)} – ${heure(s.fin)}`,
@@ -318,10 +320,13 @@ export type MatchExterieurVue = {
   itineraire: string;
 };
 
+/** Place d'un week-end par rapport à aujourd'hui : « semaine » = du lundi au dimanche de ce week-end. */
+export type MomentWeekend = "passe" | "semaine" | "a-venir";
+
 export type WeekEndVue = {
   titre: string;
   semaine: string;
-  num: string;
+  moment: MomentWeekend;
   dates: string;
   vide: boolean;
   domicile: MatchDomicileVue[];
@@ -339,9 +344,12 @@ function rangSalle(salle: string): number {
 }
 
 export function weekendsVue(): WeekEndVue[] {
+  const jour = aujourdhui();
   return WEEKENDS.map((w, i) => {
     const sa = dateDe(w.samedi);
     const di = dateDe(w.samedi, 1);
+    const lundi = dateDe(w.samedi, -5).toISOString().slice(0, 10);
+    const moment: MomentWeekend = di.toISOString().slice(0, 10) < jour ? "passe" : lundi <= jour ? "semaine" : "a-venir";
     const court = (d: Date) => formater(d, { day: "numeric", month: "short" });
     const dates =
       sa.getUTCMonth() === di.getUTCMonth() ? `${sa.getUTCDate()}–${court(di)}` : `${court(sa)} – ${court(di)}`;
@@ -350,7 +358,7 @@ export function weekendsVue(): WeekEndVue[] {
     return {
       titre: w.titre,
       semaine: w.semaine,
-      num: w.semaine.replace("Semaine", "Sem."),
+      moment,
       dates,
       vide: w.domicile.length + w.exterieur.length === 0,
       // Regroupés par salle (ordre d'ADRESSES_SALLES), puis par jour et par heure dans chaque salle.
@@ -384,27 +392,19 @@ export function weekendsVue(): WeekEndVue[] {
 }
 
 /**
- * Week-end affiché par défaut : dès que le dimanche est passé, on bascule sur le suivant
- * (même s'il n'est pas encore rempli). avecMatchs : le prochain week-end rempli, sinon le dernier rempli.
+ * Les 3 week-ends de la page Matchs : le dernier passé, le week-end courant (le premier dont le
+ * dimanche n'est pas passé : on bascule chaque lundi) et le suivant. Les plus anciens ne sont plus
+ * affichés : on peut les effacer de WEEKENDS. equipes : celles qui jouent l'un de ces 3 week-ends.
  */
-export function indexWeekendCourant(avecMatchs = false): number {
+export function matchsAffiches(): { weekends: WeekEndVue[]; indexDefaut: number; equipes: string[] } {
+  const tous = weekendsVue();
   const jour = aujourdhui();
-  const plein = (i: number) => WEEKENDS[i].domicile.length + WEEKENDS[i].exterieur.length > 0;
-  const dimanche = (i: number) => dateDe(WEEKENDS[i].samedi, 1).toISOString().slice(0, 10);
-  let i = WEEKENDS.findIndex((_, k) => (!avecMatchs || plein(k)) && dimanche(k) >= jour);
-  if (i < 0 && avecMatchs) {
-    for (let k = WEEKENDS.length - 1; k >= 0; k--) {
-      if (plein(k)) {
-        i = k;
-        break;
-      }
-    }
-  }
-  return i < 0 ? WEEKENDS.length - 1 : i;
-}
-
-export function equipesDesMatchs(): string[] {
-  return [...new Set(WEEKENDS.flatMap((w) => [...w.domicile, ...w.exterieur]).map((m) => m.equipe))].sort(cmp);
+  let courant = WEEKENDS.findIndex((w) => dateDe(w.samedi, 1).toISOString().slice(0, 10) >= jour);
+  if (courant < 0) courant = tous.length - 1;
+  const premier = Math.max(0, courant - 1);
+  const weekends = tous.slice(premier, courant + 2);
+  const equipes = [...new Set(weekends.flatMap((w) => [...w.domicile, ...w.exterieur]).map((m) => m.equipe))].sort(cmp);
+  return { weekends, indexDefaut: courant - premier, equipes };
 }
 
 /* ───────── Stages ───────── */
@@ -413,6 +413,7 @@ export function equipesDesMatchs(): string[] {
 const JOURS_STAGE = 5;
 /** Les inscriptions d'une semaine ferment à cette heure (Paris), la veille de son dernier jour. */
 const HEURE_CLOTURE_STAGE = "12:00";
+const HEURE_CLOTURE_STAGE_TEXTE = "midi";
 
 /** Date et heure à Paris, au format AAAA-MM-JJTHH:MM (se compare comme une chaîne). */
 function maintenantParis(): string {
@@ -433,7 +434,8 @@ function maintenantParis(): string {
 }
 
 export type EtatStage = "ouvertes" | "fermees" | "a-venir";
-export type SemaineStageVue = SemaineStage & { fermee: boolean };
+/** cloture : fin des inscriptions en toutes lettres, ex. "jeudi 22 octobre, midi" ("" sans date). */
+export type SemaineStageVue = SemaineStage & { fermee: boolean; cloture: string };
 export type StageVue = Omit<Stage, "semaines"> & { etat: EtatStage; semaines: SemaineStageVue[] };
 
 /** Nombre de jours d'une semaine de stage : de debut à fin si elle est indiquée, sinon du lundi au vendredi. */
@@ -443,11 +445,22 @@ function joursDeStage(w: SemaineStage): number {
   return Math.max(1, Math.round((dateDe(w.fin).getTime() - dateDe(w.debut).getTime()) / 86_400_000) + 1);
 }
 
+/** Veille du dernier jour d'une semaine de stage : jour de fermeture de ses inscriptions. */
+function veilleDernierJour(debut: string, w: SemaineStage): Date {
+  return dateDe(debut, joursDeStage(w) - 2);
+}
+
 /** Les inscriptions d'une semaine ferment la veille de son dernier jour à midi (maintenant : heure de Paris). */
 function semaineFermee(w: SemaineStage, maintenant: string): boolean {
   if (!w.debut) return false;
-  const veille = dateDe(w.debut, joursDeStage(w) - 2).toISOString().slice(0, 10);
-  return maintenant >= `${veille}T${HEURE_CLOTURE_STAGE}`;
+  return maintenant >= `${veilleDernierJour(w.debut, w).toISOString().slice(0, 10)}T${HEURE_CLOTURE_STAGE}`;
+}
+
+/** "jeudi 22 octobre, midi" : quand ferment les inscriptions de la semaine. */
+function clotureSemaine(w: SemaineStage): string {
+  if (!w.debut) return "";
+  const jour = formater(veilleDernierJour(w.debut, w), { weekday: "long", day: "numeric", month: "long" });
+  return `${jour}, ${HEURE_CLOTURE_STAGE_TEXTE}`;
 }
 
 /**
@@ -459,7 +472,7 @@ export function stagesVue(): StageVue[] {
   const maintenant = maintenantParis();
   let courante = false;
   return STAGES.map((s) => {
-    const semaines = s.semaines.map((w) => ({ ...w, fermee: semaineFermee(w, maintenant) }));
+    const semaines = s.semaines.map((w) => ({ ...w, fermee: semaineFermee(w, maintenant), cloture: clotureSemaine(w) }));
     const datees = semaines.filter((w) => w.debut);
     let etat: EtatStage = "a-venir";
     if (datees.length && datees.every((w) => w.fermee)) etat = "fermees";
@@ -472,7 +485,7 @@ export function stagesVue(): StageVue[] {
 }
 
 export type JourStage = { id: string; court: string; long: string };
-export type SemaineOuverte = SemaineStage & { periode: string; stage: string; jours: JourStage[] };
+export type SemaineOuverte = SemaineStage & { periode: string; stage: string; jours: JourStage[]; cloture: string };
 
 /** Semaines proposées dans le formulaire : celles de la période ouverte dont les inscriptions ne sont pas fermées. */
 export function semainesOuvertes(): SemaineOuverte[] {
@@ -526,4 +539,73 @@ export function donneesCotisation() {
 /** Un adhérent né cette année-là est-il mineur pendant la saison ? */
 export function estMineur(annee: number): boolean {
   return annee >= anneeSaison() - 17;
+}
+
+/* ───────── Espace dirigeants : informations encore à fournir ───────── */
+
+export type ManqueSite = { section: string; page?: string; element: string; champ: string; valeur: string; chemin: string };
+
+/** Titre lisible (et page concernée) de chaque bloc de data/nbb.ts qui peut contenir « [À COMPLÉTER] ». */
+const SECTIONS_MANQUES: Record<string, { titre: string; page?: string }> = {
+  CLUB: { titre: "Informations du club" },
+  MENTIONS: { titre: "Mentions légales", page: "/mentions-legales" },
+  ENCADREMENT: { titre: "Entraîneurs (accueil)", page: "/" },
+  AIDES: { titre: "Aides à la cotisation (Inscriptions)", page: "/inscriptions#tarifs" },
+  GYMNASES: { titre: "Gymnases (Infos pratiques)", page: "/infos" },
+  OFFRE_PARTENARIAT: { titre: "Offre de partenariat (Partenaires)", page: "/partenaires" },
+  SLOTS: { titre: "Planning des entraînements", page: "/planning" },
+};
+
+const CHAMPS_MANQUES: Record<string, string> = {
+  delaiReponseContact: "Délai de réponse après un message (page Contact)",
+  delaiReponseInscription: "Délai de confirmation d'une préinscription (page Inscriptions)",
+  plaquettePartenaires: "Lien de la plaquette partenaires en PDF (page Partenaires)",
+  reductionImpot: "Réduction d'impôt du mécénat : éligibilité à confirmer (page Partenaires)",
+  rna: "Numéro RNA",
+  siret: "Numéro SIRET",
+  responsablePublication: "Responsable de la publication",
+  conservationAdhesions: "Durée de conservation des adhésions",
+  conservationMessages: "Durée de conservation des messages",
+  diplomes: "Diplôme",
+  arrivee: "Arrivée au club",
+  acces: "Accès (bus, tram, parking)",
+  montant: "Montant",
+};
+
+/** Nom lisible d'un élément de liste (entraîneur, gymnase, formule…). */
+function nomElement(x: unknown, i: number): string {
+  if (x && typeof x === "object") {
+    for (const k of ["prenom", "nom", "titre", "formule", "id"]) {
+      const v = (x as Record<string, unknown>)[k];
+      if (typeof v === "string" && v && !MARQUE_A_COMPLETER.test(v)) return v;
+    }
+  }
+  return `n° ${i + 1}`;
+}
+
+/**
+ * Tout ce qui est encore marqué « [À COMPLÉTER] » ou « [À CONFIRMER] » dans data/nbb.ts (masqué sur le site),
+ * plus les équipes du planning sans coach. Affiché dans l'Espace dirigeants.
+ */
+export function manquesDuSite(): ManqueSite[] {
+  const manques: ManqueSite[] = [];
+  const ajouter = (racine: string, element: string, champ: string, valeur: string, chemin: string) => {
+    const s = SECTIONS_MANQUES[racine];
+    manques.push({ section: s?.titre ?? racine, page: s?.page, element, champ: CHAMPS_MANQUES[champ] ?? champ, valeur, chemin });
+  };
+  const parcourir = (v: unknown, chemin: string, racine: string, element: string, champ: string, niveau: number) => {
+    if (typeof v === "string") {
+      if (MARQUE_A_COMPLETER.test(v)) ajouter(racine, element, champ, v, chemin);
+    } else if (Array.isArray(v)) {
+      // Premier niveau (liste d'entraîneurs, de gymnases…) : chaque élément est nommé.
+      v.forEach((x, i) => parcourir(x, `${chemin}[${i}]`, racine, niveau === 0 ? nomElement(x, i) : element, champ, niveau + 1));
+    } else if (v && typeof v === "object") {
+      for (const [k, x] of Object.entries(v)) parcourir(x, `${chemin}.${k}`, racine, element, champ || k, niveau + 1);
+    }
+  };
+  for (const [nom, valeur] of Object.entries(DONNEES)) parcourir(valeur, nom, nom, "", "", 0);
+  for (const e of toutesLesEquipes()) {
+    if (!ficheEquipe(e).coachs) ajouter("SLOTS", e, "Coach", "Aucun coach indiqué dans le planning", "SLOTS");
+  }
+  return manques;
 }

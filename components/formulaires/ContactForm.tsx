@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { startTransition, useActionState, useEffect, useRef, useState } from "react";
 import { envoyerContact } from "@/app/actions";
 import { RESULTAT_INITIAL, reponseRobotValide, SUJETS_CONTACT } from "@/lib/formulaires";
-import { estEmail } from "@/lib/utils";
+import { aCompleter, estEmail } from "@/lib/utils";
 import { CaseACocher, ChampListe, ChampTexte, ChampZone, Confirmation, Piege } from "@/components/formulaires/Champs";
 
 const VIDE = { nom: "", email: "", sujet: "inscription", message: "", robot: "", rgpd: false, hp: "" };
@@ -59,8 +59,8 @@ export function ContactForm({ delaiReponse, sujet = "", commission = "" }: { del
     return (
       <Confirmation titre="Message envoyé">
         <p className="confirmation__texte">
-          Merci ! Un bénévole vous répond dès que possible, sous {delaiReponse}. Pensez à vérifier vos courriers
-          indésirables.
+          Merci ! Un bénévole vous répond dès que possible{aCompleter(delaiReponse) ? "" : `, sous ${delaiReponse}`}.
+          Pensez à vérifier vos courriers indésirables.
         </p>
         <button
           type="button"

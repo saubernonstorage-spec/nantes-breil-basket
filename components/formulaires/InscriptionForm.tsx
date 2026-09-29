@@ -5,6 +5,7 @@ import { startTransition, useActionState, useEffect, useRef, useState } from "re
 import { preinscrire } from "@/app/actions";
 import { RESULTAT_INITIAL } from "@/lib/formulaires";
 import {
+  aCompleter,
   categorieParAnnee,
   equipesProposees,
   estEmail,
@@ -187,7 +188,8 @@ export function InscriptionForm(props: Props) {
           ) : (
             <>Votre dossier est entre les mains de la commission Inscriptions.</>
           )}{" "}
-          Nous vous confirmons la place par e-mail sous {props.delaiReponse}, avec les modalités de règlement.
+          Nous vous confirmons la place par e-mail{aCompleter(props.delaiReponse) ? "" : ` sous ${props.delaiReponse}`}, avec
+          les modalités de règlement.
         </p>
         <ol className="confirmation__etapes">
           <li>Préparez les documents à fournir (liste ci-dessus).</li>

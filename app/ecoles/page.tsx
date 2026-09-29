@@ -50,19 +50,11 @@ export default function Ecoles() {
             <h1 className="titre-page">
               Trois étoiles <span className="accent">au-dessus du panier</span>
             </h1>
-            <p className="chapo" style={{ maxWidth: 560, marginBottom: 28 }}>
+            <p className="chapo" style={{ maxWidth: 560 }}>
               Le NBB est labellisé École Française de Mini-Basket au niveau maximal de trois étoiles. Ce label de la
               FFBB distingue les clubs qui offrent aux enfants un accueil éducatif et un encadrement de qualité. Le club
               détient aussi le label FFBB Micro Basket, pour l'accueil des tout-petits dès 3 ans.
             </p>
-            <div className="rangee rangee--10">
-              <Link href="/contact?sujet=essai" className="btn btn--xl btn--orange">
-                Demander une séance d'essai
-              </Link>
-              <a href="#arbitrage" className="btn btn--xl btn--clair">
-                École d'arbitrage <span className="fleche fleche--bas" aria-hidden="true">↓</span>
-              </a>
-            </div>
           </div>
           <div className="ecoles-hero__photo">
             <Photo src={PHOTOS.ecoles.src} alt={PHOTOS.ecoles.alt} sizes="(max-width: 900px) 100vw, 560px" prioritaire />
@@ -98,7 +90,7 @@ export default function Ecoles() {
                 <div key={g.nom} className="samedi__groupe">
                   <div>
                     <strong>{g.nom}</strong>
-                    <span>Coachs : {g.coachs}</span>
+                    {g.coachs ? <span>Coachs : {g.coachs}</span> : null}
                   </div>
                   <span className="samedi__horaire">{g.horaire}</span>
                 </div>
@@ -113,9 +105,14 @@ export default function Ecoles() {
               <div className="cotisation-mini__prix">{TARIFS[0].prix} €</div>
               <p>Pour la saison, licence et assurance de base comprises. Places limitées dans chaque groupe.</p>
             </div>
-            <Link href="/inscriptions#formulaire" className="btn btn--m btn--nuit" style={{ alignSelf: "flex-start" }}>
-              Inscrire mon enfant
-            </Link>
+            <div className="rangee rangee--8">
+              <Link href="/inscriptions#formulaire" className="btn btn--m btn--nuit">
+                Inscrire mon enfant
+              </Link>
+              <Link href="/contact?sujet=essai" className="btn btn--m btn--contour">
+                Demander une séance d'essai
+              </Link>
+            </div>
           </div>
         </div>
       </section>

@@ -92,9 +92,6 @@ export function PlanningVue({
             <button type="button" className="btn btn--contour" onClick={() => changer(AUCUN)}>
               Réinitialiser
             </button>
-            <button type="button" className="btn btn--nuit" onClick={() => window.print()}>
-              Imprimer
-            </button>
           </div>
         </form>
       </div>
@@ -136,9 +133,11 @@ export function PlanningVue({
                       <span key={e}>{e}</span>
                     ))}
                   </div>
-                  <div className="creneau__coach">
-                    Coach : <strong>{c.coachs}</strong>
-                  </div>
+                  {c.coachs ? (
+                    <div className="creneau__coach">
+                      Coach : <strong>{c.coachs}</strong>
+                    </div>
+                  ) : null}
                 </article>
               ))}
             </div>

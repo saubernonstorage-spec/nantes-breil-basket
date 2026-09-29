@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { CLUB } from "@/data/nbb";
-import { equipesDesMatchs, indexWeekendCourant, weekendsVue } from "@/lib/nbb";
+import { matchsAffiches } from "@/lib/nbb";
 import { EntetePage } from "@/components/Page";
 import { Terrain } from "@/components/Terrain";
 import { MatchsAvecAdresse, MatchsVue, Resultats } from "@/components/MatchsExplorer";
@@ -17,18 +17,15 @@ export const metadata: Metadata = {
 export const revalidate = 3600;
 
 export default function Matchs() {
-  const weekends = weekendsVue();
-  const donnees = {
-    weekends,
-    indexDefaut: indexWeekendCourant(),
-    equipes: equipesDesMatchs(),
-    whatsapp: CLUB.whatsapp,
-  };
+  // Trois week-ends seulement : le dernier passé, celui de la semaine et le suivant.
+  const { weekends, indexDefaut, equipes } = matchsAffiches();
+  const donnees = { weekends, indexDefaut, equipes, whatsapp: CLUB.whatsapp };
 
   return (
     <>
       <EntetePage
-        fil={`Matchs & résultats · ${weekends[donnees.indexDefaut].semaine}`}
+        variante="filtres"
+        fil={`Matchs & résultats · ${weekends[indexDefaut].semaine}`}
         decor={
           <Terrain
             motif="bout"
@@ -41,13 +38,7 @@ export default function Matchs() {
           </>
         }
         chapo="Horaires, lieux, arbitres, table de marque et OTM. Choisissez un week-end et votre équipe pour ne voir que vos matchs."
-      >
-        <div className="rangee rangee--10" style={{ marginTop: 28 }}>
-          <a href="#resultats" className="btn btn--l btn--petit btn--orange">
-            Résultats <span className="fleche fleche--bas" aria-hidden="true">↓</span>
-          </a>
-        </div>
-      </EntetePage>
+      />
 
       <Suspense fallback={<MatchsVue {...donnees} />}>
         <MatchsAvecAdresse {...donnees} />

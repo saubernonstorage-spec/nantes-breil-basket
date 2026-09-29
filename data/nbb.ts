@@ -52,7 +52,6 @@ export const CLUB: Club = {
   adresse: "Gymnase Joël Paon\n42 bis rue des Hauts-Pavés\n44000 Nantes",
   boiteAuxLettres: "42 rue des Hauts-Pavés — 1re boîte en haut à gauche, sur le petit parking",
   email: "contact@nbb44.fr",
-  telephone: "[À COMPLÉTER]",
   facebook: "https://www.facebook.com/people/Nantes-Breil-Basket/100063796590330/",
   instagram: "https://www.instagram.com/nantesbreilbasket44/",
   linkedin: "https://fr.linkedin.com/company/nantes-breil-basket",
@@ -68,6 +67,8 @@ export const CLUB: Club = {
   delaiReponseInscription: "[À COMPLÉTER]",
   // Lien vers la plaquette partenaires (PDF), commençant par https://.
   plaquettePartenaires: "[À COMPLÉTER]",
+  // Page Partenaires, formule mécénat : retirez « [À CONFIRMER…] » une fois l'éligibilité vérifiée pour l'afficher.
+  reductionImpot: "Réduction d'impôt possible (association loi 1901) [À CONFIRMER : éligibilité]",
 };
 
 /** Mentions légales (page /mentions-legales). */
@@ -185,12 +186,12 @@ export const ADRESSES_SALLES: Record<string, string> = {
   "Similienne": "26 bis rue des Hauts-Pavés, Nantes",
 };
 
-/** Encadrement technique (d'après le planning). Complétez diplômes et présentations. */
+/** Encadrement technique (d'après le planning). Complétez les diplômes et l'arrivée au club. */
 export const ENCADREMENT: Entraineur[] = [
-  { prenom: "Clément", nom: "", role: "Entraîneur salarié", photo: "/photos/coachs/clement.png", presentation: "[À COMPLÉTER] — diplôme et parcours.", diplomes: [{ nom: "BPJEPS", url: "https://www.ffbb.com/bpjeps" }, { nom: "DETB", url: "https://pdlbasket.fr/detb" }], arrivee: "Au club depuis 2022" },
-  { prenom: "Romane", nom: "", role: "Entraîneure salariée", photo: "/photos/coachs/romane.jpg", presentation: "[À COMPLÉTER] — diplôme et parcours.", diplomes: [{ nom: "[À COMPLÉTER] Diplôme" }], arrivee: "Au club depuis [À COMPLÉTER]" },
-  { prenom: "Hugo", nom: "", role: "Entraîneur salarié", photo: "/photos/coachs/hugo.jpg", presentation: "[À COMPLÉTER] — diplôme et parcours.", diplomes: [{ nom: "BPJEPS", url: "https://www.ffbb.com/bpjeps" }, { nom: "DETB", url: "https://pdlbasket.fr/detb" }], arrivee: "Au club depuis 2025" },
-  { prenom: "Célia", nom: "", role: "Entraîneure apprentie", photo: "/photos/coachs/celia.jpg", presentation: "[À COMPLÉTER] — diplôme et parcours.", diplomes: [{ nom: "[À COMPLÉTER] Diplôme" }], arrivee: "Au club depuis [À COMPLÉTER]" },
+  { prenom: "Clément", nom: "", role: "Entraîneur salarié", photo: "/photos/coachs/clement.png", diplomes: [{ nom: "BPJEPS", url: "https://www.ffbb.com/bpjeps" }, { nom: "DETB", url: "https://pdlbasket.fr/detb" }], arrivee: "Au club depuis 2022" },
+  { prenom: "Romane", nom: "", role: "Entraîneure salariée", photo: "/photos/coachs/romane.jpg", diplomes: [{ nom: "[À COMPLÉTER] Diplôme" }], arrivee: "Au club depuis [À COMPLÉTER]" },
+  { prenom: "Hugo", nom: "", role: "Entraîneur salarié", photo: "/photos/coachs/hugo.jpg", diplomes: [{ nom: "BPJEPS", url: "https://www.ffbb.com/bpjeps" }, { nom: "DETB", url: "https://pdlbasket.fr/detb" }], arrivee: "Au club depuis 2025" },
+  { prenom: "Célia", nom: "", role: "Entraîneure apprentie", photo: "/photos/coachs/celia.jpg", diplomes: [{ nom: "[À COMPLÉTER] Diplôme" }], arrivee: "Au club depuis [À COMPLÉTER]" },
 ];
 
 /** Bureau. photo : chemin d'un portrait dans public/photos/ (ex. "/photos/bureau/sebastien.jpg"), ou "". */
@@ -382,22 +383,22 @@ export const OFFRE_PARTENARIAT: OffrePartenariat[] = [
  * nesDe / nesA : années de naissance acceptées ; licenciesFFBB : true = réservé aux licenciés FFBB, false = tout public.
  */
 export const STAGES: Stage[] = [
-  { id: "automne-2026", periode: "Stages d'automne", public: "Filles et garçons",
+  { id: "automne-2026", periode: "Stages d'automne",
     semaines: [
       { id: "aut-s1", nom: "Semaine 1", dates: "Du 19 au 23 octobre", debut: "2026-10-19", nesDe: 2012, nesA: 2019, licenciesFFBB: true },
       { id: "aut-s2", nom: "Semaine 2", dates: "Du 26 au 30 octobre", debut: "2026-10-26", nesDe: 2012, nesA: 2020, licenciesFFBB: false },
     ] },
-  { id: "noel-2026", periode: "Stages de Noël", public: "[À COMPLÉTER]",
+  { id: "noel-2026", periode: "Stages de Noël",
     semaines: [
       { id: "noel-s1", nom: "Semaine 1", dates: "Du 21 au 24 décembre", debut: "2026-12-21", fin: "2026-12-24", nesDe: 2012, nesA: 2019, licenciesFFBB: true },
       { id: "noel-s2", nom: "Semaine 2", dates: "Du 28 au 31 décembre", debut: "2026-12-28", fin: "2026-12-31", nesDe: 2012, nesA: 2020, licenciesFFBB: false },
     ] },
-  { id: "hiver-2027", periode: "Stages d'hiver", public: "[À COMPLÉTER]",
+  { id: "hiver-2027", periode: "Stages d'hiver",
     semaines: [
       { id: "hiver-s1", nom: "Semaine 1", dates: "Du 22 au 26 février", debut: "2027-02-22", nesDe: 2012, nesA: 2019, licenciesFFBB: true },
       { id: "hiver-s2", nom: "Semaine 2", dates: "Du 1er au 5 mars", debut: "2027-03-01", nesDe: 2012, nesA: 2020, licenciesFFBB: false },
     ] },
-  { id: "printemps-2027", periode: "Stages de printemps", public: "[À COMPLÉTER]",
+  { id: "printemps-2027", periode: "Stages de printemps",
     semaines: [
       { id: "printemps-s1", nom: "Semaine 1", dates: "Du 19 au 23 avril", debut: "2027-04-19", nesDe: 2012, nesA: 2019, licenciesFFBB: true },
       { id: "printemps-s2", nom: "Semaine 2", dates: "Du 26 au 30 avril", debut: "2027-04-26", nesDe: 2012, nesA: 2020, licenciesFFBB: false },

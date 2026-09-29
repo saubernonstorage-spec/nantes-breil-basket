@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { CATEGORIES, CLUB, COMMISSIONS, ENCADREMENT, PHOTOS, STATS } from "@/data/nbb";
 import { agendaAVenir, categorieDe, chiffresAccueil, CRENEAUX, toutesLesEquipes } from "@/lib/nbb";
-import { enLettres, pluriel } from "@/lib/utils";
+import { aCompleter, enLettres, pluriel } from "@/lib/utils";
 import { JsonLdClub } from "@/components/JsonLdClub";
 import { ListeAgenda } from "@/components/ListeAgenda";
 import { Photo } from "@/components/Photo";
@@ -103,7 +103,7 @@ export default function Accueil() {
           id="acces-titre"
           texte="Horaires, lieux, convocations : l'essentiel à portée de main, avant de partir au gymnase."
         />
-        <div className="grille" style={{ "--min": "200px" } as React.CSSProperties}>
+        <div className="grille acces-grille" style={{ "--min": "200px" } as React.CSSProperties}>
           {ACCES.map((a) => (
             <Link key={a.href} href={a.href} className="acces carte-lien">
               <span className="acces__titre">{a.titre}</span>
@@ -248,9 +248,18 @@ export default function Accueil() {
           id="coachs-titre"
           texte={introEncadrement()}
         />
-        <div className="grille" style={{ "--min": "250px", gap: 16 } as React.CSSProperties}>
+        {/* Sur mobile, les cartes forment une rangée qui défile de côté (focalisable au clavier). */}
+        <div
+          className="grille portraits-defilants"
+          role="region"
+          aria-label="Entraîneurs du club"
+          tabIndex={0}
+          style={{ "--min": "250px", gap: 16 } as React.CSSProperties}
+        >
           {ENCADREMENT.map((c) => {
             const nom = c.nom ? `${c.prenom} ${c.nom}` : c.prenom;
+            // Diplômes et arrivée encore « [À COMPLÉTER] » : non affichés.
+            const diplomes = c.diplomes.filter((d) => !aCompleter(d.nom));
             return (
               <article key={c.prenom} className="portrait">
                 <div className="portrait__rond">
@@ -259,19 +268,21 @@ export default function Accueil() {
                 <div className="portrait__corps">
                   <span className="etiquette">{c.role}</span>
                   <h3 className="portrait__nom">{nom}</h3>
-                  <div className="portrait__diplomes">
-                    {c.diplomes.map((d) =>
-                      d.url ? (
-                        <a key={d.nom} href={d.url} target="_blank" rel="noopener">
-                          {d.nom}
-                          <NouvelOnglet />
-                        </a>
-                      ) : (
-                        <span key={d.nom}>{d.nom}</span>
-                      ),
-                    )}
-                  </div>
-                  <div className="portrait__detail">{c.arrivee}</div>
+                  {diplomes.length ? (
+                    <div className="portrait__diplomes">
+                      {diplomes.map((d) =>
+                        d.url ? (
+                          <a key={d.nom} href={d.url} target="_blank" rel="noopener">
+                            {d.nom}
+                            <NouvelOnglet />
+                          </a>
+                        ) : (
+                          <span key={d.nom}>{d.nom}</span>
+                        ),
+                      )}
+                    </div>
+                  ) : null}
+                  {aCompleter(c.arrivee) ? null : <div className="portrait__detail">{c.arrivee}</div>}
                 </div>
               </article>
             );

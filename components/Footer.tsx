@@ -44,9 +44,9 @@ const COLONNES = [
 export function Footer() {
   return (
     <footer className="pied">
-      <Terrain motif="bout" className="pied__terrain" />
-      <div className="pied__inner">
-        {PARTENAIRES.length ? (
+      {/* Bande des partenaires, entre deux lignes ; le dessin de terrain commence en dessous. */}
+      {PARTENAIRES.length ? (
+        <div className="pied__inner pied__inner--partenaires">
           <ul className="pied__partenaires" aria-label="Partenaires du club">
             {PARTENAIRES.map((p) => {
               const contenu = (
@@ -75,86 +75,91 @@ export function Footer() {
               );
             })}
           </ul>
-        ) : null}
-
-        <div className="pied__question">
-          <div>
-            <div className="surtitre">Une question ?</div>
-            <p className="pied__slogan">On vous répond.</p>
-          </div>
-          <div className="rangee rangee--10">
-            <Link href="/contact" className="btn btn--l btn--orange">
-              Nous écrire
-            </Link>
-            <Link href="/infos#faq" className="btn btn--l btn--clair">
-              Lire la FAQ
-            </Link>
-          </div>
         </div>
+      ) : null}
 
-        <div className="pied__colonnes">
-          <div className="pied__club">
-            <div className="pied__marque">
-              <span className="pied__logo">
-                <Image src="/logo-nbb.png" alt="Logo du Nantes Breil Basket" width={46} height={37} />
-              </span>
-              <span className="marque__nom pied__nom">
-                Nantes Breil
-                <br />
-                <span>Basket</span>
-              </span>
+      <div className="pied__corps">
+        <Terrain motif="bout" className="pied__terrain" />
+        <div className="pied__inner">
+          <div className="pied__question">
+            <div>
+              <div className="surtitre">Une question ?</div>
+              <p className="pied__slogan">On vous répond.</p>
             </div>
-            <p className="pied__adresse">
-              Association loi 1901
-              {CLUB.adresse.split("\n").map((ligne) => (
-                <span key={ligne}>
-                  <br />
-                  {ligne}
+            <div className="rangee rangee--10">
+              <Link href="/contact" className="btn btn--l btn--orange">
+                Nous écrire
+              </Link>
+              <Link href="/infos#faq" className="btn btn--l btn--clair">
+                Lire la FAQ
+              </Link>
+            </div>
+          </div>
+
+          <div className="pied__colonnes">
+            <div className="pied__club">
+              <div className="pied__marque">
+                <span className="pied__logo">
+                  <Image src="/logo-nbb.png" alt="Logo du Nantes Breil Basket" width={46} height={37} />
                 </span>
-              ))}
-            </p>
-            <a href={`mailto:${CLUB.email}`} className="pied__email">
-              {CLUB.email}
-            </a>
-            <div className="rangee rangee--8">
-              <a href={CLUB.facebook} target="_blank" rel="noopener" className="reseau reseau--petit">
-                <IconeFacebook />
-                Facebook
-                <NouvelOnglet />
+                <span className="marque__nom pied__nom">
+                  Nantes Breil
+                  <br />
+                  <span>Basket</span>
+                </span>
+              </div>
+              <p className="pied__adresse">
+                Association loi 1901
+                {CLUB.adresse.split("\n").map((ligne) => (
+                  <span key={ligne}>
+                    <br />
+                    {ligne}
+                  </span>
+                ))}
+              </p>
+              <a href={`mailto:${CLUB.email}`} className="pied__email">
+                {CLUB.email}
               </a>
-              <a href={CLUB.instagram} target="_blank" rel="noopener" className="reseau reseau--petit">
-                <IconeInstagram />
-                Instagram
-                <NouvelOnglet />
-              </a>
-              <a href={CLUB.whatsapp} target="_blank" rel="noopener" className="reseau reseau--petit">
-                <IconeWhatsapp />
-                WhatsApp
-                <NouvelOnglet />
-              </a>
+              <div className="rangee rangee--8">
+                <a href={CLUB.facebook} target="_blank" rel="noopener" className="reseau reseau--petit">
+                  <IconeFacebook />
+                  Facebook
+                  <NouvelOnglet />
+                </a>
+                <a href={CLUB.instagram} target="_blank" rel="noopener" className="reseau reseau--petit">
+                  <IconeInstagram />
+                  Instagram
+                  <NouvelOnglet />
+                </a>
+                <a href={CLUB.whatsapp} target="_blank" rel="noopener" className="reseau reseau--petit">
+                  <IconeWhatsapp />
+                  WhatsApp
+                  <NouvelOnglet />
+                </a>
+              </div>
             </div>
+            {COLONNES.map((col) => (
+              <nav key={col.titre} aria-label={col.titre} className="pied__col">
+                <div className="pied__etiquette">{col.titre}</div>
+                {col.liens.map((l) =>
+                  "externe" in l ? (
+                    <a key={l.label} href={l.href} target="_blank" rel="noopener">
+                      {l.label}
+                      <NouvelOnglet />
+                    </a>
+                  ) : (
+                    <Link key={l.label} href={l.href}>
+                      {l.label}
+                    </Link>
+                  ),
+                )}
+              </nav>
+            ))}
           </div>
-          {COLONNES.map((col) => (
-            <nav key={col.titre} aria-label={col.titre} className="pied__col">
-              <div className="pied__etiquette">{col.titre}</div>
-              {col.liens.map((l) =>
-                "externe" in l ? (
-                  <a key={l.label} href={l.href} target="_blank" rel="noopener">
-                    {l.label}
-                    <NouvelOnglet />
-                  </a>
-                ) : (
-                  <Link key={l.label} href={l.href}>
-                    {l.label}
-                  </Link>
-                ),
-              )}
-            </nav>
-          ))}
-        </div>
 
-        <div aria-hidden="true" className="pied__geant">
-          Nantes Breil
+          <div aria-hidden="true" className="pied__geant">
+            Nantes Breil
+          </div>
         </div>
       </div>
 

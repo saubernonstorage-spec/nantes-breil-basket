@@ -69,7 +69,7 @@ export default function Stages() {
               <span className={PASTILLES[s.etat].classe}>{PASTILLES[s.etat].texte}</span>
               <h3 className="carte-stage__titre">{titreCarte(s.periode)}</h3>
               <ul className="carte-stage__semaines">
-                {(s.semaines.length ? s.semaines : [{ id: "vide", nom: "Dates", dates: "[À COMPLÉTER]", fermee: false }]).map((w) => (
+                {s.semaines.map((w) => (
                   // Dans une période encore ouverte, une semaine déjà fermée est grisée.
                   <li key={w.id} className={s.etat === "ouvertes" && w.fermee ? "carte-stage__semaine--fermee" : undefined}>
                     <div className="carte-stage__ligne">
@@ -78,6 +78,9 @@ export default function Stages() {
                     </div>
                     {s.etat === "ouvertes" && w.fermee ? (
                       <span className="pastille pastille--fermee">Inscriptions fermées</span>
+                    ) : null}
+                    {s.etat === "ouvertes" && !w.fermee && w.cloture ? (
+                      <span className="carte-stage__cloture">Inscriptions jusqu'au {w.cloture}</span>
                     ) : null}
                     {"nesDe" in w && w.nesDe ? (
                       <div className="carte-stage__ligne carte-stage__ligne--public">

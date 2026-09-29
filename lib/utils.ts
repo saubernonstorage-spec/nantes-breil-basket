@@ -3,9 +3,12 @@
  * comme dans les composants du navigateur.
  */
 
-/** Texte encore à fournir par le club. */
+/** Marque d'une information que le club doit encore fournir ou confirmer. */
+export const MARQUE_A_COMPLETER = /\[À (COMPLÉTER|CONFIRMER)/;
+
+/** Texte vide ou encore à fournir par le club : il n'est pas affiché sur le site. */
 export function aCompleter(texte: string | undefined | null): boolean {
-  return !texte || texte.includes("[À COMPLÉTER") || texte.includes("[À CONFIRMER");
+  return !texte || MARQUE_A_COMPLETER.test(texte);
 }
 
 /** "Floreska-Guépin" → "floreska-guepin" ; "Micro 1" → "micro-1". */

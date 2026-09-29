@@ -169,6 +169,7 @@ export function StageForm({ semaines, prix, reductions, annees }: Props) {
                       <strong>{w.periode}</strong> · {w.nom} — {w.dates}
                     </div>
                     {eligibilite ? <div className="semaine-stage__public">{eligibilite}</div> : null}
+                    {w.cloture ? <div className="semaine-stage__cloture">Inscriptions jusqu'au {w.cloture}</div> : null}
                   </div>
                   <span className="semaine-stage__resume">{resume}</span>
                 </div>

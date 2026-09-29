@@ -1,14 +1,16 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import type { MatchDomicileVue, WeekEndVue } from "@/lib/nbb";
+import { useState, useSyncExternalStore } from "react";
+import type { MatchDomicileVue, MomentWeekend, WeekEndVue } from "@/lib/nbb";
 import { pluriel } from "@/lib/utils";
 import { ContenuConsenti } from "@/components/Cookies";
 import { IconeCartes, IconeTableau, NouvelOnglet } from "@/components/icons";
 
 type Props = { weekends: WeekEndVue[]; indexDefaut: number; equipes: string[]; whatsapp: string };
 type Affichage = "tableau" | "cartes";
+
+const MOMENTS: Record<MomentWeekend, string> = { passe: "Terminée", semaine: "Prochains matchs", "a-venir": "À venir" };
 
 /** Même seuil que le CSS (.matchs[data-vue="auto"]) : en dessous, les cartes sont affichées par défaut. */
 const PETIT_ECRAN = "(max-width: 699px)";
@@ -69,24 +71,12 @@ export function MatchsVue({ weekends, indexDefaut, equipes, whatsapp, equipeInit
     setVersion((v) => v + 1);
   };
   const rafraichi = version ? "rafraichi" : undefined;
-  const rail = useRef<HTMLDivElement>(null);
-  const premier = useRef(true);
-
-  // Le week-end choisi reste visible dans la barre de défilement.
-  useEffect(() => {
-    const r = rail.current;
-    const el = r?.querySelector<HTMLElement>('[aria-pressed="true"]');
-    if (r && el) r.scrollTo({ left: Math.max(0, el.offsetLeft - 8), behavior: premier.current ? "auto" : "smooth" });
-    premier.current = false;
-  }, [sel]);
 
   const w = weekends[sel];
   const filtre = <M extends { equipe: string }>(m: M) => !equipe || m.equipe === equipe;
   const dom = w.domicile.filter(filtre);
   const ext = w.exterieur.filter(filtre);
   const pour = equipe ? " pour cette équipe " : " ";
-  const precOk = sel > 0;
-  const suivOk = sel < weekends.length - 1;
   const glisser = (
     <p className="matchs__glisser" aria-hidden="true">
       Faites glisser le tableau vers la droite pour tout lire <span className="fleche">→</span>
@@ -95,47 +85,23 @@ export function MatchsVue({ weekends, indexDefaut, equipes, whatsapp, equipeInit
 
   return (
     <div className="matchs" data-vue={affichage ?? "auto"}>
-      <section aria-label="Choisir le week-end, l'équipe et l'affichage" className="section" style={{ paddingTop: 40, paddingBottom: 0 }}>
-        <div className="choix-weekend">
-          <div className="choix-weekend__rail-bloc">
-            <button
-              type="button"
-              className="choix-weekend__fleche"
-              aria-label="Week-end précédent"
-              disabled={!precOk}
-              onClick={() => precOk && setSel(sel - 1)}
-            >
-              ‹
-            </button>
-            <div ref={rail} role="group" aria-label="Choisir le week-end" className="choix-weekend__rail">
+      {/* Même barre de filtres que la page Entraînements, posée à cheval sur l'en-tête. */}
+      <div className="filtres-planning">
+        <form role="search" aria-label="Filtrer les matchs" onSubmit={(e) => e.preventDefault()} className="filtres filtres--matchs">
+          <label className="filtres__champ">
+            Week-end
+            <select className="saisie" value={sel} onChange={(e) => setSel(Number(e.target.value))}>
               {weekends.map((x, i) => (
-                <button
-                  key={x.semaine + x.dates}
-                  type="button"
-                  aria-pressed={i === sel}
-                  className="choix-weekend__semaine"
-                  onClick={() => setSel(i)}
-                >
-                  <span className="choix-weekend__num">{x.num}</span>
-                  <span className="choix-weekend__dates">{x.dates}</span>
-                  {x.vide ? <span className="choix-weekend__avenir">À venir</span> : null}
-                </button>
+                <option key={x.semaine + x.dates} value={i}>
+                  {x.dates} · {MOMENTS[x.moment]}
+                </option>
               ))}
-            </div>
-            <button
-              type="button"
-              className="choix-weekend__fleche"
-              aria-label="Week-end suivant"
-              disabled={!suivOk}
-              onClick={() => suivOk && setSel(sel + 1)}
-            >
-              ›
-            </button>
-          </div>
-          <label className="choix-weekend__equipe">
-            Mon équipe
-            <select value={equipe} onChange={(e) => setEquipe(e.target.value)}>
-              <option value="">Toutes</option>
+            </select>
+          </label>
+          <label className="filtres__champ">
+            Équipe
+            <select className="saisie" value={equipe} onChange={(e) => setEquipe(e.target.value)}>
+              <option value="">Toutes les équipes</option>
               {equipes.map((e) => (
                 <option key={e} value={e}>
                   {e}
@@ -143,20 +109,23 @@ export function MatchsVue({ weekends, indexDefaut, equipes, whatsapp, equipeInit
               ))}
             </select>
           </label>
-          <div role="group" aria-label="Affichage des matchs" className="choix-vue">
-            <button type="button" aria-pressed={vue === "tableau"} className="choix-vue__bouton" onClick={() => setVue("tableau")}>
-              <IconeTableau />
-              Tableau
-            </button>
-            <button type="button" aria-pressed={vue === "cartes"} className="choix-vue__bouton" onClick={() => setVue("cartes")}>
-              <IconeCartes />
-              Cartes
-            </button>
+          <div className="filtres__champ">
+            <span id="affichage-libelle">Affichage</span>
+            <div role="group" aria-labelledby="affichage-libelle" className="choix-vue">
+              <button type="button" aria-pressed={vue === "tableau"} className="choix-vue__bouton" onClick={() => setVue("tableau")}>
+                <IconeTableau />
+                Tableau
+              </button>
+              <button type="button" aria-pressed={vue === "cartes"} className="choix-vue__bouton" onClick={() => setVue("cartes")}>
+                <IconeCartes />
+                Cartes
+              </button>
+            </div>
           </div>
-        </div>
-      </section>
+        </form>
+      </div>
 
-      <section aria-labelledby="dom-titre" className="section" style={{ paddingTop: 48, paddingBottom: 24 }}>
+      <section aria-labelledby="dom-titre" className="section" style={{ paddingTop: 40, paddingBottom: 24 }}>
         <div className="tete-section" style={{ marginBottom: 10 }}>
           <div>
             <div className="surtitre">À domicile · {pluriel(dom.length, "match", "matchs")}</div>
@@ -165,8 +134,8 @@ export function MatchsVue({ weekends, indexDefaut, equipes, whatsapp, equipeInit
             </h2>
           </div>
           <p className="tete-section__texte" style={{ maxWidth: 460, fontSize: 14 }}>
-            « 2 × U11F2 » : deux joueurs ou joueuses de cette équipe tiennent la table de marque. Pas disponible ?
-            Trouvez un remplaçant et prévenez votre coach.
+            « 2 × U11F2 » : deux joueurs ou joueuses de cette équipe tiennent la table de marque. Pas disponible pour
+            arbitrer ? Trouvez un remplaçant et prévenez le plus rapidement possible votre coach.
           </p>
         </div>
         <div key={version} className={rafraichi}>

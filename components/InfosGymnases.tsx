@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import type { FicheGymnase } from "@/lib/nbb";
-import { enLettres, majuscule } from "@/lib/utils";
+import { aCompleter, enLettres, majuscule } from "@/lib/utils";
 import { ContenuConsenti } from "@/components/Cookies";
 import { Terrain } from "@/components/Terrain";
 import { NouvelOnglet } from "@/components/icons";
@@ -117,7 +117,7 @@ export function InfosGymnases({ fiches }: { fiches: FicheGymnase[] }) {
                   </div>
                 ) : null}
               </div>
-            ) : (
+            ) : aCompleter(gym.acces) ? null : (
               <p className="petit-texte">Accès : {gym.acces}</p>
             )}
             <div className="fiche-gym__planning">

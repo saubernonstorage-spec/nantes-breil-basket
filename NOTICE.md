@@ -29,7 +29,10 @@ le numéro de ligne à corriger. Corrigez, réenregistrez, c'est reparti.
 Cherchez `[À COMPLÉTER]` : ce sont les informations qui manquent encore (RNA, SIRET, montants
 de partenariat, diplômes des coachs, délais de réponse, plaquette partenaires…). **N'inventez
 pas de tarif, de score, de date ni de nom** : laissez `[À COMPLÉTER]` tant que l'information
-n'est pas validée par le bureau.
+n'est pas validée par le bureau. Tout texte qui contient encore `[À COMPLÉTER]` ou `[À CONFIRMER]`
+**n'est pas affiché sur le site** : il apparaît dès que la marque est remplacée par la vraie
+information. La liste de ce qui reste à fournir est dans l'Espace dirigeants, onglet
+**« À compléter sur le site »**, avec pour chaque élément son emplacement dans `data/nbb.ts`.
 
 ## 2. Où modifier quoi ?
 
@@ -64,9 +67,11 @@ Dans le bloc `WEEKENDS` (un bloc par week-end, dans l'ordre chronologique) :
 
 1. Renseignez `titre`, `semaine` et `samedi` (date du samedi, au format `"2026-10-03"`).
 2. Une ligne par match dans `domicile` (avec arbitres, table, OTM) et `exterieur` (avec l'adresse).
-   Un week-end laissé vide s'affiche « À venir ».
-3. Vous pouvez publier plusieurs week-ends à l'avance : la page Matchs affiche par défaut le
-   week-end à venir et bascule seule sur le suivant dès le lundi.
+   Un week-end encore vide affiche « Le programme de ce week-end n'est pas encore publié ».
+3. La page Matchs n'affiche que **trois week-ends** : le dernier passé (« Terminée »), celui de la
+   semaine (« Prochains matchs », affiché par défaut) et le suivant (« À venir ») ; elle bascule seule
+   chaque lundi. Inutile de saisir plus d'un week-end à l'avance, et vous pouvez supprimer de
+   `WEEKENDS` les week-ends plus anciens que le dernier passé.
 4. Une nouvelle salle à domicile ? Ajoutez son adresse dans `ADRESSES_SALLES`, avec le même nom
    que dans le champ `salle` des matchs. La page Matchs regroupe les matchs à domicile par salle,
    dans l'ordre de cette liste (aujourd'hui : Joël Paon, Breil Malville, Similienne).

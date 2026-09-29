@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { AIDES, CATEGORIES_AGE, CLUB, COMMISSIONS, DOCUMENTS, PIECES, TARIFS, TARIF_NOTE } from "@/data/nbb";
 import { anneeSaison, donneesCotisation, toutesLesEquipes } from "@/lib/nbb";
+import { aCompleter } from "@/lib/utils";
 import { EntetePage } from "@/components/Page";
 import { Terrain } from "@/components/Terrain";
 import { InscriptionForm } from "@/components/formulaires/InscriptionForm";
@@ -32,19 +33,7 @@ export default function Inscriptions() {
           </>
         }
         chapo="Deux séances d'essai, un formulaire en ligne, quelques documents : on vous guide étape par étape. Les places étant limitées dans chaque équipe, les réinscriptions sont prioritaires."
-      >
-        <div className="rangee rangee--10" style={{ marginTop: 28 }}>
-          <a href="#formulaire" className="btn btn--xl btn--orange">
-            S'inscrire en ligne <span className="fleche fleche--bas" aria-hidden="true">↓</span>
-          </a>
-          <a href="#tarifs" className="btn btn--xl btn--clair">
-            Voir les tarifs
-          </a>
-          <Link href="/infos#faq" className="btn btn--xl btn--clair">
-            FAQ
-          </Link>
-        </div>
-      </EntetePage>
+      />
 
       <section aria-labelledby="etapes-titre" className="section" style={{ paddingTop: 64, paddingBottom: 32 }}>
         <div className="surtitre">Comment ça se passe</div>
@@ -96,7 +85,7 @@ export default function Inscriptions() {
             {TARIF_NOTE}
           </p>
         </div>
-        <div className="grille" style={{ "--min": "200px" } as React.CSSProperties}>
+        <div className="grille tarifs-grille">
           {TARIFS.map((t) => (
             <div key={t.cle} className="tarif">
               <div>
@@ -111,7 +100,7 @@ export default function Inscriptions() {
           ))}
         </div>
         <p className="petit-texte" style={{ marginTop: 14 }}>
-          {AIDES} Tarif par équipe : voir <Link href="/equipes">chaque fiche équipe</Link>.
+          {aCompleter(AIDES) ? null : <>{AIDES} </>}Tarif par équipe : voir <Link href="/equipes">chaque fiche équipe</Link>.
         </p>
       </section>
 

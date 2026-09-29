@@ -14,7 +14,9 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   Tout le contenu (listes, chiffres, dates, tarifs, noms, liens, photos) est dans `data/nbb.ts` ; toute
   nouvelle information éditable y va aussi (jamais en dur dans une page), et `NOTICE.md` est mis à jour.
   Les pages ne gardent que les textes fixes de la maquette (titres, paragraphes).
-- Ne jamais inventer de tarif, de score, de date ni de nom : laisser `[À COMPLÉTER]`.
+- Ne jamais inventer de tarif, de score, de date ni de nom : laisser `[À COMPLÉTER]`. Ces valeurs ne sont
+  jamais affichées : tester avec `aCompleter()` (`lib/utils.ts`) et ne rien rendre ; `manquesDuSite()`
+  (`lib/nbb.ts`) les liste dans l'Espace dirigeants (onglet « À compléter »).
 - Le planning (`SLOTS`) est la source unique ; équipes, gymnases, week-ends et chiffres sont calculés dans
   `lib/nbb.ts` (réservé au serveur, `import "server-only"`). Les composants client reçoivent les données en
   props et n'importent que `lib/utils.ts` (fonctions pures), `lib/formulaires.ts`, `lib/consentement.ts`
@@ -22,7 +24,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Styles : `app/globals.css` (variables de la charte sous `:root`, une section par page). Texte orange sur fond clair :
   `--orange-texte` (caramel, contraste AA) ; l'orange vif `--orange` est réservé aux fonds sombres, boutons et aplats
   (liste des blocs sombres dans la règle `:is(...) .surtitre`). Les pages
-  intérieures commencent par `EntetePage` (`components/Page.tsx`), qui remonte sous l'en-tête collant.
+  intérieures commencent par `EntetePage` (`components/Page.tsx`), qui remonte sous l'en-tête collant :
+  fil d'Ariane, titre et chapô, sans bouton (les appels à l'action sont dans le corps de la page).
 - Photos : `components/Photo.tsx` (next/image, motif de remplacement si le chemin est vide) ; lignes de
   terrain décoratives : `components/Terrain.tsx`. Fenêtres modales : `components/Fenetre.tsx` (`<dialog>`).
 - Formulaires : Server Actions dans `app/actions.ts` (validation serveur, anti-spam), enregistrement dans
