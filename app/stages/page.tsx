@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { CLUB, PHOTOS, STAGES, STAGE_A_PREVOIR, STAGE_CONTACT, STAGE_JOURNEE, STAGE_REDUCTIONS, STAGE_TARIFS } from "@/data/nbb";
-import { anneesStage, prixStage, semainesOuvertes } from "@/lib/nbb";
+import { CLUB, PHOTOS, STAGE_A_PREVOIR, STAGE_CONTACT, STAGE_JOURNEE, STAGE_REDUCTIONS, STAGE_TARIFS } from "@/data/nbb";
+import { anneesStage, prixStage, semainesOuvertes, stagesVue, type EtatStage } from "@/lib/nbb";
 import { lienTel, majuscule } from "@/lib/utils";
 import { FilAriane } from "@/components/Page";
 import { Photo } from "@/components/Photo";
@@ -13,12 +13,22 @@ export const metadata: Metadata = {
   alternates: { canonical: "/stages" },
 };
 
+// L'ouverture et la fermeture des inscriptions suivent la date : la page est régénérée toutes les heures.
+export const revalidate = 3600;
+
 /** "Stages d'automne" → "Automne". */
 function titreCarte(periode: string): string {
   return majuscule(periode.replace(/^stages?\s+d(e\s+|')/i, ""));
 }
 
+const PASTILLES: Record<EtatStage, { texte: string; classe: string }> = {
+  ouvertes: { texte: "Inscriptions ouvertes", classe: "pastille pastille--orange" },
+  fermees: { texte: "Inscriptions fermées", classe: "pastille pastille--fermee" },
+  "a-venir": { texte: "Inscriptions à venir", classe: "pastille pastille--grise" },
+};
+
 export default function Stages() {
+  const stages = stagesVue();
   const semaines = semainesOuvertes();
 
   return (
@@ -33,18 +43,10 @@ export default function Stages() {
           <h1 className="titre-page" style={{ maxWidth: 900 }}>
             Les stages <span className="accent">des vacances</span>
           </h1>
-          <p className="chapo" style={{ maxWidth: 560, marginBottom: 28, color: "rgba(245,243,238,.88)" }}>
+          <p className="chapo" style={{ maxWidth: 560, color: "rgba(245,243,238,.88)" }}>
             Une semaine de basket à chaque période de vacances, encadrée par les entraîneurs du NBB. Ouverts aux
             licenciés du club et aux enfants qui veulent découvrir le basket.
           </p>
-          <div className="rangee rangee--10">
-            <a href="#inscription-stage" className="btn btn--xl btn--orange">
-              Inscrire mon enfant <span className="fleche fleche--bas" aria-hidden="true">↓</span>
-            </a>
-            <a href="#tarifs-stage" className="btn btn--xl btn--clair" style={{ borderColor: "rgba(245,243,238,.35)" }}>
-              Tarifs &amp; journée type
-            </a>
-          </div>
         </div>
       </section>
 
@@ -61,21 +63,21 @@ export default function Stages() {
           </p>
         </div>
         <div className="grille" style={{ "--min": "260px" } as React.CSSProperties}>
-          {STAGES.map((s) => (
-            <article key={s.id} className="carte-stage">
-              {s.ouvert ? (
-                <span className="pastille pastille--orange">Inscriptions ouvertes</span>
-              ) : (
-                <span className="pastille pastille--grise">Programme à venir</span>
-              )}
+          {stages.map((s) => (
+            <article key={s.id} className={s.etat === "fermees" ? "carte-stage carte-stage--fermee" : "carte-stage"}>
+              <span className={PASTILLES[s.etat].classe}>{PASTILLES[s.etat].texte}</span>
               <h3 className="carte-stage__titre">{titreCarte(s.periode)}</h3>
               <ul className="carte-stage__semaines">
-                {(s.semaines.length ? s.semaines : [{ id: "vide", nom: "Dates", dates: "[À COMPLÉTER]" }]).map((w) => (
-                  <li key={w.id}>
+                {(s.semaines.length ? s.semaines : [{ id: "vide", nom: "Dates", dates: "[À COMPLÉTER]", fermee: false }]).map((w) => (
+                  // Dans une période encore ouverte, une semaine déjà fermée est grisée.
+                  <li key={w.id} className={s.etat === "ouvertes" && w.fermee ? "carte-stage__semaine--fermee" : undefined}>
                     <div className="carte-stage__ligne">
                       <strong>{w.nom}</strong>
                       <span>{w.dates}</span>
                     </div>
+                    {s.etat === "ouvertes" && w.fermee ? (
+                      <span className="pastille pastille--fermee">Inscriptions fermées</span>
+                    ) : null}
                     {"nesDe" in w && w.nesDe ? (
                       <div className="carte-stage__ligne carte-stage__ligne--public">
                         <span>
@@ -101,7 +103,8 @@ export default function Stages() {
             <h2 id="tarifs-titre" className="titre-bloc-grand" style={{ fontSize: "clamp(36px, 4vw, 52px)", marginBottom: 20 }}>
               Combien ça coûte
             </h2>
-            <div className="defilement">
+            {/* Focalisable : sur petit écran, le tableau défile aussi au clavier. */}
+            <div className="defilement" role="region" aria-label="Tarifs des stages" tabIndex={0}>
               <table className="tableau-tarifs">
                 <thead>
                   <tr>

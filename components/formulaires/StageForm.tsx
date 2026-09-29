@@ -143,8 +143,8 @@ export function StageForm({ semaines, prix, reductions, annees }: Props) {
       <fieldset className="groupe-champs">
         <legend>Semaine ou journées de stage *</legend>
         <p className="champ__aide" style={{ margin: "0 0 10px" }}>
-          Inscrivez votre enfant à la semaine ou seulement certains jours. Les 5 jours d'une même semaine sont facturés au
-          tarif semaine.
+          Inscrivez votre enfant à la semaine ou seulement certains jours. Tous les jours d'une même semaine sont facturés
+          au tarif semaine.
         </p>
         <div className="semaines-stage">
           {semaines.map((w) => {
@@ -154,11 +154,13 @@ export function StageForm({ semaines, prix, reductions, annees }: Props) {
             const eligibilite = w.nesDe
               ? `Né(e)s de ${w.nesDe} à ${w.nesA} · ${w.licenciesFFBB ? "Licenciés FFBB uniquement" : "Tout public"}`
               : "";
+            // Prix de cette semaine complète : 5 jours ou, à Noël, 4 jours.
+            const semaine = coutSemaine(ids.length, ids.length, p);
             const resume = complete
-              ? `Semaine complète · ${p.semaine} €`
+              ? `Semaine complète · ${semaine} €`
               : n
                 ? `${n} jour${n > 1 ? "s" : ""} · ${coutSemaine(n, ids.length, p)} €`
-                : `${p.semaine} € la semaine · ${p.jour} € le jour`;
+                : `${semaine} € la semaine · ${p.jour} € le jour`;
             return (
               <div key={w.id} className={n ? "semaine-stage semaine-stage--choisie" : "semaine-stage"}>
                 <div className="semaine-stage__tete">

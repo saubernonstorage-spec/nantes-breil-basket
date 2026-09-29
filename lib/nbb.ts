@@ -24,7 +24,7 @@ import {
   TARIFS,
   WEEKENDS,
 } from "@/data/nbb";
-import type { Chiffre, CleCategorie, Creneau, Jour, SemaineStage, StatutStage, Tarif } from "@/lib/types";
+import type { Chiffre, CleCategorie, Creneau, Jour, SemaineStage, Stage, StatutStage, Tarif } from "@/lib/types";
 import { duree, heure, heureCourte, itineraire, majuscule, montant, pluriel, slug, type PrixCotisation, type PrixStage } from "@/lib/utils";
 
 export const JOURS: Jour[] = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
@@ -332,6 +332,12 @@ function libelleJour(samedi: string, jour: string): string {
   return majuscule(formater(dateDe(samedi, decalageJour(jour)), { weekday: "long", day: "numeric", month: "long" }));
 }
 
+/** Rang d'une salle dans ADRESSES_SALLES (les salles absentes de la liste passent après). */
+function rangSalle(salle: string): number {
+  const i = Object.keys(ADRESSES_SALLES).indexOf(salle);
+  return i < 0 ? Infinity : i;
+}
+
 export function weekendsVue(): WeekEndVue[] {
   return WEEKENDS.map((w, i) => {
     const sa = dateDe(w.samedi);
@@ -347,19 +353,22 @@ export function weekendsVue(): WeekEndVue[] {
       num: w.semaine.replace("Semaine", "Sem."),
       dates,
       vide: w.domicile.length + w.exterieur.length === 0,
-      domicile: tri(w.domicile).map((m, k) => ({
-        cle: `${i}-d${k}`,
-        jourCle: `${i}|${m.jour}`,
-        jourLabel: libelleJour(w.samedi, m.jour),
-        equipe: m.equipe,
-        heure: m.heure,
-        adversaire: m.adversaire,
-        salle: m.salle,
-        adresse: ADRESSES_SALLES[m.salle] ?? "",
-        arbitres: m.arbitres,
-        table: m.table,
-        otm: m.otm,
-      })),
+      // Regroupés par salle (ordre d'ADRESSES_SALLES), puis par jour et par heure dans chaque salle.
+      domicile: tri(w.domicile)
+        .sort((a, b) => rangSalle(a.salle) - rangSalle(b.salle) || a.salle.localeCompare(b.salle, "fr"))
+        .map((m, k) => ({
+          cle: `${i}-d${k}`,
+          jourCle: `${i}|${m.jour}`,
+          jourLabel: libelleJour(w.samedi, m.jour),
+          equipe: m.equipe,
+          heure: m.heure,
+          adversaire: m.adversaire,
+          salle: m.salle,
+          adresse: ADRESSES_SALLES[m.salle] ?? "",
+          arbitres: m.arbitres,
+          table: m.table,
+          otm: m.otm,
+        })),
       exterieur: tri(w.exterieur).map((m, k) => ({
         cle: `${i}-e${k}`,
         jourCle: `${i}|${m.jour}`,
@@ -400,15 +409,56 @@ export function equipesDesMatchs(): string[] {
 
 /* ───────── Stages ───────── */
 
+/** Par défaut, une semaine de stage dure 5 jours, du lundi (debut) au vendredi. */
+const JOURS_STAGE = 5;
+
+export type EtatStage = "ouvertes" | "fermees" | "a-venir";
+export type SemaineStageVue = SemaineStage & { fermee: boolean };
+export type StageVue = Omit<Stage, "semaines"> & { etat: EtatStage; semaines: SemaineStageVue[] };
+
+/** Nombre de jours d'une semaine de stage : de debut à fin si elle est indiquée, sinon du lundi au vendredi. */
+function joursDeStage(w: SemaineStage): number {
+  if (!w.debut) return 0;
+  if (!w.fin) return JOURS_STAGE;
+  return Math.max(1, Math.round((dateDe(w.fin).getTime() - dateDe(w.debut).getTime()) / 86_400_000) + 1);
+}
+
+/** Les inscriptions d'une semaine ferment la veille de son dernier jour : ouvertes jusqu'à cette date incluse. */
+function semaineFermee(w: SemaineStage, jour: string): boolean {
+  return !!w.debut && jour > dateDe(w.debut, joursDeStage(w) - 2).toISOString().slice(0, 10);
+}
+
+/**
+ * État des inscriptions de chaque période, d'après la date du jour : une période est fermée quand
+ * toutes ses semaines le sont ; la première période qui ne l'est pas est ouverte (si ses dates sont
+ * saisies) et les suivantes sont à venir. La suivante s'ouvre donc seule quand la précédente ferme.
+ */
+export function stagesVue(): StageVue[] {
+  const jour = aujourdhui();
+  let courante = false;
+  return STAGES.map((s) => {
+    const semaines = s.semaines.map((w) => ({ ...w, fermee: semaineFermee(w, jour) }));
+    const datees = semaines.filter((w) => w.debut);
+    let etat: EtatStage = "a-venir";
+    if (datees.length && datees.every((w) => w.fermee)) etat = "fermees";
+    else if (!courante) {
+      courante = true;
+      if (datees.length) etat = "ouvertes";
+    }
+    return { ...s, semaines, etat };
+  });
+}
+
 export type JourStage = { id: string; court: string; long: string };
 export type SemaineOuverte = SemaineStage & { periode: string; stage: string; jours: JourStage[] };
 
+/** Semaines proposées dans le formulaire : celles de la période ouverte dont les inscriptions ne sont pas fermées. */
 export function semainesOuvertes(): SemaineOuverte[] {
-  return STAGES.filter((s) => s.ouvert).flatMap((s) =>
-    s.semaines.map((w) => {
+  return stagesVue().filter((s) => s.etat === "ouvertes").flatMap((s) =>
+    s.semaines.filter((w) => !w.fermee).map((w) => {
       const jours: JourStage[] = [];
       if (w.debut) {
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < joursDeStage(w); i++) {
           const d = dateDe(w.debut, i);
           const iso = d.toISOString().slice(0, 10);
           jours.push({
@@ -424,7 +474,11 @@ export function semainesOuvertes(): SemaineOuverte[] {
 }
 
 export function prixStage(statut: StatutStage): PrixStage {
-  return { jour: montant(STAGE_TARIFS[0][statut]), semaine: montant(STAGE_TARIFS[1][statut]) };
+  const journee = STAGE_TARIFS.find((t) => !t.jours);
+  return {
+    jour: journee ? montant(journee[statut]) : 0,
+    semaine: Object.fromEntries(STAGE_TARIFS.filter((t) => t.jours).map((t) => [t.jours, montant(t[statut])])),
+  };
 }
 
 /** Années de naissance proposées dans le formulaire de stage. */

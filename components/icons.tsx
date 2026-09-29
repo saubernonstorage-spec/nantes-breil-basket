@@ -30,3 +30,21 @@ export function IconeWhatsapp() {
 export function NouvelOnglet() {
   return <span className="sr-only"> (nouvel onglet)</span>;
 }
+
+/** Icônes du choix d'affichage des matchs (décoratives : le bouton porte son texte). */
+export function IconeTableau() {
+  return (
+    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+      <path d="M2 3.5h12M2 8h12M2 12.5h12" />
+    </svg>
+  );
+}
+
+export function IconeCartes() {
+  return (
+    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6">
+      <rect x="2" y="1.8" width="12" height="5.2" rx="1.6" />
+      <rect x="2" y="9" width="12" height="5.2" rx="1.6" />
+    </svg>
+  );
+}

@@ -131,6 +131,7 @@ export type SemaineStage = {
   nom: string;
   dates: string;
   debut?: string;
+  fin?: string;
   nesDe?: number;
   nesA?: number;
   licenciesFFBB?: boolean;
@@ -141,13 +142,13 @@ export type Stage = {
   periode: string;
   public: string;
   lieu: string;
-  ouvert: boolean;
   semaines: SemaineStage[];
 };
 
 export type StatutStage = "licencies" | "carteBlanche" | "nonLicencies";
 
-export type TarifStage = { formule: string } & Record<StatutStage, string>;
+/** jours : nombre de jours de la semaine complète à ce prix (absent = tarif à la journée). */
+export type TarifStage = { formule: string; jours?: number } & Record<StatutStage, string>;
 
 export type ReductionStage = { enfants: number; taux: number; texte: string };
 

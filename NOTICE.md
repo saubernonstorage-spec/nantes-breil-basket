@@ -67,7 +67,12 @@ Dans le bloc `WEEKENDS` (un bloc par week-end, dans l'ordre chronologique) :
    Un week-end laissé vide s'affiche « À venir ».
 3. Vous pouvez publier plusieurs week-ends à l'avance : la page Matchs affiche par défaut le
    week-end à venir et bascule seule sur le suivant dès le lundi.
-4. Une nouvelle salle à domicile ? Ajoutez son adresse dans `ADRESSES_SALLES`.
+4. Une nouvelle salle à domicile ? Ajoutez son adresse dans `ADRESSES_SALLES`, avec le même nom
+   que dans le champ `salle` des matchs. La page Matchs regroupe les matchs à domicile par salle,
+   dans l'ordre de cette liste (aujourd'hui : Joël Paon, Breil Malville, Similienne).
+
+Sur la page Matchs, chacun choisit entre l'affichage **Tableau** et **Cartes** (les cartes sont
+proposées d'office sur téléphone). Rien à régler.
 
 Les **résultats** viennent du widget externe (lien `widgetResultats` dans `CLUB`) : rien à saisir.
 Les **classements** de la page Équipes se recopient depuis competitions.ffbb.com (site de la FFBB) dans `CLASSEMENTS`
@@ -79,9 +84,16 @@ Les **classements** de la page Équipes se recopient depuis competitions.ffbb.co
   disparaissent seules. `lien` (facultatif) rend le titre cliquable, ex. `"/stages"`.
 - **Planning** (`SLOTS`) : une ligne = un créneau. Les pages Entraînements, Équipes, Écoles et Infos
   se recalculent automatiquement. Le nom du gymnase doit être écrit comme dans `GYMNASES`.
-- **Stages** (`STAGES`) : `ouvert: true` ouvre les inscriptions en ligne ; ajoutez les semaines dans
-  `semaines`, avec `debut` (date du lundi) pour permettre l'inscription à la journée, et les années
-  de naissance acceptées (`nesDe`, `nesA`).
+- **Stages** (`STAGES`, dans l'ordre du calendrier) : ajoutez les semaines dans `semaines`, avec
+  `debut` (date du lundi) pour permettre l'inscription à la journée, `fin` (date du dernier jour)
+  seulement si la semaine ne finit pas le vendredi (Noël : du lundi au jeudi), et les années de
+  naissance acceptées (`nesDe`, `nesA`). Le prix d'une semaine complète dépend de sa durée : une
+  ligne par durée dans `STAGE_TARIFS` (`jours: 5`, et `jours: 4` pour Noël) ; quelques jours seulement
+  sont facturés à la journée, sans dépasser la semaine complète. Les inscriptions s'ouvrent et se ferment seules :
+  celles d'une semaine ferment la veille de son dernier jour (le jeudi pour une semaine du lundi au
+  vendredi, le mercredi pour une semaine du lundi au jeudi). Quand toutes
+  les semaines d'une période sont passées, sa carte devient grise « Inscriptions fermées » et la
+  période suivante s'ouvre, à condition que ses semaines soient saisies (sinon : « Inscriptions à venir »).
 - **Tarifs** (`TARIFS`, `STAGE_TARIFS`) : montants votés par le bureau uniquement.
 - **Nouvelle saison** : changez `saison` dans `CLUB`, décalez d'un an les années de `CATEGORIES_AGE`
   et de `NAISSANCE`, puis mettez à jour tarifs, planning et PDF.

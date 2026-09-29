@@ -175,11 +175,14 @@ export const WEEKENDS: WeekEnd[] = [
   { titre: "Week-end du 10 & 11 octobre 2026", semaine: "Semaine 41", samedi: "2026-10-10", domicile: [], exterieur: [] },
 ];
 
-/** Adresses des salles où le club reçoit (colonne « Gymnase » des matchs à domicile). */
+/**
+ * Salles où le club reçoit, avec leur adresse. Sur la page Matchs, les matchs à domicile sont
+ * regroupés par salle, dans l'ordre de cette liste (le nom doit être celui du champ « salle » des matchs).
+ */
 export const ADRESSES_SALLES: Record<string, string> = {
   "Joël Paon": "42 bis rue des Hauts-Pavés, Nantes",
-  "Similienne": "26 bis rue des Hauts-Pavés, Nantes",
   "Breil Malville": "34 rue du Breil, Nantes",
+  "Similienne": "26 bis rue des Hauts-Pavés, Nantes",
 };
 
 /** Encadrement technique (d'après le planning). Complétez diplômes et présentations. */
@@ -369,25 +372,46 @@ export const OFFRE_PARTENARIAT: OffrePartenariat[] = [
 ];
 
 /**
- * STAGES DES VACANCES (zone B).
- * ouvert: true = inscriptions en ligne ouvertes.
- * debut : date du lundi (AAAA-MM-JJ) — sert à proposer l'inscription à la journée (lundi → vendredi).
+ * STAGES DES VACANCES (zone B), dans l'ordre du calendrier.
+ * Les inscriptions s'ouvrent et se ferment seules d'après les dates : celles d'une semaine ferment la veille
+ * de son dernier jour (le jeudi) ; quand toutes les semaines d'une période sont fermées, la période
+ * s'affiche « Inscriptions fermées » et la suivante s'ouvre, dès que ses semaines (avec debut) sont saisies.
+ * debut : date du lundi (AAAA-MM-JJ) — sert à proposer l'inscription à la journée (lundi → vendredi)
+ * et à calculer la fermeture des inscriptions.
+ * fin : date du dernier jour, seulement si la semaine ne finit pas le vendredi (ex. Noël, du lundi au jeudi).
  * nesDe / nesA : années de naissance acceptées ; licenciesFFBB : true = réservé aux licenciés FFBB, false = tout public.
  */
 export const STAGES: Stage[] = [
-  { id: "automne-2026", periode: "Stages d'automne", public: "Filles et garçons", lieu: "Gymnase Joël Paon", ouvert: true,
+  { id: "automne-2026", periode: "Stages d'automne", public: "Filles et garçons", lieu: "Gymnase Joël Paon",
     semaines: [
       { id: "aut-s1", nom: "Semaine 1", dates: "Du 19 au 23 octobre", debut: "2026-10-19", nesDe: 2012, nesA: 2019, licenciesFFBB: true },
       { id: "aut-s2", nom: "Semaine 2", dates: "Du 26 au 30 octobre", debut: "2026-10-26", nesDe: 2012, nesA: 2020, licenciesFFBB: false },
     ] },
-  { id: "noel-2026", periode: "Stages de Noël", public: "[À COMPLÉTER]", lieu: "[À COMPLÉTER]", ouvert: false, semaines: [] },
-  { id: "hiver-2027", periode: "Stages d'hiver", public: "[À COMPLÉTER]", lieu: "[À COMPLÉTER]", ouvert: false, semaines: [] },
-  { id: "printemps-2027", periode: "Stages de printemps", public: "[À COMPLÉTER]", lieu: "[À COMPLÉTER]", ouvert: false, semaines: [] },
+  { id: "noel-2026", periode: "Stages de Noël", public: "[À COMPLÉTER]", lieu: "[À COMPLÉTER]",
+    semaines: [
+      { id: "noel-s1", nom: "Semaine 1", dates: "Du 21 au 24 décembre", debut: "2026-12-21", fin: "2026-12-24", nesDe: 2012, nesA: 2019, licenciesFFBB: true },
+      { id: "noel-s2", nom: "Semaine 2", dates: "Du 28 au 31 décembre", debut: "2026-12-28", fin: "2026-12-31", nesDe: 2012, nesA: 2020, licenciesFFBB: false },
+    ] },
+  { id: "hiver-2027", periode: "Stages d'hiver", public: "[À COMPLÉTER]", lieu: "[À COMPLÉTER]",
+    semaines: [
+      { id: "hiver-s1", nom: "Semaine 1", dates: "Du 22 au 26 février", debut: "2027-02-22", nesDe: 2012, nesA: 2019, licenciesFFBB: true },
+      { id: "hiver-s2", nom: "Semaine 2", dates: "Du 1er au 5 mars", debut: "2027-03-01", nesDe: 2012, nesA: 2020, licenciesFFBB: false },
+    ] },
+  { id: "printemps-2027", periode: "Stages de printemps", public: "[À COMPLÉTER]", lieu: "[À COMPLÉTER]",
+    semaines: [
+      { id: "printemps-s1", nom: "Semaine 1", dates: "Du 19 au 23 avril", debut: "2027-04-19", nesDe: 2012, nesA: 2019, licenciesFFBB: true },
+      { id: "printemps-s2", nom: "Semaine 2", dates: "Du 26 au 30 avril", debut: "2027-04-26", nesDe: 2012, nesA: 2020, licenciesFFBB: false },
+    ] },
 ];
-/** Gardez l'ordre : à la journée, puis semaine (5 jours). */
+/**
+ * Tarifs des stages (affichés tels quels sur la page Stages). La ligne sans « jours » est le tarif à la journée ;
+ * chaque ligne avec « jours » est le prix d'une semaine complète de ce nombre de jours (5 : du lundi au vendredi,
+ * 4 : Noël, du lundi au jeudi). Une semaine incomplète est facturée à la journée, sans dépasser sa semaine complète.
+ */
 export const STAGE_TARIFS: TarifStage[] = [
   { formule: "À la journée", licencies: "18 €", carteBlanche: "12 €", nonLicencies: "22 €" },
-  { formule: "Semaine (5 jours)", licencies: "80 €", carteBlanche: "50 €", nonLicencies: "100 €" },
+  { formule: "Semaine (5 jours)", jours: 5, licencies: "80 €", carteBlanche: "50 €", nonLicencies: "100 €" },
+  { formule: "Semaine de Noël (4 jours)", jours: 4, licencies: "65 €", carteBlanche: "40 €", nonLicencies: "80 €" },
 ];
 /** Réduction famille sur les stages : taux (%) appliqué dès « enfants » inscrits. */
 export const STAGE_REDUCTIONS: ReductionStage[] = [

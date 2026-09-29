@@ -90,18 +90,21 @@ export function initiales(nom: string): string {
 
 /* ───────── Stages : calcul du montant (formulaire et serveur) ───────── */
 
-export type PrixStage = { jour: number; semaine: number };
+/** jour : prix d'une journée ; semaine : prix d'une semaine complète selon son nombre de jours (ex. { 5: 80, 4: 65 }). */
+export type PrixStage = { jour: number; semaine: Record<number, number> };
 
 /** "18 €" → 18. */
 export function montant(texte: string): number {
   return parseInt(texte, 10) || 0;
 }
 
-/** Prix d'une semaine selon le nombre de jours choisis : jamais plus cher que la semaine complète. */
+/**
+ * Prix d'une semaine de stage selon le nombre de jours choisis : tarif journée, jamais plus cher que la
+ * semaine complète de même durée (5 jours, ou 4 à Noël). Sans tarif pour cette durée : tarif journée seul.
+ */
 export function coutSemaine(nJours: number, joursDansLaSemaine: number, prix: PrixStage): number {
-  if (nJours === 0) return 0;
-  if (nJours >= joursDansLaSemaine) return prix.semaine;
-  return Math.min(nJours * prix.jour, prix.semaine);
+  const complete = prix.semaine[joursDansLaSemaine] ?? joursDansLaSemaine * prix.jour;
+  return Math.min(nJours * prix.jour, complete);
 }
 
 /** Réduction famille (en %) selon le nombre d'enfants inscrits. */
