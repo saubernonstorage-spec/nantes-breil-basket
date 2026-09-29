@@ -1,0 +1,2 @@
+# Bibliothèque utilisée par scripts/donnees_ffbb.py (version figée : la mettre à jour volontairement).
+ffbb-data-client==2.4.34

@@ -79,8 +79,8 @@ export default function Mentions() {
           <p>
             Aucun cookie publicitaire ni outil de mesure d'audience. Sont utilisés : un stockage technique qui mémorise
             vos choix (6 mois, dans votre navigateur), un cookie de session pour l'Espace dirigeants (réservé au bureau
-            du club), et les contenus intégrés — carte Google Maps, widget des résultats de matchs — qui ne se chargent
-            qu'après votre accord. Refuser ne limite en rien l'accès aux informations du site.
+            du club), et la carte Google Maps intégrée, qui ne se charge qu'après votre accord. Refuser ne limite en rien
+            l'accès aux informations du site.
           </p>
           <BoutonCookies className="btn btn--bleu">Modifier mes choix de cookies</BoutonCookies>
         </section>

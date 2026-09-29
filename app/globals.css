@@ -3514,6 +3514,15 @@ a.badge-label:hover {
   padding-right: 20px;
 }
 
+/* Horaire pas encore connu (« À confirmer »), dans le tableau comme sur les cartes. */
+.heure-a-confirmer {
+  font-family: var(--f-texte);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--orange-texte);
+}
+
 .tableau-matchs__heure {
   font-family: var(--f-titre);
   font-weight: 900;
@@ -3524,13 +3533,14 @@ a.badge-label:hover {
 
 .tag-equipe {
   display: inline-block;
-  padding: 6px 10px;
-  border-radius: 10px;
+  padding: 7px 12px;
+  border-radius: 11px;
   background: var(--bleu);
   color: var(--creme);
   font-family: var(--f-mono);
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.1;
 }
 
 .tag-equipe--orange {
@@ -3858,38 +3868,135 @@ a.badge-label:hover {
   overflow-wrap: break-word;
 }
 
-.resultats-bloc {
+/* Résultats FFBB (bande sombre de la page Matchs) : choix du week-end, puis tableau groupé par jour. */
+.texte-clair a {
+  color: var(--creme);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.resultats__barre {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.resultats__choix {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: min(100%, 280px);
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(245, 243, 238, 0.8);
+}
+
+.resultats__choix .saisie {
+  height: 48px;
+  font-size: 15px;
+}
+
+/* Carte blanche posée sur la bande sombre : texte foncé. */
+.tableau-resultats {
+  color: var(--encre);
+}
+
+.tableau-resultats table {
+  table-layout: auto;
+}
+
+.tableau-resultats__equipe {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.tableau-resultats__score {
+  width: 1%;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.tableau-matchs thead th.tableau-resultats__score {
+  text-align: right;
+}
+
+.tableau-resultats__score strong {
+  font-family: var(--f-titre);
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--nuit);
+  font-variant-numeric: tabular-nums;
+}
+
+.tableau-resultats__forfait {
+  color: var(--gris);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Victoire en vert, défaite et nul en neutre : on reste encourageant pour les jeunes équipes. */
+.issue {
+  display: inline-block;
+  min-width: 76px;
+  margin-left: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--gris-pale);
+  color: var(--gris-fonce);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.issue--victoire {
+  background: var(--vert-pale);
+  color: var(--vert);
+}
+
+.resultats__maj {
+  margin: 12px 0 0;
+  font-size: 13px;
+  color: rgba(245, 243, 238, 0.65);
+}
+
+.resultats-vide {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  min-height: 220px;
   padding: 28px;
   border-radius: 28px;
   background: rgba(245, 243, 238, 0.06);
   border: 1px solid rgba(245, 243, 238, 0.14);
 }
 
-.resultats-bloc p {
+.resultats-vide p {
   margin: 0;
   max-width: 560px;
-  font-size: 15px;
-  line-height: 1.6;
   color: rgba(245, 243, 238, 0.85);
 }
 
-.resultats-widget {
-  border-radius: 28px;
-  overflow: hidden;
-  background: var(--blanc);
-}
+@media (max-width: 699px) {
+  .tableau-resultats td,
+  .tableau-resultats th {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
 
-.resultats-widget iframe {
-  display: block;
-  width: 100%;
-  height: 520px;
-  border: 0;
+  .tableau-resultats__score strong {
+    display: block;
+    font-size: 20px;
+  }
+
+  .issue {
+    min-width: 0;
+    margin: 4px 0 0;
+  }
 }
 
 /* ==========================================================================
@@ -5572,6 +5679,118 @@ a.badge-label:hover {
   color: var(--gris);
 }
 
+/* Espace dirigeants, onglet Stages : tableau des inscriptions (défile de côté sur petit écran). */
+.tableau-admin {
+  overflow-x: auto;
+  border-radius: 22px;
+  background: var(--blanc);
+  border: 1px solid var(--bord);
+}
+
+.tableau-admin table {
+  width: 100%;
+  min-width: 1080px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.tableau-admin thead th {
+  padding: 14px 9px 10px;
+  text-align: left;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gris);
+  white-space: nowrap;
+}
+
+.tableau-admin td,
+.tableau-admin tbody th {
+  padding: 12px 9px;
+  border-top: 1px solid var(--bord);
+  text-align: left;
+  vertical-align: top;
+  font-weight: 500;
+}
+
+.tableau-admin thead th:first-child,
+.tableau-admin td:first-child {
+  padding-left: 18px;
+}
+
+.tableau-admin tbody tr:hover {
+  background: #fbf8f1;
+}
+
+.tableau-admin__date {
+  white-space: nowrap;
+}
+
+.tableau-admin__nom {
+  display: block;
+  font-weight: 700;
+}
+
+.tableau-admin__petit {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--gris);
+  overflow-wrap: anywhere;
+}
+
+a.tableau-admin__petit {
+  color: var(--bleu);
+}
+
+.tableau-admin__liste {
+  margin: 0;
+  padding-left: 16px;
+  min-width: 190px;
+}
+
+.tableau-admin__liste li + li {
+  margin-top: 4px;
+}
+
+.tableau-admin__montant {
+  white-space: nowrap;
+}
+
+.tableau-admin__enfant {
+  min-width: 110px;
+}
+
+.tableau-admin__parent {
+  min-width: 185px;
+}
+
+/* Statut d'une inscription au stage : « À traiter » puis « Confirmé » (après l'e-mail). */
+.etat-stage {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--orange-pale);
+  color: var(--brun);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.etat-stage--confirme {
+  background: var(--vert-pale);
+  color: var(--vert);
+}
+
+.tableau-admin__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
 /* Espace dirigeants : informations que le site attend encore. */
 .manques {
   display: flex;
@@ -5681,6 +5900,46 @@ a.badge-label:hover {
   background: var(--orange-pale);
   font-size: 13px;
   font-weight: 600;
+}
+
+/* Confirmation d'inscription au stage par e-mail. */
+.bouton-confirmer {
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 0;
+  background: var(--bleu);
+  color: var(--creme);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.bouton-confirmer:hover:not(:disabled) {
+  background: var(--nuit);
+}
+
+.bouton-confirmer:disabled {
+  background: var(--gris-pale);
+  color: var(--gris);
+  cursor: not-allowed;
+}
+
+/* Résultat de l'envoi, sous le bouton (erreur ou envoi simulé en local). */
+.envoi-stage {
+  max-width: 190px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.envoi-stage--ok {
+  color: var(--vert);
+}
+
+.envoi-stage--erreur {
+  color: var(--rouge);
 }
 
 .bouton-supprimer {

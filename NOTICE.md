@@ -58,7 +58,7 @@ information. La liste de ce qui reste à fournir est dans l'Espace dirigeants, o
 | Les photos d'équipe | `PHOTOS_EQUIPES` |
 | Le planning des entraînements | `SLOTS` |
 | Les catégories d'âge (à décaler d'un an chaque saison) | `CATEGORIES_AGE`, `NAISSANCE` |
-| Les classements affichés sur la page Équipes | `CLASSEMENTS` |
+| Les classements de la page Équipes (automatiques, voir § 3) | `EQUIPES_FFBB` (et `CLASSEMENTS` pour une saisie à la main) |
 | Les mentions légales (RNA, SIRET, hébergeur, durées de conservation) | `MENTIONS` |
 
 ## 3. Chaque semaine : les matchs du week-end
@@ -79,9 +79,23 @@ Dans le bloc `WEEKENDS` (un bloc par week-end, dans l'ordre chronologique) :
 Sur la page Matchs, chacun choisit entre l'affichage **Tableau** et **Cartes** (les cartes sont
 proposées d'office sur téléphone). Rien à régler.
 
-Les **résultats** viennent du widget externe (lien `widgetResultats` dans `CLUB`) : rien à saisir.
-Les **classements** de la page Équipes se recopient depuis competitions.ffbb.com (site de la FFBB) dans `CLASSEMENTS`
-(un exemple est donné dans le fichier).
+Les **résultats** (tableau « Scores officiels FFBB » en bas de la page Matchs) et les **classements**
+(page Équipes, « Voir le classement ») sont **automatiques** : chaque nuit, une tâche GitHub (onglet
+« Actions » du dépôt → « Données FFBB ») les récupère auprès de la FFBB et met à jour
+`data/resultats-ffbb.json` et `data/classements-ffbb.json` s'ils ont changé ; Netlify republie alors le
+site. Rien à saisir, et ces fichiers ne se modifient pas à la main. Les 10 derniers week-ends de
+résultats sont proposés.
+
+- Chaque équipe du site est reliée à son équipe FFBB dans `EQUIPES_FFBB` (ex. `U15M2: "U15-M-2"`). Les
+  équipes CTC décalent la numérotation (l'U15HPB est l'équipe 1 du NBB en U15 masculins) ; celles que
+  la Similienne engage portent le préfixe `SIM-` (l'U18HPB est `SIM-U18-M-1`). **À chaque
+  nouvelle phase ou saison**, vérifiez ces correspondances : les adversaires du classement doivent être
+  ceux des matchs de l'équipe.
+- Pour forcer une mise à jour : « Actions » → « Données FFBB » → « Run workflow ».
+- Un classement saisi à la main dans `CLASSEMENTS` remplace le classement automatique de l'équipe.
+- La récupération passe par une bibliothèque communautaire (`ffbb-data-client`), pas par un service
+  officiel de la FFBB : si elle cesse de fonctionner, GitHub envoie un e-mail d'échec et le site garde
+  simplement les derniers classements et résultats connus.
 
 ## 4. Les autres mises à jour
 
@@ -131,6 +145,13 @@ de passe du bureau, défini dans Netlify (variable `ADMIN_PASSWORD`, voir `READM
 - **Exporter en CSV** ouvre la liste dans Excel.
 - Si l'envoi d'e-mails est configuré (SMTP), chaque demande arrive aussi par e-mail ;
   « Répondre » écrit directement à la famille.
+- **Stages** (présentés en tableau) : deux statuts seulement, automatiques et non modifiables à la
+  main : « À traiter » à l'arrivée, « Confirmé » une fois l'e-mail envoyé. Une fois le règlement
+  reçu, **Confirmer par e-mail** (colonne Confirmation) demande une confirmation, puis envoie le message au
+  parent (copie cachée au club, réponses sur l'adresse du club) ; la date d'envoi s'affiche.
+  **Renvoyer l'e-mail** permet un nouvel envoi ; **Supprimer** est en fin de ligne. Le texte du message se modifie dans `STAGE_CONFIRMATION` (`data/nbb.ts`).
+  L'envoi demande que la messagerie SMTP soit configurée sur Netlify (voir `README.md`) ; sinon le
+  bouton reste grisé.
 
 Les demandes contiennent des données personnelles, souvent de mineurs : supprimez-les une fois
 la saison ou le stage terminés (durées dans `MENTIONS`), et ne partagez pas le mot de passe

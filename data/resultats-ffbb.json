@@ -1,0 +1,618 @@
+{
+  "source": "FFBB (application officielle), via ffbb-data-client",
+  "clubs": {
+    "8649": "Nantes Breil Basket",
+    "8752": "Similienne Nantes (équipes CTC)"
+  },
+  "maj": "2026-09-29T13:45:21+00:00",
+  "resultats": {
+    "SE-F-1": [
+      {
+        "date": "2026-09-20T15:30",
+        "domicile": true,
+        "adversaire": "SAINT HERBLAIN BASKET CLUB 2",
+        "nous": 54,
+        "eux": 43,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-27T17:45",
+        "domicile": false,
+        "adversaire": "ORVAULT SPORTS BASKET 2",
+        "nous": 49,
+        "eux": 38,
+        "forfait": ""
+      }
+    ],
+    "SE-F-2": [
+      {
+        "date": "2026-09-19T20:30",
+        "domicile": true,
+        "adversaire": "NANTES SULLY BASKET",
+        "nous": 63,
+        "eux": 64,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-27T13:15",
+        "domicile": false,
+        "adversaire": "IE - CTC NANTES ERDRE CARQUEFOU BASKET - ERDRE BASKET CLUB 2",
+        "nous": 80,
+        "eux": 34,
+        "forfait": ""
+      }
+    ],
+    "SE-M-1": [
+      {
+        "date": "2026-09-19T20:30",
+        "domicile": false,
+        "adversaire": "LE MANS C.S.S.G. 1",
+        "nous": 71,
+        "eux": 81,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-26T20:30",
+        "domicile": true,
+        "adversaire": "MOINE BASKET CLUB 1",
+        "nous": 114,
+        "eux": 104,
+        "forfait": ""
+      }
+    ],
+    "SE-M-2": [
+      {
+        "date": "2026-09-20T17:45",
+        "domicile": true,
+        "adversaire": "SUD RETZ BASKET 1",
+        "nous": 76,
+        "eux": 66,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-27T16:15",
+        "domicile": false,
+        "adversaire": "I.B.C. - Indre Basket Club 2",
+        "nous": 83,
+        "eux": 80,
+        "forfait": ""
+      }
+    ],
+    "SE-M-3": [
+      {
+        "date": "2026-09-20T13:15",
+        "domicile": true,
+        "adversaire": "EB SORINIERES 1",
+        "nous": 61,
+        "eux": 60,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-27T15:30",
+        "domicile": false,
+        "adversaire": "GOLF BASKET CLUB HERBLINOIS 2",
+        "nous": 44,
+        "eux": 51,
+        "forfait": ""
+      }
+    ],
+    "SIM-SE-M-1": [
+      {
+        "date": "2026-09-19T20:30",
+        "domicile": false,
+        "adversaire": "GREZ NEUVILLE 1",
+        "nous": 74,
+        "eux": 69,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-26T20:30",
+        "domicile": true,
+        "adversaire": "POMJEANNAIS BASKET CLUB 1",
+        "nous": 87,
+        "eux": 78,
+        "forfait": ""
+      }
+    ],
+    "SIM-SE-M-2": [
+      {
+        "date": "2026-09-20T15:30",
+        "domicile": true,
+        "adversaire": "LAVAL FRANCS ARCHERS 1",
+        "nous": 65,
+        "eux": 69,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-26T20:30",
+        "domicile": false,
+        "adversaire": "LE MANS A.S.MADELEINE 1",
+        "nous": 61,
+        "eux": 69,
+        "forfait": ""
+      }
+    ],
+    "SIM-SE-M-3": [
+      {
+        "date": "2026-09-20T17:45",
+        "domicile": true,
+        "adversaire": "NANTES DOULON BASKET 3",
+        "nous": 55,
+        "eux": 53,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-27T13:15",
+        "domicile": false,
+        "adversaire": "RC DONGES 2",
+        "nous": 79,
+        "eux": 43,
+        "forfait": ""
+      }
+    ],
+    "SIM-U11-M-1": [
+      {
+        "date": "2026-09-19T12:00",
+        "domicile": true,
+        "adversaire": "NANTES BASKET HERMINE (NBH) 2",
+        "nous": 32,
+        "eux": 29,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-27T11:15",
+        "domicile": false,
+        "adversaire": "AS SAINT ROGATIEN NANTES 1",
+        "nous": 12,
+        "eux": 87,
+        "forfait": ""
+      }
+    ],
+    "SIM-U11-M-2": [
+      {
+        "date": "2026-09-19T13:30",
+        "domicile": false,
+        "adversaire": "NANTES BREIL BASKET 3",
+        "nous": 22,
+        "eux": 32,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-26T14:30",
+        "domicile": true,
+        "adversaire": "ALPC MOULIN NANTES BASKET 2",
+        "nous": 24,
+        "eux": 16,
+        "forfait": ""
+      }
+    ],
+    "SIM-U13-M-1": [
+      {
+        "date": "2026-09-19T14:00",
+        "domicile": false,
+        "adversaire": "CARQUEFOU BASKET 2",
+        "nous": 47,
+        "eux": 50,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-26T16:00",
+        "domicile": true,
+        "adversaire": "ASPTT NANTES 2",
+        "nous": 35,
+        "eux": 29,
+        "forfait": ""
+      }
+    ],
+    "SIM-U13-M-2": [
+      {
+        "date": "2026-09-19T15:30",
+        "domicile": true,
+        "adversaire": "NANTES SULLY BASKET 2",
+        "nous": 19,
+        "eux": 60,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-26T15:45",
+        "domicile": false,
+        "adversaire": "ALPC MOULIN NANTES BASKET 2",
+        "nous": 46,
+        "eux": 32,
+        "forfait": ""
+      }
+    ],
+    "SIM-U15-M-1": [
+      {
+        "date": "2026-09-19T18:30",
+        "domicile": false,
+        "adversaire": "SAINT ANDRE BASKET BALL",
+        "nous": 39,
+        "eux": 57,
+        "forfait": ""
+      }
+    ],
+    "SIM-U15-M-2": [
+      {
+        "date": "2026-09-20T11:00",
+        "domicile": true,
+        "adversaire": "AL GARENNES NANTES 3",
+        "nous": 33,
+        "eux": 59,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-27T11:00",
+        "domicile": false,
+        "adversaire": "ALPC MOULIN NANTES BASKET 3",
+        "nous": 32,
+        "eux": 55,
+        "forfait": ""
+      }
+    ],
+    "SIM-U18-M-1": [
+      {
+        "date": "2026-09-19T16:15",
+        "domicile": false,
+        "adversaire": "IE - CTC CAP BASKET 44 - ABC DES TROIS RIVIERES 1",
+        "nous": 35,
+        "eux": 58,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-26T18:00",
+        "domicile": true,
+        "adversaire": "ERDRE BASKET CLUB 2",
+        "nous": 88,
+        "eux": 69,
+        "forfait": ""
+      }
+    ],
+    "SIM-U18-M-2": [
+      {
+        "date": "2026-09-19T16:00",
+        "domicile": false,
+        "adversaire": "AL GARENNES NANTES 2",
+        "nous": 70,
+        "eux": 83,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-27T11:00",
+        "domicile": true,
+        "adversaire": "SAINT SEBASTIEN BASKET CLUB 1",
+        "nous": 57,
+        "eux": 94,
+        "forfait": ""
+      }
+    ],
+    "SIM-U21-M-1": [
+      {
+        "date": "2026-09-20T13:15",
+        "domicile": true,
+        "adversaire": "CHOLET BASKET 1",
+        "nous": 46,
+        "eux": 97,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-27T13:15",
+        "domicile": false,
+        "adversaire": "IE - CTC CAP BASKET 44 - ABC DES TROIS RIVIERES 1",
+        "nous": 46,
+        "eux": 89,
+        "forfait": ""
+      }
+    ],
+    "U11-F-1": [
+      {
+        "date": "2026-09-20T09:15",
+        "domicile": true,
+        "adversaire": "BASKET CLUB SUCE/ERDRE 1",
+        "nous": 44,
+        "eux": 27,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-26T13:00",
+        "domicile": false,
+        "adversaire": "ORVAULT SPORTS BASKET 1",
+        "nous": 34,
+        "eux": 22,
+        "forfait": ""
+      }
+    ],
+    "U11-F-2": [
+      {
+        "date": "2026-09-19T14:00",
+        "domicile": false,
+        "adversaire": "LES MONTAGNARDS LA MONTAGNE 1",
+        "nous": 4,
+        "eux": 61,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-26T14:45",
+        "domicile": true,
+        "adversaire": "CHABOSSIERE BASKET CLUB 2",
+        "nous": 6,
+        "eux": 50,
+        "forfait": ""
+      }
+    ],
+    "U11-M-1": [
+      {
+        "date": "2026-09-20T09:00",
+        "domicile": false,
+        "adversaire": "AL GARENNES NANTES 1",
+        "nous": 43,
+        "eux": 23,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-26T13:30",
+        "domicile": true,
+        "adversaire": "CARQUEFOU BASKET 1",
+        "nous": 46,
+        "eux": 50,
+        "forfait": ""
+      }
+    ],
+    "U11-M-2": [
+      {
+        "date": "2026-09-19T12:30",
+        "domicile": false,
+        "adversaire": "SAINTE LUCE BASKET 1",
+        "nous": 51,
+        "eux": 34,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-26T13:30",
+        "domicile": true,
+        "adversaire": "BOUGUENAIS BASKET 2",
+        "nous": 66,
+        "eux": 6,
+        "forfait": ""
+      }
+    ],
+    "U11-M-3": [
+      {
+        "date": "2026-09-19T13:30",
+        "domicile": true,
+        "adversaire": "SIMILIENNE NANTES 2",
+        "nous": 32,
+        "eux": 22,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-27T11:00",
+        "domicile": false,
+        "adversaire": "BOUGUENAIS BASKET",
+        "nous": 54,
+        "eux": 12,
+        "forfait": ""
+      }
+    ],
+    "U13-F-1": [
+      {
+        "date": "2026-09-19T15:00",
+        "domicile": false,
+        "adversaire": "ERDRE BASKET CLUB 2",
+        "nous": 41,
+        "eux": 83,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-26T16:00",
+        "domicile": true,
+        "adversaire": "ALPC MOULIN NANTES BASKET 1",
+        "nous": 29,
+        "eux": 57,
+        "forfait": ""
+      }
+    ],
+    "U13-F-2": [
+      {
+        "date": "2026-09-19T14:45",
+        "domicile": true,
+        "adversaire": "TREILLIERES BASKET CLUB 2",
+        "nous": 22,
+        "eux": 28,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-26T14:15",
+        "domicile": false,
+        "adversaire": "ORVAULT SPORTS BASKET 2",
+        "nous": 8,
+        "eux": 71,
+        "forfait": ""
+      }
+    ],
+    "U13-M-1": [
+      {
+        "date": "2026-09-20T10:30",
+        "domicile": false,
+        "adversaire": "IE - CTC POLE WEST NANTAIS - ETOILE SPORTIVE DE COUERON 1",
+        "nous": 61,
+        "eux": 39,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-27T09:00",
+        "domicile": true,
+        "adversaire": "IE - CTC CAP BASKET 44 - ABC DES TROIS RIVIERES 1",
+        "nous": 75,
+        "eux": 41,
+        "forfait": ""
+      }
+    ],
+    "U13-M-2": [
+      {
+        "date": "2026-09-26T17:45",
+        "domicile": false,
+        "adversaire": "BOUGUENAIS BASKET 2",
+        "nous": 41,
+        "eux": 63,
+        "forfait": ""
+      }
+    ],
+    "U13-M-3": [
+      {
+        "date": "2026-09-19T13:30",
+        "domicile": true,
+        "adversaire": "ALPC MOULIN NANTES BASKET 2",
+        "nous": 65,
+        "eux": 22,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-26T13:50",
+        "domicile": false,
+        "adversaire": "SAINT HERBLAIN BASKET CLUB 2",
+        "nous": 34,
+        "eux": 30,
+        "forfait": ""
+      }
+    ],
+    "U15-F-1": [
+      {
+        "date": "2026-09-27T11:00",
+        "domicile": true,
+        "adversaire": "ES PORNICHET 1",
+        "nous": 48,
+        "eux": 52,
+        "forfait": ""
+      }
+    ],
+    "U15-F-2": [
+      {
+        "date": "2026-09-20T10:30",
+        "domicile": true,
+        "adversaire": "SIMILIENNE NANTES",
+        "nous": 0,
+        "eux": 0,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-26T18:00",
+        "domicile": false,
+        "adversaire": "ORVAULT SPORTS BASKET 2",
+        "nous": 40,
+        "eux": 35,
+        "forfait": ""
+      }
+    ],
+    "U15-M-1": [
+      {
+        "date": "2026-09-20T09:00",
+        "domicile": true,
+        "adversaire": "SAINTE LUCE BASKET 2",
+        "nous": 59,
+        "eux": 30,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-27T09:45",
+        "domicile": false,
+        "adversaire": "HIRONDELLE BASKET 1",
+        "nous": 49,
+        "eux": 76,
+        "forfait": ""
+      }
+    ],
+    "U15-M-2": [
+      {
+        "date": "2026-09-19T16:15",
+        "domicile": true,
+        "adversaire": "GRAND LIEU BASKET 1",
+        "nous": 39,
+        "eux": 60,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-26T15:00",
+        "domicile": false,
+        "adversaire": "VERTOU BASKET 2",
+        "nous": 61,
+        "eux": 39,
+        "forfait": ""
+      }
+    ],
+    "U15-M-3": [
+      {
+        "date": "2026-09-19T17:00",
+        "domicile": false,
+        "adversaire": "ERDRE BASKET CLUB 2",
+        "nous": 46,
+        "eux": 57,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-26T16:45",
+        "domicile": true,
+        "adversaire": "AL GARENNES NANTES 2",
+        "nous": 46,
+        "eux": 50,
+        "forfait": ""
+      }
+    ],
+    "U18-F-1": [
+      {
+        "date": "2026-09-19T18:00",
+        "domicile": true,
+        "adversaire": "TREILLIERES BASKET CLUB 1",
+        "nous": 68,
+        "eux": 78,
+        "forfait": ""
+      }
+    ],
+    "U18-F-2": [
+      {
+        "date": "2026-09-20T11:30",
+        "domicile": false,
+        "adversaire": "BASKET CLUB REZE 3",
+        "nous": 0,
+        "eux": 20,
+        "forfait": "nous"
+      },
+      {
+        "date": "2026-09-27T09:00",
+        "domicile": true,
+        "adversaire": "IE - CTC POLE WEST NANTAIS - SAINT HERBLAIN BASKET CLUB 2",
+        "nous": 43,
+        "eux": 73,
+        "forfait": ""
+      }
+    ],
+    "U18-M-1": [
+      {
+        "date": "2026-09-26T14:45",
+        "domicile": true,
+        "adversaire": "EB SORINIERES 1",
+        "nous": 74,
+        "eux": 88,
+        "forfait": ""
+      }
+    ],
+    "U18-M-2": [
+      {
+        "date": "2026-09-19T15:00",
+        "domicile": true,
+        "adversaire": "GOLF BASKET CLUB HERBLINOIS",
+        "nous": 40,
+        "eux": 47,
+        "forfait": ""
+      },
+      {
+        "date": "2026-09-26T18:30",
+        "domicile": false,
+        "adversaire": "NANTES SULLY BASKET 3",
+        "nous": 70,
+        "eux": 34,
+        "forfait": ""
+      }
+    ]
+  }
+}

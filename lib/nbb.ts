@@ -11,6 +11,7 @@ import {
   CAPACITES,
   CATEGORIES,
   CLASSEMENTS,
+  EQUIPES_FFBB,
   CLUB,
   GYMNASES,
   LABEL_ECOLE,
@@ -19,13 +20,19 @@ import {
   PHOTOS_EQUIPES,
   SLOTS,
   STAGES,
+  STAGE_A_PREVOIR,
+  STAGE_CONFIRMATION,
+  STAGE_CONTACT,
+  STAGE_JOURNEE,
   STAGE_TARIFS,
   STATS,
   TARIFS,
   WEEKENDS,
 } from "@/data/nbb";
-import type { Chiffre, CleCategorie, Creneau, Jour, SemaineStage, Stage, StatutStage, Tarif } from "@/lib/types";
+import type { Chiffre, Classement, CleCategorie, Creneau, Jour, LigneClassement, SemaineStage, Stage, StatutStage, Tarif } from "@/lib/types";
 import * as DONNEES from "@/data/nbb";
+import classementsFFBB from "@/data/classements-ffbb.json";
+import resultatsFFBB from "@/data/resultats-ffbb.json";
 import { duree, heure, heureCourte, itineraire, majuscule, MARQUE_A_COMPLETER, montant, pluriel, slug, type PrixCotisation, type PrixStage } from "@/lib/utils";
 
 export const JOURS: Jour[] = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
@@ -130,10 +137,22 @@ export type FicheEquipe = {
   };
 };
 
+/** Classements récupérés chaque nuit à la FFBB (scripts/donnees_ffbb.py → data/classements-ffbb.json). */
+const FFBB = classementsFFBB as { maj: string; classements: Record<string, { championnat: string; lignes: LigneClassement[] }> };
+
+/** Classement automatique d'une équipe du site (correspondance EQUIPES_FFBB), daté de son dernier changement. */
+function classementAutomatique(nom: string): Classement | undefined {
+  const c = FFBB.classements[EQUIPES_FFBB[nom] ?? ""];
+  if (!c) return undefined;
+  const maj = new Date(FFBB.maj).toLocaleDateString("fr-FR", { timeZone: "Europe/Paris", day: "numeric", month: "long", year: "numeric" });
+  return { championnat: c.championnat, maj, lignes: c.lignes };
+}
+
 export function ficheEquipe(nom: string): FicheEquipe {
   const cr = creneauxDe(nom);
   const cap = CAPACITES[nom];
-  const c = CLASSEMENTS[nom];
+  // Un classement saisi à la main (CLASSEMENTS) l'emporte sur le classement automatique.
+  const c = CLASSEMENTS[nom] ?? classementAutomatique(nom);
   const sansCompetition = (cap ? !cap[1] : false) || /^Micro|^U7$|^Loisirs/.test(nom) || categorieDe(nom) === "loisirs";
   return {
     nom,
@@ -333,6 +352,14 @@ export type WeekEndVue = {
   exterieur: MatchExterieurVue[];
 };
 
+/** "26–27 sept." (ou "31 oct. – 1 nov.") : le samedi et le dimanche d'un week-end. */
+function datesWeekend(samedi: string): string {
+  const sa = dateDe(samedi);
+  const di = dateDe(samedi, 1);
+  const court = (d: Date) => formater(d, { day: "numeric", month: "short" });
+  return sa.getUTCMonth() === di.getUTCMonth() ? `${sa.getUTCDate()}–${court(di)}` : `${court(sa)} – ${court(di)}`;
+}
+
 function libelleJour(samedi: string, jour: string): string {
   return majuscule(formater(dateDe(samedi, decalageJour(jour)), { weekday: "long", day: "numeric", month: "long" }));
 }
@@ -346,13 +373,10 @@ function rangSalle(salle: string): number {
 export function weekendsVue(): WeekEndVue[] {
   const jour = aujourdhui();
   return WEEKENDS.map((w, i) => {
-    const sa = dateDe(w.samedi);
     const di = dateDe(w.samedi, 1);
     const lundi = dateDe(w.samedi, -5).toISOString().slice(0, 10);
     const moment: MomentWeekend = di.toISOString().slice(0, 10) < jour ? "passe" : lundi <= jour ? "semaine" : "a-venir";
-    const court = (d: Date) => formater(d, { day: "numeric", month: "short" });
-    const dates =
-      sa.getUTCMonth() === di.getUTCMonth() ? `${sa.getUTCDate()}–${court(di)}` : `${court(sa)} – ${court(di)}`;
+    const dates = datesWeekend(w.samedi);
     const tri = <T extends { jour: string; heure: string }>(liste: T[]) =>
       [...liste].sort((a, b) => ordreMatch(a.jour, a.heure) - ordreMatch(b.jour, b.heure));
     return {
@@ -405,6 +429,85 @@ export function matchsAffiches(): { weekends: WeekEndVue[]; indexDefaut: number;
   const weekends = tous.slice(premier, courant + 2);
   const equipes = [...new Set(weekends.flatMap((w) => [...w.domicile, ...w.exterieur]).map((m) => m.equipe))].sort(cmp);
   return { weekends, indexDefaut: courant - premier, equipes };
+}
+
+/* ───────── Résultats FFBB ───────── */
+
+export type IssueMatch = "victoire" | "defaite" | "nul";
+export type ResultatVue = {
+  cle: string;
+  equipe: string;
+  heure: string;
+  domicile: boolean;
+  adversaire: string;
+  nous: number;
+  eux: number;
+  issue: IssueMatch;
+  forfait: "" | "nous" | "eux";
+};
+export type JourResultats = { cle: string; label: string; resultats: ResultatVue[] };
+export type SemaineResultats = { cle: string; dates: string; jours: JourResultats[] };
+
+type ResultatFFBB = { date: string; domicile: boolean; adversaire: string; nous: number; eux: number; forfait: string };
+/** Résultats récupérés chaque nuit à la FFBB (scripts/donnees_ffbb.py → data/resultats-ffbb.json). */
+const RESULTATS = resultatsFFBB as { maj: string; resultats: Record<string, ResultatFFBB[]> };
+/** Nombre de week-ends de résultats proposés sur la page Matchs (les plus récents). */
+const WEEKENDS_RESULTATS = 10;
+
+/** Samedi (AAAA-MM-JJ) du week-end d'un match : même semaine, du lundi au dimanche. */
+function samediDe(jour: string): string {
+  const d = dateDe(jour);
+  const j = d.getUTCDay();
+  return dateDe(jour, j === 0 ? -1 : 6 - j).toISOString().slice(0, 10);
+}
+
+/**
+ * Résultats des équipes du site (celles reliées dans EQUIPES_FFBB), par week-end du plus récent au plus
+ * ancien, puis par jour et par heure. maj : date du dernier changement, en toutes lettres.
+ */
+export function resultatsParWeekend(): { semaines: SemaineResultats[]; maj: string } {
+  const equipeDe = new Map(Object.entries(EQUIPES_FFBB).filter(([, cle]) => cle).map(([nom, cle]) => [cle, nom]));
+  const parSamedi = new Map<string, Map<string, ResultatVue[]>>();
+  for (const [cle, matchs] of Object.entries(RESULTATS.resultats)) {
+    const equipe = equipeDe.get(cle);
+    if (!equipe) continue;
+    for (const m of matchs) {
+      const jour = m.date.slice(0, 10);
+      const samedi = samediDe(jour);
+      const jours = parSamedi.get(samedi) ?? new Map<string, ResultatVue[]>();
+      parSamedi.set(samedi, jours);
+      jours.set(jour, [
+        ...(jours.get(jour) ?? []),
+        {
+          cle: `${cle}-${m.date}`,
+          equipe,
+          heure: m.date.slice(11, 16).replace(":", "h"),
+          domicile: m.domicile,
+          adversaire: m.adversaire,
+          nous: m.nous,
+          eux: m.eux,
+          issue: m.nous > m.eux ? "victoire" : m.nous < m.eux ? "defaite" : "nul",
+          forfait: m.forfait === "nous" || m.forfait === "eux" ? m.forfait : "",
+        },
+      ]);
+    }
+  }
+  const semaines = [...parSamedi.entries()]
+    .sort(([a], [b]) => b.localeCompare(a))
+    .slice(0, WEEKENDS_RESULTATS)
+    .map(([samedi, jours]) => ({
+      cle: samedi,
+      dates: datesWeekend(samedi),
+      jours: [...jours.entries()]
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([jour, resultats]) => ({
+          cle: jour,
+          label: majuscule(formater(dateDe(jour), { weekday: "long", day: "numeric", month: "long" })),
+          resultats: resultats.sort((a, b) => a.heure.localeCompare(b.heure) || cmp(a.equipe, b.equipe)),
+        })),
+    }));
+  const maj = new Date(RESULTATS.maj).toLocaleDateString("fr-FR", { timeZone: "Europe/Paris", day: "numeric", month: "long", year: "numeric" });
+  return { semaines, maj };
 }
 
 /* ───────── Stages ───────── */
@@ -522,6 +625,40 @@ export function anneesStage(): string[] {
   return Array.from({ length: 13 }, (_, i) => String(an - 5 - i));
 }
 
+/**
+ * « Stages d'automne · Semaine 2 (semaine complète) » (récapitulatif enregistré avec l'inscription)
+ * → « Stages d'automne, semaine 2 (du 26 au 30 octobre) : semaine complète ».
+ */
+function ligneSemaineStage(recap: string): string {
+  const m = recap.match(/^(.+?) · (.+?)(?: \(semaine complète\)| : (.+))$/);
+  if (!m) return recap;
+  const [, periode, nom, jours] = m;
+  const dates = STAGES.find((s) => s.periode === periode)?.semaines.find((w) => w.nom === nom)?.dates;
+  const semaine = `${periode}, ${nom.charAt(0).toLowerCase()}${nom.slice(1)}${dates ? ` (${dates.charAt(0).toLowerCase()}${dates.slice(1)})` : ""}`;
+  return `${semaine} : ${jours ?? "semaine complète"}`;
+}
+
+export type MessageConfirmation = { sujet: string; texte: string };
+
+/** E-mail de confirmation d'une inscription au stage (modèle STAGE_CONFIRMATION), tel qu'il sera envoyé. */
+export function messageConfirmationStage(champs: Record<string, string>): MessageConfirmation {
+  const valeurs: Record<string, string> = {
+    enfant: champs["Enfant"] ?? "",
+    parent: champs["Parent"] ?? "",
+    semaines: (champs["Semaines / jours"] ?? "")
+      .split(" ; ")
+      .filter(Boolean)
+      .map((s) => `- ${ligneSemaineStage(s)}`)
+      .join("\n"),
+    montant: champs["Montant"] ?? "",
+    journee: STAGE_JOURNEE.map((j) => `- ${j.heure} : ${j.texte}`).join("\n"),
+    a_prevoir: STAGE_A_PREVOIR.map((a) => `- ${a}`).join("\n"),
+    contact: `${STAGE_CONTACT.nom} au ${STAGE_CONTACT.telephone}, ou par e-mail à ${CLUB.email}`,
+  };
+  const remplir = (modele: string) => modele.replace(/\{(\w+)\}/g, (repere, cle: string) => valeurs[cle] ?? repere);
+  return { sujet: remplir(STAGE_CONFIRMATION.sujet), texte: remplir(STAGE_CONFIRMATION.texte) };
+}
+
 /* ───────── Inscriptions ───────── */
 
 /** Tarifs utiles au formulaire de préinscription (estimation de la cotisation). */
@@ -554,6 +691,7 @@ const SECTIONS_MANQUES: Record<string, { titre: string; page?: string }> = {
   GYMNASES: { titre: "Gymnases (Infos pratiques)", page: "/infos" },
   OFFRE_PARTENARIAT: { titre: "Offre de partenariat (Partenaires)", page: "/partenaires" },
   SLOTS: { titre: "Planning des entraînements", page: "/planning" },
+  WEEKENDS: { titre: "Matchs du week-end", page: "/matchs" },
 };
 
 const CHAMPS_MANQUES: Record<string, string> = {
@@ -570,17 +708,18 @@ const CHAMPS_MANQUES: Record<string, string> = {
   arrivee: "Arrivée au club",
   acces: "Accès (bus, tram, parking)",
   montant: "Montant",
+  heure: "Horaire du match",
 };
 
-/** Nom lisible d'un élément de liste (entraîneur, gymnase, formule…). */
-function nomElement(x: unknown, i: number): string {
+/** Nom lisible d'un élément de liste (entraîneur, gymnase, week-end, match…), ou "" s'il n'en a pas. */
+function nomElement(x: unknown): string {
   if (x && typeof x === "object") {
-    for (const k of ["prenom", "nom", "titre", "formule", "id"]) {
+    for (const k of ["prenom", "nom", "titre", "formule", "equipe", "id"]) {
       const v = (x as Record<string, unknown>)[k];
       if (typeof v === "string" && v && !MARQUE_A_COMPLETER.test(v)) return v;
     }
   }
-  return `n° ${i + 1}`;
+  return "";
 }
 
 /**
@@ -597,8 +736,13 @@ export function manquesDuSite(): ManqueSite[] {
     if (typeof v === "string") {
       if (MARQUE_A_COMPLETER.test(v)) ajouter(racine, element, champ, v, chemin);
     } else if (Array.isArray(v)) {
-      // Premier niveau (liste d'entraîneurs, de gymnases…) : chaque élément est nommé.
-      v.forEach((x, i) => parcourir(x, `${chemin}[${i}]`, racine, niveau === 0 ? nomElement(x, i) : element, champ, niveau + 1));
+      // Chaque élément nommé (entraîneur, gymnase, week-end, puis match d'une équipe…) complète le libellé ;
+      // son champ devient alors celui de cet élément (ex. « heure » d'un match).
+      v.forEach((x, i) => {
+        const nom = nomElement(x) || (niveau === 0 ? `n° ${i + 1}` : "");
+        const suite = nom ? [element, nom].filter(Boolean).join(" · ") : element;
+        parcourir(x, `${chemin}[${i}]`, racine, suite, nom && niveau > 0 ? "" : champ, niveau + 1);
+      });
     } else if (v && typeof v === "object") {
       for (const [k, x] of Object.entries(v)) parcourir(x, `${chemin}.${k}`, racine, element, champ || k, niveau + 1);
     }

@@ -1,0 +1,2287 @@
+{
+  "source": "FFBB (application officielle), via ffbb-data-client",
+  "clubs": {
+    "8649": "Nantes Breil Basket",
+    "8752": "Similienne Nantes (équipes CTC)"
+  },
+  "maj": "2026-09-29T13:37:27+00:00",
+  "classements": {
+    "SE-F-1": {
+      "championnat": "Pré régionale féminine · Poule A",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "LA PLANCHE VIEILLEVIGNE BASKET 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "SUD RETZ BASKET 2",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "NANTES BREIL BASKET 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": true
+        },
+        {
+          "rang": 4,
+          "equipe": "EN - US Pont St Martin / EB Sorinières",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "BOUGUENAIS BASKET 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 6,
+          "equipe": "SAINT HERBLAIN BASKET CLUB 2",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 7,
+          "equipe": "LES FRECHETS BC ST NAZAIRE 2",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 8,
+          "equipe": "NORT SUR ERDRE AC LES TOUCHES BASKET 1",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 9,
+          "equipe": "JOUE BASKET 1",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 10,
+          "equipe": "ORVAULT SPORTS BASKET 2",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 11,
+          "equipe": "ESPERANCE SPORTIVE DE CROSSAC 2",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 12,
+          "equipe": "SAINT BREVIN BASKET CLUB",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        }
+      ]
+    },
+    "SE-F-2": {
+      "championnat": "Départementale féminine seniors - Division 4 · Poule F",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "BASKET CLUB REZE 2",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "NANTES BREIL BASKET 2",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": true
+        },
+        {
+          "rang": 3,
+          "equipe": "SAINT SEBASTIEN BASKET CLUB 3",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "NANTES SULLY BASKET",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "BASKET SUD LOIRE 3",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 6,
+          "equipe": "ERDRE BASKET CLUB 2",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        }
+      ]
+    },
+    "SE-M-1": {
+      "championnat": "Régionale masculine seniors - Division 2 · Poule B",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "I.B.C. - Indre Basket Club 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "CARQUEFOU BASKET 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "LE MANS C.S.S.G. 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "CHOLTIERE PAULX MER MORTE 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "AVRILLE BASKET 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 6,
+          "equipe": "MOINE BASKET CLUB 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 7,
+          "equipe": "ORVAULT SPORTS BASKET 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 8,
+          "equipe": "NANTES BREIL BASKET 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": true
+        },
+        {
+          "rang": 9,
+          "equipe": "BASKET CLUB REZE 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 10,
+          "equipe": "ST MARS D OUTILLE LES MOUETTES 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 11,
+          "equipe": "MORTAGNE SUR SEVRE 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 12,
+          "equipe": "ANDARD BRAIN 1",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 13,
+          "equipe": "AL GARENNES NANTES 1",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 14,
+          "equipe": "NANTES DOULON BASKET 1",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        }
+      ]
+    },
+    "SE-M-2": {
+      "championnat": "Départementale masculine seniors - Division 2 · Poule B",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "NANTES BREIL BASKET 2",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": true
+        },
+        {
+          "rang": 2,
+          "equipe": "AS HEULINOISE BASKET BALL 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "SUD RETZ BASKET 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "AS BRAINS BASKET",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "GRAND LIEU BASKET 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 6,
+          "equipe": "I.B.C. - Indre Basket Club 2",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        }
+      ]
+    },
+    "SE-M-3": {
+      "championnat": "Départementale masculine seniors - Division 3 · Poule C",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "SAINT HERBLAIN BASKET CLUB 2",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "GOLF BASKET CLUB HERBLINOIS 2",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "NANTES BREIL BASKET 3",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": true
+        },
+        {
+          "rang": 4,
+          "equipe": "REZE BASKET 44 4",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "EB SORINIERES 1",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 6,
+          "equipe": "NANTES DOULON BASKET 2",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        }
+      ]
+    },
+    "SIM-SE-M-1": {
+      "championnat": "Pré nationale masculine · Poule A",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "CHANTONNAY-ST GERMAIN BASKET 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "PUY SAINT BONNET BASKET 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "LE MANS JALT 2",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "SIMILIENNE NANTES 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": true
+        },
+        {
+          "rang": 5,
+          "equipe": "ETOILE DE CLISSON BASKET 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 6,
+          "equipe": "LE MANS SAINT PAVIN 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 7,
+          "equipe": "POMJEANNAIS BASKET CLUB 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 8,
+          "equipe": "SALLERTAINE BASKET CLUB 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 9,
+          "equipe": "ETOILE ANGERS BASKET 2",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 10,
+          "equipe": "CHAMBRETAUD SAINT-MALO VENDÉE BASKET 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 11,
+          "equipe": "MOUTIERS SUR LAY 1",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 12,
+          "equipe": "GREZ NEUVILLE 1",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 13,
+          "equipe": "AVENIR TREMENTINES BASKET 1",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 14,
+          "equipe": "MONTAIGU VENDEE BASKET CLUB 2",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        }
+      ]
+    },
+    "SIM-SE-M-2": {
+      "championnat": "Régionale masculine seniors - Division 3 · Poule C",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "LAVAL FRANCS ARCHERS 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "US LAVAL BASKET 2",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "BRISSAC AUBANCE BASKET 2",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "TRELAZE BASKET 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "LE MANS A.S.MADELEINE 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 6,
+          "equipe": "ALS PLAISANCE SAINT NAZAIRE 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 7,
+          "equipe": "HERBIERS VENDEE BASKET 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 8,
+          "equipe": "OUDON BASKET 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 9,
+          "equipe": "SALLERTAINE BASKET CLUB 2",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 10,
+          "equipe": "SIMILIENNE NANTES 2",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": true
+        },
+        {
+          "rang": 11,
+          "equipe": "GARENNES LOIRE BASKET CLUB 49 - GLBC 49. 1",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 12,
+          "equipe": "LA CHAPELLE ST AUBIN 1",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        }
+      ]
+    },
+    "SIM-SE-M-3": {
+      "championnat": "Départementale masculine seniors - Division 4 · Poule D",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "AS SAINT ROGATIEN NANTES 3",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "SIMILIENNE NANTES 3",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": true
+        },
+        {
+          "rang": 3,
+          "equipe": "NANTES DOULON BASKET 3",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "AL OUCHE DINIER REZE 2",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "SPORTING CLUB ORVAULT",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 6,
+          "equipe": "RC DONGES 2",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        }
+      ]
+    },
+    "SIM-U11-M-1": {
+      "championnat": "Départementale masculine U11 · D1 - Poule B",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "AS SAINT ROGATIEN NANTES 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "TREILLIERES BASKET CLUB 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "SPORTING CLUB ORVAULT 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "SIMILIENNE NANTES 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": true
+        },
+        {
+          "rang": 5,
+          "equipe": "NANTES BASKET HERMINE (NBH) 2",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 6,
+          "equipe": "CHABOSSIERE BASKET CLUB 1",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        }
+      ]
+    },
+    "SIM-U11-M-2": {
+      "championnat": "Départementale masculine U11 · D3 - Poule P",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "NANTES BREIL BASKET 3",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "SIMILIENNE NANTES 2",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": true
+        },
+        {
+          "rang": 3,
+          "equipe": "BASKET CLUB REZE 2",
+          "j": 1,
+          "v": 1,
+          "d": 0,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "BOUGUENAIS BASKET",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "ALPC MOULIN NANTES BASKET 2",
+          "j": 1,
+          "v": 0,
+          "d": 1,
+          "pts": 1,
+          "nbb": false
+        }
+      ]
+    },
+    "SIM-U13-M-1": {
+      "championnat": "Départementale masculine U13 · D1 - Poule C",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "BASKET SUD LOIRE",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "NORT SUR ERDRE AC LES TOUCHES BASKET 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "SIMILIENNE NANTES 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": true
+        },
+        {
+          "rang": 4,
+          "equipe": "ASPTT NANTES 2",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "CARQUEFOU BASKET 2",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 6,
+          "equipe": "HIRONDELLE BASKET 1",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        }
+      ]
+    },
+    "SIM-U13-M-2": {
+      "championnat": "Départementale masculine U13 · D3 - Poule J",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "NANTES SULLY BASKET 2",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "NANTES BREIL BASKET 3",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "SAINT HERBLAIN BASKET CLUB 2",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "SIMILIENNE NANTES 2",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": true
+        },
+        {
+          "rang": 5,
+          "equipe": "ALPC MOULIN NANTES BASKET 2",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 6,
+          "equipe": "ASPTT NANTES 3",
+          "j": 2,
+          "v": 0,
+          "d": 1,
+          "pts": 1,
+          "nbb": false
+        }
+      ]
+    },
+    "SIM-U15-M-1": {
+      "championnat": "Départementale masculine U15 · D1 - Poule D",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "UNION DU SILLON BASKET CLUB 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "SAINT ANDRE BASKET BALL",
+          "j": 1,
+          "v": 1,
+          "d": 0,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "CARQUEFOU BASKET 1",
+          "j": 1,
+          "v": 1,
+          "d": 0,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "SIMILIENNE NANTES 1",
+          "j": 1,
+          "v": 0,
+          "d": 1,
+          "pts": 1,
+          "nbb": true
+        },
+        {
+          "rang": 5,
+          "equipe": "SAUTRON BASKET CLUB",
+          "j": 1,
+          "v": 0,
+          "d": 1,
+          "pts": 1,
+          "nbb": false
+        }
+      ]
+    },
+    "SIM-U15-M-2": {
+      "championnat": "Départementale masculine U15 · D3 - Poule I",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "AL GARENNES NANTES 3",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "NANTES DOULON BASKET 2",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "ALPC MOULIN NANTES BASKET 3",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "NANTES SULLY BASKET 2",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "AL CHAUVINIERE",
+          "j": 2,
+          "v": 1,
+          "d": 0,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 6,
+          "equipe": "SIMILIENNE NANTES 2",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": true
+        }
+      ]
+    },
+    "SIM-U18-M-1": {
+      "championnat": "Départementale masculine U18 · Elite - Poule A",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "ABC DES TROIS RIVIERES 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "BOUGUENAIS BASKET 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "CHABOSSIERE BASKET CLUB 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "SIMILIENNE NANTES 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": true
+        },
+        {
+          "rang": 5,
+          "equipe": "ERDRE BASKET CLUB 2",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 6,
+          "equipe": "GAZELLES BLINOISES 1",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        }
+      ]
+    },
+    "SIM-U18-M-2": {
+      "championnat": "Départementale masculine U18 · D1 - Poule D",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "OUDON BASKET",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "ETOILE DE CLISSON BASKET 2",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "SAINT SEBASTIEN BASKET CLUB 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "AL GARENNES NANTES 2",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "MONTBERT GENESTON LE BIGNON B. 1",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 6,
+          "equipe": "SIMILIENNE NANTES 2",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": true
+        }
+      ]
+    },
+    "SIM-U21-M-1": {
+      "championnat": "Régionale masculine U21 · Poule A",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "CHOLET BASKET 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "BASKET CLUB ROEZEEN 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "ABC DES TROIS RIVIERES 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "SALLERTAINE BASKET CLUB 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "LE MANS JALT 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 6,
+          "equipe": "SIMILIENNE NANTES 1",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": true
+        }
+      ]
+    },
+    "U11-F-1": {
+      "championnat": "Départementale féminine U11 · D2 - Poule D",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "NANTES BREIL BASKET 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": true
+        },
+        {
+          "rang": 2,
+          "equipe": "ERDRE BASKET CLUB",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "ASPTT NANTES",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "BASKET CLUB SUCE/ERDRE 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "ORVAULT SPORTS BASKET 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 6,
+          "equipe": "AL CHAUVINIERE",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        }
+      ]
+    },
+    "U11-F-2": {
+      "championnat": "Départementale féminine U11 · D3 - Poule K",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "LES MONTAGNARDS LA MONTAGNE 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "CHABOSSIERE BASKET CLUB 2",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "NANTES SULLY BASKET",
+          "j": 1,
+          "v": 1,
+          "d": 0,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "GARS D'HERBAUGES BOUAYE 2",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "NANTES BREIL BASKET 2",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": true
+        },
+        {
+          "rang": 6,
+          "equipe": "GOLF BASKET CLUB HERBLINOIS 2",
+          "j": 1,
+          "v": 0,
+          "d": 1,
+          "pts": 1,
+          "nbb": false
+        }
+      ]
+    },
+    "U11-M-1": {
+      "championnat": "Départementale masculine U11 · Elite - Poule B",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "NANTES BASKET HERMINE (NBH) 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "REZE BASKET 44 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "CARQUEFOU BASKET 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "NANTES BREIL BASKET 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": true
+        },
+        {
+          "rang": 5,
+          "equipe": "SAINT NAZAIRE BASKET CLUB 1",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 6,
+          "equipe": "AL GARENNES NANTES 1",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        }
+      ]
+    },
+    "U11-M-2": {
+      "championnat": "Départementale masculine U11 · D2 - Poule G",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "SAINT SEBASTIEN BASKET CLUB 2",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "NANTES BREIL BASKET 2",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": true
+        },
+        {
+          "rang": 3,
+          "equipe": "SAINTE LUCE BASKET 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "AL GARENNES NANTES 2",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "BEAUJOIRE BASKET CLUB 2",
+          "j": 1,
+          "v": 0,
+          "d": 1,
+          "pts": 1,
+          "nbb": false
+        },
+        {
+          "rang": 6,
+          "equipe": "BOUGUENAIS BASKET 2",
+          "j": 1,
+          "v": 0,
+          "d": 1,
+          "pts": 1,
+          "nbb": false
+        }
+      ]
+    },
+    "U11-M-3": {
+      "championnat": "Départementale masculine U11 · D3 - Poule P",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "NANTES BREIL BASKET 3",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": true
+        },
+        {
+          "rang": 2,
+          "equipe": "SIMILIENNE NANTES 2",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "BASKET CLUB REZE 2",
+          "j": 1,
+          "v": 1,
+          "d": 0,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "BOUGUENAIS BASKET",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "ALPC MOULIN NANTES BASKET 2",
+          "j": 1,
+          "v": 0,
+          "d": 1,
+          "pts": 1,
+          "nbb": false
+        }
+      ]
+    },
+    "U13-F-1": {
+      "championnat": "Départementale féminine U13 · D1 - Poule B",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "ERDRE BASKET CLUB 2",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "ALPC MOULIN NANTES BASKET 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "ETOILE SPORTIVE DE COUERON 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "TREILLIERES BASKET CLUB 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "LOIRE & SILLON BASKET CLUB 1",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 6,
+          "equipe": "NANTES BREIL BASKET 1",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": true
+        }
+      ]
+    },
+    "U13-F-2": {
+      "championnat": "Départementale féminine U13 · D3 - Poule H",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "ORVAULT SPORTS BASKET 2",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "I.B.C. - Indre Basket Club",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "NANTES SULLY BASKET",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "TREILLIERES BASKET CLUB 2",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "NANTES BREIL BASKET 2",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": true
+        },
+        {
+          "rang": 6,
+          "equipe": "CHABOSSIERE BASKET CLUB 3",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        }
+      ]
+    },
+    "U13-M-1": {
+      "championnat": "Départementale masculine U13 · Elite - Poule A",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "NANTES BREIL BASKET 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": true
+        },
+        {
+          "rang": 2,
+          "equipe": "BEAUJOIRE BASKET CLUB 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "GUERANDE BASKET 1",
+          "j": 1,
+          "v": 1,
+          "d": 0,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "ETOILE SPORTIVE DE COUERON 1",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "ABC DES TROIS RIVIERES 1",
+          "j": 1,
+          "v": 0,
+          "d": 1,
+          "pts": 1,
+          "nbb": false
+        }
+      ]
+    },
+    "U13-M-2": {
+      "championnat": "Départementale masculine U13 · D1 - Poule B",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "LOIRE & SILLON BASKET CLUB 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "SAINT HERBLAIN BASKET CLUB 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "BOUGUENAIS BASKET 2",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "BASKET CLUB BASSE LOIRE 1",
+          "j": 1,
+          "v": 0,
+          "d": 1,
+          "pts": 1,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "NANTES BREIL BASKET 2",
+          "j": 1,
+          "v": 0,
+          "d": 1,
+          "pts": 1,
+          "nbb": true
+        }
+      ]
+    },
+    "U13-M-3": {
+      "championnat": "Départementale masculine U13 · D3 - Poule J",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "NANTES SULLY BASKET 2",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "NANTES BREIL BASKET 3",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": true
+        },
+        {
+          "rang": 3,
+          "equipe": "SAINT HERBLAIN BASKET CLUB 2",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "SIMILIENNE NANTES 2",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "ALPC MOULIN NANTES BASKET 2",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 6,
+          "equipe": "ASPTT NANTES 3",
+          "j": 2,
+          "v": 0,
+          "d": 1,
+          "pts": 1,
+          "nbb": false
+        }
+      ]
+    },
+    "U15-F-1": {
+      "championnat": "Départementale féminine U15 · Elite - Poule A",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "ES PORNICHET 1",
+          "j": 1,
+          "v": 1,
+          "d": 0,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "ESPERANCE SPORTIVE DE CROSSAC",
+          "j": 1,
+          "v": 1,
+          "d": 0,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "SAINT HERBLAIN BASKET CLUB 1",
+          "j": 1,
+          "v": 0,
+          "d": 1,
+          "pts": 1,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "NANTES BREIL BASKET 1",
+          "j": 1,
+          "v": 0,
+          "d": 1,
+          "pts": 1,
+          "nbb": true
+        }
+      ]
+    },
+    "U15-F-2": {
+      "championnat": "Départementale féminine U15 · D2 - Poule D",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "TREILLIERES BASKET CLUB 3",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "ORVAULT SPORTS BASKET 2",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "ERDRE BASKET CLUB 2",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "SIMILIENNE NANTES",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "NANTES BREIL BASKET 2",
+          "j": 2,
+          "v": 1,
+          "d": 0,
+          "pts": 2,
+          "nbb": true
+        },
+        {
+          "rang": 6,
+          "equipe": "BASKET CLUB HERICOIS",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        }
+      ]
+    },
+    "U15-M-1": {
+      "championnat": "Départementale masculine U15 · Elite - Poule C",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "HIRONDELLE BASKET 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "NANTES BREIL BASKET 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": true
+        },
+        {
+          "rang": 3,
+          "equipe": "AL GARENNES NANTES 1",
+          "j": 1,
+          "v": 1,
+          "d": 0,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "SUD RETZ BASKET 1",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "SAINTE LUCE BASKET 2",
+          "j": 1,
+          "v": 0,
+          "d": 1,
+          "pts": 1,
+          "nbb": false
+        }
+      ]
+    },
+    "U15-M-2": {
+      "championnat": "Départementale masculine U15 · D1 - Poule F",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "BASKET CLUB LOROUX LANDREAU - BC2L 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "GRAND LIEU BASKET 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "NANTES BREIL BASKET 2",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": true
+        },
+        {
+          "rang": 4,
+          "equipe": "ASPTT NANTES 2",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "AS SAINT ROGATIEN NANTES",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 6,
+          "equipe": "VERTOU BASKET 2",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        }
+      ]
+    },
+    "U15-M-3": {
+      "championnat": "Départementale masculine U15 · D2 - Poule F",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "NANTES DOULON BASKET 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "NANTES SULLY BASKET 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "ERDRE BASKET CLUB 2",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "AL GARENNES NANTES 2",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "NANTES BREIL BASKET 3",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": true
+        },
+        {
+          "rang": 6,
+          "equipe": "BEAUJOIRE BASKET CLUB 2",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        }
+      ]
+    },
+    "U18-F-1": {
+      "championnat": "Départementale féminine U18 · Elite - Poule D",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "PAYS D'ANCENIS BASKET 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "TREILLIERES BASKET CLUB 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "HERBADILLA LA CHEVROLIERE 1",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "NANTES BREIL BASKET 1",
+          "j": 1,
+          "v": 0,
+          "d": 1,
+          "pts": 1,
+          "nbb": true
+        },
+        {
+          "rang": 5,
+          "equipe": "PAMPRES VALLETAIS 2",
+          "j": 1,
+          "v": 0,
+          "d": 1,
+          "pts": 1,
+          "nbb": false
+        }
+      ]
+    },
+    "U18-F-2": {
+      "championnat": "Départementale féminine U18 · D3 - Poule E",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "SAINT HERBLAIN BASKET CLUB 2",
+          "j": 1,
+          "v": 1,
+          "d": 0,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "BASKET CLUB REZE 3",
+          "j": 1,
+          "v": 1,
+          "d": 0,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "BASKET CLUB BASSE LOIRE 2",
+          "j": 1,
+          "v": 1,
+          "d": 0,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "CHABOSSIERE BASKET CLUB 2",
+          "j": 1,
+          "v": 0,
+          "d": 1,
+          "pts": 1,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "NANTES BREIL BASKET 2",
+          "j": 2,
+          "v": 0,
+          "d": 1,
+          "pts": 1,
+          "nbb": true
+        }
+      ]
+    },
+    "U18-M-1": {
+      "championnat": "Départementale masculine U18 · D1 - Poule F",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "SAUTRON BASKET CLUB 1",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "EB SORINIERES 1",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "BASKET CLUB REZE 2",
+          "j": 1,
+          "v": 1,
+          "d": 0,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "VERTOU BASKET 1",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "NANTES BREIL BASKET 1",
+          "j": 1,
+          "v": 0,
+          "d": 1,
+          "pts": 1,
+          "nbb": true
+        }
+      ]
+    },
+    "U18-M-2": {
+      "championnat": "Départementale masculine U18 · D3 - Poule F",
+      "lignes": [
+        {
+          "rang": 1,
+          "equipe": "I.B.C. - Indre Basket Club 2",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "GOLF BASKET CLUB HERBLINOIS",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 3,
+          "equipe": "NANTES BREIL BASKET 2",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": true
+        },
+        {
+          "rang": 4,
+          "equipe": "AL CREMETTERIE ST HERBLAIN",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "NANTES SULLY BASKET 3",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        },
+        {
+          "rang": 6,
+          "equipe": "AL CHAUVINIERE 2",
+          "j": 2,
+          "v": 0,
+          "d": 2,
+          "pts": 2,
+          "nbb": false
+        }
+      ]
+    }
+  }
+}

@@ -24,7 +24,6 @@ export type Club = {
   whatsapp: string;
   boutique: string;
   ffbb: string;
-  widgetResultats: string;
   emailLicenceFFBB: string;
   memoArbitrage: string;
   delaiReponseContact: string;

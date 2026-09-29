@@ -46,7 +46,7 @@ export function BandeauCookies() {
       </div>
       <p className="cookies__texte">
         Le site n'utilise aucun cookie publicitaire ni outil de mesure d'audience. Avec votre accord, il affiche des
-        contenus externes (carte des gymnases, résultats des matchs), qui peuvent déposer des cookies. Refuser ne
+        contenus externes (carte des gymnases), qui peuvent déposer des cookies. Refuser ne
         limite pas l'accès aux informations.
       </p>
       {prefs ? (
@@ -60,7 +60,7 @@ export function BandeauCookies() {
           <label>
             <input type="checkbox" checked={valeurEmbeds} onChange={(e) => setEmbeds(e.target.checked)} />
             <span>
-              <strong>Contenus intégrés</strong> — carte des gymnases (Google Maps), widget des résultats de matchs.
+              <strong>Contenus intégrés</strong> — carte des gymnases (Google Maps).
             </span>
           </label>
           <button type="button" className="cookies__enregistrer" onClick={() => sauver(valeurEmbeds)}>

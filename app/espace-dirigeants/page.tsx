@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { emailConfigure } from "@/lib/email";
 import { manquesDuSite, type ManqueSite } from "@/lib/nbb";
 import { slug } from "@/lib/utils";
 import { accesConfigure, estConnecte } from "@/lib/session";
 import { lister, STATUTS, TABLES, type Demande, type Table } from "@/lib/stockage";
 import { Connexion, Deconnexion, Statut, Supprimer } from "@/components/dirigeants/Dirigeants";
+import { TableauStages } from "@/components/dirigeants/TableauStages";
 
 export const metadata: Metadata = {
   title: "Espace dirigeants",
@@ -157,8 +159,16 @@ export default async function EspaceDirigeants({ searchParams }: { searchParams:
                 et <Link href="/contact">Contact</Link>.
               </div>
             ) : null}
+            {/* Stages : un tableau (une ligne par inscription) ; les autres demandes restent en cartes. */}
+            {!voirManques && onglet === "stages" && lignes.length ? (
+              <TableauStages
+                demandes={lignes}
+                // Confirmations par e-mail : messagerie SMTP configurée, sinon envoi simulé en local.
+                messagerie={emailConfigure() ? "ok" : process.env.NODE_ENV !== "production" ? "simulee" : "absente"}
+              />
+            ) : null}
             <div className="grille grille--remplir" style={{ "--min": "340px" } as React.CSSProperties}>
-              {(voirManques ? [] : lignes).map((r) => (
+              {(voirManques || onglet === "stages" ? [] : lignes).map((r) => (
                 <article key={r.id} className="demande">
                   <div className="demande__tete">
                     <div>

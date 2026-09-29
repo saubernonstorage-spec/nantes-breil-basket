@@ -1,7 +1,14 @@
 "use client";
 
-import { useActionState, useTransition } from "react";
-import { connexion, deconnexion, modifierStatut, supprimerDemande } from "@/app/espace-dirigeants/actions";
+import { useActionState, useState, useTransition } from "react";
+import {
+  connexion,
+  deconnexion,
+  envoyerConfirmationStage,
+  modifierStatut,
+  supprimerDemande,
+  type ResultatConfirmation,
+} from "@/app/espace-dirigeants/actions";
 import { Erreur } from "@/components/formulaires/Champs";
 
 export function Connexion() {
@@ -65,5 +72,57 @@ export function Supprimer({ table, id }: { table: string; id: string }) {
     >
       {enCours ? "Suppression…" : "Supprimer"}
     </button>
+  );
+}
+
+/** Messagerie du site : configurée, simulée (en local, rien ne part) ou absente (en ligne, non configurée). */
+export type EtatMessagerie = "ok" | "simulee" | "absente";
+
+/**
+ * Bouton « Confirmer par e-mail » d'une inscription au stage : après une simple confirmation du navigateur,
+ * le serveur envoie au parent le message du modèle STAGE_CONFIRMATION. Le résultat s'affiche sous le bouton.
+ */
+export function ConfirmerStage({
+  id,
+  destinataire,
+  envoyeeLe,
+  messagerie,
+}: {
+  id: string;
+  destinataire: string;
+  envoyeeLe: string;
+  messagerie: EtatMessagerie;
+}) {
+  const [retour, setRetour] = useState<ResultatConfirmation | null>(null);
+  const [enCours, demarrer] = useTransition();
+  const impossible = messagerie === "absente" ? "Messagerie du site non configurée" : !destinataire ? "Pas d'adresse e-mail" : "";
+
+  return (
+    <>
+      <button
+        type="button"
+        className="bouton-confirmer"
+        disabled={!!impossible || enCours}
+        title={impossible || undefined}
+        onClick={() => {
+          const question = envoyeeLe
+            ? `Une confirmation a déjà été envoyée le ${envoyeeLe}. La renvoyer à ${destinataire} ?`
+            : `Envoyer l'e-mail de confirmation à ${destinataire} ?`;
+          if (!window.confirm(question)) return;
+          setRetour(null);
+          demarrer(async () => {
+            const r = await envoyerConfirmationStage(id);
+            setRetour(r);
+          });
+        }}
+      >
+        {enCours ? "Envoi…" : envoyeeLe ? "Renvoyer l'e-mail" : "Confirmer par e-mail"}
+      </button>
+      {retour ? (
+        <span role="status" className={retour.ok ? "envoi-stage envoi-stage--ok" : "envoi-stage envoi-stage--erreur"}>
+          {retour.message}
+        </span>
+      ) : null}
+    </>
   );
 }

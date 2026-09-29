@@ -2,9 +2,8 @@
 
 import { useSearchParams } from "next/navigation";
 import { useState, useSyncExternalStore } from "react";
-import type { MatchDomicileVue, MomentWeekend, WeekEndVue } from "@/lib/nbb";
-import { pluriel } from "@/lib/utils";
-import { ContenuConsenti } from "@/components/Cookies";
+import type { IssueMatch, MatchDomicileVue, MomentWeekend, SemaineResultats, WeekEndVue } from "@/lib/nbb";
+import { aCompleter, pluriel } from "@/lib/utils";
 import { IconeCartes, IconeTableau, NouvelOnglet } from "@/components/icons";
 
 type Props = { weekends: WeekEndVue[]; indexDefaut: number; equipes: string[]; whatsapp: string };
@@ -134,8 +133,7 @@ export function MatchsVue({ weekends, indexDefaut, equipes, whatsapp, equipeInit
             </h2>
           </div>
           <p className="tete-section__texte" style={{ maxWidth: 460, fontSize: 14 }}>
-            « 2 × U11F2 » : deux joueurs ou joueuses de cette équipe tiennent la table de marque. Pas disponible pour
-            arbitrer ? Trouvez un remplaçant et prévenez le plus rapidement possible votre coach.
+            Pas disponible pour arbitrer ? Trouvez un remplaçant et prévenez le plus rapidement possible votre coach.
           </p>
         </div>
         <div key={version} className={rafraichi}>
@@ -180,7 +178,7 @@ export function MatchsVue({ weekends, indexDefaut, equipes, whatsapp, equipeInit
                           <GroupeJour key={j.cle} label={j.label} n={j.matchs.length} colonnes={6}>
                             {j.matchs.map((m) => (
                               <tr key={m.cle}>
-                                <td className="fixe-1 tableau-matchs__heure">{m.heure}</td>
+                                <td className="fixe-1 tableau-matchs__heure"><Heure h={m.heure} /></td>
                                 <td className="fixe-2">
                                   <span className="tag-equipe">{m.equipe}</span>
                                 </td>
@@ -203,7 +201,7 @@ export function MatchsVue({ weekends, indexDefaut, equipes, whatsapp, equipeInit
                         {j.matchs.map((m) => (
                           <li key={m.cle} className="carte-match">
                             <div className="carte-match__tete">
-                              <span className="carte-match__heure">{m.heure}</span>
+                              <span className="carte-match__heure"><Heure h={m.heure} /></span>
                               <span className="tag-equipe">{m.equipe}</span>
                             </div>
                             <p className="carte-match__adversaire">
@@ -271,7 +269,7 @@ export function MatchsVue({ weekends, indexDefaut, equipes, whatsapp, equipeInit
                       <GroupeJour key={j.cle} label={j.label} n={j.matchs.length} colonnes={5}>
                         {j.matchs.map((m) => (
                           <tr key={m.cle}>
-                            <td className="fixe-1 tableau-matchs__heure">{m.heure}</td>
+                            <td className="fixe-1 tableau-matchs__heure"><Heure h={m.heure} /></td>
                             <td className="fixe-2">
                               <span className="tag-equipe tag-equipe--orange">{m.equipe}</span>
                             </td>
@@ -295,7 +293,7 @@ export function MatchsVue({ weekends, indexDefaut, equipes, whatsapp, equipeInit
                     {j.matchs.map((m) => (
                       <li key={m.cle} className="carte-match">
                         <div className="carte-match__tete">
-                          <span className="carte-match__heure">{m.heure}</span>
+                          <span className="carte-match__heure"><Heure h={m.heure} /></span>
                           <span className="tag-equipe tag-equipe--orange">{m.equipe}</span>
                         </div>
                         <p className="carte-match__adversaire">
@@ -309,11 +307,11 @@ export function MatchsVue({ weekends, indexDefaut, equipes, whatsapp, equipeInit
                 ))}
               </div>
             </>
-          ) : !w.vide ? (
+          ) : (
             <p className="vide-ligne" style={{ marginTop: 0 }}>
-              Pas de match à l'extérieur{pour}ce week-end.
+              {w.vide ? "Le programme de ce week-end n'est pas encore publié." : `Pas de match à l'extérieur${pour}ce week-end.`}
             </p>
-          ) : null}
+          )}
         </div>
         <div className="note-bleue">
           Covoiturage : les déplacements sont organisés par les parents de l'équipe, à tour de rôle, rendez-vous sur{" "}
@@ -326,6 +324,11 @@ export function MatchsVue({ weekends, indexDefaut, equipes, whatsapp, equipeInit
       </section>
     </div>
   );
+}
+
+/** Horaire du match ; encore à compléter dans les données : « À confirmer ». */
+function Heure({ h }: { h: string }) {
+  return aCompleter(h) ? <span className="heure-a-confirmer">À confirmer</span> : <>{h}</>;
 }
 
 function GroupeJour({ label, n, colonnes, children }: { label: string; n: number; colonnes: number; children: React.ReactNode }) {
@@ -373,42 +376,92 @@ export function MatchsAvecAdresse(props: Props) {
   return <MatchsVue {...props} equipeInitiale={props.equipes.includes(equipe) ? equipe : ""} />;
 }
 
-/** Widget des résultats, chargé seulement après accord du visiteur. */
-export function Resultats({ widget, ffbb }: { widget: string; ffbb: string }) {
+
+const ISSUES: Record<IssueMatch, string> = { victoire: "Victoire", defaite: "Défaite", nul: "Nul" };
+
+/** Résultats FFBB (récupérés chaque nuit) : un week-end à la fois, dans un tableau groupé par jour. */
+export function ResultatsFFBB({ semaines, maj, ffbb }: { semaines: SemaineResultats[]; maj: string; ffbb: string }) {
+  const [sel, choisir] = useState(0);
   const lienFFBB = (
-    <a href={ffbb} target="_blank" rel="noopener" className="btn btn--clair">
+    <a href={ffbb} target="_blank" rel="noopener" className="btn btn--petit btn--clair">
       Site de la FFBB
       <NouvelOnglet />
     </a>
   );
-  if (!widget) {
+  if (!semaines.length) {
     return (
-      <div className="resultats-bloc">
-        <p>Retrouvez les scores et les classements de toutes les équipes du club sur le site de la Fédération.</p>
-        <div className="rangee rangee--10">{lienFFBB}</div>
+      <div className="resultats-vide">
+        <p>Aucun résultat pour l'instant : ils s'afficheront ici après les premiers matchs de la saison.</p>
+        {lienFFBB}
       </div>
     );
   }
+  const s = semaines[Math.min(sel, semaines.length - 1)];
+  const n = s.jours.reduce((t, j) => t + j.resultats.length, 0);
   return (
-    <ContenuConsenti
-      bloque={(accepter) => (
-        <div className="resultats-bloc">
-          <p>
-            Le widget de résultats est un contenu externe : il s'affiche après votre accord. Vous pouvez aussi consulter
-            directement le site de la FFBB.
-          </p>
-          <div className="rangee rangee--10">
-            <button type="button" className="btn btn--orange" onClick={accepter}>
-              Afficher les résultats
-            </button>
-            {lienFFBB}
-          </div>
-        </div>
-      )}
-    >
-      <div className="resultats-widget">
-        <iframe src={widget} title="Résultats des matchs du Nantes Breil Basket" loading="lazy" />
+    <div className="resultats">
+      <div className="resultats__barre">
+        <label className="resultats__choix">
+          Week-end
+          <select className="saisie" value={sel} onChange={(e) => choisir(Number(e.target.value))}>
+            {semaines.map((x, i) => (
+              <option key={x.cle} value={i}>
+                {x.dates}
+                {i === 0 ? " · derniers résultats" : ""}
+              </option>
+            ))}
+          </select>
+        </label>
+        {lienFFBB}
       </div>
-    </ContenuConsenti>
+      <div key={s.cle} className="tableau-matchs tableau-resultats rafraichi" role="region" aria-label={`Résultats du week-end ${s.dates}`} tabIndex={0}>
+        <table>
+          <caption className="sr-only">
+            Résultats du week-end {s.dates} : {pluriel(n, "match", "matchs")}
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col" className="tableau-resultats__equipe">
+                Équipe
+              </th>
+              <th scope="col">Adversaire</th>
+              <th scope="col" className="tableau-resultats__score">
+                Score
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {s.jours.map((j) => (
+              <GroupeJour key={j.cle} label={j.label} n={j.resultats.length} colonnes={3}>
+                {j.resultats.map((r) => (
+                  <tr key={r.cle}>
+                    <td className="tableau-resultats__equipe">
+                      <span className={r.domicile ? "tag-equipe" : "tag-equipe tag-equipe--orange"}>{r.equipe}</span>
+                    </td>
+                    <td className="tableau-matchs__adversaire">
+                      <span>{r.domicile ? "vs" : "chez"}</span> {r.adversaire}
+                      {r.forfait ? (
+                        <span className="tableau-resultats__forfait">
+                          {r.forfait === "nous" ? " · forfait du NBB" : " · forfait de l'adversaire"}
+                        </span>
+                      ) : null}
+                    </td>
+                    <td className="tableau-resultats__score">
+                      <strong>
+                        {r.nous} – {r.eux}
+                      </strong>
+                      <span className={`issue issue--${r.issue}`}>{ISSUES[r.issue]}</span>
+                    </td>
+                  </tr>
+                ))}
+              </GroupeJour>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="resultats__maj">
+        Score du NBB en premier · résultats officiels de la FFBB, mis à jour chaque nuit (dernier changement le {maj}).
+      </p>
+    </div>
   );
 }

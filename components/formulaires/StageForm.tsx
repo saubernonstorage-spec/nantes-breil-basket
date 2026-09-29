@@ -117,7 +117,7 @@ export function StageForm({ semaines, prix, reductions, annees }: Props) {
             </>
           ) : null}
           Déposez maintenant le règlement{resultat.montant ? ` (${resultat.montant})` : ""} : la place est confirmée par
-          SMS dès sa réception.
+          e-mail dès sa réception.
         </p>
         <button
           type="button"
@@ -228,7 +228,7 @@ export function StageForm({ semaines, prix, reductions, annees }: Props) {
         <ChampTexte label="Prénom du parent *" value={f.parentPrenom} onChange={(e) => maj("parentPrenom", e.target.value)} autoComplete="given-name" erreur={err("parentPrenom")} />
         <ChampTexte label="Nom du parent *" value={f.parentNom} onChange={(e) => maj("parentNom", e.target.value)} autoComplete="family-name" erreur={err("parentNom")} />
         <ChampTexte label="E-mail *" type="email" value={f.email} onChange={(e) => maj("email", e.target.value)} autoComplete="email" inputMode="email" erreur={err("email")} />
-        <ChampTexte label="Portable (pour le SMS) *" type="tel" value={f.tel} onChange={(e) => maj("tel", e.target.value)} autoComplete="tel" inputMode="tel" erreur={err("tel")} />
+        <ChampTexte label="Téléphone portable *" type="tel" value={f.tel} onChange={(e) => maj("tel", e.target.value)} autoComplete="tel" inputMode="tel" erreur={err("tel")} />
       </div>
 
       <CaseACocher checked={f.participation} onChange={(e) => maj("participation", e.target.checked)} erreur={err("participation")}>

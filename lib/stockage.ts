@@ -21,6 +21,8 @@ export type Demande = {
   recuLe: string;
   statut: string;
   champs: Record<string, string>;
+  /** Date d'envoi de l'e-mail de confirmation (inscriptions aux stages), s'il est parti. */
+  confirmationEnvoyee?: string;
 };
 
 interface Magasin {
@@ -129,6 +131,18 @@ export async function enregistrer(table: Table, champs: Record<string, string>):
 export async function lister(table: Table): Promise<Demande[]> {
   const liste = await magasin().lister(table);
   return liste.sort((a, b) => b.recuLe.localeCompare(a.recuLe));
+}
+
+export async function lire(table: Table, id: string): Promise<Demande | null> {
+  return magasin().lire(table, id);
+}
+
+/** Note l'envoi de l'e-mail de confirmation : la demande passe « Confirmé ». */
+export async function noterConfirmation(table: Table, id: string): Promise<void> {
+  const m = magasin();
+  const demande = await m.lire(table, id);
+  if (!demande) return;
+  await m.ecrire(table, { ...demande, statut: "Confirmé", confirmationEnvoyee: new Date().toISOString() });
 }
 
 export async function changerStatut(table: Table, id: string, statut: string): Promise<void> {

@@ -58,8 +58,6 @@ export const CLUB: Club = {
   whatsapp: "https://chat.whatsapp.com/J4An3XN8EZXG0BbuQFjzvC",
   boutique: "https://app.grinta.eu/nbb44/adult/official",
   ffbb: "https://competitions.ffbb.com/",
-  // Widget de résultats affiché sur la page Matchs après accord du visiteur (laisser "" pour le masquer).
-  widgetResultats: "https://widgets.scorenco.com/week-events/194332",
   emailLicenceFFBB: "pdl0044034@ffbb.com",
   memoArbitrage: "https://nantes-breil-basket.fr/public/5071/upload/files/arbitrage/memo-de-l-arbitrage-2.pdf",
   // Délais de réponse annoncés après l'envoi d'un formulaire, ex. "48 h" ou "5 jours".
@@ -172,7 +170,37 @@ export const WEEKENDS: WeekEnd[] = [
       { equipe: "SF1", jour: "Dim. 27", heure: "17h45", adversaire: "Orvault Sports Basket 2", lieu: "14 rue du Raffuneau, 44700 Orvault" },
     ],
   },
-  { titre: "Week-end du 3 & 4 octobre 2026", semaine: "Semaine 40", samedi: "2026-10-03", domicile: [], exterieur: [] },
+  {
+    titre: "Week-end du 3 & 4 octobre 2026", semaine: "Semaine 40", samedi: "2026-10-03",
+    domicile: [
+      { salle: "Joël Paon", equipe: "U9M1", jour: "Sam. 3", heure: "13h30", adversaire: "Similienne Nantes", arbitres: "Gregoire A., Theodore F.", table: "2 × U11M2", otm: "Hugo B." },
+      { salle: "Joël Paon", equipe: "U11M2", jour: "Sam. 3", heure: "14h30", adversaire: "Beaujoire Basket Club 2", arbitres: "2 × U18F2", table: "2 × U11M1", otm: "Hugo B." },
+      { salle: "Joël Paon", equipe: "U11M1", jour: "Sam. 3", heure: "15h45", adversaire: "Rezé Basket 44 - 1", arbitres: "Theodore F., Basile D.", table: "2 × U11M2", otm: "Clément M." },
+      { salle: "Joël Paon", equipe: "U11F2", jour: "Sam. 3", heure: "17h00", adversaire: "Gars d'Herbauges Bouaye 2", arbitres: "Hugo T., Jean-Baptiste H.", table: "2 × U11M1", otm: "Clément M." },
+      { salle: "Joël Paon", equipe: "U18F2", jour: "Sam. 3", heure: "18h15", adversaire: "Chabossière Basket Club 2", arbitres: "Jean-Baptiste H., Hugo T.", table: "2 × SM3", otm: "Clément M." },
+      { salle: "Joël Paon", equipe: "SM3", jour: "Sam. 3", heure: "20h30", adversaire: "Saint-Herblain Basket Club 2", arbitres: "Bastien G., Clara P.", table: "—", otm: "—" },
+      { salle: "Joël Paon", equipe: "U13F1", jour: "Dim. 4", heure: "09h00", adversaire: "Étoile Sportive de Couëron 1", arbitres: "Theodore F., Ninon T.", table: "Haskel M.", otm: "—" },
+      { salle: "Joël Paon", equipe: "U15M2", jour: "Dim. 4", heure: "10h45", adversaire: "ASPTT Nantes 2", arbitres: "—", table: "2 × U13F1", otm: "Clément M." },
+      { salle: "Joël Paon", equipe: "SM2", jour: "Dim. 4", heure: "13h15", adversaire: "AS Heulinoise Basket Ball 1", arbitres: "Clara J., Maiwenn T.", table: "Rahmalla S., Axel G.", otm: "—" },
+      { salle: "Joël Paon", equipe: "SF1", jour: "Dim. 4", heure: "15h30", adversaire: "Espérance Sportive de Crossac 2", arbitres: "—", table: "El-Ambasse B., Charlely Q.", otm: "—" },
+      { salle: "Joël Paon", equipe: "SF2", jour: "Dim. 4", heure: "17h45", adversaire: "Basket Club Rezé 2", arbitres: "Ines A., Clara R.", table: "Amélia F.", otm: "—" },
+    ],
+    exterieur: [
+      // Horaire non communiqué sur la feuille du week-end (signalé par un avertissement) : à compléter.
+      { equipe: "U11F1", jour: "Sam. 3", heure: "[À COMPLÉTER]", adversaire: "ASPTT Nantes", lieu: "38 rue Appert, 44100 Nantes" },
+      { equipe: "U11M3", jour: "Sam. 3", heure: "12h15", adversaire: "ALPC Moulin Nantes Basket 2", lieu: "20 rue du Coudray, 44000 Nantes" },
+      { equipe: "U13M2", jour: "Sam. 3", heure: "14h00", adversaire: "Basket Club Basse Loire 1", lieu: "Rue Pierre Mendès France, 44640 Saint-Jean-de-Boiseau" },
+      { equipe: "U13M3", jour: "Sam. 3", heure: "16h30", adversaire: "Similienne Nantes 2", lieu: "26 bis rue des Hauts-Pavés, 44000 Nantes" },
+      { equipe: "U15F1", jour: "Sam. 3", heure: "18h00", adversaire: "Espérance Sportive de Crossac", lieu: "Impasse des Petits Matelots, 44160 Crossac" },
+      { equipe: "U18M3", jour: "Sam. 3", heure: "18h30", adversaire: "AL Chauvinière 2", lieu: "4 rue des Renards, 44300 Nantes" },
+      { equipe: "U15M3", jour: "Sam. 3", heure: "18h30", adversaire: "Nantes Sully Basket 1", lieu: "Rue Henri Cochard, 44000 Nantes" },
+      { equipe: "SM1", jour: "Sam. 3", heure: "20h30", adversaire: "Avrillé Basket 1", lieu: "Avenue de la Ronde, 49240 Avrillé" },
+      { equipe: "U13F2", jour: "Dim. 4", heure: "10h00", adversaire: "Nantes Sully Basket", lieu: "Rue Henri Cochard, 44000 Nantes" },
+      { equipe: "U18F1", jour: "Dim. 4", heure: "11h00", adversaire: "Herbadilla La Chevrolière 1", lieu: "Rue du Stade, 44118 La Chevrolière" },
+      { equipe: "U15F2", jour: "Dim. 4", heure: "11h00", adversaire: "Treillières Basket Club 3", lieu: "Rue Simone de Beauvoir, 44119 Treillières" },
+      { equipe: "U18M2", jour: "Dim. 4", heure: "11h15", adversaire: "Sautron Basket Club 1", lieu: "Rue de la Forêt, 44880 Sautron" },
+    ],
+  },
   { titre: "Week-end du 10 & 11 octobre 2026", semaine: "Semaine 41", samedi: "2026-10-10", domicile: [], exterieur: [] },
 ];
 
@@ -188,10 +216,10 @@ export const ADRESSES_SALLES: Record<string, string> = {
 
 /** Encadrement technique (d'après le planning). Complétez les diplômes et l'arrivée au club. */
 export const ENCADREMENT: Entraineur[] = [
-  { prenom: "Clément", nom: "", role: "Entraîneur salarié", photo: "/photos/coachs/clement.png", diplomes: [{ nom: "BPJEPS", url: "https://www.ffbb.com/bpjeps" }, { nom: "DETB", url: "https://pdlbasket.fr/detb" }], arrivee: "Au club depuis 2022" },
-  { prenom: "Romane", nom: "", role: "Entraîneure salariée", photo: "/photos/coachs/romane.jpg", diplomes: [{ nom: "[À COMPLÉTER] Diplôme" }], arrivee: "Au club depuis [À COMPLÉTER]" },
-  { prenom: "Hugo", nom: "", role: "Entraîneur salarié", photo: "/photos/coachs/hugo.jpg", diplomes: [{ nom: "BPJEPS", url: "https://www.ffbb.com/bpjeps" }, { nom: "DETB", url: "https://pdlbasket.fr/detb" }], arrivee: "Au club depuis 2025" },
-  { prenom: "Célia", nom: "", role: "Entraîneure apprentie", photo: "/photos/coachs/celia.jpg", diplomes: [{ nom: "[À COMPLÉTER] Diplôme" }], arrivee: "Au club depuis [À COMPLÉTER]" },
+  { prenom: "Clément", nom: "", role: "Entraîneur salarié", photo: "/photos/coachs/clement.png", diplomes: [{ nom: "BPJEPS" }, { nom: "DETB" }], arrivee: "Au club depuis 2022" },
+  { prenom: "Romane", nom: "", role: "Entraîneure salariée", photo: "/photos/coachs/romane.jpg", diplomes: [{ nom: "L3 STAPS" }], arrivee: "Au club depuis 2026" },
+  { prenom: "Hugo", nom: "", role: "Entraîneur salarié", photo: "/photos/coachs/hugo.jpg", diplomes: [{ nom: "BPJEPS" }, { nom: "DETB" }], arrivee: "Au club depuis 2025" },
+  { prenom: "Célia", nom: "", role: "Entraîneure apprentie", photo: "/photos/coachs/celia.jpg", diplomes: [{ nom: "En formation Négociateur technico-commercial" }], arrivee: "Au club depuis 2025" },
 ];
 
 /** Bureau. photo : chemin d'un portrait dans public/photos/ (ex. "/photos/bureau/sebastien.jpg"), ou "". */
@@ -429,6 +457,36 @@ export const STAGE_JOURNEE: { heure: string; texte: string }[] = [
 export const STAGE_A_PREVOIR: string[] = ["Chaussures de salle propres et tenue de sport", "Gourde (1 L minimum) et goûter", "Pique-nique pour le midi", "Licence FFBB ou attestation d'assurance (non-licenciés)", "Autorisation parentale signée"];
 export const STAGE_CONTACT = { nom: "Hervé Deleaune", telephone: "06 34 37 09 72" };
 
+/**
+ * E-mail de confirmation d'inscription au stage, envoyé depuis l'Espace dirigeants (onglet Stages,
+ * bouton « Confirmer par e-mail »). Modifiable librement ; les repères
+ * entre accolades sont remplacés automatiquement :
+ *   {enfant} · {parent} · {semaines} (semaines ou jours choisis, avec leurs dates) · {montant}
+ *   {journee} (STAGE_JOURNEE) · {a_prevoir} (STAGE_A_PREVOIR) · {contact} (STAGE_CONTACT et e-mail du club)
+ */
+export const STAGE_CONFIRMATION = {
+  sujet: "Inscription au stage confirmée : {enfant}",
+  texte: `Bonjour {parent},
+
+Nous avons bien reçu votre règlement : l'inscription de {enfant} au stage du Nantes Breil Basket est confirmée.
+
+Semaines ou jours retenus :
+{semaines}
+
+Montant : {montant}
+
+Le déroulé d'une journée :
+{journee}
+
+À prévoir dans le sac :
+{a_prevoir}
+
+Une question ? Contactez {contact}.
+
+Sportivement,
+Le Nantes Breil Basket`,
+};
+
 export const ARBITRAGE_SEANCES: SeanceArbitrage[] = [
   { date: "Sam. 5 sept.", heure: "14h–17h", lieu: "Similienne" },
   { date: "Sam. 17 oct.", heure: "10h–12h", lieu: "Joël Paon" },
@@ -517,8 +575,29 @@ export const CATEGORIES_AGE: { categorie: string; nesDe: number; nesA: number }[
 ];
 
 /**
- * CLASSEMENTS — un bloc par équipe engagée, à recopier depuis competitions.ffbb.com
- * (fenêtre « Voir le classement » de la page Équipes). nbb: true sur la ligne du club.
+ * CLASSEMENTS AUTOMATIQUES — correspondance entre les équipes du site et celles engagées à la FFBB
+ * (« catégorie-sexe-numéro » FFBB). Les classements sont récupérés chaque nuit dans
+ * data/classements-ffbb.json (voir NOTICE.md) et affichés dans « Voir le classement » (page Équipes).
+ * Les équipes CTC (HPB) décalent la numérotation : l'U15HPB est l'équipe 1 du NBB en U15 masculins,
+ * l'U15M2 l'équipe 2… Préfixe « SIM- » : équipe CTC engagée par la Similienne (ex. l'U18HPB).
+ * À revérifier à chaque nouvelle phase ou saison (adversaires de la poule = adversaires des matchs).
+ */
+export const EQUIPES_FFBB: Record<string, string> = {
+  SM1: "SE-M-1", SM2: "SE-M-2", SM3: "SE-M-3",
+  SF1: "SE-F-1", SF2: "SE-F-2",
+  U18HPB: "SIM-U18-M-1", U18M2: "U18-M-1", U18M3: "U18-M-2",
+  U18F1: "U18-F-1", U18F2: "U18-F-2",
+  U15HPB: "U15-M-1", U15M2: "U15-M-2", U15M3: "U15-M-3",
+  U15F1: "U15-F-1", U15F2: "U15-F-2",
+  U13HPB: "U13-M-1", U13M2: "U13-M-2", U13M3: "U13-M-3",
+  U13F1: "U13-F-1", U13F2: "U13-F-2",
+  U11M1: "U11-M-1", U11M2: "U11-M-2", U11M3: "U11-M-3",
+  U11F1: "U11-F-1", U11F2: "U11-F-2",
+};
+
+/**
+ * CLASSEMENTS SAISIS À LA MAIN — facultatif : un bloc ici remplace le classement automatique de l'équipe
+ * (à recopier depuis competitions.ffbb.com). nbb: true sur la ligne du club.
  * Exemple :
  * SM1: { championnat: "Régionale masculine 2 · Poule B", maj: "28 septembre 2026",
  *   lignes: [ { rang: 1, equipe: "Nantes Breil Basket", j: 3, v: 3, d: 0, pts: 6, nbb: true }, … ] },

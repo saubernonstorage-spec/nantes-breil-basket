@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Suspense } from "react";
 import { CLUB } from "@/data/nbb";
-import { matchsAffiches } from "@/lib/nbb";
+import { matchsAffiches, resultatsParWeekend } from "@/lib/nbb";
 import { EntetePage } from "@/components/Page";
 import { Terrain } from "@/components/Terrain";
-import { MatchsAvecAdresse, MatchsVue, Resultats } from "@/components/MatchsExplorer";
+import { MatchsAvecAdresse, MatchsVue, ResultatsFFBB } from "@/components/MatchsExplorer";
 
 export const metadata: Metadata = {
   title: "Matchs, convocations et résultats",
@@ -20,6 +21,8 @@ export default function Matchs() {
   // Trois week-ends seulement : le dernier passé, celui de la semaine et le suivant.
   const { weekends, indexDefaut, equipes } = matchsAffiches();
   const donnees = { weekends, indexDefaut, equipes, whatsapp: CLUB.whatsapp };
+  // Résultats FFBB récupérés chaque nuit (scripts/donnees_ffbb.py).
+  const resultats = resultatsParWeekend();
 
   return (
     <>
@@ -51,10 +54,10 @@ export default function Matchs() {
             Scores officiels FFBB
           </h2>
           <p className="texte-clair" style={{ maxWidth: 640, marginBottom: 26 }}>
-            Les scores et classements viennent directement de la Fédération : aucune saisie manuelle, aucune erreur de
-            recopie.
+            Les scores viennent directement de la Fédération, chaque nuit : aucune saisie manuelle, aucune erreur de
+            recopie. Le classement de chaque équipe est sur la page <Link href="/equipes">Équipes</Link>.
           </p>
-          <Resultats widget={CLUB.widgetResultats} ffbb={CLUB.ffbb} />
+          <ResultatsFFBB semaines={resultats.semaines} maj={resultats.maj} ffbb={CLUB.ffbb} />
         </div>
       </section>
     </>

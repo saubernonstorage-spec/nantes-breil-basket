@@ -14,6 +14,9 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   Tout le contenu (listes, chiffres, dates, tarifs, noms, liens, photos) est dans `data/nbb.ts` ; toute
   nouvelle information éditable y va aussi (jamais en dur dans une page), et `NOTICE.md` est mis à jour.
   Les pages ne gardent que les textes fixes de la maquette (titres, paragraphes).
+- Classements et résultats : `data/classements-ffbb.json` et `data/resultats-ffbb.json` sont générés chaque nuit (`scripts/donnees_ffbb.py`,
+  `.github/workflows/donnees-ffbb.yml`) — ne pas les modifier à la main ; la correspondance avec les
+  équipes du site est `EQUIPES_FFBB` (data/nbb.ts), un bloc de `CLASSEMENTS` la remplace pour une équipe.
 - Ne jamais inventer de tarif, de score, de date ni de nom : laisser `[À COMPLÉTER]`. Ces valeurs ne sont
   jamais affichées : tester avec `aCompleter()` (`lib/utils.ts`) et ne rien rendre ; `manquesDuSite()`
   (`lib/nbb.ts`) les liste dans l'Espace dirigeants (onglet « À compléter »).
@@ -30,7 +33,9 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   terrain décoratives : `components/Terrain.tsx`. Fenêtres modales : `components/Fenetre.tsx` (`<dialog>`).
 - Formulaires : Server Actions dans `app/actions.ts` (validation serveur, anti-spam), enregistrement dans
   `lib/stockage.ts` (Netlify Blobs, région UE ; fichier `.donnees/` en local) et e-mail facultatif
-  (`lib/email.ts`). Espace dirigeants : `app/espace-dirigeants/` + `lib/session.ts` (`ADMIN_PASSWORD`).
+  (`lib/email.ts`). Espace dirigeants : `app/espace-dirigeants/` + `lib/session.ts` (`ADMIN_PASSWORD`) ;
+  onglet Stages en tableau (`components/dirigeants/TableauStages.tsx`) avec confirmation par e-mail au
+  parent (confirmation du navigateur, modèle `STAGE_CONFIRMATION`, message construit côté serveur).
   Variables documentées dans `.env.example`.
 - Contenus tiers (carte Google Maps, widget de résultats) seulement après consentement :
   `ContenuConsenti` dans `components/Cookies.tsx`. Aucun outil de mesure d'audience.

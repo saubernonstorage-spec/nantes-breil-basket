@@ -68,8 +68,15 @@ lib/consentement.ts    choix du visiteur sur les contenus externes (carte, résu
 app/                   une page par dossier, layout, styles, actions serveur des formulaires
 components/            en-tête, pied de page, bandeau cookies, planning, matchs, formulaires…
 public/                logo, image de partage, photos (public/photos/), lignes de terrain (public/terrain/)
+data/*-ffbb.json       classements et résultats FFBB des équipes (générés, ne pas modifier à la main)
+scripts/donnees_ffbb.py récupération de ces données (Python, bibliothèque ffbb-data-client)
+.github/workflows/     tâche GitHub quotidienne qui lance ce script et publie les changements
 NOTICE.md              mode d'emploi pour les bénévoles
 ```
+
+Les **classements** et les **résultats** sont récupérés chaque nuit par GitHub Actions (`donnees-ffbb.yml`), grâce à la
+bibliothèque communautaire `ffbb-data-client` (non officielle). En local :
+`pip install -r scripts/requirements-ffbb.txt` puis `python scripts/donnees_ffbb.py`.
 
 Le **planning** (`SLOTS`) est la source unique : fiches équipes, filtres, créneaux du samedi,
 nombre de créneaux par gymnase en sont calculés.
@@ -88,12 +95,34 @@ construction échoue, l'ancienne version reste en ligne.
 | --- | --- | --- |
 | `ADMIN_PASSWORD` | oui, pour l'Espace dirigeants | mot de passe du bureau (phrase longue) ; le changer déconnecte tout le monde |
 | `ADMIN_SECRET` | non | chaîne aléatoire supplémentaire pour signer la session |
-| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` | non | serveur d'envoi de la messagerie du club (Gmail : mot de passe d'application) |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` | pour les confirmations de stage | serveur d'envoi des e-mails (Brevo, voir ci-dessous ; Gmail : mot de passe d'application) : transmission des demandes au club et e-mails de confirmation d'inscription au stage envoyés aux parents depuis l'Espace dirigeants |
 | `FORM_TO` | avec SMTP | destinataire(s) des messages, séparés par des virgules |
 | `FORM_TO_INSCRIPTIONS`, `FORM_TO_STAGES` | non | destinataires des préinscriptions et des stages (sinon `FORM_TO`) |
-| `FORM_FROM` | non | adresse d'expédition (sinon `SMTP_USER`) |
+| `FORM_FROM` | oui avec Brevo | adresse d'expédition (sinon `SMTP_USER`) : avec Brevo, un expéditeur validé du domaine du club (`contact@nbb44.fr`) |
 
 Après avoir ajouté ou modifié une variable, relancez un déploiement (Deploys → Trigger deploy).
+
+### Envoi des e-mails avec Brevo
+
+Le domaine `nbb44.fr` est déjà déclaré dans un compte Brevo (enregistrement `brevo-code` et clé DKIM
+`mail._domainkey` dans la zone DNS, chez OVH) : utilisez ce compte plutôt que d'en créer un autre,
+sinon il faut refaire la vérification du domaine.
+
+1. Brevo → **Expéditeurs, domaines et IP dédiées** : le domaine `nbb44.fr` doit être « Authentifié »
+   (sinon, ajouter chez OVH les enregistrements indiqués par Brevo, sans créer de second SPF) et
+   l'expéditeur `contact@nbb44.fr` (« Nantes Breil Basket ») validé.
+2. Brevo → **SMTP et API** → onglet **SMTP** : noter l'identifiant SMTP (souvent `…@smtp-brevo.com`)
+   et générer une clé SMTP (affichée une seule fois ; ce n'est pas la clé API).
+3. Netlify → variables : `SMTP_HOST` = `smtp-relay.brevo.com`, `SMTP_PORT` = `587`,
+   `SMTP_USER` = l'identifiant SMTP, `SMTP_PASS` = la clé SMTP, `FORM_FROM` = `contact@nbb44.fr`,
+   `FORM_TO` = l'adresse qui reçoit les demandes ; puis redéployer.
+4. Tester avec le formulaire de contact, puis **Confirmer par e-mail** sur une inscription au stage faite
+   avec votre propre adresse. Les envois apparaissent dans Brevo (Transactionnel → Logs) ; en cas
+   d'échec, la raison est dans Netlify (Logs & metrics → Functions).
+
+Netlify n'a pas d'adresse IP fixe : si l'envoi échoue avec « 525 Unauthorized IP address », désactivez le
+blocage des adresses IP inconnues dans Brevo (Sécurité → IP autorisées). L'offre gratuite de Brevo
+permet 300 e-mails par jour.
 
 ### Où vont les demandes ?
 

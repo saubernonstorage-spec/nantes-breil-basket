@@ -9,17 +9,20 @@ export async function GET(requete: Request) {
 
   const lignes = await lister(table as Table);
   const colonnes = [...new Set(lignes.flatMap((l) => Object.keys(l.champs)))];
+  // Inscriptions aux stages : date d'envoi de l'e-mail de confirmation.
+  const stages = table === "stages";
   // Une cellule qui commence par = + - @ serait interprétée comme une formule par Excel.
   const cellule = (v: string) => `"${v.replace(/^([=+\-@])/, "'$1").replace(/"/g, '""')}"`;
   const csv =
     "﻿" +
     [
-      ["Numéro", "Reçu le", "Statut", ...colonnes].map(cellule).join(";"),
+      ["Numéro", "Reçu le", "Statut", ...(stages ? ["Confirmation envoyée le"] : []), ...colonnes].map(cellule).join(";"),
       ...lignes.map((l) =>
         [
           l.id,
           new Date(l.recuLe).toLocaleString("fr-FR", { timeZone: "Europe/Paris" }),
           l.statut,
+          ...(stages ? [l.confirmationEnvoyee ? new Date(l.confirmationEnvoyee).toLocaleString("fr-FR", { timeZone: "Europe/Paris" }) : ""] : []),
           ...colonnes.map((c) => l.champs[c] ?? ""),
         ]
           .map(cellule)

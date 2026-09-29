@@ -182,7 +182,7 @@ export default function Stages() {
                 boîte aux lettres du club ({CLUB.boiteAuxLettres.replace(" — ", ", ")}).
               </li>
               <li>
-                <strong>3</strong>L'inscription est effective à réception du règlement : un SMS vous confirme la place.
+                <strong>3</strong>L'inscription est effective à réception du règlement : un e-mail vous confirme la place.
               </li>
             </ol>
             <p className="note-orange">
