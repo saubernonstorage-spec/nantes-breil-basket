@@ -18,7 +18,7 @@ export function ListeAgenda({ dates, clair = false }: { dates: DateAgenda[]; cla
               <span className="agenda__type">{a.type}</span>
             </div>
             <p className="agenda__texte">{a.texte}</p>
-            <div className="agenda__lieu">{a.lieu}</div>
+            {a.lieu ? <div className="agenda__lieu">{a.lieu}</div> : null}
           </div>
         </li>
       ))}

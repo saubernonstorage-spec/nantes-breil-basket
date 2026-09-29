@@ -411,6 +411,26 @@ export function equipesDesMatchs(): string[] {
 
 /** Par défaut, une semaine de stage dure 5 jours, du lundi (debut) au vendredi. */
 const JOURS_STAGE = 5;
+/** Les inscriptions d'une semaine ferment à cette heure (Paris), la veille de son dernier jour. */
+const HEURE_CLOTURE_STAGE = "12:00";
+
+/** Date et heure à Paris, au format AAAA-MM-JJTHH:MM (se compare comme une chaîne). */
+function maintenantParis(): string {
+  const p = Object.fromEntries(
+    new Intl.DateTimeFormat("en-CA", {
+      timeZone: "Europe/Paris",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hourCycle: "h23",
+    })
+      .formatToParts(new Date())
+      .map((x) => [x.type, x.value]),
+  );
+  return `${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}`;
+}
 
 export type EtatStage = "ouvertes" | "fermees" | "a-venir";
 export type SemaineStageVue = SemaineStage & { fermee: boolean };
@@ -423,9 +443,11 @@ function joursDeStage(w: SemaineStage): number {
   return Math.max(1, Math.round((dateDe(w.fin).getTime() - dateDe(w.debut).getTime()) / 86_400_000) + 1);
 }
 
-/** Les inscriptions d'une semaine ferment la veille de son dernier jour : ouvertes jusqu'à cette date incluse. */
-function semaineFermee(w: SemaineStage, jour: string): boolean {
-  return !!w.debut && jour > dateDe(w.debut, joursDeStage(w) - 2).toISOString().slice(0, 10);
+/** Les inscriptions d'une semaine ferment la veille de son dernier jour à midi (maintenant : heure de Paris). */
+function semaineFermee(w: SemaineStage, maintenant: string): boolean {
+  if (!w.debut) return false;
+  const veille = dateDe(w.debut, joursDeStage(w) - 2).toISOString().slice(0, 10);
+  return maintenant >= `${veille}T${HEURE_CLOTURE_STAGE}`;
 }
 
 /**
@@ -434,10 +456,10 @@ function semaineFermee(w: SemaineStage, jour: string): boolean {
  * saisies) et les suivantes sont à venir. La suivante s'ouvre donc seule quand la précédente ferme.
  */
 export function stagesVue(): StageVue[] {
-  const jour = aujourdhui();
+  const maintenant = maintenantParis();
   let courante = false;
   return STAGES.map((s) => {
-    const semaines = s.semaines.map((w) => ({ ...w, fermee: semaineFermee(w, jour) }));
+    const semaines = s.semaines.map((w) => ({ ...w, fermee: semaineFermee(w, maintenant) }));
     const datees = semaines.filter((w) => w.debut);
     let etat: EtatStage = "a-venir";
     if (datees.length && datees.every((w) => w.fermee)) etat = "fermees";

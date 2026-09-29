@@ -121,10 +121,10 @@ export const PHOTOS: Record<"accueil" | "accueilEcole" | "accueilVieClub" | "clu
   },
 };
 
-/** Agenda du club — le plus proche en premier. Les dates passées disparaissent seules. */
+/** Agenda du club — le plus proche en premier. Les dates passées disparaissent seules. lieu : "" pour ne rien afficher. */
 export const AGENDA: DateAgenda[] = [
   { date: "2026-09-26", jour: "Sam", num: "26", mois: "sept", titre: "Soirée grillades & match RM2", texte: "Premier match à domicile de l'équipe fanion (SM1, 20 h 30).", lieu: "Gymnase Joël Paon · NBB vs Moine Basket", type: "Soirée" },
-  { date: "2026-10-19", jour: "Lun", num: "19", mois: "oct", titre: "Stages d'automne", texte: "Deux semaines de stage, du 19 au 30 octobre.", lieu: "Gymnase Joël Paon", type: "Stage", lien: "/stages" },
+  { date: "2026-10-19", jour: "Lun", num: "19", mois: "oct", titre: "Stages d'automne", texte: "Deux semaines de stage, du 19 au 30 octobre.", lieu: "", type: "Stage", lien: "/stages" },
   { date: "2026-11-11", jour: "Mer", num: "11", mois: "nov", titre: "Tournoi jeunes", texte: "Tournoi du club pour les équipes U9 à U13.", lieu: "Gymnases Joël Paon et Similienne", type: "Tournoi" },
   { date: "2026-11-21", jour: "Sam", num: "21", mois: "nov", titre: "Soirée burgers & derby RM2", texte: "Un burger, des tribunes pleines, le derby contre Rezé.", lieu: "NBB vs Basket Club Rezé", type: "Soirée" },
   { date: "2026-12-12", jour: "Sam", num: "12", mois: "déc", titre: "Noël du NBB", texte: "Animations et jeux pour les enfants l'après-midi.", lieu: "Gymnase Joël Paon", type: "Fête" },
@@ -374,7 +374,7 @@ export const OFFRE_PARTENARIAT: OffrePartenariat[] = [
 /**
  * STAGES DES VACANCES (zone B), dans l'ordre du calendrier.
  * Les inscriptions s'ouvrent et se ferment seules d'après les dates : celles d'une semaine ferment la veille
- * de son dernier jour (le jeudi) ; quand toutes les semaines d'une période sont fermées, la période
+ * de son dernier jour à midi (le jeudi à midi) ; quand toutes les semaines d'une période sont fermées, la période
  * s'affiche « Inscriptions fermées » et la suivante s'ouvre, dès que ses semaines (avec debut) sont saisies.
  * debut : date du lundi (AAAA-MM-JJ) — sert à proposer l'inscription à la journée (lundi → vendredi)
  * et à calculer la fermeture des inscriptions.
@@ -382,22 +382,22 @@ export const OFFRE_PARTENARIAT: OffrePartenariat[] = [
  * nesDe / nesA : années de naissance acceptées ; licenciesFFBB : true = réservé aux licenciés FFBB, false = tout public.
  */
 export const STAGES: Stage[] = [
-  { id: "automne-2026", periode: "Stages d'automne", public: "Filles et garçons", lieu: "Gymnase Joël Paon",
+  { id: "automne-2026", periode: "Stages d'automne", public: "Filles et garçons",
     semaines: [
       { id: "aut-s1", nom: "Semaine 1", dates: "Du 19 au 23 octobre", debut: "2026-10-19", nesDe: 2012, nesA: 2019, licenciesFFBB: true },
       { id: "aut-s2", nom: "Semaine 2", dates: "Du 26 au 30 octobre", debut: "2026-10-26", nesDe: 2012, nesA: 2020, licenciesFFBB: false },
     ] },
-  { id: "noel-2026", periode: "Stages de Noël", public: "[À COMPLÉTER]", lieu: "[À COMPLÉTER]",
+  { id: "noel-2026", periode: "Stages de Noël", public: "[À COMPLÉTER]",
     semaines: [
       { id: "noel-s1", nom: "Semaine 1", dates: "Du 21 au 24 décembre", debut: "2026-12-21", fin: "2026-12-24", nesDe: 2012, nesA: 2019, licenciesFFBB: true },
       { id: "noel-s2", nom: "Semaine 2", dates: "Du 28 au 31 décembre", debut: "2026-12-28", fin: "2026-12-31", nesDe: 2012, nesA: 2020, licenciesFFBB: false },
     ] },
-  { id: "hiver-2027", periode: "Stages d'hiver", public: "[À COMPLÉTER]", lieu: "[À COMPLÉTER]",
+  { id: "hiver-2027", periode: "Stages d'hiver", public: "[À COMPLÉTER]",
     semaines: [
       { id: "hiver-s1", nom: "Semaine 1", dates: "Du 22 au 26 février", debut: "2027-02-22", nesDe: 2012, nesA: 2019, licenciesFFBB: true },
       { id: "hiver-s2", nom: "Semaine 2", dates: "Du 1er au 5 mars", debut: "2027-03-01", nesDe: 2012, nesA: 2020, licenciesFFBB: false },
     ] },
-  { id: "printemps-2027", periode: "Stages de printemps", public: "[À COMPLÉTER]", lieu: "[À COMPLÉTER]",
+  { id: "printemps-2027", periode: "Stages de printemps", public: "[À COMPLÉTER]",
     semaines: [
       { id: "printemps-s1", nom: "Semaine 1", dates: "Du 19 au 23 avril", debut: "2027-04-19", nesDe: 2012, nesA: 2019, licenciesFFBB: true },
       { id: "printemps-s2", nom: "Semaine 2", dates: "Du 26 au 30 avril", debut: "2027-04-26", nesDe: 2012, nesA: 2020, licenciesFFBB: false },

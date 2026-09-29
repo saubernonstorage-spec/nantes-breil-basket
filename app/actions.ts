@@ -118,7 +118,8 @@ export async function inscrireStage(_: Resultat, donnees: FormData): Promise<Res
 
   const semaines = semainesOuvertes();
   const idsValides = new Set(semaines.flatMap((w) => w.jours.map((j) => j.id)));
-  const jours = [...new Set(donnees.getAll("jours").map(String))].filter((id) => idsValides.has(id));
+  const demandes = [...new Set(donnees.getAll("jours").map(String))];
+  const jours = demandes.filter((id) => idsValides.has(id));
   const statut = (STATUTS_STAGE.find((s) => s.valeur === champ(donnees, "statut"))?.valeur ?? "licencies") as StatutStage;
   const v = {
     enfantPrenom: champ(donnees, "enfantPrenom", 80),
@@ -133,6 +134,10 @@ export async function inscrireStage(_: Resultat, donnees: FormData): Promise<Res
 
   const erreurs: Record<string, string> = {};
   if (!jours.length) erreurs.semaines = "Choisissez une semaine ou au moins une journée.";
+  // Page ouverte avant la fermeture d'une semaine (la veille de son dernier jour à midi).
+  if (demandes.length > jours.length) {
+    erreurs.semaines = "Les inscriptions sont fermées pour une semaine choisie. Rechargez la page pour voir les semaines ouvertes.";
+  }
   if (!v.enfantPrenom) erreurs.enfantPrenom = "Indiquez le prénom de l'enfant.";
   if (!v.enfantNom) erreurs.enfantNom = "Indiquez le nom de l'enfant.";
   if (!v.annee || v.annee < 1990 || v.annee > 2100) erreurs.annee = "Choisissez l'année de naissance.";

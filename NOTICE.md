@@ -90,8 +90,8 @@ Les **classements** de la page Équipes se recopient depuis competitions.ffbb.co
   naissance acceptées (`nesDe`, `nesA`). Le prix d'une semaine complète dépend de sa durée : une
   ligne par durée dans `STAGE_TARIFS` (`jours: 5`, et `jours: 4` pour Noël) ; quelques jours seulement
   sont facturés à la journée, sans dépasser la semaine complète. Les inscriptions s'ouvrent et se ferment seules :
-  celles d'une semaine ferment la veille de son dernier jour (le jeudi pour une semaine du lundi au
-  vendredi, le mercredi pour une semaine du lundi au jeudi). Quand toutes
+  celles d'une semaine ferment la veille de son dernier jour à midi (le jeudi à midi pour une semaine
+  du lundi au vendredi, le mercredi à midi pour une semaine du lundi au jeudi). Quand toutes
   les semaines d'une période sont passées, sa carte devient grise « Inscriptions fermées » et la
   période suivante s'ouvre, à condition que ses semaines soient saisies (sinon : « Inscriptions à venir »).
 - **Tarifs** (`TARIFS`, `STAGE_TARIFS`) : montants votés par le bureau uniquement.

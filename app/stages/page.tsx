@@ -9,12 +9,13 @@ import { StageForm } from "@/components/formulaires/StageForm";
 export const metadata: Metadata = {
   title: "Stages de basket vacances scolaires",
   description:
-    "Stages de basket pendant les vacances scolaires à Nantes (gymnase Joël Paon) : dates, tarifs, journée type et inscription en ligne. Ouverts aux licenciés et non-licenciés.",
+    "Stages de basket pendant les vacances scolaires à Nantes : dates, tarifs, journée type et inscription en ligne. Ouverts aux licenciés et non-licenciés.",
   alternates: { canonical: "/stages" },
 };
 
-// L'ouverture et la fermeture des inscriptions suivent la date : la page est régénérée toutes les heures.
-export const revalidate = 3600;
+// L'ouverture et la fermeture des inscriptions (la veille du dernier jour à midi) suivent l'heure :
+// la page est régénérée toutes les 10 minutes. Le serveur refuse de toute façon une semaine fermée.
+export const revalidate = 600;
 
 /** "Stages d'automne" → "Automne". */
 function titreCarte(periode: string): string {

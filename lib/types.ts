@@ -141,7 +141,6 @@ export type Stage = {
   id: string;
   periode: string;
   public: string;
-  lieu: string;
   semaines: SemaineStage[];
 };
 
