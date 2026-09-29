@@ -137,7 +137,7 @@ export function ficheEquipe(nom: string): FicheEquipe {
   return {
     nom,
     libelle: libelleEquipe(nom),
-    ancre: slug(nom),
+    ancre: `equipe-${slug(nom)}`,
     coachs: [...new Set(cr.flatMap((s) => s.coachs))].join(", ") || "[À COMPLÉTER]",
     creneaux: cr.map((s) => ({
       jour: s.jour,

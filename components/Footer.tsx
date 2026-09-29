@@ -100,14 +100,17 @@ export function Footer() {
               <a href={CLUB.facebook} target="_blank" rel="noopener" className="reseau reseau--petit">
                 <IconeFacebook />
                 Facebook
+                <NouvelOnglet />
               </a>
               <a href={CLUB.instagram} target="_blank" rel="noopener" className="reseau reseau--petit">
                 <IconeInstagram />
                 Instagram
+                <NouvelOnglet />
               </a>
               <a href={CLUB.whatsapp} target="_blank" rel="noopener" className="reseau reseau--petit">
                 <IconeWhatsapp />
                 WhatsApp
+                <NouvelOnglet />
               </a>
             </div>
           </div>

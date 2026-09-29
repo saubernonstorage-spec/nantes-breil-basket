@@ -12,6 +12,9 @@
   --orange: #f7a619;
   --orange-vif: #ffb83d;
   --orange-fonce: #d98e0b;
+  /* Orange des textes sur fond clair : même famille, assez foncé pour être lisible (contraste ≥ 4,5:1).
+     L'orange vif reste pour les fonds sombres, les boutons et les aplats. */
+  --orange-texte: #9c5700;
   --creme: #f5f3ee;
   --encre: #0e1a33;
   --gris: #4a5468;
@@ -167,8 +170,29 @@ textarea {
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--orange);
+  color: var(--orange-texte);
   margin-bottom: 10px;
+}
+
+/* Dans les blocs sombres, l'orange vif de la charte. */
+:is(
+    .hero,
+    .entete-page,
+    .bande-sombre,
+    .pied,
+    .menu-mobile,
+    .fenetre__tete,
+    .carte-arbitrage,
+    .appel--bleu,
+    .samedi,
+    .tarifs-stage,
+    .telechargements,
+    .formule--bleue,
+    .carte-gym,
+    .contact-bloc--nuit
+  )
+  .surtitre {
+  color: var(--orange);
 }
 
 .surtitre--gris {
@@ -767,6 +791,17 @@ textarea {
   }
 }
 
+/* Très petits écrans (320 px) : le logo seul, pour que l'en-tête tienne sans défilement horizontal. */
+@media (max-width: 359px) {
+  .marque {
+    padding-right: 5px;
+  }
+
+  .marque__nom {
+    display: none;
+  }
+}
+
 @media (max-width: 419px) {
   .entete-site__rejoindre-long {
     display: none;
@@ -1255,7 +1290,10 @@ textarea {
 
 .fil a {
   color: rgba(245, 243, 238, 0.85);
-  text-decoration: none;
+  /* Souligné discret : le lien se distingue du texte autrement que par la couleur. */
+  text-decoration: underline;
+  text-decoration-color: rgba(245, 243, 238, 0.35);
+  text-underline-offset: 3px;
 }
 
 .fil a:hover {
@@ -1846,7 +1884,7 @@ a.badge-label:hover {
 }
 
 .portrait__diplomes a {
-  color: var(--orange-fonce);
+  color: var(--orange-texte);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -2029,7 +2067,7 @@ a.badge-label:hover {
 }
 
 .lien-orange {
-  color: var(--orange-fonce);
+  color: var(--orange-texte);
   font-weight: 700;
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -3197,7 +3235,7 @@ a.badge-label:hover {
 }
 
 .creneau__gymnase strong {
-  color: var(--orange-fonce);
+  color: var(--orange-texte);
   text-decoration: underline;
   text-underline-offset: 3px;
 }

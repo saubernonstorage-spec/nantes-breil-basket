@@ -124,14 +124,17 @@ export function Header({ liens }: { liens: LiensClub }) {
             <a href={liens.facebook} target="_blank" rel="noopener" className="reseau">
               <IconeFacebook />
               Facebook
+              <NouvelOnglet />
             </a>
             <a href={liens.instagram} target="_blank" rel="noopener" className="reseau">
               <IconeInstagram />
               Instagram
+              <NouvelOnglet />
             </a>
             <a href={liens.whatsapp} target="_blank" rel="noopener" className="reseau">
               <IconeWhatsapp />
               Groupe WhatsApp
+              <NouvelOnglet />
             </a>
           </div>
         </div>

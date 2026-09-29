@@ -19,7 +19,9 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   `lib/nbb.ts` (réservé au serveur, `import "server-only"`). Les composants client reçoivent les données en
   props et n'importent que `lib/utils.ts` (fonctions pures), `lib/formulaires.ts`, `lib/consentement.ts`
   et des types (`import type`).
-- Styles : `app/globals.css` (variables de la charte sous `:root`, une section par page). Les pages
+- Styles : `app/globals.css` (variables de la charte sous `:root`, une section par page). Texte orange sur fond clair :
+  `--orange-texte` (caramel, contraste AA) ; l'orange vif `--orange` est réservé aux fonds sombres, boutons et aplats
+  (liste des blocs sombres dans la règle `:is(...) .surtitre`). Les pages
   intérieures commencent par `EntetePage` (`components/Page.tsx`), qui remonte sous l'en-tête collant.
 - Photos : `components/Photo.tsx` (next/image, motif de remplacement si le chemin est vide) ; lignes de
   terrain décoratives : `components/Terrain.tsx`. Fenêtres modales : `components/Fenetre.tsx` (`<dialog>`).

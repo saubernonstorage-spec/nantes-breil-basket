@@ -27,7 +27,6 @@ export function Terrain({
       aria-hidden="true"
       className={`terrain terrain--${motif} ${className}`}
       style={style}
-      loading="lazy"
       decoding="async"
     />
   );

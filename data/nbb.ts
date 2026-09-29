@@ -58,7 +58,7 @@ export const CLUB: Club = {
   linkedin: "https://fr.linkedin.com/company/nantes-breil-basket",
   whatsapp: "https://chat.whatsapp.com/J4An3XN8EZXG0BbuQFjzvC",
   boutique: "https://app.grinta.eu/nbb44/adult/official",
-  ffbb: "https://resultats.ffbb.com/",
+  ffbb: "https://competitions.ffbb.com/",
   // Widget de résultats affiché sur la page Matchs après accord du visiteur (laisser "" pour le masquer).
   widgetResultats: "https://widgets.scorenco.com/week-events/194332",
   emailLicenceFFBB: "pdl0044034@ffbb.com",
@@ -483,7 +483,7 @@ export const CATEGORIES_AGE: { categorie: string; nesDe: number; nesA: number }[
 ];
 
 /**
- * CLASSEMENTS — un bloc par équipe engagée, à recopier depuis resultats.ffbb.com
+ * CLASSEMENTS — un bloc par équipe engagée, à recopier depuis competitions.ffbb.com
  * (fenêtre « Voir le classement » de la page Équipes). nbb: true sur la ligne du club.
  * Exemple :
  * SM1: { championnat: "Régionale masculine 2 · Poule B", maj: "28 septembre 2026",

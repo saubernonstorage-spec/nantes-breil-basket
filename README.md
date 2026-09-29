@@ -120,7 +120,7 @@ Pour brancher `nantes-breil-basket.fr` : réglages du projet → Domain manageme
 - **Sécurité** : Espace dirigeants protégé par mot de passe (cookie signé, `httpOnly`, 12 h), non
   indexé ; formulaires validés côté serveur, anti-spam sans service tiers (champ piège, délai
   minimal, question anti-robot pour le contact) ; export CSV protégé contre les formules Excel.
-- **Accessibilité** : lien d'évitement, navigation clavier, fenêtres modales natives (`<dialog>` :
+- **Accessibilité** : textes orange sur fond clair en caramel (`--orange-texte`, contraste AA), orange vif réservé aux fonds sombres ; lien d'évitement, navigation clavier, fenêtres modales natives (`<dialog>` :
   focus conservé, Échap), erreurs reliées aux champs, textes alternatifs, animations désactivées
   si l'utilisateur le demande (`prefers-reduced-motion`).
 - **Référencement local** : titres et descriptions par page, adresses canoniques, `sitemap.xml`,

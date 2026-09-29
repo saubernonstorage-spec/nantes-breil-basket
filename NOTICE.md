@@ -70,7 +70,7 @@ Dans le bloc `WEEKENDS` (un bloc par week-end, dans l'ordre chronologique) :
 4. Une nouvelle salle à domicile ? Ajoutez son adresse dans `ADRESSES_SALLES`.
 
 Les **résultats** viennent du widget externe (lien `widgetResultats` dans `CLUB`) : rien à saisir.
-Les **classements** de la page Équipes se recopient depuis resultats.ffbb.com dans `CLASSEMENTS`
+Les **classements** de la page Équipes se recopient depuis competitions.ffbb.com (site de la FFBB) dans `CLASSEMENTS`
 (un exemple est donné dans le fichier).
 
 ## 4. Les autres mises à jour
