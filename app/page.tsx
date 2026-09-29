@@ -147,9 +147,18 @@ export default function Accueil() {
               </div>
             </div>
           </div>
-          <a href={CLUB.boutique} target="_blank" rel="noopener" className="acces acces--orange acces--boutique carte-lien">
-            <span className="acces__titre">Boutique du club</span>
-            <span className="acces__texte">Portons nos couleurs</span>
+          {/* Même structure que la carte réseaux : surtitre, titre, texte, bouton. */}
+          <a href={CLUB.boutique} target="_blank" rel="noopener" className="boutique carte-lien">
+            <div>
+              <div className="surtitre">Boutique du club</div>
+              <h2 className="titre-section titre-section--grand">Portons nos couleurs</h2>
+            </div>
+            <div className="boutique__bas">
+              <p>Maillots, sweats et accessoires aux couleurs du NBB, à commander en ligne.</p>
+              <span className="btn btn--s btn--petit btn--nuit">
+                Voir la boutique <span className="fleche fleche--diag" aria-hidden="true">↗</span>
+              </span>
+            </div>
             <NouvelOnglet />
           </a>
         </div>

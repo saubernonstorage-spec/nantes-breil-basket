@@ -1642,28 +1642,48 @@ a.badge-label:hover {
   gap: 18px;
 }
 
-.acces--boutique {
-  flex: 1 1 320px;
-  min-height: 0;
-  padding: clamp(22px, 3vw, 34px);
-  border-radius: 30px;
-}
-
-.acces--boutique .acces__titre {
-  font-size: clamp(40px, 4vw, 56px);
-  line-height: 0.9;
-}
-
-.acces--boutique .acces__texte {
-  margin-top: 10px;
-  font-size: 16px;
-}
-
 .reseaux__cote p {
   margin: 0;
   font-size: 16px;
   line-height: 1.6;
   color: var(--gris);
+}
+
+/* Boutique : même structure et mêmes marges que la carte réseaux, sur l'aplat orange de la charte. */
+.boutique {
+  flex: 1 1 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 18px;
+  padding: clamp(22px, 3vw, 36px);
+  border-radius: 30px;
+  background: var(--orange);
+  color: var(--nuit);
+  text-decoration: none;
+}
+
+.boutique:hover {
+  color: var(--nuit);
+  box-shadow: 0 18px 40px rgba(247, 166, 25, 0.35);
+}
+
+.boutique .surtitre {
+  margin-bottom: 12px;
+  color: var(--nuit);
+}
+
+.boutique__bas {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.boutique__bas p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
 }
 
 /* Agenda de l'accueil */
@@ -5410,6 +5430,13 @@ a.badge-label:hover {
     }
   }
 
+  @keyframes nbbApparitionHaut {
+    from {
+      opacity: 0;
+      translate: 0 -18px;
+    }
+  }
+
   @keyframes nbbFondu {
     from {
       opacity: 0;
@@ -5484,8 +5511,9 @@ a.badge-label:hover {
   }
 
   /* ---------- 2. Apparition au défilement ----------
-     Une seule fois, quand le bloc entre à l'écran (components/Apparitions.tsx) ;
-     les cartes d'une même rangée arrivent avec un léger décalage. Réservé au
+     À chaque entrée d'un bloc à l'écran, en descendant comme en remontant
+     (components/Apparitions.tsx) : il arrive du côté par lequel il entre, et les
+     cartes d'une même rangée arrivent avec un léger décalage. Réservé au
      contenu à découvrir : les listes que l'on consulte (planning, matchs, FAQ,
      formulaires) s'affichent sans attendre. */
 
@@ -5495,6 +5523,10 @@ a.badge-label:hover {
 
   [data-apparition="joue"] {
     animation: nbbApparition 0.65s var(--ease-pose) var(--apparition-delai, 0ms) both;
+  }
+
+  [data-apparition="joue"][data-apparition-sens="haut"] {
+    animation-name: nbbApparitionHaut;
   }
 
   /* ---------- 3. En-tête : il se détache du contenu dès que la page défile ---------- */

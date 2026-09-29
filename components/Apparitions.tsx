@@ -3,13 +3,15 @@
 import { useEffect } from "react";
 
 /**
- * Blocs qui apparaissent en douceur quand ils entrent à l'écran (une seule fois).
+ * Blocs qui apparaissent en douceur à chaque fois qu'ils entrent à l'écran, en descendant
+ * comme en remontant (ils arrivent du côté par lequel ils entrent).
  * Uniquement le contenu « à découvrir » : pas les listes que l'on consulte vite
  * (planning, tableaux de matchs, FAQ, formulaires, mentions légales).
  */
 const CIBLES = [
   ".acces",
   ".reseaux",
+  ".boutique",
   ".carte-ecole",
   ".carte-arbitrage",
   ".banniere-photo",
@@ -45,12 +47,17 @@ const CIBLES = [
 /** Décalage entre les blocs d'une même rangée, plafonné pour ne jamais faire attendre. */
 const DECALAGE_MS = 70;
 const DECALAGE_MAX = 4;
+/** Part du bloc visible à partir de laquelle il apparaît. */
+const SEUIL = 0.15;
 
 /**
  * Sans JavaScript, ou si le visiteur a demandé moins d'animations, rien n'est masqué :
- * la classe « apparitions » n'est posée sur <html> qu'ici, et les blocs déjà visibles
+ * la classe « apparitions » n'est posée sur <html> qu'ici, et les blocs déjà à l'écran
  * au chargement s'affichent tout de suite, sans animation.
- * data-apparition : "attente" (masqué, hors écran) → "joue" (animation, voir globals.css).
+ *
+ * data-apparition : "" (affiché) · "attente" (masqué, entièrement hors de l'écran) · "joue" (animation).
+ * data-apparition-sens : "bas" (le bloc entrera par le bas, en montant) ou "haut" (par le haut, en descendant).
+ * Un bloc qui sort complètement de l'écran repasse en attente : il réapparaîtra à sa prochaine entrée.
  */
 export function Apparitions() {
   useEffect(() => {
@@ -59,35 +66,40 @@ export function Apparitions() {
     const main = document.getElementById("contenu");
     if (!main) return;
 
+    const mettreEnAttente = (el: HTMLElement, auDessus: boolean) => {
+      el.dataset.apparition = "attente";
+      el.dataset.apparitionSens = auDessus ? "haut" : "bas";
+    };
+
     const observateur = new IntersectionObserver(
       (entrees) => {
         let rang = 0;
         for (const e of entrees) {
-          if (!e.isIntersecting) continue;
           const el = e.target as HTMLElement;
-          el.style.setProperty("--apparition-delai", `${Math.min(rang++, DECALAGE_MAX) * DECALAGE_MS}ms`);
-          el.dataset.apparition = "joue";
-          observateur.unobserve(el);
+          if (e.isIntersecting && e.intersectionRatio >= SEUIL) {
+            if (el.dataset.apparition !== "attente") continue;
+            el.style.setProperty("--apparition-delai", `${Math.min(rang++, DECALAGE_MAX) * DECALAGE_MS}ms`);
+            el.dataset.apparition = "joue";
+          } else if (!e.isIntersecting && el.dataset.apparition !== "attente") {
+            // Sorti de l'écran : invisible pour le visiteur, on le réarme pour sa prochaine entrée.
+            mettreEnAttente(el, e.boundingClientRect.top < 0);
+          }
         }
       },
-      { rootMargin: "0px 0px -6% 0px", threshold: 0.12 },
+      { threshold: [0, SEUIL] },
     );
 
     const preparer = () => {
-      const limite = window.innerHeight * 0.94;
+      const hauteur = window.innerHeight;
       main.querySelectorAll<HTMLElement>(CIBLES).forEach((el) => {
-        // Déjà en attente (effet relancé, par ex. en développement) : on l'observe de nouveau.
-        if (el.dataset.apparition === "attente") {
-          observateur.observe(el);
-          return;
+        if (el.dataset.apparition === undefined) {
+          const r = el.getBoundingClientRect();
+          // À l'écran à l'arrivée : affiché tel quel. Au-dessus ou en dessous : il apparaîtra en entrant.
+          if (r.bottom <= 0) mettreEnAttente(el, true);
+          else if (r.top >= hauteur) mettreEnAttente(el, false);
+          else el.dataset.apparition = "";
         }
-        if (el.dataset.apparition !== undefined) return;
-        // Déjà à l'écran (arrivée sur la page, lien vers une ancre) : affiché tel quel.
-        if (el.getBoundingClientRect().top < limite) {
-          el.dataset.apparition = "";
-          return;
-        }
-        el.dataset.apparition = "attente";
+        // Observer un bloc déjà suivi est sans effet (utile si l'effet est relancé en développement).
         observateur.observe(el);
       });
     };

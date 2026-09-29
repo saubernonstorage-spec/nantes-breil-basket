@@ -126,7 +126,7 @@ Pour brancher `nantes-breil-basket.fr` : réglages du projet → Domain manageme
 - **Référencement local** : titres et descriptions par page, adresses canoniques, `sitemap.xml`,
   `robots.txt`, données structurées `SportsClub` (schema.org), image de partage, manifeste.
 - **Animations** : discrètes et utiles — en-tête de page qui se pose dans l'ordre de lecture, blocs
-  éditoriaux qui apparaissent une fois à l'entrée dans l'écran (légère cascade dans une rangée),
+  éditoriaux qui apparaissent à chaque entrée dans l'écran, en descendant comme en remontant (légère cascade dans une rangée),
   photos qui « respirent » au survol des cartes cliquables, flèches qui avancent d'un cran, FAQ qui se
   déplie, fondu court quand un filtre met à jour une liste, montant du stage qui signale son changement,
   fenêtres et bandeau cookies qui entrent en douceur, en-tête qui se détache au défilement. Tout est
