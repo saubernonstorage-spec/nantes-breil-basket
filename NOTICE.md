@@ -48,7 +48,7 @@ n'est pas validée par le bureau.
 | Les effectifs et le nombre d'entraînements par équipe | `CAPACITES` |
 | Les questions / réponses de la FAQ | `FAQ` |
 | Les gymnases, leurs accès en bus et tram | `GYMNASES` (couleurs des lignes : `LIGNES_NAOLIB`) |
-| Les partenaires et l'offre de partenariat | `PARTENAIRES`, `OFFRE_PARTENARIAT` |
+| Les partenaires (nom, logo, lien vers leur site) et l'offre de partenariat | `PARTENAIRES`, `OFFRE_PARTENARIAT` |
 | Les stages des vacances | `STAGES`, `STAGE_TARIFS`, `STAGE_REDUCTIONS`, `STAGE_JOURNEE`, `STAGE_A_PREVOIR`, `STAGE_CONTACT` |
 | Les séances de l'école d'arbitrage | `ARBITRAGE_SEANCES` |
 | Les albums de la galerie | `ALBUMS` |
@@ -96,7 +96,8 @@ Les **classements** de la page Équipes se recopient depuis competitions.ffbb.co
 
 Où indiquer le chemin : `PHOTOS` (grands bandeaux), `ENCADREMENT` et `BUREAU` (`photo`),
 `PHOTOS_EQUIPES` (une ligne par équipe), `ALBUMS` (`couverture` et `photos`),
-`PARTENAIRES` (`logo`), `CATEGORIES` (`image`). Sans photo, le site affiche un motif aux
+`PARTENAIRES` (`logo`, avec `logoClair: true` pour un logo blanc : il est alors posé sur fond
+bleu nuit), `CATEGORIES` (`image`). Sans photo, le site affiche un motif aux
 couleurs du club (ou les initiales pour un portrait) : rien n'est cassé.
 
 **Mineurs** : ne publiez que les enfants dont l'autorisation de droit à l'image est « Oui »

@@ -346,12 +346,21 @@ export const GYMNASES: Gymnase[] = [
     transports: [{ mode: "Bus", arret: "Bruneau", lignes: ["12", "23"] }, { mode: "Chronobus", arret: "Bruneau", lignes: ["C2"] }, { mode: "Tram", arret: "Poitou", lignes: ["3"] }], parking: true, partenaire: true },
 ];
 
-/** Partenaires. logo : chemin d'un logo dans public/photos/partenaires/ (ex. "/photos/partenaires/mooders.png"), ou "". */
+/**
+ * Partenaires (pied de page et page Partenaires).
+ * logo : chemin d'un logo dans public/photos/partenaires/ (ex. "/photos/partenaires/emmatitia.png"), ou "".
+ * logoClair : true pour un logo blanc ou clair (posé sur fond bleu nuit) ; sinon, il est posé sur fond crème.
+ * site : adresse du site du partenaire (le lien s'ouvre dans un nouvel onglet), facultatif.
+ */
 export const PARTENAIRES: Partenaire[] = [
-  { nom: "AR'PAYSAGE", activite: "Aménagement paysager", ville: "Le Temple-de-Bretagne", logo: "" },
-  { nom: "MOODERS", activite: "Enregistrement sonore et édition musicale", ville: "Nantes", logo: "" },
-  { nom: "EMMATITIA", activite: "Atelier photo", ville: "Nantes", logo: "" },
-  { nom: "Perspectives Renov' Habitat", activite: "Menuiserie bois et PVC", ville: "Port-Saint-Père", logo: "" },
+  {
+    nom: "Atelier photo Emmatitia",
+    activite: "Atelier photo",
+    ville: "Nantes",
+    logo: "/photos/partenaires/emmatitia.png",
+    logoClair: true,
+    site: "https://emmatitia.fr/",
+  },
 ];
 export const OFFRE_PARTENARIAT: OffrePartenariat[] = [
   { nom: "Soutien", montant: "[À COMPLÉTER] €", inclus: ["Logo sur le site du club", "Mention sur les réseaux sociaux"] },

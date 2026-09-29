@@ -84,8 +84,8 @@ export default function Mentions() {
         <section className="mentions__bloc">
           <h2>Propriété intellectuelle</h2>
           <p>
-            Le logo, les textes et les photos appartiennent au Nantes Breil Basket ou à leurs auteurs (dont EMMATITIA
-            pour les photos crédités). Toute réutilisation nécessite une autorisation préalable.
+            Le logo, les textes et les photos appartiennent au Nantes Breil Basket ou à leurs auteurs (dont l'Atelier photo Emmatitia
+            pour les photos créditées). Toute réutilisation nécessite une autorisation préalable.
           </p>
         </section>
         <section className="mentions__bloc">

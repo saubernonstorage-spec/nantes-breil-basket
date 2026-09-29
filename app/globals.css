@@ -298,18 +298,6 @@ textarea {
   color: var(--gris);
 }
 
-.lien-fort {
-  font-weight: 700;
-  font-size: 15px;
-  color: var(--bleu);
-  text-decoration: none;
-}
-
-.lien-fort:hover {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
 .lien-bouton {
   background: none;
   border: 0;
@@ -958,15 +946,41 @@ textarea {
   padding: 72px var(--gouttiere) 0;
 }
 
+/* Avec la bande des partenaires : elle porte seule sa marge haute, égale à sa marge basse. */
+.pied__inner:has(> .pied__partenaires) {
+  padding-top: 0;
+}
+
+/* Partenaires : grille de 5 cases de même largeur ; une rangée incomplète reste centrée.
+   Mêmes marges au-dessus et en dessous : les cases sont centrées en hauteur dans la bande. */
 .pied__partenaires {
+  --colonnes: 5;
+  --ecart: 12px;
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
   justify-content: center;
-  gap: 10px 28px;
-  padding: 0 0 26px;
-  margin-bottom: 48px;
+  gap: var(--ecart);
+  margin: 0 0 48px;
+  padding: 28px 0;
+  list-style: none;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.pied__partenaires li {
+  display: flex;
+  flex: 0 0 calc((100% - (var(--colonnes) - 1) * var(--ecart)) / var(--colonnes));
+}
+
+@media (max-width: 999px) {
+  .pied__partenaires {
+    --colonnes: 3;
+  }
+}
+
+@media (max-width: 559px) {
+  .pied__partenaires {
+    --colonnes: 2;
+  }
 }
 
 .pied__etiquette {
@@ -978,10 +992,23 @@ textarea {
 }
 
 .pied__partenaire {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 64px;
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+  /* Fond plein : les lignes du terrain décoratif ne passent pas sous les noms. */
+  background: var(--nuit);
   font-family: var(--f-titre);
   font-weight: 700;
-  font-size: 20px;
+  font-size: 18px;
+  line-height: 1.05;
   letter-spacing: 0.04em;
+  text-align: center;
   text-transform: uppercase;
   color: var(--creme);
   text-decoration: none;
@@ -989,6 +1016,30 @@ textarea {
 
 .pied__partenaire:hover {
   color: var(--orange);
+  border-color: rgba(247, 166, 25, 0.55);
+}
+
+/* Avec un logo : le nom s'aligne à côté, à gauche. */
+.pied__partenaire:has(.pied__partenaire-logo) {
+  text-align: left;
+}
+
+.pied__partenaire-logo {
+  position: relative;
+  flex: none;
+  width: 34px;
+  height: 46px;
+}
+
+/* Logo foncé : posé sur une pastille crème pour rester lisible sur le bleu nuit. */
+.pied__partenaire-logo--fonce {
+  width: 46px;
+  border-radius: 10px;
+  background: var(--creme);
+}
+
+.pied__partenaire-logo--fonce .photo {
+  padding: 4px;
 }
 
 .pied__question {
@@ -4916,6 +4967,11 @@ a.badge-label:hover {
   border-radius: 16px;
   overflow: hidden;
   background: var(--creme);
+}
+
+/* Logo blanc ou clair (logoClair dans data/nbb.ts) : fond bleu nuit. */
+.partenaire__logo--sombre {
+  background: var(--nuit);
 }
 
 .partenaire__logo .photo {

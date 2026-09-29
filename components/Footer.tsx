@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { CLUB, PARTENAIRES } from "@/data/nbb";
 import { BandeauCookies, BoutonCookies } from "@/components/Cookies";
+import { Photo } from "@/components/Photo";
 import { Terrain } from "@/components/Terrain";
 import { IconeFacebook, IconeInstagram, IconeWhatsapp, NouvelOnglet } from "@/components/icons";
 
@@ -45,14 +46,36 @@ export function Footer() {
     <footer className="pied">
       <Terrain motif="bout" className="pied__terrain" />
       <div className="pied__inner">
-        <div className="pied__partenaires">
-          <span className="pied__etiquette">Partenaires</span>
-          {PARTENAIRES.map((p) => (
-            <Link key={p.nom} href="/partenaires" className="pied__partenaire">
-              {p.nom}
-            </Link>
-          ))}
-        </div>
+        {PARTENAIRES.length ? (
+          <ul className="pied__partenaires" aria-label="Partenaires du club">
+            {PARTENAIRES.map((p) => {
+              const contenu = (
+                <>
+                  {p.logo ? (
+                    <span className={p.logoClair ? "pied__partenaire-logo" : "pied__partenaire-logo pied__partenaire-logo--fonce"}>
+                      <Photo src={p.logo} alt="" sizes="48px" entiere />
+                    </span>
+                  ) : null}
+                  <span>{p.nom}</span>
+                </>
+              );
+              return (
+                <li key={p.nom}>
+                  {p.site ? (
+                    <a href={p.site} target="_blank" rel="noopener" className="pied__partenaire">
+                      {contenu}
+                      <NouvelOnglet />
+                    </a>
+                  ) : (
+                    <Link href="/partenaires" className="pied__partenaire">
+                      {contenu}
+                    </Link>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        ) : null}
 
         <div className="pied__question">
           <div>

@@ -25,7 +25,7 @@ export default function Galerie() {
             La <span className="accent">galerie</span>
           </>
         }
-        chapo="Les moments du club, saison après saison. Merci à EMMATITIA, notre partenaire photographe, et aux parents qui immortalisent les matchs."
+        chapo="Les moments du club, saison après saison. Merci à l'Atelier photo Emmatitia, notre partenaire photographe, et aux parents qui immortalisent les matchs."
       />
       <section className="section" style={{ paddingTop: 48, paddingBottom: 40 }}>
         <Albums albums={ALBUMS} />

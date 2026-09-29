@@ -301,8 +301,8 @@ export default function Accueil() {
               motif="angle"
               style={{ right: 0, bottom: 0, width: "min(58%, 360px)", transform: "scaleY(-1)" }}
             />
-            <div className="surtitre relatif">Entreprises &amp; commerçants</div>
-            <h3 className="appel__titre relatif">Associez votre nom à {STATS.adherents} familles nantaises.</h3>
+            <div className="surtitre relatif">Entreprises &amp; particuliers</div>
+            <h3 className="appel__titre relatif">Soutenez le développement du club.</h3>
             <p className="relatif">
               Partenariat avec visibilité au gymnase, sur les maillots et en ligne, ou mécénat avec reçu fiscal : chaque
               soutien finance l'école de basket, le matériel et l'encadrement.
@@ -315,17 +315,7 @@ export default function Accueil() {
       </section>
 
       <section aria-labelledby="equipes-titre" className="section">
-        <TeteSection
-          grand
-          surtitre="Nos équipes"
-          titre="De 3 ans à… pas de limite"
-          id="equipes-titre"
-          lien={
-            <Link href="/equipes" className="lien-fort">
-              Toutes les fiches équipes
-            </Link>
-          }
-        />
+        <TeteSection grand surtitre="Nos équipes" titre="De 3 ans à… pas de limite" id="equipes-titre" />
         <div className="grille" style={{ "--min": "260px", gap: 14 } as React.CSSProperties}>
           {CATEGORIES.map((k) => {
             const n = equipes.filter((e) => categorieDe(e) === k.cle).length;

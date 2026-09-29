@@ -122,7 +122,7 @@ export type Gymnase = {
   partenaire?: boolean;
 };
 
-export type Partenaire = { nom: string; activite: string; ville: string; logo: string; site?: string };
+export type Partenaire = { nom: string; activite: string; ville: string; logo: string; logoClair?: boolean; site?: string };
 
 export type OffrePartenariat = { nom: string; montant: string; inclus: string[]; vedette?: boolean };
 

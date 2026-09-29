@@ -53,11 +53,11 @@ export default function Partenaires() {
         <h2 id="actuels-titre" className="titre-section" style={{ marginBottom: 24 }}>
           Merci à nos partenaires
         </h2>
-        <div className="grille" style={{ "--min": "250px" } as React.CSSProperties}>
+        <div className="grille grille--remplir" style={{ "--min": "250px" } as React.CSSProperties}>
           {PARTENAIRES.map((p) => {
             const contenu = (
               <>
-                <div className="partenaire__logo">
+                <div className={p.logoClair ? "partenaire__logo partenaire__logo--sombre" : "partenaire__logo"}>
                   <Photo src={p.logo} alt={`Logo de ${p.nom}`} sizes="300px" entiere vide={{ texte: p.nom }} />
                 </div>
                 <div>
