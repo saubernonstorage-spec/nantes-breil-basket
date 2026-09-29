@@ -37,13 +37,13 @@ export default async function EspaceDirigeants({ searchParams }: { searchParams:
 
   return (
     <>
-      <section className="entete-page" style={{ paddingTop: 140, paddingBottom: 40 }}>
+      <section className="entete-page">
         <div className="entete-page__inner dirigeants-tete">
           <div>
             <div className="surtitre" style={{ marginBottom: 12 }}>
               Accès réservé
             </div>
-            <h1 className="titre-page" style={{ margin: 0, fontSize: "clamp(46px, 6vw, 88px)", lineHeight: 0.88 }}>
+            <h1 className="titre-page" style={{ margin: 0 }}>
               Espace dirigeants
             </h1>
           </div>

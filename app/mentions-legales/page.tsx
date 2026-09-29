@@ -13,10 +13,10 @@ export const metadata: Metadata = {
 export default function Mentions() {
   return (
     <>
-      <section className="entete-page" style={{ paddingBottom: 56 }}>
+      <section className="entete-page">
         <div className="entete-page__inner" style={{ maxWidth: 900 }}>
           <FilAriane page="Informations légales" />
-          <h1 className="titre-page" style={{ margin: 0, fontSize: "clamp(46px, 6.4vw, 92px)", lineHeight: 0.88 }}>
+          <h1 className="titre-page" style={{ margin: 0 }}>
             Mentions légales <span className="accent">&amp; confidentialité</span>
           </h1>
         </div>

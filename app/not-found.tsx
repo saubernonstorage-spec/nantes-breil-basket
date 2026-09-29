@@ -7,7 +7,7 @@ export default function PageIntrouvable() {
       <Terrain motif="raquette" style={{ top: 0, left: "50%", width: "min(90%, 640px)", transform: "translateX(-50%)" }} />
       <div className="entete-page__inner" style={{ textAlign: "center" }}>
         <div className="introuvable__code">404</div>
-        <h1 className="titre-page" style={{ fontSize: "clamp(40px, 6vw, 72px)" }}>
+        <h1 className="titre-page">
           Hors du <span className="accent">terrain</span>
         </h1>
         <p className="chapo" style={{ margin: "0 auto 28px" }}>

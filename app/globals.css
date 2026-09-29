@@ -39,6 +39,11 @@
   --largeur: 1360px;
   /* Hauteur de l'en-tête : les bandeaux sombres remontent dessous. */
   --entete: 82px;
+  /* En-têtes de page (bandeaux sombres) : mêmes marges et même titre sur toutes les pages. */
+  --page-haut: 128px;
+  --page-bas: 56px;
+  --titre-page: clamp(44px, 6.4vw, 96px);
+  --titre-accueil: clamp(48px, 7vw, 108px);
 }
 
 /* ---------- Base ---------- */
@@ -204,7 +209,7 @@ textarea {
   margin: 0 0 18px;
   font-family: var(--f-titre);
   font-weight: 900;
-  font-size: clamp(52px, 8vw, 120px);
+  font-size: var(--titre-page);
   line-height: 0.86;
   text-transform: uppercase;
 }
@@ -1267,10 +1272,19 @@ textarea {
 .entete-page {
   position: relative;
   margin-top: calc(-1 * var(--entete));
-  padding: 150px var(--gouttiere) 64px;
+  padding: var(--page-haut) var(--gouttiere) var(--page-bas);
   background: var(--nuit);
   color: var(--creme);
   overflow: hidden;
+}
+
+/* Planning : les filtres chevauchent le bas du bandeau. Club : la photo est collée en bas. */
+.entete-page--filtres {
+  padding-bottom: calc(var(--page-bas) + 46px);
+}
+
+.entete-page--photo {
+  padding-bottom: 0;
 }
 
 .entete-page__inner {
@@ -1307,7 +1321,7 @@ textarea {
 .hero {
   position: relative;
   margin-top: calc(-1 * var(--entete));
-  min-height: min(100svh, 980px);
+  min-height: min(86svh, 800px);
   background: var(--nuit);
   color: var(--creme);
   overflow: hidden;
@@ -1340,7 +1354,7 @@ textarea {
   width: 100%;
   max-width: var(--largeur);
   margin: 0 auto;
-  padding: 150px var(--gouttiere) 44px;
+  padding: var(--page-haut) var(--gouttiere) 40px;
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
@@ -1390,10 +1404,10 @@ a.badge-label:hover {
 }
 
 .hero__titre {
-  margin: 22px 0;
+  margin: 20px 0;
   font-family: var(--f-titre);
   font-weight: 900;
-  font-size: clamp(56px, 8.6vw, 136px);
+  font-size: var(--titre-accueil);
   line-height: 0.86;
   letter-spacing: -0.005em;
   text-transform: uppercase;
@@ -1402,7 +1416,7 @@ a.badge-label:hover {
 
 .hero__chapo {
   max-width: 560px;
-  margin: 0 0 30px;
+  margin: 0 0 26px;
   font-size: clamp(16px, 1.35vw, 19px);
   line-height: 1.55;
   color: rgba(245, 243, 238, 0.88);
@@ -2349,7 +2363,7 @@ a.badge-label:hover {
 
 .club-photo {
   position: relative;
-  height: clamp(220px, 32vw, 440px);
+  height: clamp(200px, 26vw, 360px);
   border-radius: 30px 30px 0 0;
   overflow: hidden;
 }
@@ -2571,9 +2585,16 @@ a.badge-label:hover {
   position: relative;
   flex: 1 1 360px;
   aspect-ratio: 4 / 5;
-  max-height: 620px;
+  max-height: 500px;
   border-radius: 30px;
   overflow: hidden;
+}
+
+/* Sur téléphone, photo au format paysage : l'en-tête reste compact. */
+@media (max-width: 699px) {
+  .ecoles-hero__photo {
+    aspect-ratio: 4 / 3;
+  }
 }
 
 .samedi {
@@ -3626,7 +3647,7 @@ a.badge-label:hover {
    ========================================================================== */
 
 .stages-hero {
-  min-height: 640px;
+  min-height: 540px;
   display: flex;
   align-items: flex-end;
 }

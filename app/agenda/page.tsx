@@ -19,7 +19,6 @@ export default function Agenda() {
     <>
       <EntetePage
         fil="Agenda"
-        style={{ paddingBottom: 40 }}
         decor={<Terrain motif="raquette" style={{ top: 0, right: "8%", width: "min(40%, 480px)" }} />}
         titre={
           <>

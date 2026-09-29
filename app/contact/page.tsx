@@ -25,7 +25,6 @@ export default function Contact() {
     <>
       <EntetePage
         fil="Contact"
-        style={{ paddingBottom: 48 }}
         largeurChapo={620}
         decor={<Terrain motif="raquette" style={{ top: 0, right: "12%", width: "min(40%, 500px)" }} />}
         titre={

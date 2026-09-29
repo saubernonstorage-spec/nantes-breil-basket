@@ -25,7 +25,7 @@ export default function Planning() {
     <>
       <EntetePage
         fil={`Planning · saison ${CLUB.saison}`}
-        style={{ paddingBottom: 96 }}
+        variante="filtres"
         largeurTitre={980}
         largeurChapo={600}
         decor={<Terrain motif="raquette" style={{ top: 0, right: "6%", width: "min(46%, 560px)" }} />}

@@ -38,7 +38,7 @@ const OBJECTIFS = [
 export default function Ecoles() {
   return (
     <>
-      <section className="entete-page" style={{ paddingBottom: 72 }}>
+      <section className="entete-page">
         <Terrain motif="angle" style={{ top: 0, left: 0, width: "min(44%, 520px)", transform: "scaleX(-1)" }} />
         <div className="entete-page__inner ecoles-hero">
           <div className="ecoles-hero__texte">
@@ -47,7 +47,7 @@ export default function Ecoles() {
               <span className="badge-label__etoiles">★★★</span>
               École Française de Mini-Basket · Label Micro Basket
             </div>
-            <h1 className="titre-page" style={{ fontSize: "clamp(52px, 7.4vw, 112px)" }}>
+            <h1 className="titre-page">
               Trois étoiles <span className="accent">au-dessus du panier</span>
             </h1>
             <p className="chapo" style={{ maxWidth: 560, marginBottom: 28 }}>
@@ -127,7 +127,7 @@ export default function Ecoles() {
         />
         <div className="section relatif" style={{ paddingTop: 88, paddingBottom: 88 }}>
           <div className="surtitre">École d'arbitrage · de U13 à seniors</div>
-          <h2 id="arb-titre" className="titre-page" style={{ fontSize: "clamp(52px, 7.4vw, 112px)" }}>
+          <h2 id="arb-titre" className="titre-page">
             Siffler, c'est <span className="accent">encore jouer.</span>
           </h2>
           <p className="chapo" style={{ maxWidth: 680, marginBottom: 40 }}>

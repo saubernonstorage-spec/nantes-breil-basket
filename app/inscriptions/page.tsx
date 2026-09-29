@@ -23,7 +23,6 @@ export default function Inscriptions() {
     <>
       <EntetePage
         fil={`Inscriptions · saison ${CLUB.saison}`}
-        style={{ paddingBottom: 72 }}
         largeurTitre={900}
         largeurChapo={600}
         decor={<Terrain motif="cote" style={{ top: "50%", right: 0, height: "112%", transform: "translateY(-50%)" }} />}

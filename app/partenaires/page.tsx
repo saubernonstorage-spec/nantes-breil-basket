@@ -25,7 +25,6 @@ export default function Partenaires() {
     <>
       <EntetePage
         fil="Partenaires"
-        style={{ paddingBottom: 72 }}
         largeurTitre={1000}
         largeurChapo={620}
         decor={<Terrain motif="angle" style={{ right: 0, bottom: 0, width: "min(50%, 600px)", transform: "scaleY(-1)" }} />}

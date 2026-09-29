@@ -10,6 +10,7 @@ export function EntetePage({
   style,
   largeurTitre,
   largeurChapo,
+  variante,
 }: {
   fil: string;
   titre: React.ReactNode;
@@ -19,9 +20,11 @@ export function EntetePage({
   style?: React.CSSProperties;
   largeurTitre?: number;
   largeurChapo?: number;
+  /** « filtres » : un bloc chevauche le bas de l'en-tête (planning) ; « photo » : photo collée en bas (club). */
+  variante?: "filtres" | "photo";
 }) {
   return (
-    <section className="entete-page" style={style}>
+    <section className={variante ? `entete-page entete-page--${variante}` : "entete-page"} style={style}>
       {decor}
       <div className="entete-page__inner">
         <FilAriane page={fil} />

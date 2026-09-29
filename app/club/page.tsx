@@ -27,7 +27,7 @@ export default function Club() {
     <>
       <EntetePage
         fil="Le club"
-        style={{ paddingBottom: 0 }}
+        variante="photo"
         largeurTitre={1000}
         decor={
           <div aria-hidden="true" className="annee-geante">
