@@ -4,7 +4,7 @@
     "8649": "Nantes Breil Basket",
     "8752": "Similienne Nantes (équipes CTC)"
   },
-  "maj": "2026-09-29T13:37:27+00:00",
+  "maj": "2026-10-02T05:28:03+00:00",
   "classements": {
     "SE-F-1": {
       "championnat": "Pré régionale féminine · Poule A",
@@ -694,7 +694,7 @@
         },
         {
           "rang": 3,
-          "equipe": "NANTES DOULON BASKET 3",
+          "equipe": "AL OUCHE DINIER REZE 2",
           "j": 2,
           "v": 1,
           "d": 1,
@@ -703,11 +703,11 @@
         },
         {
           "rang": 4,
-          "equipe": "AL OUCHE DINIER REZE 2",
+          "equipe": "NANTES DOULON BASKET 3",
           "j": 2,
           "v": 1,
-          "d": 1,
-          "pts": 3,
+          "d": 0,
+          "pts": 2,
           "nbb": false
         },
         {
