@@ -4,7 +4,7 @@
     "8649": "Nantes Breil Basket",
     "8752": "Similienne Nantes (équipes CTC)"
   },
-  "maj": "2026-10-02T05:28:03+00:00",
+  "maj": "2026-10-03T05:36:13+00:00",
   "classements": {
     "SE-F-1": {
       "championnat": "Pré régionale féminine · Poule A",
@@ -1629,21 +1629,21 @@
         },
         {
           "rang": 5,
-          "equipe": "NANTES BREIL BASKET 2",
-          "j": 2,
-          "v": 0,
-          "d": 2,
-          "pts": 2,
-          "nbb": true
-        },
-        {
-          "rang": 6,
           "equipe": "CHABOSSIERE BASKET CLUB 3",
           "j": 2,
           "v": 0,
           "d": 2,
           "pts": 2,
           "nbb": false
+        },
+        {
+          "rang": 6,
+          "equipe": "NANTES BREIL BASKET 2",
+          "j": 2,
+          "v": 0,
+          "d": 1,
+          "pts": 1,
+          "nbb": true
         }
       ]
     },
