@@ -62,8 +62,8 @@ export const CLUB: Club = {
   emailLicenceFFBB: "pdl0044034@ffbb.com",
   memoArbitrage: "https://nantes-breil-basket.fr/public/5071/upload/files/arbitrage/memo-de-l-arbitrage-2.pdf",
   // Délais de réponse annoncés après l'envoi d'un formulaire, ex. "48 h" ou "5 jours".
-  delaiReponseContact: "[À COMPLÉTER]",
-  delaiReponseInscription: "[À COMPLÉTER]",
+  delaiReponseContact: "1 semaine",
+  delaiReponseInscription: "1 semaine",
   // Lien vers la plaquette partenaires (PDF), commençant par https://.
   plaquettePartenaires: "[À COMPLÉTER]",
   // Page Partenaires, formule mécénat : retirez « [À CONFIRMER…] » une fois l'éligibilité vérifiée pour l'afficher.
@@ -79,12 +79,12 @@ export const OUVERTURES_BOUTIQUE: OuvertureBoutique[] = [{ debut: "2026-10-20", 
 
 /** Mentions légales (page /mentions-legales). */
 export const MENTIONS = {
-  rna: "[À COMPLÉTER]",
-  siret: "[À COMPLÉTER]",
-  responsablePublication: "Sébastien Aubernon, président [À CONFIRMER]",
+  rna: "W442002019",
+  siret: "44791013400017",
+  responsablePublication: "Sébastien Aubernon, président",
   hebergeur: "Netlify, Inc., 101 2nd Street, San Francisco, CA 94105, États-Unis — www.netlify.com (contact : support@netlify.com).",
-  conservationAdhesions: "[À COMPLÉTER] ans",
-  conservationMessages: "[À COMPLÉTER] mois",
+  conservationAdhesions: "1 ans",
+  conservationMessages: "12 mois",
 };
 
 /**
