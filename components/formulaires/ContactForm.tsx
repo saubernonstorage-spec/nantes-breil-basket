@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { startTransition, useActionState, useEffect, useRef, useState } from "react";
 import { envoyerContact } from "@/app/actions";
-import { RESULTAT_INITIAL, reponseRobotValide, SUJETS_CONTACT } from "@/lib/formulaires";
+import { allerPremiereErreur, RESULTAT_INITIAL, reponseRobotValide, SUJETS_CONTACT } from "@/lib/formulaires";
 import { aCompleter, estEmail } from "@/lib/utils";
 import { CaseACocher, ChampListe, ChampTexte, ChampZone, Confirmation, Piege } from "@/components/formulaires/Champs";
 
@@ -22,6 +22,12 @@ export function ContactForm({ delaiReponse, sujet = "", commission = "" }: { del
   const [resultat, envoyer, enCours] = useActionState(envoyerContact, RESULTAT_INITIAL);
   const [termine, setTermine] = useState(false);
   const t0 = useRef(0);
+  const zone = useRef<HTMLFormElement>(null);
+
+  // Erreurs renvoyées par le serveur : même chose qu'en cas d'erreur détectée dans le navigateur.
+  useEffect(() => {
+    if (resultat.statut === "erreur" && !enCours) allerPremiereErreur(zone.current?.parentElement);
+  }, [resultat, enCours]);
 
   useEffect(() => {
     t0.current = Date.now();
@@ -43,7 +49,7 @@ export function ContactForm({ delaiReponse, sujet = "", commission = "" }: { del
     if (!reponseRobotValide(f.robot)) e.robot = "Indice : moins de 6.";
     if (!f.rgpd) e.rgpd = "Cette case est nécessaire pour vous répondre.";
     setErreurs(e);
-    if (Object.keys(e).length) return;
+    if (Object.keys(e).length) return allerPremiereErreur(zone.current?.parentElement);
     const d = new FormData();
     for (const [k, v] of Object.entries(f)) {
       if (typeof v === "boolean") {
@@ -82,7 +88,7 @@ export function ContactForm({ delaiReponse, sujet = "", commission = "" }: { del
   return (
     <>
       <h2 className="titre-formulaire">Formulaire de contact</h2>
-      <form noValidate onSubmit={soumettre} className="formulaire" style={{ gap: 16 }}>
+      <form ref={zone} noValidate onSubmit={soumettre} className="formulaire" style={{ gap: 16 }}>
         <div className="champs" style={{ "--min": "220px" } as React.CSSProperties}>
           <ChampTexte label="Prénom et nom *" value={f.nom} onChange={(e) => maj("nom", e.target.value)} autoComplete="name" erreur={err("nom")} />
           <ChampTexte label="E-mail *" type="email" value={f.email} onChange={(e) => maj("email", e.target.value)} autoComplete="email" inputMode="email" erreur={err("email")} />

@@ -134,7 +134,7 @@ export async function inscrireStage(_: Resultat, donnees: FormData): Promise<Res
 
   const erreurs: Record<string, string> = {};
   if (!jours.length) erreurs.semaines = "Choisissez une semaine ou au moins une journée.";
-  // Page ouverte avant la fermeture d'une semaine (la veille de son dernier jour à midi).
+  // Page ouverte avant la fermeture d'une semaine (la veille de son premier jour à midi).
   if (demandes.length > jours.length) {
     erreurs.semaines = "Les inscriptions sont fermées pour une semaine choisie. Rechargez la page pour voir les semaines ouvertes.";
   }

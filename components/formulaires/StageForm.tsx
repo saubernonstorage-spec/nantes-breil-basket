@@ -4,7 +4,7 @@ import Link from "next/link";
 import { startTransition, useActionState, useEffect, useRef, useState } from "react";
 import { inscrireStage } from "@/app/actions";
 import type { SemaineOuverte } from "@/lib/nbb";
-import { RESULTAT_INITIAL, STATUTS_STAGE } from "@/lib/formulaires";
+import { allerPremiereErreur, RESULTAT_INITIAL, STATUTS_STAGE } from "@/lib/formulaires";
 import type { ReductionStage, StatutStage } from "@/lib/types";
 import {
   appliquerReduction,
@@ -49,10 +49,23 @@ export function StageForm({ semaines, prix, reductions, annees }: Props) {
   const [resultat, envoyer, enCours] = useActionState(inscrireStage, RESULTAT_INITIAL);
   const [termine, setTermine] = useState(false);
   const t0 = useRef(0);
+  const zone = useRef<HTMLFormElement>(null);
+
+  // Erreurs renvoyées par le serveur : même chose qu'en cas d'erreur détectée dans le navigateur.
+  useEffect(() => {
+    if (resultat.statut === "erreur" && !enCours) allerPremiereErreur(zone.current?.parentElement);
+  }, [resultat, enCours]);
 
   useEffect(() => {
     t0.current = Date.now();
   }, []);
+
+  const reussi = termine && !enCours && resultat.statut === "succes";
+  // Inscription validée : on remonte au début de la section « Inscription en ligne » pour voir la confirmation
+  // (le formulaire, plus long, est remplacé par un message court). Défilement fluide via scroll-behavior (CSS).
+  useEffect(() => {
+    if (reussi) document.getElementById("inscription-stage")?.scrollIntoView({ block: "start" });
+  }, [reussi]);
 
   const erreursServeur = resultat.statut === "erreur" ? (resultat.erreurs ?? {}) : {};
   const err = (k: string) => erreurs[k] ?? erreursServeur[k] ?? "";
@@ -94,7 +107,7 @@ export function StageForm({ semaines, prix, reductions, annees }: Props) {
     ev.preventDefault();
     const e = valider();
     setErreurs(e);
-    if (Object.keys(e).length) return;
+    if (Object.keys(e).length) return allerPremiereErreur(zone.current?.parentElement);
     const d = new FormData();
     for (const [k, v] of Object.entries(f)) {
       if (k === "jours") f.jours.forEach((j) => d.append("jours", j));
@@ -107,7 +120,7 @@ export function StageForm({ semaines, prix, reductions, annees }: Props) {
     startTransition(() => envoyer(d));
   };
 
-  if (termine && !enCours && resultat.statut === "succes") {
+  if (reussi) {
     return (
       <Confirmation titre="Demande enregistrée">
         <p className="confirmation__texte">
@@ -139,13 +152,10 @@ export function StageForm({ semaines, prix, reductions, annees }: Props) {
   const ON = "choix--actif";
 
   return (
-    <form noValidate onSubmit={soumettre} className="formulaire">
+    <form ref={zone} noValidate onSubmit={soumettre} className="formulaire">
       <fieldset className="groupe-champs">
-        <legend>Semaine ou journées de stage *</legend>
-        <p className="champ__aide" style={{ margin: "0 0 10px" }}>
-          Inscrivez votre enfant à la semaine ou seulement certains jours. Tous les jours d'une même semaine sont facturés
-          au tarif semaine.
-        </p>
+        {/* Titre masqué à l'écran, gardé pour les lecteurs d'écran (nom du groupe de choix). */}
+        <legend className="sr-only">Semaine ou journées de stage *</legend>
         <div className="semaines-stage">
           {semaines.map((w) => {
             const ids = w.jours.map((j) => j.id);
@@ -173,7 +183,12 @@ export function StageForm({ semaines, prix, reductions, annees }: Props) {
                   </div>
                   <span className="semaine-stage__resume">{resume}</span>
                 </div>
-                <div role="group" aria-label={`${w.nom} : choix des jours`} className="rangee" style={{ gap: 6 }}>
+                <div
+                  role="group"
+                  aria-label={`${w.nom} : choix des jours`}
+                  className="choix-jours"
+                  style={{ "--n": w.jours.length } as React.CSSProperties}
+                >
                   <button
                     type="button"
                     aria-pressed={complete}
@@ -195,7 +210,9 @@ export function StageForm({ semaines, prix, reductions, annees }: Props) {
                         className={`choix choix--jour ${actif ? ON : ""}`}
                         onClick={() => maj("jours", actif ? f.jours.filter((id) => id !== j.id) : [...f.jours, j.id])}
                       >
-                        {j.court}
+                        {/* « Lun. 19 » : sur mobile, le jour en petit au-dessus de la date (grille façon calendrier). */}
+                        <span className="choix__jour">{j.court.split(" ")[0]}</span>{" "}
+                        <span className="choix__num">{j.court.split(" ").slice(1).join(" ")}</span>
                       </button>
                     );
                   })}

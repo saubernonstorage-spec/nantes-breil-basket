@@ -2,13 +2,14 @@
 
 import { useId, useState } from "react";
 import { Fenetre } from "@/components/Fenetre";
+import { LogoClub } from "@/components/LogoClub";
 import { Photo } from "@/components/Photo";
 import { NouvelOnglet } from "@/components/icons";
 
 type Classement = {
   championnat: string;
   maj: string;
-  lignes: { rang: number; equipe: string; j: number; v: number; d: number; pts: number; nbb: boolean }[];
+  lignes: { rang: number; equipe: string; j: number; v: number; d: number; pts: number; nbb: boolean; logo: string }[];
   sansCompetition: boolean;
 };
 
@@ -88,7 +89,12 @@ export function BoutonClassement({
                   {c.lignes.map((l) => (
                     <tr key={`${l.rang}-${l.equipe}`} className={l.nbb ? "classement__nbb" : undefined}>
                       <td>{l.rang}</td>
-                      <td>{l.equipe}</td>
+                      <td>
+                        <span className="avec-logo">
+                          <LogoClub logo={l.logo} nom={l.equipe} taille={34} />
+                          {l.equipe}
+                        </span>
+                      </td>
                       <td>{l.j}</td>
                       <td>{l.v}</td>
                       <td>{l.d}</td>

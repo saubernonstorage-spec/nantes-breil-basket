@@ -39,14 +39,16 @@ information. La liste de ce qui reste à fournir est dans l'Espace dirigeants, o
 | Je veux modifier… | Bloc à chercher dans `data/nbb.ts` |
 | --- | --- |
 | E-mail, téléphone, adresse, réseaux sociaux, boutique, saison, délais de réponse | `CLUB` |
+| Périodes d'ouverture de la boutique (en dehors, les boutons « Boutique » affichent « Boutique fermée » et la prochaine ouverture) | `OUVERTURES_BOUTIQUE` |
 | Les chiffres de l'accueil (adhérents, équipes engagées) | `STATS` — le nombre de gymnases est calculé tout seul |
 | Les grandes photos (accueil, club, écoles, stages) | `PHOTOS` |
 | Les dates de l'agenda | `AGENDA` |
-| Les matchs du week-end et les convocations | `WEEKENDS` (et `ADRESSES_SALLES`) |
+| Affiche ou flyer de chaque date, format portrait A4 (page Agenda et fenêtre « prochain événement » ouverte une fois par visite) | `affiche` dans `AGENDA` |
+| Les convocations des matchs (les matchs eux-mêmes viennent de la FFBB, voir § 3) | `CONVOCATIONS`, `MATCHS_MANUELS` (et `ADRESSES_SALLES`, `SALLES_FFBB`, `NOMS_CLUBS`) |
 | Les entraîneurs (photo, diplômes, arrivée au club) | `ENCADREMENT` |
 | Le bureau, le comité directeur | `BUREAU`, `COMITE` |
 | Les commissions de bénévoles (« On recrute ») | `COMMISSIONS` |
-| L'histoire, les valeurs, le projet, la charte | `HISTOIRE`, `VALEURS`, `PROJET`, `ENGAGEMENTS` |
+| L'histoire, les valeurs, le projet | `HISTOIRE`, `VALEURS`, `PROJET` |
 | Les tarifs, les aides, les documents et PDF à télécharger | `TARIFS`, `TARIF_NOTE`, `AIDES`, `DOCUMENTS`, `PIECES` |
 | Les effectifs et le nombre d'entraînements par équipe | `CAPACITES` |
 | Les questions / réponses de la FAQ | `FAQ` |
@@ -61,20 +63,35 @@ information. La liste de ce qui reste à fournir est dans l'Espace dirigeants, o
 | Les classements de la page Équipes (automatiques, voir § 3) | `EQUIPES_FFBB` (et `CLASSEMENTS` pour une saisie à la main) |
 | Les mentions légales (RNA, SIRET, hébergeur, durées de conservation) | `MENTIONS` |
 
-## 3. Chaque semaine : les matchs du week-end
+## 3. Chaque semaine : les convocations du week-end
 
-Dans le bloc `WEEKENDS` (un bloc par week-end, dans l'ordre chronologique) :
+Les **matchs** (date, heure, adversaire, salle, adresse) arrivent **tout seuls** de la FFBB, chaque nuit
+(`data/matchs-ffbb.json`, voir plus bas) : un changement d'horaire ou de salle est repris la nuit
+suivante. Il ne reste à saisir que ce que la FFBB ne connaît pas :
 
-1. Renseignez `titre`, `semaine` et `samedi` (date du samedi, au format `"2026-10-03"`).
-2. Une ligne par match dans `domicile` (avec arbitres, table, OTM) et `exterieur` (avec l'adresse).
-   Un week-end encore vide affiche « Le programme de ce week-end n'est pas encore publié ».
-3. La page Matchs n'affiche que **trois week-ends** : le dernier passé (« Terminée »), celui de la
-   semaine (« Prochains matchs », affiché par défaut) et le suivant (« À venir ») ; elle bascule seule
-   chaque lundi. Inutile de saisir plus d'un week-end à l'avance, et vous pouvez supprimer de
-   `WEEKENDS` les week-ends plus anciens que le dernier passé.
-4. Une nouvelle salle à domicile ? Ajoutez son adresse dans `ADRESSES_SALLES`, avec le même nom
-   que dans le champ `salle` des matchs. La page Matchs regroupe les matchs à domicile par salle,
-   dans l'ordre de cette liste (aujourd'hui : Joël Paon, Breil Malville, Similienne).
+1. **Les convocations** (arbitres, table de marque, OTM) se saisissent dans l'**Espace dirigeants**,
+   onglet **« Convocations »** : les matchs à domicile des 4 prochains week-ends (celui en cours compris) y sont listés,
+   avec cinq cases : Arbitre 1 et 2, Table 1 et 2, OTM. Chaque case propose les adhérents (onglet
+   « Adhérents », à importer d'abord), les noms déjà utilisés et les équipes du club (U15M1…), puis
+   « Enregistrer les convocations ». La page Matchs est mise à jour aussitôt, sans republier le site.
+   Plusieurs noms : séparés par des virgules (ils s'affichent l'un sous l'autre). Quand la FFBB désigne
+   des arbitres officiels, le site affiche « Officiels » (la table et l'OTM restent à saisir). Un match
+   à domicile sans convocation affiche « — » et reste listé dans l'onglet « À compléter ».
+   Le bloc `CONVOCATIONS` de `data/nbb.ts` reste possible (même format : date, équipe, arbitres, table,
+   otm) ; une saisie de l'Espace dirigeants l'emporte sur lui.
+2. **`MATCHS_MANUELS`** : les matchs absents de la FFBB (plateaux U9, matchs amicaux…). À domicile,
+   indiquez `salle` (un nom de `ADRESSES_SALLES`) et les convocations ; à l'extérieur, `lieu` (adresse
+   complète). Un match manuel remplace celui de la FFBB de la même équipe le même jour.
+3. La page Matchs affiche **cinq week-ends** : le précédent (« Terminée »), celui de la semaine
+   (« Prochains matchs », affiché par défaut) et les trois suivants (« À venir ») ; elle bascule seule
+   chaque lundi. Chez les jeunes, la FFBB ne publie le calendrier que phase par phase : un week-end
+   au-delà de la phase en cours reste vide jusqu'à la publication de la suivante. Les anciennes lignes de `CONVOCATIONS` et `MATCHS_MANUELS` peuvent être effacées.
+4. Les salles du club sont reconnues grâce à `SALLES_FFBB` (identifiant FFBB → nom de la salle dans
+   `ADRESSES_SALLES`). Une autre salle s'affiche avec le nom donné par la FFBB. Les matchs à domicile
+   sont regroupés par salle, dans l'ordre d'`ADRESSES_SALLES`.
+5. La FFBB écrit les noms des clubs en capitales et sans accents : `NOMS_CLUBS` donne le nom à afficher
+   (« ESPERANCE SPORTIVE DE CROSSAC » → « Espérance Sportive de Crossac ») ; un club absent de la liste
+   est simplement remis en minuscules.
 
 Sur la page Matchs, chacun choisit entre l'affichage **Tableau** et **Cartes** (les cartes sont
 proposées d'office sur téléphone). Rien à régler.
@@ -93,9 +110,17 @@ résultats sont proposés.
   ceux des matchs de l'équipe.
 - Pour forcer une mise à jour : « Actions » → « Données FFBB » → « Run workflow ».
 - Un classement saisi à la main dans `CLASSEMENTS` remplace le classement automatique de l'équipe.
+- Le **calendrier des matchs** (`data/matchs-ffbb.json`) couvre de 3 semaines avant à 6 semaines après
+  chaque mise à jour, pour toutes les équipes reliées dans `EQUIPES_FFBB`. Les équipes sans numéro à la
+  FFBB (U9, micro-basket) n'y sont pas : leurs matchs vont dans `MATCHS_MANUELS`.
+- Les **logos des clubs** (matchs et classements) viennent aussi de la FFBB : la même tâche les
+  enregistre dans `public/logos/` (liste dans `data/logos-ffbb.json`, à ne pas modifier à la main). Pour
+  un match saisi à la main, le logo est retrouvé d'après le nom de l'adversaire : écrivez-le comme à la
+  FFBB (« Carquefou Basket 1 », « Erdre 2 »…). Un club inconnu s'affiche avec ses initiales.
 - La récupération passe par une bibliothèque communautaire (`ffbb-data-client`), pas par un service
   officiel de la FFBB : si elle cesse de fonctionner, GitHub envoie un e-mail d'échec et le site garde
-  simplement les derniers classements et résultats connus.
+  simplement les derniers matchs, classements et résultats connus (les matchs peuvent alors être
+  ajoutés dans `MATCHS_MANUELS`).
 
 ## 4. Les autres mises à jour
 
@@ -109,8 +134,8 @@ résultats sont proposés.
   naissance acceptées (`nesDe`, `nesA`). Le prix d'une semaine complète dépend de sa durée : une
   ligne par durée dans `STAGE_TARIFS` (`jours: 5`, et `jours: 4` pour Noël) ; quelques jours seulement
   sont facturés à la journée, sans dépasser la semaine complète. Les inscriptions s'ouvrent et se ferment seules :
-  celles d'une semaine ferment la veille de son dernier jour à midi (le jeudi à midi pour une semaine
-  du lundi au vendredi, le mercredi à midi pour une semaine du lundi au jeudi). Quand toutes
+  celles d'une semaine ferment la veille de son premier jour à midi (le dimanche à midi pour une
+  semaine qui commence le lundi). Quand toutes
   les semaines d'une période sont passées, sa carte devient grise « Inscriptions fermées » et la
   période suivante s'ouvre, à condition que ses semaines soient saisies (sinon : « Inscriptions à venir »).
 - **Tarifs** (`TARIFS`, `STAGE_TARIFS`) : montants votés par le bureau uniquement.
@@ -128,7 +153,7 @@ résultats sont proposés.
 Où indiquer le chemin : `PHOTOS` (grands bandeaux), `ENCADREMENT` et `BUREAU` (`photo`),
 `PHOTOS_EQUIPES` (une ligne par équipe), `ALBUMS` (`couverture` et `photos`),
 `PARTENAIRES` (`logo`, avec `logoClair: true` pour un logo blanc : il est alors posé sur fond
-bleu nuit), `CATEGORIES` (`image`). Sans photo, le site affiche un motif aux
+bleu nuit). Sans photo, le site affiche un motif aux
 couleurs du club (ou les initiales pour un portrait) : rien n'est cassé.
 
 **Mineurs** : ne publiez que les enfants dont l'autorisation de droit à l'image est « Oui »
@@ -139,7 +164,15 @@ couleurs du club (ou les initiales pour un portrait) : rien n'est cassé.
 Pied de page → **Espace dirigeants** (adresse `/espace-dirigeants`). On s'y connecte avec le mot
 de passe du bureau, défini dans Netlify (variable `ADMIN_PASSWORD`, voir `README.md`).
 
-- Trois onglets : **Inscriptions** (préinscriptions), **Stages**, **Messages** (formulaire de contact).
+- Trois onglets de demandes : **Inscriptions** (préinscriptions), **Stages**, **Messages** (formulaire de
+  contact) ; plus **Convocations** (matchs à domicile, voir § 3) et **À compléter sur le site**.
+- **Adhérents** : la base des licenciés. Déposez (glisser-déposer ou clic) l'export des licences de FBI,
+  « exporterLicenceDonnees.xlsx » : il remplace toute la base. Seuls le prénom et le nom, la date de
+  qualification, la catégorie et l'e-mail sont conservés (les autres colonnes de l'export ne sont pas
+  enregistrées). Recherche par nom ou e-mail, filtre par catégorie. Les colonnes « Entraînement » et
+  « Match » se choisissent dans la liste des équipes du club et s'enregistrent aussitôt (bordure verte) ;
+  elles sont gardées à part, par nom, et survivent donc au dépôt d'un nouvel export. « Supprimer la base » l'efface ; pensez à la supprimer ou à la
+  remplacer en fin de saison.
 - Chaque demande a un numéro (`INS-…`, `STA-…`, `MSG-…`), un statut à tenir à jour
   (À traiter, Confirmé, Liste d'attente, Payé, Refusé) et un bouton **Supprimer**.
 - **Exporter en CSV** ouvre la liste dans Excel.

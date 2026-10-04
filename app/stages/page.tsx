@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/stages" },
 };
 
-// L'ouverture et la fermeture des inscriptions (la veille du dernier jour à midi) suivent l'heure :
+// L'ouverture et la fermeture des inscriptions (la veille du premier jour à midi) suivent l'heure :
 // la page est régénérée toutes les 10 minutes. Le serveur refuse de toute façon une semaine fermée.
 export const revalidate = 600;
 
@@ -64,39 +64,58 @@ export default function Stages() {
           </p>
         </div>
         <div className="grille" style={{ "--min": "260px" } as React.CSSProperties}>
-          {stages.map((s) => (
-            <article key={s.id} className={s.etat === "fermees" ? "carte-stage carte-stage--fermee" : "carte-stage"}>
-              <span className={PASTILLES[s.etat].classe}>{PASTILLES[s.etat].texte}</span>
-              <h3 className="carte-stage__titre">{titreCarte(s.periode)}</h3>
-              <ul className="carte-stage__semaines">
-                {s.semaines.map((w) => (
-                  // Dans une période encore ouverte, une semaine déjà fermée est grisée.
-                  <li key={w.id} className={s.etat === "ouvertes" && w.fermee ? "carte-stage__semaine--fermee" : undefined}>
-                    <div className="carte-stage__ligne">
-                      <strong>{w.nom}</strong>
-                      <span>{w.dates}</span>
-                    </div>
-                    {s.etat === "ouvertes" && w.fermee ? (
-                      <span className="pastille pastille--fermee">Inscriptions fermées</span>
-                    ) : null}
-                    {s.etat === "ouvertes" && !w.fermee && w.cloture ? (
-                      <span className="carte-stage__cloture">Inscriptions jusqu'au {w.cloture}</span>
-                    ) : null}
-                    {"nesDe" in w && w.nesDe ? (
-                      <div className="carte-stage__ligne carte-stage__ligne--public">
-                        <span>
-                          Né(e)s de {w.nesDe} à {w.nesA}
-                        </span>
-                        <span className={w.licenciesFFBB ? "pastille pastille--bleue" : "pastille pastille--orange"}>
-                          {w.licenciesFFBB ? "Licenciés FFBB uniquement" : "Tout public"}
-                        </span>
+          {stages.map((s, i) => {
+            const ouverte = s.etat === "ouvertes";
+            const contenu = (
+              <>
+                <span className={PASTILLES[s.etat].classe}>{PASTILLES[s.etat].texte}</span>
+                <h3 className="carte-stage__titre">{titreCarte(s.periode)}</h3>
+                <ul className="carte-stage__semaines">
+                  {s.semaines.map((w) => (
+                    // Dans une période encore ouverte, une semaine déjà fermée est grisée.
+                    <li key={w.id} className={s.etat === "ouvertes" && w.fermee ? "carte-stage__semaine--fermee" : undefined}>
+                      <div className="carte-stage__ligne">
+                        <strong>{w.nom}</strong>
+                        <span>{w.dates}</span>
                       </div>
-                    ) : null}
-                  </li>
-                ))}
-              </ul>
-            </article>
-          ))}
+                      {s.etat === "ouvertes" && w.fermee ? (
+                        <span className="pastille pastille--fermee">Inscriptions fermées</span>
+                      ) : null}
+                      {s.etat === "ouvertes" && !w.fermee && w.cloture ? (
+                        <span className="carte-stage__cloture">Inscriptions jusqu'au {w.cloture}</span>
+                      ) : null}
+                      {"nesDe" in w && w.nesDe ? (
+                        <div className="carte-stage__ligne carte-stage__ligne--public">
+                          <span>
+                            Né(e)s de {w.nesDe} à {w.nesA}
+                          </span>
+                          <span className={w.licenciesFFBB ? "pastille pastille--bleue" : "pastille pastille--orange"}>
+                            {w.licenciesFFBB ? "Licenciés FFBB uniquement" : "Tout public"}
+                          </span>
+                        </div>
+                      ) : null}
+                    </li>
+                  ))}
+                </ul>
+                {ouverte ? (
+                  <span className="btn btn--m btn--petit btn--orange carte-stage__cta">
+                    S'inscrire <span className="fleche fleche--bas" aria-hidden="true">↓</span>
+                  </span>
+                ) : null}
+              </>
+            );
+            const style = { "--i": i } as React.CSSProperties;
+            // Stage ouvert : toute la carte mène au formulaire d'inscription, plus bas sur la page.
+            return ouverte ? (
+              <a key={s.id} href="#inscription-stage" className="carte-stage carte-stage--ouverte carte-lien" style={style}>
+                {contenu}
+              </a>
+            ) : (
+              <article key={s.id} className={s.etat === "fermees" ? "carte-stage carte-stage--fermee" : "carte-stage"} style={style}>
+                {contenu}
+              </article>
+            );
+          })}
         </div>
       </section>
 
@@ -107,8 +126,8 @@ export default function Stages() {
             <h2 id="tarifs-titre" className="titre-bloc-grand" style={{ fontSize: "clamp(36px, 4vw, 52px)", marginBottom: 20 }}>
               Combien ça coûte
             </h2>
-            {/* Focalisable : sur petit écran, le tableau défile aussi au clavier. */}
-            <div className="defilement" role="region" aria-label="Tarifs des stages" tabIndex={0}>
+            {/* Sur téléphone, chaque formule devient un bloc (trois prix côte à côte) : pas de défilement. */}
+            <div>
               <table className="tableau-tarifs">
                 <thead>
                   <tr>
@@ -122,9 +141,12 @@ export default function Stages() {
                   {STAGE_TARIFS.map((t) => (
                     <tr key={t.formule}>
                       <th scope="row">{t.formule}</th>
-                      <td className="accent">{t.licencies}</td>
-                      <td>{t.carteBlanche}</td>
-                      <td>{t.nonLicencies}</td>
+                      {/* data-label : intitulé de colonne affiché au-dessus du prix sur téléphone. */}
+                      <td className="accent" data-label="Licenciés NBB">
+                        {t.licencies}
+                      </td>
+                      <td data-label="Carte blanche">{t.carteBlanche}</td>
+                      <td data-label="Non-licenciés">{t.nonLicencies}</td>
                     </tr>
                   ))}
                 </tbody>

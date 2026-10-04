@@ -1,0 +1,490 @@
+{
+  "source": "FFBB (application officielle), via ffbb-data-client",
+  "clubs": {
+    "8649": "Nantes Breil Basket",
+    "8752": "Similienne Nantes (équipes CTC)"
+  },
+  "maj": "2026-09-30T09:34:53+00:00",
+  "logos": {
+    "200000002675702": {
+      "nom": "BASKET SUD LOIRE",
+      "logo": "/logos/200000002675702.webp",
+      "image": "9972b4d4-8bce-49b3-b82d-1974508cb069"
+    },
+    "200000002676203": {
+      "nom": "LA PLANCHE VIEILLEVIGNE BASKET",
+      "logo": "/logos/200000002676203.webp",
+      "image": "6191e77c-d2c6-4ba2-a733-f0a34202c7a8"
+    },
+    "200000002676840": {
+      "nom": "ETOILE ANGERS BASKET",
+      "logo": "/logos/200000002676840.webp",
+      "image": "0b79aaa5-1ff3-4abd-a651-db373ab78fc8"
+    },
+    "200000002676861": {
+      "nom": "MOINE BASKET CLUB",
+      "logo": "/logos/200000002676861.webp",
+      "image": "5b90bf7c-fb95-41d9-8a11-23941a3e0b83"
+    },
+    "200000002678208": {
+      "nom": "CHANTONNAY-ST GERMAIN BASKET",
+      "logo": "/logos/200000002678208.webp",
+      "image": "23818318-e85b-44b7-81db-8aa2ee77ab28"
+    },
+    "200000002678249": {
+      "nom": "GARENNES LOIRE BASKET CLUB 49 - GLBC 49.",
+      "logo": "/logos/200000002678249.webp",
+      "image": "a3b19f8f-d6d4-4514-b86d-39134e957fde"
+    },
+    "200000002678845": {
+      "nom": "BASKET CLUB REZE",
+      "logo": "/logos/200000002678845.webp",
+      "image": "32457216-5b54-496d-8922-79950b6ae86e"
+    },
+    "200000002679088": {
+      "nom": "EN - US Pont St Martin / EB Sorinières",
+      "logo": "",
+      "image": ""
+    },
+    "200000002679279": {
+      "nom": "SAINT NAZAIRE BASKET CLUB",
+      "logo": "/logos/200000002679279.webp",
+      "image": "1c3458ee-1f7c-4d68-8f53-c8ce1eb2986f"
+    },
+    "8550": {
+      "nom": "TRELAZE BASKET",
+      "logo": "/logos/8550.webp",
+      "image": "f8197353-2474-4276-9f31-70eaf49ba001"
+    },
+    "8552": {
+      "nom": "AVENIR TREMENTINES BASKET",
+      "logo": "/logos/8552.webp",
+      "image": "0465456e-1c97-4ab3-8d87-4e4d30b6e7d6"
+    },
+    "8616": {
+      "nom": "BASKET CLUB BASSE LOIRE",
+      "logo": "/logos/8616.webp",
+      "image": "3148f461-8274-4b26-9361-67d1bc29ea79"
+    },
+    "8620": {
+      "nom": "REZE BASKET 44",
+      "logo": "/logos/8620.webp",
+      "image": "4b3dc9ad-54a3-4bb4-8fde-2d74912d781c"
+    },
+    "8621": {
+      "nom": "AL CHAUVINIERE",
+      "logo": "/logos/8621.webp",
+      "image": "3972e38e-f8c3-495f-9c94-4fbf784039f3"
+    },
+    "8623": {
+      "nom": "BOUGUENAIS BASKET",
+      "logo": "/logos/8623.webp",
+      "image": "6bba0002-1527-41d6-9112-11f5d0340f1b"
+    },
+    "8624": {
+      "nom": "AL CREMETTERIE ST HERBLAIN",
+      "logo": "/logos/8624.webp",
+      "image": "9e27f14e-71fa-4c44-8767-0e2102133880"
+    },
+    "8626": {
+      "nom": "LES FRECHETS BC ST NAZAIRE",
+      "logo": "/logos/8626.webp",
+      "image": "33a617c1-f11d-4d0f-bf9f-508f770eebc7"
+    },
+    "8627": {
+      "nom": "AL GARENNES NANTES",
+      "logo": "/logos/8627.webp",
+      "image": "71a0a240-57b2-408d-977b-5e5e8b36eac2"
+    },
+    "8630": {
+      "nom": "ALPC MOULIN NANTES BASKET",
+      "logo": "/logos/8630.webp",
+      "image": "3d8f0ca5-f02c-4f3b-8872-82d4f0d44c09"
+    },
+    "8637": {
+      "nom": "NANTES DOULON BASKET",
+      "logo": "/logos/8637.webp",
+      "image": "1666e855-c8b6-4b1c-89f3-90bf4a4e71a1"
+    },
+    "8647": {
+      "nom": "AS SAINT ROGATIEN NANTES",
+      "logo": "/logos/8647.webp",
+      "image": "fa4e3a4a-e96e-43ec-be47-840b44c31024"
+    },
+    "8649": {
+      "nom": "NANTES BREIL BASKET",
+      "logo": "/logos/8649.webp",
+      "image": "e03a1fc4-4067-452b-9db2-58bdec2e7bc4"
+    },
+    "8654": {
+      "nom": "VERTOU BASKET",
+      "logo": "/logos/8654.webp",
+      "image": "c717942e-e8cf-4bec-b08d-6f89fae8a03b"
+    },
+    "8656": {
+      "nom": "EB SORINIERES",
+      "logo": "/logos/8656.webp",
+      "image": "468845ce-e732-4692-89c1-8e8576cdd727"
+    },
+    "8660": {
+      "nom": "OUDON BASKET",
+      "logo": "/logos/8660.webp",
+      "image": "f7a8bbe0-071c-47ac-999d-8661f7514f7d"
+    },
+    "8668": {
+      "nom": "GARS D'HERBAUGES BOUAYE",
+      "logo": "/logos/8668.webp",
+      "image": "03492947-dcb4-488a-9010-30fce218b71a"
+    },
+    "8669": {
+      "nom": "GAZELLES BLINOISES",
+      "logo": "/logos/8669.webp",
+      "image": "8c419eba-6c59-46fa-a765-40020e32bb80"
+    },
+    "8670": {
+      "nom": "SUD RETZ BASKET",
+      "logo": "/logos/8670.webp",
+      "image": "d0562983-58fa-4890-ac1b-d3f335865b29"
+    },
+    "8673": {
+      "nom": "NANTES BASKET HERMINE (NBH)",
+      "logo": "/logos/8673.webp",
+      "image": "5bf0e190-c2a3-4394-a95f-0965eb62baa6"
+    },
+    "8674": {
+      "nom": "MONTBERT GENESTON LE BIGNON B.",
+      "logo": "/logos/8674.webp",
+      "image": "dc024905-ff8d-4038-80b0-544bffbf5e7c"
+    },
+    "8677": {
+      "nom": "ORVAULT SPORTS BASKET",
+      "logo": "/logos/8677.webp",
+      "image": "38a2d801-7052-40e0-8b71-8238a58b54a9"
+    },
+    "8678": {
+      "nom": "PAMPRES VALLETAIS",
+      "logo": "/logos/8678.webp",
+      "image": "16fb3587-6bea-4449-a806-9118935b965d"
+    },
+    "8680": {
+      "nom": "SAINTE LUCE BASKET",
+      "logo": "/logos/8680.webp",
+      "image": "5b52e053-7e9e-4499-81b3-36cb83d46aed"
+    },
+    "8681": {
+      "nom": "RC DONGES",
+      "logo": "/logos/8681.webp",
+      "image": "1910f906-709e-4e42-a192-9e6e0be1ffe5"
+    },
+    "8682": {
+      "nom": "SAINT ANDRE BASKET BALL",
+      "logo": "/logos/8682.webp",
+      "image": "81a0b342-dd38-4163-a0cb-a54710c8096f"
+    },
+    "8689": {
+      "nom": "CHOLTIERE PAULX MER MORTE",
+      "logo": "/logos/8689.webp",
+      "image": "a0fbb8e8-45a5-493b-afa9-de9c97d87bc4"
+    },
+    "8692": {
+      "nom": "BASKET CLUB HERICOIS",
+      "logo": "/logos/8692.webp",
+      "image": "4ee43d5d-2184-41e8-9b56-e9d81e579a12"
+    },
+    "8694": {
+      "nom": "GUERANDE BASKET",
+      "logo": "/logos/8694.webp",
+      "image": "d8602ea3-6d0f-48e9-8a0a-69a954e9af8f"
+    },
+    "8695": {
+      "nom": "CARQUEFOU BASKET",
+      "logo": "/logos/8695.webp",
+      "image": "a473eb3b-e917-4853-bca5-e194c56b5a55"
+    },
+    "8697": {
+      "nom": "GRAND LIEU BASKET",
+      "logo": "/logos/8697.webp",
+      "image": "8f9c5324-c56e-4290-bc2d-6fb5a53c9c21"
+    },
+    "8704": {
+      "nom": "I.B.C. - Indre Basket Club",
+      "logo": "/logos/8704.webp",
+      "image": "fe184b87-209a-4d3d-98f9-adaa1b4a42c8"
+    },
+    "8705": {
+      "nom": "SAINT SEBASTIEN BASKET CLUB",
+      "logo": "/logos/8705.webp",
+      "image": "b6bea7aa-0d3e-4cb4-b8ab-8b6557e74f37"
+    },
+    "8707": {
+      "nom": "BEAUJOIRE BASKET CLUB",
+      "logo": "/logos/8707.webp",
+      "image": "55aa7189-5ac5-4db9-822c-349d42113791"
+    },
+    "8709": {
+      "nom": "UNION DU SILLON BASKET CLUB",
+      "logo": "/logos/8709.webp",
+      "image": "b54363a5-c7fa-43f5-9303-31d287afe594"
+    },
+    "8710": {
+      "nom": "LOIRE & SILLON BASKET CLUB",
+      "logo": "/logos/8710.webp",
+      "image": "5f8a8a31-2462-46c7-b3b4-89e79d756e5f"
+    },
+    "8712": {
+      "nom": "ASPTT NANTES",
+      "logo": "/logos/8712.webp",
+      "image": "f2199448-649d-4e6c-a4a8-1e6c9b30fb7f"
+    },
+    "8718": {
+      "nom": "SAINT BREVIN BASKET CLUB",
+      "logo": "/logos/8718.webp",
+      "image": "90c255c3-4ce7-428e-b46a-46d387eeba48"
+    },
+    "8722": {
+      "nom": "CHABOSSIERE BASKET CLUB",
+      "logo": "/logos/8722.webp",
+      "image": "4e491388-6d1a-465c-aea6-6234ab63e503"
+    },
+    "8725": {
+      "nom": "ABC DES TROIS RIVIERES",
+      "logo": "/logos/8725.webp",
+      "image": "78135ffd-0818-4279-a38a-554bfb24b6ed"
+    },
+    "8726": {
+      "nom": "ES PORNICHET",
+      "logo": "/logos/8726.webp",
+      "image": "c5e0339b-982b-40c9-be81-a7c29586de65"
+    },
+    "8729": {
+      "nom": "ESPERANCE SPORTIVE DE CROSSAC",
+      "logo": "/logos/8729.webp",
+      "image": "d488fde0-918a-4a91-9c7e-252f17a6e6fe"
+    },
+    "8730": {
+      "nom": "ETOILE DE CLISSON BASKET",
+      "logo": "/logos/8730.webp",
+      "image": "c93abbdf-c171-4cd3-a656-929d014f67ae"
+    },
+    "8731": {
+      "nom": "ETOILE SPORTIVE DE COUERON",
+      "logo": "/logos/8731.webp",
+      "image": "4c926adc-2974-483d-8e70-b3d9f260b61d"
+    },
+    "8735": {
+      "nom": "HERBADILLA LA CHEVROLIERE",
+      "logo": "/logos/8735.webp",
+      "image": "59a158ef-058f-4500-8bf1-9b93100af3a6"
+    },
+    "8736": {
+      "nom": "HIRONDELLE BASKET",
+      "logo": "/logos/8736.webp",
+      "image": "b753f85b-b688-4156-a23d-639cb8d4c48e"
+    },
+    "8737": {
+      "nom": "NANTES SULLY BASKET",
+      "logo": "/logos/8737.webp",
+      "image": "9ec12f55-181d-464d-80b1-8f475dfab233"
+    },
+    "8738": {
+      "nom": "BASKET CLUB LOROUX LANDREAU - BC2L",
+      "logo": "/logos/8738.webp",
+      "image": "27641448-959b-4f96-a5be-ca29dad9bc85"
+    },
+    "8741": {
+      "nom": "LES MONTAGNARDS LA MONTAGNE",
+      "logo": "/logos/8741.webp",
+      "image": "f9135f98-5764-4a2e-8bae-a14e1528bb0d"
+    },
+    "8742": {
+      "nom": "NORT SUR ERDRE AC LES TOUCHES BASKET",
+      "logo": "/logos/8742.webp",
+      "image": "86e76a15-b150-4171-9359-870ddb169460"
+    },
+    "8744": {
+      "nom": "PAYS D'ANCENIS BASKET",
+      "logo": "/logos/8744.webp",
+      "image": "17ff337c-cf93-4be1-8adf-a557fe834539"
+    },
+    "8750": {
+      "nom": "JOUE BASKET",
+      "logo": "/logos/8750.webp",
+      "image": "39a6fc18-43ea-43d4-862d-9d1c30965c67"
+    },
+    "8751": {
+      "nom": "SAUTRON BASKET CLUB",
+      "logo": "/logos/8751.webp",
+      "image": "01ff4702-0684-4efe-a9ec-e1b0df776a2b"
+    },
+    "8752": {
+      "nom": "SIMILIENNE NANTES",
+      "logo": "/logos/8752.webp",
+      "image": "f844b21b-4366-467a-90db-dbb9c13d7d9f"
+    },
+    "8753": {
+      "nom": "SPORTING CLUB ORVAULT",
+      "logo": "/logos/8753.webp",
+      "image": "1eeaee39-e22a-4253-a8f6-35a1785006d0"
+    },
+    "8755": {
+      "nom": "SAINT HERBLAIN BASKET CLUB",
+      "logo": "/logos/8755.webp",
+      "image": "369214ad-0357-414c-8fe6-7137e9b5bf09"
+    },
+    "8767": {
+      "nom": "AS HEULINOISE BASKET BALL",
+      "logo": "/logos/8767.webp",
+      "image": "5bae8b24-8f01-4f0a-bb8e-89652e07dcaf"
+    },
+    "8769": {
+      "nom": "ALS PLAISANCE SAINT NAZAIRE",
+      "logo": "/logos/8769.webp",
+      "image": "485a0d70-9099-4092-8323-ef2f00637257"
+    },
+    "8776": {
+      "nom": "GOLF BASKET CLUB HERBLINOIS",
+      "logo": "/logos/8776.webp",
+      "image": "28de0a8c-f7e8-4083-8028-2b893c0b4084"
+    },
+    "8778": {
+      "nom": "ERDRE BASKET CLUB",
+      "logo": "/logos/8778.webp",
+      "image": "ff25cbd9-22fc-4d99-abe6-95e082d1a194"
+    },
+    "8782": {
+      "nom": "AL OUCHE DINIER REZE",
+      "logo": "/logos/8782.webp",
+      "image": "11487d82-8641-449c-ab8e-30bd6f73656c"
+    },
+    "8788": {
+      "nom": "TREILLIERES BASKET CLUB",
+      "logo": "/logos/8788.webp",
+      "image": "ed951b33-121e-4712-bcd0-1311fdf2ba3e"
+    },
+    "8794": {
+      "nom": "AS BRAINS BASKET",
+      "logo": "/logos/8794.webp",
+      "image": "bf970e81-48ea-48bf-ac9b-220915c91a3c"
+    },
+    "8796": {
+      "nom": "BASKET CLUB SUCE/ERDRE",
+      "logo": "/logos/8796.webp",
+      "image": "90f81d1a-2212-4593-a4ad-ad16e21a167d"
+    },
+    "8814": {
+      "nom": "ANDARD BRAIN",
+      "logo": "/logos/8814.webp",
+      "image": "e4071f8c-4a8e-4a52-a2ec-fbd525414825"
+    },
+    "8822": {
+      "nom": "AVRILLE BASKET",
+      "logo": "/logos/8822.webp",
+      "image": "efb64f18-d09b-4fc5-9d23-ebf0db29ae07"
+    },
+    "8832": {
+      "nom": "BRISSAC AUBANCE BASKET",
+      "logo": "/logos/8832.webp",
+      "image": "f4f18f57-e8d8-4124-a1f2-b3f886b742ad"
+    },
+    "8849": {
+      "nom": "CHOLET BASKET",
+      "logo": "/logos/8849.webp",
+      "image": "11be7beb-11b1-4898-9c13-0c7eac7e7097"
+    },
+    "8867": {
+      "nom": "GREZ NEUVILLE",
+      "logo": "/logos/8867.webp",
+      "image": "3b74e3bb-1290-47ba-9148-bb87f836fd9f"
+    },
+    "8889": {
+      "nom": "POMJEANNAIS BASKET CLUB",
+      "logo": "",
+      "image": ""
+    },
+    "8894": {
+      "nom": "PUY SAINT BONNET BASKET",
+      "logo": "/logos/8894.webp",
+      "image": "3eebe04c-7281-4571-b6a5-28d444d9195f"
+    },
+    "8970": {
+      "nom": "US LAVAL BASKET",
+      "logo": "/logos/8970.webp",
+      "image": "d2b794a5-614f-404d-ae92-779dd116f8fe"
+    },
+    "9000": {
+      "nom": "LAVAL FRANCS ARCHERS",
+      "logo": "/logos/9000.webp",
+      "image": "d304c858-ad1e-4e90-a620-ba7c14f40c6f"
+    },
+    "9023": {
+      "nom": "LE MANS SAINT PAVIN",
+      "logo": "/logos/9023.webp",
+      "image": "a53a661a-921c-4746-ae73-bc21a272c238"
+    },
+    "9027": {
+      "nom": "LE MANS C.S.S.G.",
+      "logo": "/logos/9027.webp",
+      "image": "3468eafb-0f2d-44d6-a068-87321b62c02f"
+    },
+    "9029": {
+      "nom": "LE MANS JALT",
+      "logo": "/logos/9029.webp",
+      "image": "1ab5298e-fe0b-4338-9dc2-5c95b30fbc06"
+    },
+    "9036": {
+      "nom": "ST MARS D OUTILLE LES MOUETTES",
+      "logo": "/logos/9036.webp",
+      "image": "15013838-64aa-47e0-b81d-7264ffdaeab9"
+    },
+    "9038": {
+      "nom": "LE MANS A.S.MADELEINE",
+      "logo": "",
+      "image": ""
+    },
+    "9059": {
+      "nom": "LA CHAPELLE ST AUBIN",
+      "logo": "/logos/9059.webp",
+      "image": "5e86f41a-e41c-4956-bb27-4edb30cef5cd"
+    },
+    "9063": {
+      "nom": "BASKET CLUB ROEZEEN",
+      "logo": "/logos/9063.webp",
+      "image": "a530c3fa-de1b-4501-85f1-da966094feb2"
+    },
+    "9093": {
+      "nom": "CHAMBRETAUD SAINT-MALO VENDÉE BASKET",
+      "logo": "/logos/9093.webp",
+      "image": "6c201cbe-5e78-4c75-9316-25b1832db842"
+    },
+    "9115": {
+      "nom": "HERBIERS VENDEE BASKET",
+      "logo": "/logos/9115.webp",
+      "image": "e23f22e0-f0a4-4555-89b2-9f08fdaad776"
+    },
+    "9126": {
+      "nom": "MORTAGNE SUR SEVRE",
+      "logo": "/logos/9126.webp",
+      "image": "9f508afc-5ebe-46c4-945b-c942fd574da8"
+    },
+    "9131": {
+      "nom": "MOUTIERS SUR LAY",
+      "logo": "/logos/9131.webp",
+      "image": "195292c0-984d-42ee-82d6-527a8a1f1b33"
+    },
+    "9144": {
+      "nom": "MONTAIGU VENDEE BASKET CLUB",
+      "logo": "/logos/9144.webp",
+      "image": "3d64b02a-ed3a-4e41-84be-dfc5f945ee53"
+    },
+    "9182": {
+      "nom": "SALLERTAINE BASKET CLUB",
+      "logo": "/logos/9182.webp",
+      "image": "fcd12263-35ea-492b-a791-683a6127265f"
+    },
+    "8935": {
+      "nom": "BASKET CLUB SAINT BARTHELEMY.",
+      "logo": "/logos/8935.webp",
+      "image": "cfbc5b88-837c-4fd0-af2f-88532ab52234"
+    }
+  }
+}

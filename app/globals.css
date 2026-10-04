@@ -42,10 +42,18 @@
   /* En-têtes de page (bandeaux sombres) : mêmes marges et même titre sur toutes les pages. */
   --page-haut: 128px;
   --page-bas: 56px;
+  /* Hauteur commune des en-têtes de page (sur mobile : voir la règle juste après :root). */
+  --hauteur-entete-page: 480px;
   --titre-page: clamp(44px, 6.4vw, 96px);
   --titre-accueil: clamp(48px, 7vw, 108px);
   /* Titres des grandes cartes de l'accueil (réseaux, boutique, écoles, arbitrage). */
   --titre-carte: clamp(32px, 3.4vw, 46px);
+}
+
+@media (max-width: 699px) {
+  :root {
+    --hauteur-entete-page: 500px;
+  }
 }
 
 /* ---------- Base ---------- */
@@ -189,8 +197,10 @@ textarea {
     .pied,
     .menu-mobile,
     .fenetre__tete,
+    .affiche,
     .carte-arbitrage,
     .appel--bleu,
+    .projet,
     .samedi,
     .tarifs-stage,
     .telechargements,
@@ -202,7 +212,8 @@ textarea {
   color: var(--orange);
 }
 
-.surtitre--gris {
+/* Plus précis que la règle des blocs sombres (carte blanche posée sur un bloc sombre). */
+.surtitre.surtitre--gris {
   color: var(--gris);
   margin-bottom: 0;
 }
@@ -551,6 +562,31 @@ textarea {
   mask-image: radial-gradient(ellipse 100% 100% at 100% 0%, #000 38%, transparent 96%);
 }
 
+/* Deux tiers du terrain (en-tête Équipes) : fondu sur toute la moitié gauche, très léger fondu en bas (la ligne à 3 points reste entière). */
+.terrain--angleLarge {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 50%), linear-gradient(to bottom, #000 85%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent 0%, #000 50%), linear-gradient(to bottom, #000 85%, transparent 100%);
+  mask-composite: intersect;
+}
+
+/* En-têtes de page sans photo (TerrainEntete, components/Page.tsx) : sous le menu, à droite ; sur ordinateur, la
+   hauteur montre la raquette jusqu'à la moitié du demi-cercle. */
+.terrain--entete {
+  top: var(--entete);
+  right: 0;
+  width: min(50%, 616px);
+}
+
+/* Mobile : le terrain descend sur toute la hauteur de l'en-tête, 420 px au plus pour garder la même taille sur
+   les en-têtes plus hautes (le côté gauche, en fondu, sort de l'écran). */
+@media (max-width: 699px) {
+  .terrain--entete {
+    width: auto;
+    height: min(calc(100% - var(--entete)), 420px);
+  }
+}
+
 .terrain--raquette {
   -webkit-mask-image: radial-gradient(ellipse 62% 100% at 50% 0%, #000 42%, transparent 100%);
   mask-image: radial-gradient(ellipse 62% 100% at 50% 0%, #000 42%, transparent 100%);
@@ -709,23 +745,6 @@ textarea {
   flex: none;
 }
 
-.entete-site__boutique {
-  display: flex;
-  align-items: center;
-  height: 48px;
-  padding: 0 18px;
-  border-radius: 999px;
-  color: var(--creme);
-  font-size: 14px;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.entete-site__boutique:hover {
-  color: var(--creme);
-  border-color: rgba(247, 166, 25, 0.7);
-}
-
 .entete-site__rejoindre {
   display: flex;
   align-items: center;
@@ -744,10 +763,6 @@ textarea {
 .entete-site__rejoindre:hover {
   background: var(--orange-vif);
   color: var(--nuit);
-}
-
-.entete-site__rejoindre-court {
-  display: none;
 }
 
 .burger {
@@ -780,8 +795,7 @@ textarea {
 }
 
 @media (max-width: 1239px) {
-  .nav-principale,
-  .entete-site__boutique {
+  .nav-principale {
     display: none;
   }
 
@@ -798,16 +812,6 @@ textarea {
 
   .marque__nom {
     display: none;
-  }
-}
-
-@media (max-width: 419px) {
-  .entete-site__rejoindre-long {
-    display: none;
-  }
-
-  .entete-site__rejoindre-court {
-    display: inline;
   }
 }
 
@@ -938,13 +942,6 @@ textarea {
   position: relative;
 }
 
-.pied__terrain {
-  top: 0;
-  right: 0;
-  width: min(64%, 760px);
-  opacity: 0.8;
-}
-
 .pied__inner {
   position: relative;
   max-width: var(--largeur);
@@ -1029,27 +1026,40 @@ textarea {
   border-color: rgba(247, 166, 25, 0.55);
 }
 
-/* Avec un logo : le nom s'aligne à côté, à gauche. */
-.pied__partenaire:has(.pied__partenaire-logo) {
-  text-align: left;
+/* Avec un logo : le logo seul, cliquable, sans cadre autour. */
+.pied__partenaires li:has(.pied__partenaire--logo) {
+  flex: none;
 }
 
+.pied__partenaire--logo {
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.pied__partenaire--logo:hover .pied__partenaire-logo {
+  outline: 2px solid var(--orange);
+  outline-offset: 3px;
+}
+
+/* Tous les logos dans un même carré de 120 px : fond légèrement éclairci pour un logo clair… */
 .pied__partenaire-logo {
   position: relative;
   flex: none;
-  width: 34px;
-  height: 46px;
+  width: 120px;
+  height: 120px;
+  border-radius: 18px;
+  background: rgba(245, 243, 238, 0.08);
 }
 
-/* Logo foncé : posé sur une pastille crème pour rester lisible sur le bleu nuit. */
+.pied__partenaire-logo .photo {
+  padding: 8px;
+}
+
+/* … et pastille crème pour un logo foncé, lisible sur le bleu nuit. */
 .pied__partenaire-logo--fonce {
-  width: 46px;
-  border-radius: 10px;
   background: var(--creme);
-}
-
-.pied__partenaire-logo--fonce .photo {
-  padding: 4px;
 }
 
 .pied__question {
@@ -1060,6 +1070,19 @@ textarea {
   gap: 28px;
   padding-bottom: 48px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Sur mobile : « Nous écrire » et « Lire la FAQ » côte à côte, sur toute la largeur (50/50). */
+@media (max-width: 699px) {
+  .pied__boutons {
+    width: 100%;
+    flex-wrap: nowrap;
+  }
+
+  .pied__boutons .btn {
+    flex: 1 1 0;
+    padding-inline: 12px;
+  }
 }
 
 .pied__question .surtitre {
@@ -1121,18 +1144,6 @@ textarea {
   font-size: 14px;
   line-height: 1.6;
   color: rgba(245, 243, 238, 0.78);
-}
-
-.pied__email {
-  color: var(--orange);
-  font-weight: 600;
-  font-size: 15px;
-  text-decoration: none;
-}
-
-.pied__email:hover {
-  color: var(--orange-vif);
-  text-decoration: underline;
 }
 
 .pied__col {
@@ -1342,13 +1353,27 @@ textarea {
   overflow: hidden;
 }
 
-/* Planning : les filtres chevauchent le bas du bandeau. Club : la photo est collée en bas. */
+/* Planning et Matchs : les filtres chevauchent le bas du bandeau. */
 .entete-page--filtres {
   padding-bottom: calc(var(--page-bas) + 46px);
 }
 
-.entete-page--photo {
-  padding-bottom: 0;
+/* Même hauteur pour toutes les en-têtes de texte (titre et chapô alignés en bas) ; un texte plus long agrandit
+   simplement l'en-tête. Écoles, avec sa photo à côté du texte, garde sa propre hauteur. */
+.entete-page:not(.entete-page--ecoles) {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: var(--hauteur-entete-page);
+}
+
+.entete-page:not(.entete-page--ecoles) > .entete-page__inner {
+  width: 100%;
+}
+
+/* Planning et Matchs : les filtres chevauchent le bas, l'en-tête visible garde la même hauteur. */
+.entete-page--filtres {
+  min-height: calc(var(--hauteur-entete-page) + 46px) !important;
 }
 
 .entete-page__inner {
@@ -1396,6 +1421,23 @@ textarea {
 .hero__photo {
   position: absolute;
   inset: 0;
+}
+
+/* Photo de l'accueil (portrait) : cadrée sur les enfants, en bas du gymnase. */
+.hero__photo .photo {
+  object-position: 50% 68%;
+}
+
+/* Mobile : la photo remplit déjà le cadre en hauteur ; agrandie et dépassant vers le haut (masquée par .hero),
+   les enfants remontent au-dessus des boutons. */
+@media (max-width: 699px) {
+  .hero__photo {
+    top: -30%;
+  }
+
+  .hero__photo .photo {
+    object-position: 72% 68%;
+  }
 }
 
 .hero__voile {
@@ -1528,11 +1570,13 @@ a.badge-label:hover {
 /* Accès rapides */
 
 .acces {
+  position: relative;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   min-height: 112px;
-  padding: 20px 20px 22px;
+  padding: 20px 20px 24px;
   border-radius: 24px;
   background: var(--blanc);
   border: 1px solid var(--bord);
@@ -1577,10 +1621,11 @@ a.badge-label:hover {
 
 /* Nos écoles */
 
+/* École (60 %) et arbitrage (40 %), l'une sous l'autre sous 900 px. */
 .carte-ecole {
   position: relative;
-  flex: 2 1 520px;
-  min-height: 400px;
+  flex: 1 1 calc(60% - 7px);
+  min-height: 330px;
   border-radius: 30px;
   overflow: hidden;
   background: var(--nuit);
@@ -1631,8 +1676,8 @@ a.badge-label:hover {
 
 .carte-arbitrage {
   position: relative;
-  flex: 1 1 320px;
-  min-height: 400px;
+  flex: 1 1 calc(40% - 7px);
+  min-height: 330px;
   border-radius: 30px;
   overflow: hidden;
   background: var(--bleu);
@@ -1641,8 +1686,30 @@ a.badge-label:hover {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 18px;
+  gap: 12px;
   padding: clamp(22px, 2.6vw, 32px);
+}
+
+@media (max-width: 899px) {
+  .carte-ecole,
+  .carte-arbitrage {
+    flex-basis: 100%;
+  }
+}
+
+.carte-arbitrage__bouton {
+  align-self: flex-start;
+}
+
+/* Sur mobile : boutons des cartes École et Arbitrage sur toute la largeur. */
+@media (max-width: 699px) {
+  .carte-ecole__texte .btn {
+    display: flex;
+  }
+
+  .carte-arbitrage__bouton {
+    align-self: stretch;
+  }
 }
 
 .carte-arbitrage:hover {
@@ -1670,7 +1737,7 @@ a.badge-label:hover {
 .etapes-arbitrage li {
   display: flex;
   gap: 14px;
-  padding: 8px 0;
+  padding: 5px 0;
   border-top: 1px solid rgba(245, 243, 238, 0.16);
   font-size: 15px;
 }
@@ -1699,7 +1766,6 @@ a.badge-label:hover {
 }
 
 .reseaux__cote {
-  max-width: 560px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -1712,16 +1778,22 @@ a.badge-label:hover {
   color: var(--gris);
 }
 
+.reseaux__boutons {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
 /* Boutique : même structure et mêmes marges que la carte réseaux, sur l'aplat orange de la charte. */
 .boutique {
   flex: 1 1 340px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   gap: 16px;
   padding: clamp(22px, 2.6vw, 32px);
   border-radius: 30px;
   background: var(--orange);
+  border: 1px solid var(--orange); /* même bordure que la carte réseaux : textes alignés */
   color: var(--nuit);
   text-decoration: none;
 }
@@ -1736,11 +1808,17 @@ a.badge-label:hover {
   color: var(--nuit);
 }
 
+/* Texte juste sous le titre ; le bouton reste en bas de la carte, aligné sur celui de la carte réseaux. */
 .boutique__bas {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 16px;
+}
+
+.boutique__bas .btn {
+  margin-top: auto;
 }
 
 .boutique__bas p {
@@ -1749,14 +1827,30 @@ a.badge-label:hover {
   line-height: 1.6;
 }
 
+/* Sur mobile : boutons des cartes Réseaux et Boutique sur toute la largeur. */
+@media (max-width: 699px) {
+  .reseaux__boutons {
+    grid-template-columns: 1fr;
+  }
+
+  .boutique__bas {
+    align-items: stretch;
+  }
+}
+
 /* Agenda de l'accueil */
 
 .banniere-photo {
   position: relative;
-  height: clamp(220px, 34vw, 460px);
+  height: clamp(147px, 22.7vw, 307px);
   border-radius: 30px;
   overflow: hidden;
   margin-bottom: 56px;
+}
+
+/* Cadrage bas : les enfants plutôt que le haut du gymnase. */
+.banniere-photo .photo {
+  object-position: 50% 72%;
 }
 
 .banniere-photo__voile {
@@ -1770,32 +1864,57 @@ a.badge-label:hover {
   position: absolute;
   left: clamp(18px, 3vw, 32px);
   bottom: clamp(16px, 3vw, 28px);
-  max-width: 760px;
+  right: clamp(18px, 3vw, 32px);
   pointer-events: none;
   font-family: var(--f-titre);
   font-weight: 900;
-  font-size: clamp(30px, 4.4vw, 60px);
+  font-size: clamp(22px, 7vw, 60px);
   line-height: 0.9;
   text-transform: uppercase;
 }
 
+.banniere-photo__texte .ligne {
+  display: block;
+  white-space: nowrap;
+}
+
+/* Deux colonnes de même largeur : agenda (dates sous le titre) et « Le club, c'est vous » (cartes l'une sous l'autre). */
 .agenda-accueil {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 56px 64px;
+}
+
+@media (max-width: 899px) {
+  .agenda-accueil {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.agenda-accueil__agenda {
   display: flex;
-  flex-wrap: wrap;
-  gap: 40px 64px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
 }
 
-.agenda-accueil__cote {
-  flex: 1 1 280px;
-  max-width: 400px;
+.agenda-accueil__agenda .agenda {
+  align-self: stretch;
 }
 
-.agenda-accueil__cote .surtitre {
+.agenda-accueil :is(.agenda-accueil__agenda, .agenda-accueil__aide) > .surtitre {
   margin-bottom: 12px;
 }
 
-.agenda-accueil .agenda {
-  flex: 2 1 520px;
+.agenda-accueil__cartes {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.agenda-accueil__cartes .appel {
+  flex: none;
 }
 
 /* Liste d'agenda (accueil et page Agenda) */
@@ -1903,6 +2022,36 @@ a.badge-label:hover {
   color: rgba(245, 243, 238, 0.65);
 }
 
+/* Accueil : liste resserrée, titre et texte centrés en hauteur sur la date. */
+.agenda--compacte .agenda__item {
+  grid-template-columns: 68px minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+  padding: 12px 0;
+}
+
+.agenda--compacte .agenda__date {
+  height: 76px;
+  gap: 0;
+  border-radius: 14px;
+}
+
+.agenda--compacte .agenda__num {
+  font-size: 32px;
+}
+
+.agenda--compacte .agenda__tete {
+  margin-bottom: 4px;
+}
+
+.agenda--compacte .agenda__titre {
+  font-size: 24px;
+}
+
+.agenda--compacte .agenda__texte {
+  margin-bottom: 0;
+}
+
 .agenda--clair .agenda__item {
   border-top-color: rgba(14, 26, 51, 0.12);
 }
@@ -1927,6 +2076,50 @@ a.badge-label:hover {
 
 .agenda--clair .agenda__titre a:hover {
   color: var(--bleu);
+}
+
+/* Page Agenda : affiche de chaque date au format portrait (flyer A4), à droite ; sous le texte sur mobile. */
+.agenda--affiches .agenda__item {
+  grid-template-columns: 84px minmax(0, 1fr) 160px;
+  gap: 24px;
+  padding: 24px 0;
+}
+
+.agenda__affiche {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 210 / 297;
+  padding: 0;
+  border: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--nuit);
+  box-shadow: 0 12px 28px rgba(10, 23, 51, 0.18);
+}
+
+.agenda__affiche--zoom {
+  cursor: zoom-in;
+}
+
+@media (max-width: 699px) {
+  .agenda--affiches .agenda__item {
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .agenda--affiches .agenda__affiche {
+    grid-column: 2;
+    max-width: 220px;
+  }
+}
+
+/* Affiche agrandie : cadre portrait, l'affiche entière. */
+.fenetre-zoom__cadre.fenetre-zoom__cadre--affiche {
+  width: auto;
+  height: min(calc(100vh - 120px), 900px);
+  max-width: 100%;
+  aspect-ratio: 210 / 297;
 }
 
 /* Portraits (encadrement, bureau) */
@@ -2008,7 +2201,7 @@ a.badge-label:hover {
 
   .acces-grille .acces {
     min-height: 104px;
-    padding: 16px 14px 16px;
+    padding: 16px 14px 18px;
     border-radius: 20px;
   }
 
@@ -2087,6 +2280,13 @@ a.badge-label:hover {
   margin-top: auto;
 }
 
+/* Sur mobile : bouton sur toute la largeur de la carte. */
+@media (max-width: 699px) {
+  .appel__bas .btn {
+    flex: 1 1 100%;
+  }
+}
+
 .appel--bleu,
 .appel--bleu:hover {
   background: var(--bleu);
@@ -2095,61 +2295,6 @@ a.badge-label:hover {
 }
 
 .appel--bleu p {
-  color: rgba(245, 243, 238, 0.85);
-}
-
-/* Catégories d'équipes */
-
-.carte-categorie {
-  position: relative;
-  min-height: 340px;
-  border-radius: 28px;
-  overflow: hidden;
-  background: var(--bleu);
-  color: var(--creme);
-  text-decoration: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-}
-
-.carte-categorie:hover {
-  color: var(--creme);
-}
-
-.carte-categorie__voile {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(0deg, rgba(10, 23, 51, 0.95) 0%, rgba(10, 23, 51, 0.1) 60%);
-}
-
-.carte-categorie__texte {
-  position: relative;
-  padding: 22px;
-}
-
-.carte-categorie__meta {
-  margin-bottom: 8px;
-  font-family: var(--f-mono);
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--orange);
-}
-
-.carte-categorie__titre {
-  margin: 0 0 8px;
-  font-family: var(--f-titre);
-  font-weight: 900;
-  font-size: 36px;
-  line-height: 0.92;
-  text-transform: uppercase;
-}
-
-.carte-categorie__texte p {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.5;
   color: rgba(245, 243, 238, 0.85);
 }
 
@@ -2309,6 +2454,13 @@ a.badge-label:hover {
   line-height: 1.55;
 }
 
+/* Sur mobile : bouton sur toute la largeur de l'encart. */
+@media (max-width: 699px) {
+  .encart-bleu-large .btn {
+    flex: 1 1 100%;
+  }
+}
+
 .note-bleue {
   margin-top: 18px;
   padding: 18px 22px;
@@ -2365,21 +2517,6 @@ a.badge-label:hover {
   border-radius: 18px;
   border: 1.5px dashed rgba(14, 26, 51, 0.2);
   color: var(--gris);
-}
-
-.liste-traits {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.liste-traits li {
-  display: flex;
-  gap: 12px;
-  padding: 10px 0;
-  border-top: 1px solid rgba(14, 26, 51, 0.1);
-  font-size: 15px;
-  line-height: 1.45;
 }
 
 .liste-coches {
@@ -2481,51 +2618,101 @@ a.badge-label:hover {
    Le club
    ========================================================================== */
 
-.annee-geante {
-  position: absolute;
-  right: -6%;
-  top: -22%;
-  font-family: var(--f-titre);
-  font-weight: 900;
-  font-size: clamp(200px, 34vw, 520px);
-  line-height: 0.8;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(245, 243, 238, 0.14);
-  pointer-events: none;
+/* Grande photo du club, juste sous l'en-tête. */
+.club-photo-bloc {
+  padding-top: 48px;
+  padding-bottom: 0;
 }
 
 .club-photo {
   position: relative;
   height: clamp(200px, 26vw, 360px);
-  border-radius: 30px 30px 0 0;
+  border-radius: 30px;
   overflow: hidden;
 }
 
+/* Cadre très large : centré sur les joueuses et l'entraîneur, au milieu du terrain. */
+.club-photo .photo {
+  object-position: 50% 50%;
+}
+
+/* Histoire : titre à gauche, frise verticale (années, pastilles sur un trait) à droite. */
+.histoire {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 32px 64px;
+  align-items: start;
+}
+
+.histoire__tete {
+  position: sticky;
+  top: 110px;
+}
+
 .frise {
+  position: relative;
   margin: 0;
   padding: 0;
   list-style: none;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
-  border-top: 2px solid var(--nuit);
+}
+
+/* Le trait vertical passe par les pastilles. */
+.frise::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  left: 159px;
+  width: 2px;
+  background: var(--bord);
 }
 
 .frise li {
   position: relative;
-  padding: 28px 22px 24px 0;
+  display: grid;
+  grid-template-columns: 136px minmax(0, 1fr);
+  gap: 48px;
+  padding: 0 0 26px;
+}
+
+.frise li:last-child {
+  padding-bottom: 0;
+}
+
+.frise li::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 154px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--creme);
+  border: 2px solid var(--bleu);
+}
+
+.frise li:last-child::before {
+  background: var(--orange);
+  border-color: var(--orange);
 }
 
 .frise__annee {
   font-family: var(--f-titre);
   font-weight: 900;
-  font-size: 48px;
+  font-size: 28px;
   line-height: 1;
+  text-align: right;
+  white-space: nowrap;
   color: var(--bleu);
 }
 
 .frise h3 {
-  margin: 8px 0 6px;
-  font-size: 17px;
+  margin: 2px 0 4px;
+  font-family: var(--f-titre);
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
 .frise p {
@@ -2535,22 +2722,69 @@ a.badge-label:hover {
   color: var(--gris);
 }
 
+@media (max-width: 899px) {
+  .histoire {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .histoire__tete {
+    position: static;
+  }
+
+  .frise::before {
+    left: 5px;
+  }
+
+  .frise li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+    padding-left: 30px;
+  }
+
+  .frise li::before {
+    left: 0;
+  }
+
+  .frise__annee {
+    text-align: left;
+    font-size: 26px;
+  }
+
+  .valeur__numero {
+    font-size: 48px;
+  }
+}
+
+/* Valeurs : trois colonnes numérotées sous un trait ; projet associatif dans un bloc sombre. */
+.valeurs {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 12px 40px;
+}
+
 .valeur {
-  min-height: 220px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 26px;
-  border-radius: 26px;
-  background: var(--bleu);
-  color: var(--creme);
+  padding-top: 18px;
+  border-top: 2px solid var(--nuit);
+}
+
+.valeur__numero {
+  display: block;
+  margin-bottom: 14px;
+  font-family: var(--f-titre);
+  font-weight: 900;
+  font-size: 64px;
+  line-height: 0.85;
+  color: var(--orange-texte);
 }
 
 .valeur h3 {
   margin: 0 0 10px;
   font-family: var(--f-titre);
   font-weight: 900;
-  font-size: 34px;
+  font-size: 32px;
   line-height: 0.95;
   text-transform: uppercase;
 }
@@ -2559,14 +2793,61 @@ a.badge-label:hover {
   margin: 0;
   font-size: 15px;
   line-height: 1.6;
+  color: var(--gris);
+}
+
+/* Sur fond sombre (parcours d'arbitrage, page Écoles). */
+.valeurs--sombre .valeur {
+  border-top-color: rgba(245, 243, 238, 0.4);
+}
+
+.valeurs--sombre .valeur__numero {
+  color: var(--orange);
+}
+
+.valeurs--sombre .valeur p {
+  color: rgba(245, 243, 238, 0.82);
+}
+
+.projet {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  margin-top: 40px;
+  padding: clamp(22px, 3vw, 36px);
+  border-radius: 30px;
+  background: var(--nuit);
+  color: var(--creme);
+}
+
+.projet__bloc {
+  padding: 8px 28px;
+}
+
+.projet__bloc + .projet__bloc {
+  border-left: 1px solid rgba(245, 243, 238, 0.16);
+}
+
+.projet__bloc:first-child {
+  padding-left: 0;
+}
+
+.projet__bloc p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
   color: rgba(245, 243, 238, 0.85);
 }
 
-.grille-bureau {
-  display: grid;
-  gap: 16px;
-  max-width: 1100px;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, max(190px, calc((100% - 32px) / 3))), 1fr));
+@media (max-width: 899px) {
+  .projet__bloc,
+  .projet__bloc:first-child {
+    padding: 16px 0;
+  }
+
+  .projet__bloc + .projet__bloc {
+    border-left: 0;
+    border-top: 1px solid rgba(245, 243, 238, 0.16);
+  }
 }
 
 .comite {
@@ -2604,13 +2885,6 @@ a.badge-label:hover {
   background: rgba(247, 166, 25, 0.1);
   border: 1.5px solid var(--orange);
   color: var(--creme);
-  text-decoration: none;
-}
-
-.commission-recrute:hover {
-  background: rgba(247, 166, 25, 0.18);
-  color: var(--creme);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.3);
 }
 
 .commission-recrute__badge {
@@ -2662,6 +2936,11 @@ a.badge-label:hover {
   border-radius: 26px;
   background: var(--orange);
   color: var(--nuit);
+  text-decoration: none;
+}
+
+.bandeau-orange:hover {
+  color: var(--nuit);
 }
 
 .bandeau-orange p {
@@ -2672,6 +2951,13 @@ a.badge-label:hover {
   font-size: clamp(24px, 2.6vw, 34px);
   line-height: 1;
   text-transform: uppercase;
+}
+
+/* Sur mobile : bouton sur toute la largeur du bandeau. */
+@media (max-width: 699px) {
+  .bandeau-orange .btn {
+    flex: 1 1 100%;
+  }
 }
 
 .commission {
@@ -2714,32 +3000,44 @@ a.badge-label:hover {
   flex: 1.1 1 460px;
 }
 
+/* Photo à la hauteur du texte (l'en-tête reste proche de celle des autres pages). */
 .ecoles-hero__photo {
   position: relative;
-  flex: 1 1 360px;
-  aspect-ratio: 4 / 5;
-  max-height: 500px;
+  flex: 0 1 320px;
+  /* Un peu moins haut que la photo (900 × 1353) : seuls le haut et le bas sont rognés, la largeur reste
+     entière, donc sans agrandissement ni parallaxe (pas de perte de netteté). */
+  aspect-ratio: 3 / 4;
   border-radius: 30px;
   overflow: hidden;
 }
 
-/* Sur téléphone, photo au format paysage : l'en-tête reste compact. */
+/* Mobile : photo en paysage sur toute la largeur, pour ne pas allonger l'en-tête. */
 @media (max-width: 699px) {
   .ecoles-hero__photo {
+    flex-basis: 100%;
     aspect-ratio: 4 / 3;
+  }
+
+  .ecoles-hero__photo .photo {
+    object-position: 50% 38%;
   }
 }
 
+/* Samedi matin : mêmes couleurs que le bloc « projet associatif » de la page Club (bleu nuit, traits fins). */
 .samedi {
   flex: 1.4 1 460px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
   padding: clamp(22px, 3vw, 36px);
   border-radius: 28px;
-  background: var(--bleu);
+  background: var(--nuit);
   color: var(--creme);
 }
 
 .samedi__titre {
-  margin: 0 0 20px;
+  margin: 0;
   font-family: var(--f-titre);
   font-weight: 900;
   font-size: clamp(36px, 4vw, 52px);
@@ -2747,10 +3045,17 @@ a.badge-label:hover {
   text-transform: uppercase;
 }
 
+.samedi .samedi__lieu {
+  margin: 0 0 12px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--orange);
+}
+
 .samedi__liste {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .samedi__groupe {
@@ -2758,30 +3063,37 @@ a.badge-label:hover {
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  gap: 10px;
-  padding: 16px 18px;
-  border-radius: 18px;
-  background: rgba(245, 243, 238, 0.08);
+  gap: 6px 16px;
+  padding: 14px 0;
+  border-top: 1px solid rgba(245, 243, 238, 0.16);
+}
+
+.samedi__groupe:last-child {
+  padding-bottom: 0;
 }
 
 .samedi__groupe strong {
   display: block;
   font-family: var(--f-titre);
+  font-weight: 900;
   font-size: 28px;
+  line-height: 1;
   text-transform: uppercase;
 }
 
-.samedi__groupe span {
+.samedi__naissance {
+  display: block;
+  margin-top: 4px;
   font-size: 14px;
-  color: rgba(245, 243, 238, 0.8);
+  color: rgba(245, 243, 238, 0.85);
 }
 
-.samedi__groupe .samedi__horaire {
-  padding: 8px 14px;
-  border-radius: 999px;
-  background: var(--orange);
-  color: var(--nuit);
-  font-weight: 700;
+.samedi__horaire {
+  font-family: var(--f-titre);
+  font-weight: 900;
+  font-size: 30px;
+  line-height: 1;
+  color: var(--orange);
 }
 
 .cotisation-mini {
@@ -2809,106 +3121,48 @@ a.badge-label:hover {
   line-height: 1.5;
 }
 
+/* Sur mobile : boutons sur toute la largeur de la carte. */
+@media (max-width: 699px) {
+  .cotisation-mini .btn {
+    flex: 1 1 100%;
+  }
+}
+
 .arbitrage {
   position: relative;
   overflow: hidden;
 }
 
-.parcours {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+/* Séances d'arbitrage : carte du samedi matin, en bleu pour se détacher du fond bleu nuit. */
+.samedi--bleu {
+  background: var(--bleu);
 }
 
-.parcours__etape {
-  padding: 24px;
-  border-radius: 24px;
-  background: rgba(245, 243, 238, 0.06);
-  border: 1px solid rgba(245, 243, 238, 0.12);
-}
-
-.parcours__num {
-  font-family: var(--f-titre);
-  font-weight: 900;
-  font-size: 48px;
-  line-height: 1;
-  color: var(--orange);
-}
-
-.parcours__etape h3 {
-  margin: 10px 0 6px;
-  font-size: 18px;
-}
-
-.parcours__etape p {
-  margin: 0;
-  font-size: 15px;
-  line-height: 1.55;
-  color: rgba(245, 243, 238, 0.82);
-}
-
-.parcours__etape--fin {
-  background: var(--orange);
-  border-color: var(--orange);
-  color: var(--nuit);
-}
-
-.parcours__etape--fin .parcours__num,
-.parcours__etape--fin p {
-  color: var(--nuit);
-}
-
-.seances {
-  flex: 1 1 380px;
-  padding: 26px;
-  border-radius: 26px;
-  background: var(--creme);
-  color: var(--encre);
-}
-
-.seances ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.seances li {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 12px 0;
-  border-top: 1px solid rgba(14, 26, 51, 0.12);
-  font-size: 15px;
-}
-
-.seances p {
-  margin: 12px 0 0;
-  font-size: 14px;
-  color: var(--gris);
-}
-
-.objectifs {
-  flex: 1 1 380px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding: 26px;
-  border-radius: 26px;
-  background: rgba(245, 243, 238, 0.06);
-  border: 1px solid rgba(245, 243, 238, 0.12);
-}
-
-.objectifs ul {
+/* Objectifs d'arbitrage, sur la carte orange (même carte que la cotisation mini-basket). */
+.objectifs-liste {
   margin: 0;
   padding: 0;
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 16px;
+}
+
+.objectifs-liste li {
+  padding-top: 12px;
+  border-top: 2px solid var(--nuit);
   font-size: 15px;
   line-height: 1.45;
-  color: rgba(245, 243, 238, 0.88);
+}
+
+.objectifs-liste strong {
+  display: block;
+  margin-bottom: 4px;
+  font-family: var(--f-titre);
+  font-weight: 900;
+  font-size: 30px;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
 /* ==========================================================================
@@ -3109,6 +3363,136 @@ a.badge-label:hover {
   color: var(--gris);
 }
 
+/* Prochain événement à l'arrivée sur le site : présenté comme un flyer. */
+.fenetre--affiche {
+  /* Largeur tirée de la hauteur de l'affiche (format A4 portrait), pour la voir en entier. */
+  --hauteur-affiche: min(56vh, 560px);
+  width: min(calc(100% - 24px), calc(var(--hauteur-affiche) * 210 / 297));
+  max-width: none;
+  background: var(--nuit);
+  color: var(--creme);
+  scrollbar-width: none;
+}
+
+.affiche__photo {
+  position: relative;
+  aspect-ratio: 210 / 297;
+  overflow: hidden;
+  background: var(--nuit);
+}
+
+.affiche__type {
+  position: absolute;
+  z-index: 1;
+  top: 18px;
+  left: 18px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--orange);
+  color: var(--nuit);
+  font-family: var(--f-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.affiche__fermer {
+  position: absolute;
+  z-index: 1;
+  top: 12px;
+  right: 12px;
+  background: rgba(10, 23, 51, 0.55);
+}
+
+.affiche__corps {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  padding: 20px 20px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.affiche__date {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 68px;
+  padding: 8px 0 10px;
+  border-radius: 18px;
+  background: var(--orange);
+  color: var(--nuit);
+  font-family: var(--f-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.3);
+}
+
+.affiche__date strong {
+  font-family: var(--f-titre);
+  font-size: 38px;
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: 0;
+}
+
+.affiche__texte {
+  min-width: 0;
+}
+
+.affiche__texte .surtitre {
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.affiche__titre {
+  margin: 0 0 6px;
+  font-family: var(--f-titre);
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+.affiche__texte p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: rgba(245, 243, 238, 0.85);
+}
+
+.affiche__texte .affiche__lieu {
+  margin-top: 8px;
+  font-size: 13px;
+  color: rgba(245, 243, 238, 0.65);
+}
+
+.affiche__boutons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 18px 20px 20px;
+}
+
+.affiche__boutons .btn {
+  justify-content: center;
+}
+
+/* Téléphone : affiche un peu plus petite pour que tout tienne sans défiler, boutons l'un sous l'autre. */
+@media (max-width: 479px) {
+  .fenetre--affiche {
+    --hauteur-affiche: min(50vh, 560px);
+  }
+
+  .affiche__boutons {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 .classement {
   width: 100%;
   border-collapse: collapse;
@@ -3307,12 +3691,6 @@ a.badge-label:hover {
   color: var(--bleu);
 }
 
-.planning__liens {
-  margin: 0;
-  font-size: 14px;
-  color: var(--gris);
-}
-
 .planning__jour {
   margin-top: 34px;
 }
@@ -3355,14 +3733,34 @@ a.badge-label:hover {
 }
 
 .creneau {
+  position: relative;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 18px 20px;
+  padding: 18px 20px 18px 24px;
   border-radius: 22px;
   background: var(--blanc);
   border: 1px solid var(--bord);
   break-inside: avoid;
+}
+
+/* Liseré orange sur le bord gauche de la carte (créneaux du planning, matchs ; en bas pour les accès rapides). */
+.creneau::before,
+.acces::before,
+.carte-match::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 5px;
+  background: linear-gradient(180deg, var(--orange), rgba(247, 166, 25, 0.6));
+}
+
+.acces::before {
+  inset: auto 0 0 0;
+  width: auto;
+  height: 5px;
+  background: linear-gradient(90deg, var(--orange), rgba(247, 166, 25, 0.6));
 }
 
 .creneau__tete {
@@ -3553,7 +3951,7 @@ a.badge-label:hover {
   font-weight: 600;
 }
 
-.tableau-matchs__adversaire span {
+.tableau-matchs__adversaire .vs {
   color: var(--gris);
   font-weight: 400;
 }
@@ -3561,6 +3959,40 @@ a.badge-label:hover {
 .tableau-matchs__fort {
   font-size: 14px;
   font-weight: 600;
+}
+
+.tableau-matchs__ligne {
+  display: block;
+  white-space: nowrap;
+}
+
+/* Logo d'un club (matchs, classements), sans cadre ; initiales si pas de logo. */
+.logo-club {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+}
+
+.logo-club img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.logo-club__initiales {
+  font-family: var(--f-titre);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--bleu);
+}
+
+/* Nom d'un club précédé de son logo. */
+.avec-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .tableau-matchs__lieu {
@@ -3738,9 +4170,16 @@ a.badge-label:hover {
   color: var(--nuit);
 }
 
-.salle-matchs__adresse {
-  font-size: 14px;
-  color: var(--gris);
+.salle-matchs__nom a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--orange);
+}
+
+.salle-matchs__nom a:hover {
+  color: var(--orange-texte);
 }
 
 .salle-matchs__nb {
@@ -3788,11 +4227,13 @@ a.badge-label:hover {
 }
 
 .carte-match {
+  position: relative;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
-  padding: 16px 18px;
+  padding: 16px 18px 16px 22px;
   border-radius: 20px;
   background: var(--blanc);
   border: 1px solid var(--bord);
@@ -3821,7 +4262,7 @@ a.badge-label:hover {
   line-height: 1.3;
 }
 
-.carte-match__adversaire span {
+.carte-match__adversaire .vs {
   color: var(--gris);
   font-weight: 400;
 }
@@ -4003,10 +4444,9 @@ a.badge-label:hover {
    Stages
    ========================================================================== */
 
+/* Hauteur commune des en-têtes (--hauteur-entete-page), photo en fond. */
 .stages-hero {
-  min-height: 540px;
-  display: flex;
-  align-items: flex-end;
+  align-items: stretch;
 }
 
 .stages-hero__voile {
@@ -4029,6 +4469,23 @@ a.badge-label:hover {
   border-radius: 26px;
   background: var(--blanc);
   border: 1px solid var(--bord);
+}
+
+/* Stage aux inscriptions ouvertes : toute la carte mène au formulaire (bordure orange, bouton en bas). */
+.carte-stage--ouverte {
+  border: 2px solid var(--orange);
+  color: var(--encre);
+  text-decoration: none;
+}
+
+.carte-stage--ouverte:hover {
+  color: var(--encre);
+}
+
+.carte-stage__cta {
+  margin-top: auto;
+  align-self: stretch;
+  justify-content: center;
 }
 
 .carte-stage__titre {
@@ -4158,6 +4615,55 @@ a.badge-label:hover {
   font-family: var(--f-titre);
   font-size: 30px;
   font-weight: 900;
+}
+
+/* Téléphone : une formule par bloc, ses trois prix côte à côte avec leur intitulé. */
+@media (max-width: 699px) {
+  .tableau-tarifs {
+    min-width: 0;
+  }
+
+  .tableau-tarifs thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .tableau-tarifs tbody tr {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px 10px;
+    padding: 14px 0;
+    border-top: 1px solid rgba(245, 243, 238, 0.14);
+  }
+
+  .tableau-tarifs tbody th {
+    grid-column: 1 / -1;
+    padding: 0 0 4px;
+    border: 0;
+  }
+
+  .tableau-tarifs td {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 0;
+    border: 0;
+    text-align: left;
+    font-size: 26px;
+  }
+
+  .tableau-tarifs td::before {
+    content: attr(data-label);
+    font-family: var(--f-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(245, 243, 238, 0.7);
+  }
 }
 
 .tarifs-stage__etiquette {
@@ -4574,6 +5080,55 @@ a.badge-label:hover {
   background: var(--bleu);
   border-color: var(--bleu);
   color: var(--creme);
+}
+
+/* Choix des jours de stage : en ligne sur ordinateur ; sur mobile, « Toute la semaine » sur sa ligne puis une
+   grille façon calendrier, une colonne par jour (--n : nombre de jours), le jour en petit au-dessus de la date. */
+.choix-jours {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.choix:hover:not(.choix--actif) {
+  border-color: var(--bleu);
+}
+
+@media (max-width: 699px) {
+  .choix-jours {
+    display: grid;
+    grid-template-columns: repeat(var(--n, 5), minmax(0, 1fr));
+  }
+
+  .choix-jours .choix--fort {
+    grid-column: 1 / -1;
+  }
+
+  .choix-jours .choix--jour {
+    min-width: 0;
+    height: 62px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+  }
+
+  .choix__jour {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    opacity: 0.75;
+  }
+
+  .choix__num {
+    font-family: var(--f-titre);
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1;
+  }
 }
 
 .total {
@@ -5257,34 +5812,6 @@ a.badge-label:hover {
    Partenaires
    ========================================================================== */
 
-.chiffres-partenaires {
-  margin: 0;
-  max-width: 880px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  border-top: 1px solid rgba(245, 243, 238, 0.16);
-}
-
-.chiffres-partenaires > div {
-  padding: 18px 16px 0 0;
-}
-
-.chiffres-partenaires dt {
-  font-family: var(--f-mono);
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(245, 243, 238, 0.7);
-}
-
-.chiffres-partenaires dd {
-  margin: 4px 0 0;
-  font-family: var(--f-titre);
-  font-weight: 800;
-  font-size: 48px;
-  line-height: 1;
-}
-
 .partenaire {
   display: flex;
   flex-direction: column;
@@ -5301,15 +5828,27 @@ a.badge-label:hover {
   color: var(--encre);
 }
 
+/* Cadre presque carré : le logo entier y garde une bonne taille. */
 .partenaire__logo {
   position: relative;
-  height: 110px;
+  aspect-ratio: 4 / 3;
+  max-height: 260px;
   border-radius: 16px;
   overflow: hidden;
   background: var(--creme);
 }
 
 /* Logo blanc ou clair (logoClair dans data/nbb.ts) : fond bleu nuit. */
+/* Partenaire choisi dans le pied de page : sous l'en-tête collant, et mis en valeur. */
+.partenaire {
+  scroll-margin-top: 110px;
+}
+
+.partenaire:target {
+  outline: 3px solid var(--orange);
+  outline-offset: 4px;
+}
+
 .partenaire__logo--sombre {
   background: var(--nuit);
 }
@@ -5791,6 +6330,240 @@ a.tableau-admin__petit {
   gap: 8px;
 }
 
+/* Espace dirigeants : base des adhérents (dépôt de l'export des licences, recherche, détail). */
+.adherents {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.depot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 28px 20px;
+  border: 2px dashed var(--bord);
+  border-radius: 22px;
+  background: var(--blanc);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+
+.depot strong {
+  font-family: var(--f-titre);
+  font-size: 22px;
+  text-transform: uppercase;
+  color: var(--nuit);
+}
+
+.depot span {
+  max-width: 560px;
+  font-size: 14px;
+  color: var(--gris);
+}
+
+.depot:hover,
+.depot--survol,
+.depot:focus-within {
+  border-color: var(--orange);
+  background: var(--orange-pale);
+}
+
+.adherents__tete {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.adherents__tete p,
+.adherents__compte {
+  margin: 0;
+  font-size: 14px;
+  color: var(--gris);
+}
+
+.adherents__filtres {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 699px) {
+  .adherents__filtres {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Base des adhérents : texte et listes centrés en hauteur sur chaque ligne. */
+.adherents .tableau-admin td {
+  vertical-align: middle;
+}
+
+/* Équipes d'entraînement et de match : liste compacte, bordure selon l'enregistrement. */
+.saisie--equipe {
+  width: auto;
+  min-width: 112px;
+  height: 36px;
+  padding: 0 8px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.saisie--envoi {
+  border-color: var(--gris);
+}
+
+.saisie--ok {
+  border-color: var(--vert);
+}
+
+.saisie--erreur {
+  border-color: var(--rouge);
+}
+
+/* Espace dirigeants : convocations des matchs à domicile (un formulaire par week-end). */
+.convocations {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.convocations__intro {
+  margin: 0;
+  max-width: 760px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--gris);
+}
+
+.convocations__weekend {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: clamp(18px, 2.4vw, 28px);
+  border-radius: 24px;
+  background: var(--blanc);
+  border: 1px solid var(--bord);
+}
+
+.convocations__titre {
+  margin: 0;
+  font-family: var(--f-titre);
+  font-weight: 900;
+  font-size: 28px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.convocations__jour {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.convocations__jour h3 {
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--bleu-pale);
+  font-family: var(--f-titre);
+  font-weight: 800;
+  font-size: 18px;
+  text-transform: uppercase;
+  color: var(--nuit);
+}
+
+.convocation {
+  margin: 0;
+  padding: 12px 0 14px;
+  border: 0;
+  border-bottom: 1px solid var(--bord);
+}
+
+.convocation__match {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin-bottom: 10px;
+  padding: 0;
+  font-size: 15px;
+}
+
+.convocation__match strong {
+  font-family: var(--f-titre);
+  font-size: 22px;
+  color: var(--bleu);
+}
+
+.convocation__salle {
+  font-size: 13px;
+  color: var(--gris);
+}
+
+/* Arbitre 1, Arbitre 2, Table 1, Table 2, OTM sur une ligne (sur deux ou une colonne en plus étroit). */
+.convocation__champs {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.convocation__large {
+  grid-column: span 2;
+  align-self: end;
+}
+
+@media (max-width: 999px) {
+  .convocation__champs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.convocation__champs label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gris);
+}
+
+.convocation__officiels {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 12px;
+  background: var(--bleu-pale);
+  font-size: 14px;
+  color: var(--bleu);
+}
+
+.convocations__bas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+@media (max-width: 699px) {
+  .convocation__champs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .convocation__large {
+    grid-column: auto;
+  }
+
+  .convocations__bas .btn {
+    flex: 1 1 100%;
+  }
+}
+
 /* Espace dirigeants : informations que le site attend encore. */
 .manques {
   display: flex;
@@ -6197,16 +6970,14 @@ a.tableau-admin__petit {
     .hero,
     .banniere-photo,
     .carte-ecole,
-    .club-photo,
-    .ecoles-hero__photo {
+    .club-photo {
       view-timeline: --cadre block;
     }
 
     .hero__photo .photo,
     .banniere-photo .photo,
     .carte-ecole .photo,
-    .club-photo .photo,
-    .ecoles-hero__photo .photo {
+    .club-photo .photo {
       scale: 1.08;
       animation: nbbParallaxe linear both;
       animation-timeline: --cadre;
@@ -6214,17 +6985,30 @@ a.tableau-admin__petit {
     }
   }
 
+  /* Calendrier des stages : à l'arrivée sur la page, les semaines de chaque carte se posent l'une après l'autre,
+     carte par carte (--i : rang de la carte) ; la pastille du stage ouvert bat une fois pour attirer l'œil. */
+  .carte-stage__semaines li {
+    animation: nbbPose 0.45s var(--ease-pose) both;
+    animation-delay: calc(var(--i, 0) * 90ms + 150ms);
+  }
+
+  .carte-stage__semaines li:nth-child(2) {
+    animation-delay: calc(var(--i, 0) * 90ms + 230ms);
+  }
+
+  .carte-stage--ouverte > .pastille {
+    animation: nbbBattement 0.5s ease-out 0.8s;
+  }
+
   /* ---------- 5. Survol : ce qui est cliquable répond ---------- */
 
   /* Cartes-liens : la photo « respire » lentement (en plus du léger soulèvement de la maquette). */
   .carte-ecole .photo,
-  .carte-categorie .photo,
   .equipe__zoom .photo {
     transition: transform 0.8s var(--ease-pose);
   }
 
-  .carte-ecole:hover .photo,
-  .carte-categorie:hover .photo {
+  .carte-ecole:hover .photo {
     transform: scale(1.04);
   }
 
@@ -6232,6 +7016,16 @@ a.tableau-admin__petit {
   .equipe__zoom:hover .photo,
   .equipe__zoom:focus-visible .photo {
     transform: scale(1.03);
+  }
+
+  /* Affiche de l'agenda agrandissable. */
+  .agenda__affiche--zoom .photo {
+    transition: transform 0.8s var(--ease-pose);
+  }
+
+  .agenda__affiche--zoom:hover .photo,
+  .agenda__affiche--zoom:focus-visible .photo {
+    transform: scale(1.04);
   }
 
   /* Flèches : elles avancent d'un cran dans la direction annoncée. */
@@ -6268,6 +7062,15 @@ a.tableau-admin__petit {
     transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s, scale 0.12s;
   }
 
+  /* Jours de stage : le bouton se soulève au survol et « rebondit » quand il est sélectionné. */
+  .choix:hover:not(.choix--actif) {
+    translate: 0 -2px;
+  }
+
+  .choix--actif {
+    animation: nbbBattement 0.3s ease-out;
+  }
+
   .btn:active,
   .choix:active,
   .option:active,
@@ -6291,7 +7094,7 @@ a.tableau-admin__petit {
   .creneau__gymnase strong,
   .lien-orange,
   .tableau-matchs tbody tr {
-    transition: background-color 0.15s, border-color 0.15s, color 0.15s, scale 0.12s;
+    transition: background-color 0.15s, border-color 0.15s, color 0.15s, scale 0.12s, translate 0.15s;
   }
 
   /* FAQ : la question survolée s'éclaire, la réponse se déplie, le « + » devient « − ». */

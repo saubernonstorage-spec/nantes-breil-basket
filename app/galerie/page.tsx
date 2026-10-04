@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ALBUMS } from "@/data/nbb";
 import { EntetePage } from "@/components/Page";
-import { Terrain } from "@/components/Terrain";
 import { Albums } from "@/components/Albums";
 
 export const metadata: Metadata = {
@@ -17,9 +16,6 @@ export default function Galerie() {
       <EntetePage
         fil="Galerie"
         largeurChapo={600}
-        decor={
-          <Terrain motif="cote" style={{ top: "50%", right: 0, height: "112%", transform: "translateY(-50%)" }} />
-        }
         titre={
           <>
             La <span className="accent">galerie</span>

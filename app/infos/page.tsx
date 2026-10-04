@@ -4,7 +4,6 @@ import { FAQ } from "@/data/nbb";
 import { fichesGymnases, gymnasesNantes } from "@/lib/nbb";
 import { enLettres, majuscule } from "@/lib/utils";
 import { EntetePage } from "@/components/Page";
-import { Terrain } from "@/components/Terrain";
 import { Faq, InfosGymnases } from "@/components/InfosGymnases";
 
 export const metadata: Metadata = {
@@ -24,9 +23,6 @@ export default function Infos() {
       <EntetePage
         fil="Infos pratiques"
         largeurChapo={600}
-        decor={
-          <Terrain motif="bout" style={{ right: 0, bottom: 0, width: "min(70%, 820px)", transform: "scaleY(-1)" }} />
-        }
         titre={
           <>
             Où l'on <span className="accent">joue</span>

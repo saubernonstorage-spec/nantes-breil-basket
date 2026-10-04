@@ -154,3 +154,121 @@ export async function changerStatut(table: Table, id: string, statut: string): P
 export async function supprimer(table: Table, id: string): Promise<void> {
   await magasin().supprimer(table, id);
 }
+
+/* ───────── Base des adhérents (export des licences, déposé dans l'Espace dirigeants) ───────── */
+
+const FICHIER_ADHERENTS = path.join(process.cwd(), ".donnees", "adherents.json");
+
+function magasinAdherents(): Store | null {
+  try {
+    return getStore({ name: "nbb-adherents", region: "eu-central-1" });
+  } catch {
+    return null; // hors de Netlify : fichier local
+  }
+}
+
+/** La base des adhérents, ou null si aucun export n'a encore été déposé. */
+export async function lireAdherents<T>(): Promise<T | null> {
+  const store = magasinAdherents();
+  if (store) return (await store.get("base", { type: "json" })) as T | null;
+  try {
+    return JSON.parse(await fs.readFile(FICHIER_ADHERENTS, "utf8")) as T;
+  } catch {
+    return null;
+  }
+}
+
+/** Remplace la base (null : la supprime). */
+export async function ecrireAdherents(base: unknown | null): Promise<void> {
+  const store = magasinAdherents();
+  if (store) {
+    if (base === null) await store.delete("base");
+    else await store.setJSON("base", base);
+    return;
+  }
+  if (base === null) {
+    await fs.rm(FICHIER_ADHERENTS, { force: true });
+    return;
+  }
+  await fs.mkdir(path.dirname(FICHIER_ADHERENTS), { recursive: true });
+  await fs.writeFile(FICHIER_ADHERENTS, JSON.stringify(base), "utf8");
+}
+
+const FICHIER_AFFECTATIONS = path.join(process.cwd(), ".donnees", "affectations.json");
+
+/** Équipes d'entraînement et de match saisies par adhérent (gardées d'un dépôt d'export à l'autre). */
+export async function lireAffectations<T>(): Promise<T | null> {
+  const store = magasinAdherents();
+  if (store) return (await store.get("affectations", { type: "json" })) as T | null;
+  try {
+    return JSON.parse(await fs.readFile(FICHIER_AFFECTATIONS, "utf8")) as T;
+  } catch {
+    return null;
+  }
+}
+
+export async function ecrireAffectations(affectations: unknown): Promise<void> {
+  const store = magasinAdherents();
+  if (store) {
+    await store.setJSON("affectations", affectations);
+    return;
+  }
+  await fs.mkdir(path.dirname(FICHIER_AFFECTATIONS), { recursive: true });
+  await fs.writeFile(FICHIER_AFFECTATIONS, JSON.stringify(affectations), "utf8");
+}
+
+/* ───────── Convocations des matchs (saisies dans l'Espace dirigeants) ───────── */
+
+/** Arbitres, table et OTM d'un match à domicile ; clé : date (AAAA-MM-JJ) et équipe du site. */
+export type ConvocationEnLigne = { date: string; equipe: string; arbitres: string; table: string; otm: string; modifieLe: string };
+
+const FICHIER_CONVOCATIONS = path.join(process.cwd(), ".donnees", "convocations.json");
+const cleConvocation = (date: string, equipe: string) => `convocations/${date}_${equipe}`;
+
+function magasinConvocations(): Store | null {
+  try {
+    return getStore({ name: "nbb-convocations", region: "eu-central-1" });
+  } catch {
+    return null; // hors de Netlify : fichier local
+  }
+}
+
+async function lireFichierConvocations(): Promise<ConvocationEnLigne[]> {
+  try {
+    return JSON.parse(await fs.readFile(FICHIER_CONVOCATIONS, "utf8"));
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Toutes les convocations saisies en ligne. En cas d'erreur de lecture (stockage indisponible, pendant
+ * la construction du site…), une liste vide : la page Matchs garde alors celles de data/nbb.ts.
+ */
+export async function listerConvocations(): Promise<ConvocationEnLigne[]> {
+  try {
+    const store = magasinConvocations();
+    if (!store) return await lireFichierConvocations();
+    const { blobs } = await store.list({ prefix: "convocations/" });
+    const lues = await Promise.all(blobs.map((b) => store.get(b.key, { type: "json" }) as Promise<ConvocationEnLigne | null>));
+    return lues.filter((c): c is ConvocationEnLigne => c !== null);
+  } catch (erreur) {
+    console.error("[stockage] Convocations illisibles :", erreur);
+    return [];
+  }
+}
+
+/** Enregistre (ou efface, si arbitres, table et OTM sont vides) la convocation d'un match. */
+export async function enregistrerConvocation(c: Omit<ConvocationEnLigne, "modifieLe">): Promise<void> {
+  const vide = !c.arbitres && !c.table && !c.otm;
+  const store = magasinConvocations();
+  if (store) {
+    if (vide) await store.delete(cleConvocation(c.date, c.equipe));
+    else await store.setJSON(cleConvocation(c.date, c.equipe), { ...c, modifieLe: new Date().toISOString() });
+    return;
+  }
+  const liste = (await lireFichierConvocations()).filter((x) => !(x.date === c.date && x.equipe === c.equipe));
+  if (!vide) liste.push({ ...c, modifieLe: new Date().toISOString() });
+  await fs.mkdir(path.dirname(FICHIER_CONVOCATIONS), { recursive: true });
+  await fs.writeFile(FICHIER_CONVOCATIONS, JSON.stringify(liste, null, 2), "utf8");
+}

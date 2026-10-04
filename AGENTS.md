@@ -17,6 +17,15 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Classements et résultats : `data/classements-ffbb.json` et `data/resultats-ffbb.json` sont générés chaque nuit (`scripts/donnees_ffbb.py`,
   `.github/workflows/donnees-ffbb.yml`) — ne pas les modifier à la main ; la correspondance avec les
   équipes du site est `EQUIPES_FFBB` (data/nbb.ts), un bloc de `CLASSEMENTS` la remplace pour une équipe.
+  Même tâche pour les logos des clubs (`public/logos/`, `data/logos-ffbb.json`) : `logoClub()` (lib/nbb.ts)
+  les retrouve par identifiant FFBB ou d'après le nom de l'adversaire ; affichage `components/LogoClub.tsx`.
+  Le calendrier des matchs aussi (`data/matchs-ffbb.json`) : `matchsAffiches()` y ajoute les `CONVOCATIONS`
+  (arbitres, table, OTM) et les `MATCHS_MANUELS` (matchs absents de la FFBB) saisis dans data/nbb.ts ;
+  les convocations saisies dans l'Espace dirigeants (onglet « Convocations », `lib/stockage.ts`, Netlify Blobs)
+  l'emportent et régénèrent /matchs (`revalidatePath`).
+  Onglet « Adhérents » : export des licences FFBB (.xlsx) lu par `lib/adherents.ts` (exceljs), stocké dans
+  Netlify Blobs (`nbb-adherents`, clé `base`) ; équipes d'entraînement et de match saisies par adhérent dans la clé
+  `affectations` (par nom, gardées d'un import à l'autre) ; données personnelles envoyées au navigateur seulement dans cet onglet.
 - Ne jamais inventer de tarif, de score, de date ni de nom : laisser `[À COMPLÉTER]`. Ces valeurs ne sont
   jamais affichées : tester avec `aCompleter()` (`lib/utils.ts`) et ne rien rendre ; `manquesDuSite()`
   (`lib/nbb.ts`) les liste dans l'Espace dirigeants (onglet « À compléter »).

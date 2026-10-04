@@ -3,7 +3,6 @@ import Link from "next/link";
 import { CLUB, STATS } from "@/data/nbb";
 import { equipesParCategorie, toutesLesEquipes } from "@/lib/nbb";
 import { EntetePage } from "@/components/Page";
-import { Terrain } from "@/components/Terrain";
 import { BoutonClassement, ZoomPhoto } from "@/components/EquipeFenetres";
 
 export const metadata: Metadata = {
@@ -20,13 +19,12 @@ export default function Equipes() {
     <>
       <EntetePage
         fil={`Équipes · saison ${CLUB.saison}`}
-        decor={<Terrain motif="angle" style={{ top: 0, right: 0, width: "min(50%, 600px)" }} />}
         titre={
           <>
             Nos <span className="accent">équipes</span>
           </>
         }
-        chapo={`${STATS.equipes} équipes engagées en championnat et ${toutesLesEquipes().length} groupes à l'entraînement. Chaque fiche reprend le planning officiel : coachs, créneaux, gymnases et cotisation.`}
+        chapo={`${STATS.equipes} équipes engagées en championnat et ${toutesLesEquipes().length} groupes à l'entraînement. Retrouvez ici la photo d'équipe, son encadrement, ses horaires d'entraînement et son classement.`}
       />
 
       <div className="section" style={{ paddingTop: 24, paddingBottom: 88 }}>
@@ -59,7 +57,7 @@ export default function Equipes() {
                       <h3 className="equipe__libelle">{t.libelle}</h3>
                       {t.coachs ? (
                         <div className="equipe__coach">
-                          Coach : <strong>{t.coachs}</strong>
+                          Encadrement : <strong>{t.coachs}</strong>
                         </div>
                       ) : null}
                     </div>

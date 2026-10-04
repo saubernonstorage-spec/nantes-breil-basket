@@ -3,8 +3,8 @@ import Link from "next/link";
 import { CLUB, PARTENAIRES } from "@/data/nbb";
 import { BandeauCookies, BoutonCookies } from "@/components/Cookies";
 import { Photo } from "@/components/Photo";
-import { Terrain } from "@/components/Terrain";
 import { IconeFacebook, IconeInstagram, IconeWhatsapp, NouvelOnglet } from "@/components/icons";
+import { slug } from "@/lib/utils";
 
 const COLONNES = [
   {
@@ -53,24 +53,22 @@ export function Footer() {
                 <>
                   {p.logo ? (
                     <span className={p.logoClair ? "pied__partenaire-logo" : "pied__partenaire-logo pied__partenaire-logo--fonce"}>
-                      <Photo src={p.logo} alt="" sizes="48px" entiere />
+                      <Photo src={p.logo} alt="" sizes="120px" entiere />
                     </span>
                   ) : null}
-                  <span>{p.nom}</span>
+                  {/* Avec un logo, seul le logo est visible (le nom reste lu par les lecteurs d'écran). */}
+                  <span className={p.logo ? "sr-only" : undefined}>{p.nom}</span>
                 </>
               );
               return (
                 <li key={p.nom}>
-                  {p.site ? (
-                    <a href={p.site} target="_blank" rel="noopener" className="pied__partenaire">
-                      {contenu}
-                      <NouvelOnglet />
-                    </a>
-                  ) : (
-                    <Link href="/partenaires" className="pied__partenaire">
-                      {contenu}
-                    </Link>
-                  )}
+                  {/* Mène à la carte de ce partenaire sur la page Partenaires (lien simple : la carte est bien ciblée et surlignée). */}
+                  <a
+                    href={`/partenaires#partenaire-${slug(p.nom)}`}
+                    className={p.logo ? "pied__partenaire pied__partenaire--logo" : "pied__partenaire"}
+                  >
+                    {contenu}
+                  </a>
                 </li>
               );
             })}
@@ -79,14 +77,13 @@ export function Footer() {
       ) : null}
 
       <div className="pied__corps">
-        <Terrain motif="bout" className="pied__terrain" />
         <div className="pied__inner">
           <div className="pied__question">
             <div>
               <div className="surtitre">Une question ?</div>
               <p className="pied__slogan">On vous répond.</p>
             </div>
-            <div className="rangee rangee--10">
+            <div className="rangee rangee--10 pied__boutons">
               <Link href="/contact" className="btn btn--l btn--orange">
                 Nous écrire
               </Link>
@@ -109,17 +106,13 @@ export function Footer() {
                 </span>
               </div>
               <p className="pied__adresse">
-                Association loi 1901
-                {CLUB.adresse.split("\n").map((ligne) => (
+                {CLUB.adresse.split("\n").map((ligne, n) => (
                   <span key={ligne}>
-                    <br />
+                    {n > 0 ? <br /> : null}
                     {ligne}
                   </span>
                 ))}
               </p>
-              <a href={`mailto:${CLUB.email}`} className="pied__email">
-                {CLUB.email}
-              </a>
               <div className="rangee rangee--8">
                 <a href={CLUB.facebook} target="_blank" rel="noopener" className="reseau reseau--petit">
                   <IconeFacebook />

@@ -1,6 +1,15 @@
 import Link from "next/link";
+import { Terrain } from "@/components/Terrain";
 
-/** En-tête sombre des pages intérieures : fil d'Ariane, grand titre, chapeau. */
+/**
+ * Lignes de terrain communes aux en-têtes de page sans photo : deux tiers du terrain, sous le menu, à droite,
+ * en fondu sur la moitié gauche (styles : .terrain--entete).
+ */
+export function TerrainEntete() {
+  return <Terrain motif="angleLarge" className="terrain--entete" />;
+}
+
+/** En-tête sombre des pages intérieures : fil d'Ariane, grand titre, chapeau ; décor par défaut : TerrainEntete. */
 export function EntetePage({
   fil,
   titre,
@@ -20,12 +29,12 @@ export function EntetePage({
   style?: React.CSSProperties;
   largeurTitre?: number;
   largeurChapo?: number;
-  /** « filtres » : un bloc chevauche le bas de l'en-tête (planning) ; « photo » : photo collée en bas (club). */
-  variante?: "filtres" | "photo";
+  /** « filtres » : un bloc chevauche le bas de l'en-tête (Entraînements, Matchs). */
+  variante?: "filtres";
 }) {
   return (
     <section className={variante ? `entete-page entete-page--${variante}` : "entete-page"} style={style}>
-      {decor}
+      {decor ?? <TerrainEntete />}
       <div className="entete-page__inner">
         <FilAriane page={fil} />
         <h1 className="titre-page" style={largeurTitre ? { maxWidth: largeurTitre } : undefined}>

@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { CATEGORIES, CLUB, COMMISSIONS, ENCADREMENT, PHOTOS, STATS } from "@/data/nbb";
-import { agendaAVenir, categorieDe, chiffresAccueil, CRENEAUX, toutesLesEquipes } from "@/lib/nbb";
-import { aCompleter, enLettres, pluriel } from "@/lib/utils";
+import { CLUB, ENCADREMENT, PHOTOS, STATS } from "@/data/nbb";
+import { agendaAVenir, chiffresAccueil, CRENEAUX } from "@/lib/nbb";
+import { aCompleter, enLettres } from "@/lib/utils";
 import { JsonLdClub } from "@/components/JsonLdClub";
 import { ListeAgenda } from "@/components/ListeAgenda";
 import { Photo } from "@/components/Photo";
@@ -12,15 +12,16 @@ import { IconeFacebook, IconeInstagram, IconeWhatsapp, NouvelOnglet } from "@/co
 // L'agenda n'affiche que les dates à venir : la page est régénérée toutes les heures.
 export const revalidate = 3600;
 
+/** Accès rapides : titres toujours sur deux lignes. */
 const ACCES = [
-  { href: "/planning", titre: "Planning des entraînements", texte: "Par équipe, gymnase ou jour" },
-  { href: "/matchs", titre: "Matchs & convocations", texte: "Horaires, lieux, arbitrage, table" },
-  { href: "/stages", titre: "Stages vacances", texte: "Inscription en ligne" },
-  { href: "/infos", titre: "Gymnases & accès", texte: "Adresses, carte, bus" },
+  { href: "/planning", titre: ["Planning des", "entraînements"], texte: "Par équipe, gymnase ou jour" },
+  { href: "/matchs", titre: ["Matchs &", "convocations"], texte: "Horaires, lieux, arbitrage, table" },
+  { href: "/stages", titre: ["Stages", "vacances"], texte: "Inscription en ligne" },
+  { href: "/infos", titre: ["Gymnases &", "accès"], texte: "Adresses, carte, bus" },
 ];
 
 const ETAPES_ARBITRAGE = [
-  "Découvrir les règles (U15, U18)",
+  "Découvrir les règles",
   "Arbitrer les matchs de jeunes du club",
   "Approfondir : 4 samedis de formation",
   "Devenir arbitre ou OTM officiel",
@@ -43,7 +44,6 @@ function introEncadrement(): string {
 
 export default function Accueil() {
   const agenda = agendaAVenir(5);
-  const equipes = toutesLesEquipes();
 
   return (
     <>
@@ -54,19 +54,14 @@ export default function Accueil() {
           <Photo src={PHOTOS.accueil.src} alt={PHOTOS.accueil.alt} sizes="100vw" prioritaire />
         </div>
         <div aria-hidden="true" className="hero__voile" />
-        <Terrain
-          motif="cote"
-          className="hero__terrain"
-          style={{ top: "50%", right: 0, height: "min(90%, 860px)", transform: "translateY(-50%)" }}
-        />
         <div className="hero__contenu">
           <div className="hero__texte">
             <Link href="/ecoles" className="badge-label">
               <span className="badge-label__etoiles">★★★</span>
-              École Française de Mini-Basket · Label Micro Basket
+              École Française de Mini-Basket
             </Link>
             <h1 id="hero-titre" className="hero__titre">
-              Le basket de quartier, <span className="accent">version grand club.</span>
+              Viens dribbler <span className="accent">dans ton quartier</span>
             </h1>
             <p className="hero__chapo">
               Du micro-basket dès 3 ans aux seniors, {STATS.adherents} adhérents font vivre le basket au cœur de
@@ -101,12 +96,15 @@ export default function Accueil() {
           surtitre="Accès rapides"
           titre="Ce que les familles cherchent"
           id="acces-titre"
-          texte="Horaires, lieux, convocations : l'essentiel à portée de main, avant de partir au gymnase."
         />
         <div className="grille acces-grille" style={{ "--min": "200px" } as React.CSSProperties}>
           {ACCES.map((a) => (
             <Link key={a.href} href={a.href} className="acces carte-lien">
-              <span className="acces__titre">{a.titre}</span>
+              <span className="acces__titre">
+                {a.titre[0]}
+                <br />
+                {a.titre[1]}
+              </span>
               <span className="acces__texte">{a.texte}</span>
             </Link>
           ))}
@@ -125,10 +123,10 @@ export default function Accueil() {
             </div>
             <div className="reseaux__cote">
               <p>
-                Photos de match, rappels du week-end, coulisses des stages : suivez le NBB. Le groupe WhatsApp annonce en
-                premier les changements d'horaire.
+                Suivez le NBB et rejoignez la communauté WhatsApp pour ne rater aucune information.
               </p>
-              <div className="rangee rangee--8">
+              {/* Trois boutons de même largeur sur toute la carte ; l'un sous l'autre sur mobile. */}
+              <div className="reseaux__boutons">
                 <a href={CLUB.instagram} target="_blank" rel="noopener" className="btn btn--s btn--petit btn--orange">
                   <IconeInstagram />
                   Instagram
@@ -151,10 +149,10 @@ export default function Accueil() {
           <a href={CLUB.boutique} target="_blank" rel="noopener" className="boutique carte-lien">
             <div>
               <div className="surtitre">Boutique du club</div>
-              <h2 className="titre-section titre-section--carte">Portons nos couleurs</h2>
+              <h2 className="titre-section titre-section--carte">Commandez en ligne</h2>
             </div>
             <div className="boutique__bas">
-              <p>Maillots, sweats et accessoires aux couleurs du NBB, à commander en ligne.</p>
+              <p>T-shirts, polos, sweats : portons haut les couleurs du club.</p>
               <span className="btn btn--s btn--petit btn--nuit">
                 Voir la boutique <span className="fleche fleche--diag" aria-hidden="true">↗</span>
               </span>
@@ -164,7 +162,7 @@ export default function Accueil() {
         </div>
       </section>
 
-      <section aria-labelledby="agenda-titre" className="bande-sombre" style={{ marginTop: 40 }}>
+      <div className="bande-sombre" style={{ marginTop: 40 }}>
         <div className="section" style={{ paddingTop: 80, paddingBottom: 80 }}>
           <div className="banniere-photo">
             <Photo
@@ -174,26 +172,58 @@ export default function Accueil() {
             />
             <div aria-hidden="true" className="banniere-photo__voile" />
             <div className="banniere-photo__texte">
-              On vient pour le basket, <span className="accent">on reste pour l'ambiance.</span>
+              {/* Toujours sur deux lignes : une ligne par partie de la phrase. */}
+              <span className="ligne">On vient pour le basket,</span>{" "}
+              <span className="ligne accent">on reste pour l'ambiance.</span>
             </div>
           </div>
+          {/* Agenda à gauche (dates sous le titre), appel aux bénévoles et partenaires à droite. */}
           <div className="agenda-accueil">
-            <div className="agenda-accueil__cote">
-              <div className="surtitre">Agenda</div>
-              <h2 id="agenda-titre" className="titre-section titre-section--grand" style={{ marginBottom: 18 }}>
-                Les dates à retenir
-              </h2>
-              <p className="texte-clair">
-                Soirées de match, tournois, Noël du NBB, stages : notez-les, venez encourager, donnez un coup de main.
-              </p>
+            <section aria-labelledby="agenda-titre" className="agenda-accueil__agenda">
+              <div>
+                <div className="surtitre">Agenda</div>
+                <h2 id="agenda-titre" className="titre-section titre-section--grand">
+                  Les dates à retenir
+                </h2>
+              </div>
+              <ListeAgenda dates={agenda} compacte />
               <Link href="/agenda" className="btn btn--petit btn--clair">
                 Tout l'agenda
               </Link>
-            </div>
-            <ListeAgenda dates={agenda} />
+            </section>
+            <section aria-labelledby="aide-titre" className="agenda-accueil__aide">
+              <div className="surtitre">Le club, c'est vous</div>
+              <h2 id="aide-titre" className="titre-section titre-section--grand" style={{ marginBottom: 18 }}>
+                On a besoin de vous
+              </h2>
+              <div className="agenda-accueil__cartes">
+                <Link href="/club#commissions" className="appel carte-lien">
+                  <div className="surtitre surtitre--gris">Parents &amp; bénévoles</div>
+                  <h3 className="appel__titre">Un peu de votre temps, et le club tourne.</h3>
+                  <p>Pas besoin de connaissance particulière, on vous forme.</p>
+                  <div className="appel__bas">
+                    <span className="btn btn--m btn--petit btn--nuit">Proposer votre aide</span>
+                  </div>
+                </Link>
+                <Link href="/partenaires" className="appel appel--bleu carte-lien carte-lien--sombre">
+                  <Terrain
+                    motif="angle"
+                    style={{ right: 0, bottom: 0, width: "min(58%, 360px)", transform: "scaleY(-1)" }}
+                  />
+                  <div className="surtitre relatif">Entreprise &amp; parents</div>
+                  <h3 className="appel__titre relatif">Soutenez le développement du club.</h3>
+                  <p className="relatif">
+                    Partenariat ou mécénat avec reçu fiscal : chaque soutien finance le matériel et l'encadrement.
+                  </p>
+                  <div className="appel__bas relatif">
+                    <span className="btn btn--m btn--petit btn--orange">Devenir partenaire</span>
+                  </div>
+                </Link>
+              </div>
+            </section>
           </div>
         </div>
-      </section>
+      </div>
 
       <section aria-labelledby="vie-titre" className="section">
         <TeteSection grand equilibre surtitre="Nos écoles" titre="Apprendre, arbitrer, grandir" id="vie-titre" />
@@ -214,7 +244,7 @@ export default function Accueil() {
                 Micro-basket, U7, U9 et U11 : notre école de mini-basket est reconnue au plus haut niveau du label de
                 la Fédération. Le club détient aussi le label FFBB Micro Basket.
               </p>
-              <span className="btn btn--m btn--petit btn--creme">Découvrir l'école</span>
+              <span className="btn btn--m btn--petit btn--creme">Découvrir l'école de basket</span>
             </div>
           </Link>
           <Link href="/ecoles#arbitrage" className="carte-arbitrage carte-lien carte-lien--sombre">
@@ -233,7 +263,7 @@ export default function Accueil() {
                 </li>
               ))}
             </ol>
-            <span className="btn btn--m btn--petit btn--orange relatif" style={{ alignSelf: "flex-start" }}>
+            <span className="btn btn--m btn--petit btn--orange relatif carte-arbitrage__bouton">
               Le parcours d'arbitrage
             </span>
           </Link>
@@ -285,72 +315,6 @@ export default function Accueil() {
                   {aCompleter(c.arrivee) ? null : <div className="portrait__detail">{c.arrivee}</div>}
                 </div>
               </article>
-            );
-          })}
-        </div>
-      </section>
-
-      <section aria-labelledby="aide-titre" className="section">
-        <div className="surtitre">Le club, c'est vous</div>
-        <h2 id="aide-titre" className="titre-section titre-section--grand" style={{ marginBottom: 26 }}>
-          On a besoin de vous
-        </h2>
-        <div className="rangee">
-          <Link href="/club#commissions" className="appel carte-lien">
-            <div className="surtitre surtitre--gris">Parents &amp; bénévoles</div>
-            <h3 className="appel__titre">Deux heures de temps en temps, et le club tourne.</h3>
-            <p>
-              Table de marque, bar, déplacements, photos, tournois : {enLettres(COMMISSIONS.length, true)} commissions
-              se partagent le travail. Aucune compétence requise, on vous forme.
-            </p>
-            <div className="appel__bas">
-              <span className="btn btn--m btn--petit btn--nuit">Les commissions</span>
-            </div>
-          </Link>
-          <Link href="/partenaires" className="appel appel--bleu carte-lien carte-lien--sombre">
-            <Terrain
-              motif="angle"
-              style={{ right: 0, bottom: 0, width: "min(58%, 360px)", transform: "scaleY(-1)" }}
-            />
-            <div className="surtitre relatif">Entreprises &amp; particuliers</div>
-            <h3 className="appel__titre relatif">Soutenez le développement du club.</h3>
-            <p className="relatif">
-              Partenariat avec visibilité au gymnase, sur les maillots et en ligne, ou mécénat avec reçu fiscal : chaque
-              soutien finance l'école de basket, le matériel et l'encadrement.
-            </p>
-            <div className="appel__bas relatif">
-              <span className="btn btn--m btn--petit btn--orange">Devenir partenaire</span>
-            </div>
-          </Link>
-        </div>
-      </section>
-
-      <section aria-labelledby="equipes-titre" className="section">
-        <TeteSection grand surtitre="Nos équipes" titre="De 3 ans à… pas de limite" id="equipes-titre" />
-        <div className="grille" style={{ "--min": "260px", gap: 14 } as React.CSSProperties}>
-          {CATEGORIES.map((k) => {
-            const n = equipes.filter((e) => categorieDe(e) === k.cle).length;
-            return (
-              <Link key={k.cle} href={`/equipes#${k.cle}`} className="carte-categorie carte-lien carte-lien--sombre">
-                {k.image ? (
-                  <div className="couvrir">
-                    <Photo src={k.image} alt="" sizes="(max-width: 700px) 100vw, 340px" />
-                  </div>
-                ) : (
-                  <Terrain
-                    motif="raquette"
-                    style={{ top: 0, left: "50%", width: "112%", transform: "translateX(-50%)" }}
-                  />
-                )}
-                <div aria-hidden="true" className="carte-categorie__voile" />
-                <div className="carte-categorie__texte">
-                  <div className="carte-categorie__meta">
-                    {k.ages} · {pluriel(n, "groupe")}
-                  </div>
-                  <h3 className="carte-categorie__titre">{k.nom}</h3>
-                  <p>{k.resume}</p>
-                </div>
-              </Link>
             );
           })}
         </div>

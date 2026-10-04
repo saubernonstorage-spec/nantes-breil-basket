@@ -1,9 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import { Big_Shoulders, Instrument_Sans, JetBrains_Mono } from "next/font/google";
-import { CLUB } from "@/data/nbb";
+import { CLUB, OUVERTURES_BOUTIQUE } from "@/data/nbb";
+import { agendaAVenir } from "@/lib/nbb";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Apparitions } from "@/components/Apparitions";
+import { BoutiqueFermee } from "@/components/BoutiqueFermee";
+import { ProchainEvenement } from "@/components/ProchainEvenement";
 import "./globals.css";
 
 // Polices téléchargées au moment de la construction et servies par le site : aucune requête vers Google.
@@ -59,6 +62,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </main>
         <Footer />
         <Apparitions />
+        <BoutiqueFermee url={CLUB.boutique} ouvertures={OUVERTURES_BOUTIQUE} />
+        {/* Les dates à venir au moment de la construction ; le navigateur choisit la prochaine d'après sa date. */}
+        <ProchainEvenement dates={agendaAVenir()} />
       </body>
     </html>
   );

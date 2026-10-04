@@ -33,3 +33,22 @@ export const DELAI_MINIMUM_MS = 3000;
 export function reponseRobotValide(texte: string): boolean {
   return /^\s*(5|cinq)\s*$/i.test(texte);
 }
+
+/**
+ * Après une validation ratée (navigateur ou serveur) : fait défiler jusqu'au premier champ en erreur, dans l'ordre
+ * de la page, et y place le curseur. Attend que React ait affiché les messages (deux images). Défilement fluide
+ * via scroll-behavior (CSS), coupé si le visiteur a demandé moins d'animations.
+ */
+export function allerPremiereErreur(zone: HTMLElement | null | undefined) {
+  if (!zone) return;
+  requestAnimationFrame(() =>
+    requestAnimationFrame(() => {
+      const el = zone.querySelector<HTMLElement>('[aria-invalid="true"], .erreur:not(:empty), .erreur-globale:not(:empty)');
+      if (!el) return;
+      const bloc = el.closest<HTMLElement>(".champ, .case-bloc, fieldset") ?? el;
+      bloc.scrollIntoView({ block: "center" });
+      const champ = el.matches("input, select, textarea") ? el : bloc.querySelector<HTMLElement>("input, select, textarea, button");
+      champ?.focus({ preventScroll: true });
+    }),
+  );
+}

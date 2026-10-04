@@ -19,7 +19,6 @@ import type {
   Club,
   Commission,
   DateAgenda,
-  Engagement,
   Entraineur,
   EtapeHistoire,
   Gymnase,
@@ -37,7 +36,9 @@ import type {
   Tarif,
   TarifStage,
   BlocTexte,
-  WeekEnd,
+  Convocation,
+  MatchManuel,
+  OuvertureBoutique,
 } from "@/lib/types";
 
 export const CLUB: Club = {
@@ -69,6 +70,13 @@ export const CLUB: Club = {
   reductionImpot: "Réduction d'impôt possible (association loi 1901) [À CONFIRMER : éligibilité]",
 };
 
+/**
+ * Périodes d'ouverture de la boutique en ligne (dates AAAA-MM-JJ, premier et dernier jour inclus).
+ * En dehors de ces périodes, les boutons « Boutique » ouvrent une fenêtre « Boutique fermée » avec la
+ * prochaine ouverture. Liste vide : la boutique est considérée comme toujours ouverte.
+ */
+export const OUVERTURES_BOUTIQUE: OuvertureBoutique[] = [{ debut: "2026-10-20", fin: "2026-11-20" }];
+
 /** Mentions légales (page /mentions-legales). */
 export const MENTIONS = {
   rna: "[À COMPLÉTER]",
@@ -95,8 +103,8 @@ export const LABEL_ECOLE: Chiffre = { valeur: "★★★", label: "label École 
  */
 export const PHOTOS: Record<"accueil" | "accueilEcole" | "accueilVieClub" | "club" | "ecoles" | "stages", Photo> = {
   accueil: {
-    src: "/photos/jeunes-dribble.jpg",
-    alt: "Deux jeunes joueuses et joueurs du NBB enchaînent un exercice de dribble au gymnase",
+    src: "/photos/accueil-mini-basket-gymnase.jpg",
+    alt: "Des enfants du NBB jouent au basket au milieu d'un grand gymnase, sous la charpente et les paniers",
   },
   accueilEcole: {
     src: "/photos/mini-basket-seance.jpg",
@@ -107,8 +115,8 @@ export const PHOTOS: Record<"accueil" | "accueilEcole" | "accueilVieClub" | "clu
     alt: "Une centaine de jeunes licenciés du NBB, bras levés sur les gradins du gymnase, sous la bannière Nantes Breil Basket",
   },
   club: {
-    src: "/photos/club-groupe-jeunes.jpg",
-    alt: "Les jeunes licenciés du NBB réunis sous la bannière du club",
+    src: "/photos/club-entrainement-jeunes.jpg",
+    alt: "Un entraîneur du NBB donne des consignes à un groupe de jeunes joueuses réunies au centre du terrain",
   },
   ecoles: {
     src: "/photos/mini-basket-coach.jpg",
@@ -120,89 +128,103 @@ export const PHOTOS: Record<"accueil" | "accueilEcole" | "accueilVieClub" | "clu
   },
 };
 
-/** Agenda du club — le plus proche en premier. Les dates passées disparaissent seules. lieu : "" pour ne rien afficher. */
+/**
+ * Agenda du club — le plus proche en premier. Les dates passées disparaissent seules. lieu : "" pour ne rien afficher.
+ * affiche : flyer ou affiche de la date, au format portrait (A4, 210 × 297), montré sur la page Agenda (agrandissable)
+ * et dans la fenêtre « prochain événement » qui s'ouvre à l'arrivée sur le site (une fois par visite) ; chemin dans
+ * public/ (ex. "/photos/affiche-noel.jpg"). Une image d'un autre format est recadrée pour remplir le cadre.
+ */
 export const AGENDA: DateAgenda[] = [
   { date: "2026-09-26", jour: "Sam", num: "26", mois: "sept", titre: "Soirée grillades & match RM2", texte: "Premier match à domicile de l'équipe fanion (SM1, 20 h 30).", lieu: "Gymnase Joël Paon · NBB vs Moine Basket", type: "Soirée" },
-  { date: "2026-10-19", jour: "Lun", num: "19", mois: "oct", titre: "Stages d'automne", texte: "Deux semaines de stage, du 19 au 30 octobre.", lieu: "", type: "Stage", lien: "/stages" },
-  { date: "2026-11-11", jour: "Mer", num: "11", mois: "nov", titre: "Tournoi jeunes", texte: "Tournoi du club pour les équipes U9 à U13.", lieu: "Gymnases Joël Paon et Similienne", type: "Tournoi" },
-  { date: "2026-11-21", jour: "Sam", num: "21", mois: "nov", titre: "Soirée burgers & derby RM2", texte: "Un burger, des tribunes pleines, le derby contre Rezé.", lieu: "NBB vs Basket Club Rezé", type: "Soirée" },
-  { date: "2026-12-12", jour: "Sam", num: "12", mois: "déc", titre: "Noël du NBB", texte: "Animations et jeux pour les enfants l'après-midi.", lieu: "Gymnase Joël Paon", type: "Fête" },
-  { date: "2027-05-06", jour: "Jeu", num: "6", mois: "mai", titre: "Challenge Éric Canonnet", texte: "Challenge U11M Élite entre seize équipes.", lieu: "Joël Paon, Similienne, Breil et Coubertin", type: "Tournoi" },
+  { date: "2026-11-11", jour: "Mer", num: "11", mois: "nov", titre: "Tournoi jeunes", texte: "Tournoi du club pour les équipes U9 à U13.", lieu: "Gymnases Joël Paon et Similienne", type: "Tournoi", affiche: "/photos/affiche-tournoi-jeunes-2026.webp" },
+  { date: "2026-11-21", jour: "Sam", num: "21", mois: "nov", titre: "Soirée burgers", texte: "Un burger, des tribunes pleines, le derby RM2 contre Rezé.", lieu: "NBB vs Basket Club Rezé", type: "Soirée", affiche: "/photos/club-gymnase-groupe.jpg" },
+  { date: "2026-12-12", jour: "Sam", num: "12", mois: "déc", titre: "Noël du NBB", texte: "Animations et jeux pour les enfants l'après-midi.", lieu: "Gymnase Joël Paon", type: "Fête", affiche: "/photos/club-groupe-jeunes.jpg" },
+  { date: "2027-05-06", jour: "Jeu", num: "6", mois: "mai", titre: "Challenge Éric Canonnet", texte: "Challenge U11M Élite entre seize équipes.", lieu: "Joël Paon, Similienne, Breil et Coubertin", type: "Tournoi", affiche: "/photos/affiche-challenge-eric-canonnet-2027.webp" },
 ];
 
 /**
- * MATCHS PAR WEEK-END + CONVOCATIONS (arbitres, table de marque, OTM).
- * Un bloc par week-end, dans l'ordre chronologique. samedi : date du samedi (AAAA-MM-JJ).
- * Un week-end encore vide (domicile et exterieur vides) s'affiche « à venir ».
- * table : équipe qui fournit 2 joueur·ses pour la table de marque.
- * Adresses des salles à domicile : ADRESSES_SALLES ci-dessous.
+ * MATCHS DU WEEK-END. La liste des matchs (date, heure, adversaire, salle) vient chaque nuit de la FFBB
+ * (data/matchs-ffbb.json, à ne pas modifier) : ici, on ne saisit que ce que la FFBB ne connaît pas.
+ *
+ * CONVOCATIONS : arbitres, table de marque et OTM des matchs à domicile, repérés par la date du match
+ * (AAAA-MM-JJ) et l'équipe. Plusieurs noms : séparés par des virgules. table : « 2 × U11F2 » = l'équipe
+ * qui fournit 2 joueur·ses. Un match à domicile sans convocation affiche « — » et est signalé dans
+ * l'Espace dirigeants (onglet « À compléter »). Les anciennes lignes peuvent être effacées.
  */
-export const WEEKENDS: WeekEnd[] = [
-  {
-    titre: "Week-end du 26 & 27 septembre 2026", semaine: "Semaine 39", samedi: "2026-09-26",
-    domicile: [
-      { salle: "Joël Paon", equipe: "U11M1", jour: "Sam. 26", heure: "13h30", adversaire: "Carquefou Basket 1", arbitres: "Paul P., Hugo C.", table: "2 × U11F2", otm: "Clément M." },
-      { salle: "Joël Paon", equipe: "U11F2", jour: "Sam. 26", heure: "14h45", adversaire: "Chabossière Basket Club 2", arbitres: "Paul P., Hugo C.", table: "2 × U11M1", otm: "Clément M." },
-      { salle: "Joël Paon", equipe: "U13F1", jour: "Sam. 26", heure: "16h00", adversaire: "ALPC Moulin Nantes Basket 1", arbitres: "Dorian N., Bastien T.", table: "2 × U11F2", otm: "Hugo B." },
-      { salle: "Joël Paon", equipe: "U18HPB", jour: "Sam. 26", heure: "18h00", adversaire: "Erdre 2", arbitres: "Officiels", table: "2 × U13F1", otm: "Hugo B." },
-      { salle: "Joël Paon", equipe: "SM1", jour: "Sam. 26", heure: "20h30", adversaire: "Moine Basket Club 1", arbitres: "Officiels", table: "Clara J., Inès A.", otm: "—" },
-      { salle: "Joël Paon", equipe: "U18F2", jour: "Dim. 27", heure: "09h00", adversaire: "Saint-Herblain Basket Club 2", arbitres: "Tadeusz P., Yannick D.", table: "2 × U15F1", otm: "Clément M." },
-      { salle: "Joël Paon", equipe: "U15F1", jour: "Dim. 27", heure: "11h00", adversaire: "ES Pornichet 1", arbitres: "Officiels", table: "2 × U18F2", otm: "Clément M." },
-      { salle: "Similienne", equipe: "U13HPB", jour: "Dim. 27", heure: "09h00", adversaire: "ABC des Trois Rivières 1", arbitres: "—", table: "—", otm: "—" },
-      { salle: "Breil Malville", equipe: "U11M2", jour: "Sam. 26", heure: "13h30", adversaire: "Bouguenais Basket 2", arbitres: "Abdel Y., Arthur G.", table: "2 × U18M2", otm: "Romane P." },
-      { salle: "Breil Malville", equipe: "U18M2", jour: "Sam. 26", heure: "14h45", adversaire: "EB Sorinières 1", arbitres: "Abdel Y.", table: "2 × U15M3", otm: "Romane P." },
-      { salle: "Breil Malville", equipe: "U15M3", jour: "Sam. 26", heure: "16h45", adversaire: "AL Garennes Nantes 2", arbitres: "Jonathan-Enzo L., Léo C.", table: "2 × U18M2", otm: "Romane P." },
-    ],
-    exterieur: [
-      { equipe: "U9M1", jour: "Sam. 26", heure: "12h30", adversaire: "Carquefou Basket", lieu: "Rue Louis Armand, 44470 Carquefou" },
-      { equipe: "U11F1", jour: "Sam. 26", heure: "13h00", adversaire: "Orvault Sports Basket 1", lieu: "14 rue du Raffuneau, 44700 Orvault" },
-      { equipe: "U13M3", jour: "Sam. 26", heure: "13h50", adversaire: "Saint-Herblain Basket Club 2", lieu: "15 bis rue Théophile Guillou, 44800 Saint-Herblain" },
-      { equipe: "U13F2", jour: "Sam. 26", heure: "14h15", adversaire: "Orvault Sports Basket 2", lieu: "14 rue du Raffuneau, 44700 Orvault" },
-      { equipe: "U15M2", jour: "Sam. 26", heure: "15h00", adversaire: "Vertou Basket 2", lieu: "Allée de la Vigne de Pâques, 44120 Vertou" },
-      { equipe: "U13M2", jour: "Sam. 26", heure: "17h45", adversaire: "Bouguenais Basket 2", lieu: "Rue de la Neustrie, 44340 Bouguenais" },
-      { equipe: "U15F2", jour: "Sam. 26", heure: "18h00", adversaire: "Orvault Sports Basket 2", lieu: "14 rue du Raffuneau, 44700 Orvault" },
-      { equipe: "U18M3", jour: "Sam. 26", heure: "18h30", adversaire: "Nantes Sully Basket 3", lieu: "Rue Henri Cochard, 44000 Nantes" },
-      { equipe: "U15HPB", jour: "Dim. 27", heure: "09h45", adversaire: "Hirondelle Basket 1", lieu: "Route Félix Praud, 44450 Saint-Julien-de-Concelles" },
-      { equipe: "U11M3", jour: "Dim. 27", heure: "11h00", adversaire: "Bouguenais Basket", lieu: "Rue de la Neustrie, 44340 Bouguenais" },
-      { equipe: "SF2", jour: "Dim. 27", heure: "13h15", adversaire: "Erdre Basket Club 2", lieu: "Boulevard du Gesvres, 44240 La Chapelle-sur-Erdre" },
-      { equipe: "SM3", jour: "Dim. 27", heure: "15h30", adversaire: "Golf Basket Club Herblinois 2", lieu: "Avenue de l'Angevinière, 44800 Saint-Herblain" },
-      { equipe: "SM2", jour: "Dim. 27", heure: "16h15", adversaire: "IBC Indre Basket Club 2", lieu: "7 rue de l'Allier, 44610 Indre" },
-      { equipe: "SF1", jour: "Dim. 27", heure: "17h45", adversaire: "Orvault Sports Basket 2", lieu: "14 rue du Raffuneau, 44700 Orvault" },
-    ],
-  },
-  {
-    titre: "Week-end du 3 & 4 octobre 2026", semaine: "Semaine 40", samedi: "2026-10-03",
-    domicile: [
-      { salle: "Joël Paon", equipe: "U9M1", jour: "Sam. 3", heure: "13h30", adversaire: "Similienne Nantes", arbitres: "Gregoire A., Theodore F.", table: "2 × U11M2", otm: "Hugo B." },
-      { salle: "Joël Paon", equipe: "U11M2", jour: "Sam. 3", heure: "14h30", adversaire: "Beaujoire Basket Club 2", arbitres: "2 × U18F2", table: "2 × U11M1", otm: "Hugo B." },
-      { salle: "Joël Paon", equipe: "U11M1", jour: "Sam. 3", heure: "15h45", adversaire: "Rezé Basket 44 - 1", arbitres: "Theodore F., Basile D.", table: "2 × U11M2", otm: "Clément M." },
-      { salle: "Joël Paon", equipe: "U11F2", jour: "Sam. 3", heure: "17h00", adversaire: "Gars d'Herbauges Bouaye 2", arbitres: "Hugo T., Jean-Baptiste H.", table: "2 × U11M1", otm: "Clément M." },
-      { salle: "Joël Paon", equipe: "U18F2", jour: "Sam. 3", heure: "18h15", adversaire: "Chabossière Basket Club 2", arbitres: "Jean-Baptiste H., Hugo T.", table: "2 × SM3", otm: "Clément M." },
-      { salle: "Joël Paon", equipe: "SM3", jour: "Sam. 3", heure: "20h30", adversaire: "Saint-Herblain Basket Club 2", arbitres: "Bastien G., Clara P.", table: "—", otm: "—" },
-      { salle: "Joël Paon", equipe: "U13F1", jour: "Dim. 4", heure: "09h00", adversaire: "Étoile Sportive de Couëron 1", arbitres: "Theodore F., Ninon T.", table: "Haskel M.", otm: "—" },
-      { salle: "Joël Paon", equipe: "U15M2", jour: "Dim. 4", heure: "10h45", adversaire: "ASPTT Nantes 2", arbitres: "—", table: "2 × U13F1", otm: "Clément M." },
-      { salle: "Joël Paon", equipe: "SM2", jour: "Dim. 4", heure: "13h15", adversaire: "AS Heulinoise Basket Ball 1", arbitres: "Clara J., Maiwenn T.", table: "Rahmalla S., Axel G.", otm: "—" },
-      { salle: "Joël Paon", equipe: "SF1", jour: "Dim. 4", heure: "15h30", adversaire: "Espérance Sportive de Crossac 2", arbitres: "—", table: "El-Ambasse B., Charlely Q.", otm: "—" },
-      { salle: "Joël Paon", equipe: "SF2", jour: "Dim. 4", heure: "17h45", adversaire: "Basket Club Rezé 2", arbitres: "Ines A., Clara R.", table: "Amélia F.", otm: "—" },
-    ],
-    exterieur: [
-      // Horaire non communiqué sur la feuille du week-end (signalé par un avertissement) : à compléter.
-      { equipe: "U11F1", jour: "Sam. 3", heure: "[À COMPLÉTER]", adversaire: "ASPTT Nantes", lieu: "38 rue Appert, 44100 Nantes" },
-      { equipe: "U11M3", jour: "Sam. 3", heure: "12h15", adversaire: "ALPC Moulin Nantes Basket 2", lieu: "20 rue du Coudray, 44000 Nantes" },
-      { equipe: "U13M2", jour: "Sam. 3", heure: "14h00", adversaire: "Basket Club Basse Loire 1", lieu: "Rue Pierre Mendès France, 44640 Saint-Jean-de-Boiseau" },
-      { equipe: "U13M3", jour: "Sam. 3", heure: "16h30", adversaire: "Similienne Nantes 2", lieu: "26 bis rue des Hauts-Pavés, 44000 Nantes" },
-      { equipe: "U15F1", jour: "Sam. 3", heure: "18h00", adversaire: "Espérance Sportive de Crossac", lieu: "Impasse des Petits Matelots, 44160 Crossac" },
-      { equipe: "U18M3", jour: "Sam. 3", heure: "18h30", adversaire: "AL Chauvinière 2", lieu: "4 rue des Renards, 44300 Nantes" },
-      { equipe: "U15M3", jour: "Sam. 3", heure: "18h30", adversaire: "Nantes Sully Basket 1", lieu: "Rue Henri Cochard, 44000 Nantes" },
-      { equipe: "SM1", jour: "Sam. 3", heure: "20h30", adversaire: "Avrillé Basket 1", lieu: "Avenue de la Ronde, 49240 Avrillé" },
-      { equipe: "U13F2", jour: "Dim. 4", heure: "10h00", adversaire: "Nantes Sully Basket", lieu: "Rue Henri Cochard, 44000 Nantes" },
-      { equipe: "U18F1", jour: "Dim. 4", heure: "11h00", adversaire: "Herbadilla La Chevrolière 1", lieu: "Rue du Stade, 44118 La Chevrolière" },
-      { equipe: "U15F2", jour: "Dim. 4", heure: "11h00", adversaire: "Treillières Basket Club 3", lieu: "Rue Simone de Beauvoir, 44119 Treillières" },
-      { equipe: "U18M2", jour: "Dim. 4", heure: "11h15", adversaire: "Sautron Basket Club 1", lieu: "Rue de la Forêt, 44880 Sautron" },
-    ],
-  },
-  { titre: "Week-end du 10 & 11 octobre 2026", semaine: "Semaine 41", samedi: "2026-10-10", domicile: [], exterieur: [] },
+export const CONVOCATIONS: Convocation[] = [
+  // Week-end du 26 & 27 septembre
+  { date: "2026-09-26", equipe: "U11M1", arbitres: "Paul P., Hugo C.", table: "2 × U11F2", otm: "Clément M." },
+  { date: "2026-09-26", equipe: "U11F2", arbitres: "Paul P., Hugo C.", table: "2 × U11M1", otm: "Clément M." },
+  { date: "2026-09-26", equipe: "U13F1", arbitres: "Dorian N., Bastien T.", table: "2 × U11F2", otm: "Hugo B." },
+  { date: "2026-09-26", equipe: "U18HPB", arbitres: "Officiels", table: "2 × U13F1", otm: "Hugo B." },
+  { date: "2026-09-26", equipe: "SM1", arbitres: "Officiels", table: "Clara J., Inès A.", otm: "—" },
+  { date: "2026-09-26", equipe: "U11M2", arbitres: "Abdel Y., Arthur G.", table: "2 × U18M2", otm: "Romane P." },
+  { date: "2026-09-26", equipe: "U18M2", arbitres: "Abdel Y.", table: "2 × U15M3", otm: "Romane P." },
+  { date: "2026-09-26", equipe: "U15M3", arbitres: "Jonathan-Enzo L., Léo C.", table: "2 × U18M2", otm: "Romane P." },
+  { date: "2026-09-27", equipe: "U18F2", arbitres: "Tadeusz P., Yannick D.", table: "2 × U15F1", otm: "Clément M." },
+  { date: "2026-09-27", equipe: "U15F1", arbitres: "Officiels", table: "2 × U18F2", otm: "Clément M." },
+  { date: "2026-09-27", equipe: "U13HPB", arbitres: "—", table: "—", otm: "—" },
+  // Week-end du 3 & 4 octobre
+  { date: "2026-10-03", equipe: "U11M2", arbitres: "2 × U18F2", table: "2 × U11M1", otm: "Hugo B." },
+  { date: "2026-10-03", equipe: "U11M1", arbitres: "Theodore F., Basile D.", table: "2 × U11M2", otm: "Clément M." },
+  { date: "2026-10-03", equipe: "U11F2", arbitres: "Hugo T., Jean-Baptiste H.", table: "2 × U11M1", otm: "Clément M." },
+  { date: "2026-10-03", equipe: "U18F2", arbitres: "Jean-Baptiste H., Hugo T.", table: "2 × SM3", otm: "Clément M." },
+  { date: "2026-10-03", equipe: "SM3", arbitres: "Bastien G., Clara P.", table: "—", otm: "—" },
+  { date: "2026-10-04", equipe: "U13F1", arbitres: "Theodore F., Ninon T.", table: "Haskel M.", otm: "—" },
+  { date: "2026-10-04", equipe: "U15M2", arbitres: "—", table: "2 × U13F1", otm: "Clément M." },
+  { date: "2026-10-04", equipe: "SM2", arbitres: "Clara J., Maiwenn T.", table: "Rahmalla S., Axel G.", otm: "—" },
+  { date: "2026-10-04", equipe: "SF1", arbitres: "—", table: "El-Ambasse B., Charlely Q.", otm: "—" },
+  { date: "2026-10-04", equipe: "SF2", arbitres: "Ines A., Clara R.", table: "Amélia F.", otm: "—" },
 ];
+
+/**
+ * Matchs absents de la FFBB (plateaux U9, matchs amicaux…) : à domicile, indiquer salle (nom d'une salle
+ * d'ADRESSES_SALLES) et les convocations ; à l'extérieur, lieu (adresse complète).
+ */
+export const MATCHS_MANUELS: MatchManuel[] = [
+  { date: "2026-09-26", equipe: "U9M1", heure: "12h30", adversaire: "Carquefou Basket", lieu: "Rue Louis Armand, 44470 Carquefou" },
+  { date: "2026-10-03", equipe: "U9M1", heure: "13h30", adversaire: "Similienne Nantes", salle: "Joël Paon", arbitres: "Gregoire A., Theodore F.", table: "2 × U11M2", otm: "Hugo B." },
+];
+
+/**
+ * Nom affiché des clubs adverses : la FFBB les écrit en capitales et sans accents. Clé = nom FFBB sans
+ * numéro d'équipe (voir data/matchs-ffbb.json) ; un club absent de la liste est simplement remis en
+ * minuscules (« SAINT BREVIN BASKET CLUB » → « Saint Brevin Basket Club »).
+ */
+export const NOMS_CLUBS: Record<string, string> = {
+  "ABC DES TROIS RIVIERES": "ABC des Trois Rivières",
+  "AL CHAUVINIERE": "AL Chauvinière",
+  "AL GARENNES NANTES": "AL Garennes Nantes",
+  "ALPC MOULIN NANTES BASKET": "ALPC Moulin Nantes Basket",
+  "AS HEULINOISE BASKET BALL": "AS Heulinoise Basket Ball",
+  "ASPTT NANTES": "ASPTT Nantes",
+  "AVRILLE BASKET": "Avrillé Basket",
+  "BASKET CLUB BASSE LOIRE": "Basket Club Basse Loire",
+  "BASKET CLUB REZE": "Basket Club Rezé",
+  "BEAUJOIRE BASKET CLUB": "Beaujoire Basket Club",
+  "BOUGUENAIS BASKET": "Bouguenais Basket",
+  "CARQUEFOU BASKET": "Carquefou Basket",
+  "CHABOSSIERE BASKET CLUB": "Chabossière Basket Club",
+  "EB SORINIERES": "EB Sorinières",
+  "ERDRE BASKET CLUB": "Erdre Basket Club",
+  "ES PORNICHET": "ES Pornichet",
+  "ESPERANCE SPORTIVE DE CROSSAC": "Espérance Sportive de Crossac",
+  "ETOILE SPORTIVE DE COUERON": "Étoile Sportive de Couëron",
+  "GARS D'HERBAUGES BOUAYE": "Gars d'Herbauges Bouaye",
+  "GOLF BASKET CLUB HERBLINOIS": "Golf Basket Club Herblinois",
+  "HERBADILLA LA CHEVROLIERE": "Herbadilla La Chevrolière",
+  "HIRONDELLE BASKET": "Hirondelle Basket",
+  "I.B.C. - Indre Basket Club": "IBC Indre Basket Club",
+  "MOINE BASKET CLUB": "Moine Basket Club",
+  "NANTES SULLY BASKET": "Nantes Sully Basket",
+  "ORVAULT SPORTS BASKET": "Orvault Sports Basket",
+  "REZE BASKET 44": "Rezé Basket 44",
+  "SAINT HERBLAIN BASKET CLUB": "Saint-Herblain Basket Club",
+  "SAUTRON BASKET CLUB": "Sautron Basket Club",
+  "SIMILIENNE NANTES": "Similienne Nantes",
+  "TREILLIERES BASKET CLUB": "Treillières Basket Club",
+  "VERTOU BASKET": "Vertou Basket",
+};
 
 /**
  * Salles où le club reçoit, avec leur adresse. Sur la page Matchs, les matchs à domicile sont
@@ -214,12 +236,19 @@ export const ADRESSES_SALLES: Record<string, string> = {
   "Similienne": "26 bis rue des Hauts-Pavés, Nantes",
 };
 
+/** Identifiant FFBB de chaque salle du club (data/matchs-ffbb.json → « salles ») → son nom ci-dessus. */
+export const SALLES_FFBB: Record<string, string> = {
+  "35000000932": "Joël Paon",
+  "200000002674239": "Breil Malville",
+  "200000002672993": "Similienne",
+};
+
 /** Encadrement technique (d'après le planning). Complétez les diplômes et l'arrivée au club. */
 export const ENCADREMENT: Entraineur[] = [
   { prenom: "Clément", nom: "", role: "Entraîneur salarié", photo: "/photos/coachs/clement.png", diplomes: [{ nom: "BPJEPS" }, { nom: "DETB" }], arrivee: "Au club depuis 2022" },
   { prenom: "Romane", nom: "", role: "Entraîneure salariée", photo: "/photos/coachs/romane.jpg", diplomes: [{ nom: "L3 STAPS" }], arrivee: "Au club depuis 2026" },
   { prenom: "Hugo", nom: "", role: "Entraîneur salarié", photo: "/photos/coachs/hugo.jpg", diplomes: [{ nom: "BPJEPS" }, { nom: "DETB" }], arrivee: "Au club depuis 2025" },
-  { prenom: "Célia", nom: "", role: "Entraîneure apprentie", photo: "/photos/coachs/celia.jpg", diplomes: [{ nom: "En formation Négociateur technico-commercial" }], arrivee: "Au club depuis 2025" },
+  { prenom: "Célia", nom: "", role: "Entraîneure apprentie", photo: "/photos/coachs/celia.jpg", diplomes: [{ nom: "BPJEPS" }], arrivee: "Au club depuis 2025" },
 ];
 
 /** Bureau. photo : chemin d'un portrait dans public/photos/ (ex. "/photos/bureau/sebastien.jpg"), ou "". */
@@ -238,7 +267,7 @@ export const COMITE: MembreComite[] = [
   { nom: "Arnaud Le Bras", detail: "Commission tournois" },
   { nom: "Frédéric Ringeard", detail: "Commission trésorerie" },
   { nom: "Sami Saoudi", detail: "Commission sponsoring" },
-  { nom: "Jessica Baranowksy", detail: "Bénévole · trésorerie, communication" },
+  { nom: "Jessica Baranowksi", detail: "Trésorerie, communication" },
 ];
 
 /** Commissions : les bénévoles qui font tourner le club. recrute: true = mise en avant « On recrute ». */
@@ -275,12 +304,7 @@ export const VALEURS: BlocTexte[] = [
 export const PROJET: BlocTexte[] = [
   { titre: "Projet club", texte: "Garantir l'accès au basket pour tous, dans les meilleures conditions d'accueil, avec des équipes jeunes au niveau régional pour assurer une continuité jusqu'aux seniors." },
   { titre: "Projet sportif", texte: "Construire dès les U9 une identité de jeu collective et dynamique, et accompagner la formation des entraîneurs et des arbitres." },
-  { titre: "Organisation", texte: "Une vision à 4 ou 5 saisons : des groupes par niveau pour que chacun progresse à son rythme, et des effectifs anticipés pour garder des groupes équilibrés." },
-];
-
-export const ENGAGEMENTS: Engagement[] = [
-  { titre: "Joueurs et joueuses", points: ["Assiduité aux entraînements et aux matchs", "Ponctualité, et prévenir le coach en cas d'absence", "Respect des coachs, adversaires, arbitres et officiels", "Répondre aux convocations d'arbitrage et de table de marque", "Soutenir les autres équipes du NBB"] },
-  { titre: "Parents", points: ["Vérifier la présence du coach avant de laisser son enfant", "Participer aux déplacements selon l'organisation prévue", "Laver les maillots à tour de rôle", "Encourager dans un esprit positif et respectueux", "Donner un coup de main à la vie du club (bar, évènements…)"] },
+  { titre: "Organisation", texte: "Des groupes par niveau pour que chacun progresse à son rythme, et des effectifs anticipés pour garder des groupes équilibrés." },
 ];
 
 /**
@@ -380,18 +404,26 @@ export const GYMNASES: Gymnase[] = [
 
 /**
  * Partenaires (pied de page et page Partenaires).
- * logo : chemin d'un logo dans public/photos/partenaires/ (ex. "/photos/partenaires/emmatitia.png"), ou "".
+ * logo : chemin d'un logo dans public/photos/partenaires/ (ex. "/photos/partenaires/emmatitia-photographe.png"), ou "".
  * logoClair : true pour un logo blanc ou clair (posé sur fond bleu nuit) ; sinon, il est posé sur fond crème.
  * site : adresse du site du partenaire (le lien s'ouvre dans un nouvel onglet), facultatif.
+ * adresse : adresse du commerce (affichée à la place de la ville), facultative.
  */
 export const PARTENAIRES: Partenaire[] = [
   {
     nom: "Atelier photo Emmatitia",
     activite: "Atelier photo",
     ville: "Nantes",
-    logo: "/photos/partenaires/emmatitia.png",
+    logo: "/photos/partenaires/emmatitia-photographe.png",
     logoClair: true,
     site: "https://emmatitia.fr/",
+  },
+  {
+    nom: "Boulangerie Verte",
+    activite: "Boulangerie bio, pains spéciaux",
+    ville: "Nantes",
+    adresse: "8 rue des Hauts-Pavés, Nantes",
+    logo: "/photos/partenaires/boulangerie-verte.png",
   },
 ];
 export const OFFRE_PARTENARIAT: OffrePartenariat[] = [
@@ -403,7 +435,7 @@ export const OFFRE_PARTENARIAT: OffrePartenariat[] = [
 /**
  * STAGES DES VACANCES (zone B), dans l'ordre du calendrier.
  * Les inscriptions s'ouvrent et se ferment seules d'après les dates : celles d'une semaine ferment la veille
- * de son dernier jour à midi (le jeudi à midi) ; quand toutes les semaines d'une période sont fermées, la période
+ * de son premier jour à midi (le dimanche à midi) ; quand toutes les semaines d'une période sont fermées, la période
  * s'affiche « Inscriptions fermées » et la suivante s'ouvre, dès que ses semaines (avec debut) sont saisies.
  * debut : date du lundi (AAAA-MM-JJ) — sert à proposer l'inscription à la journée (lundi → vendredi)
  * et à calculer la fermeture des inscriptions.
@@ -418,8 +450,7 @@ export const STAGES: Stage[] = [
     ] },
   { id: "noel-2026", periode: "Stages de Noël",
     semaines: [
-      { id: "noel-s1", nom: "Semaine 1", dates: "Du 21 au 24 décembre", debut: "2026-12-21", fin: "2026-12-24", nesDe: 2012, nesA: 2019, licenciesFFBB: true },
-      { id: "noel-s2", nom: "Semaine 2", dates: "Du 28 au 31 décembre", debut: "2026-12-28", fin: "2026-12-31", nesDe: 2012, nesA: 2020, licenciesFFBB: false },
+      { id: "noel-s1", nom: "Semaine 1", dates: "Du 21 au 24 décembre", debut: "2026-12-21", fin: "2026-12-24", nesDe: 2012, nesA: 2020, licenciesFFBB: false },
     ] },
   { id: "hiver-2027", periode: "Stages d'hiver",
     semaines: [
@@ -549,10 +580,10 @@ export const SLOTS: LigneCreneau[] = [
 ];
 
 export const CATEGORIES: Categorie[] = [
-  { cle: "mini", nom: "École de mini-basket", ages: "3 à 10 ans", resume: "Micro-basket, U7, U9 et U11 : l'école labellisée 3 étoiles.", image: "/photos/mini-basket-gymnase-zoom.jpg" },
-  { cle: "jeunes", nom: "Jeunes", ages: "11 à 17 ans", resume: "U13, U15 et U18, du championnat départemental à l'accès région (groupes CTC).", image: "/photos/jeunes-dribble.jpg" },
-  { cle: "seniors", nom: "Seniors", ages: "18 ans et +", resume: "Deux équipes féminines et trois masculines, dont l'équipe fanion en RM2.", image: "" },
-  { cle: "loisirs", nom: "Loisirs", ages: "Adultes", resume: "Basket détente en autonomie, deux soirs par semaine aux Dervallières.", image: "" },
+  { cle: "mini", nom: "École de mini-basket", ages: "3 à 10 ans", resume: "Micro-basket, U7, U9 et U11 : l'école labellisée 3 étoiles." },
+  { cle: "jeunes", nom: "Jeunes", ages: "11 à 17 ans", resume: "U13, U15 et U18, du championnat départemental à l'accès région (groupes CTC)." },
+  { cle: "seniors", nom: "Seniors", ages: "18 ans et +", resume: "Deux équipes féminines et trois masculines, dont l'équipe fanion en RM2." },
+  { cle: "loisirs", nom: "Loisirs", ages: "Adultes", resume: "Basket détente en autonomie, deux soirs par semaine aux Dervallières." },
 ];
 
 /** Années de naissance des groupes de micro-basket. */

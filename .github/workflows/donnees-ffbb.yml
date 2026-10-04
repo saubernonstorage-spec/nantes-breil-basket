@@ -1,7 +1,7 @@
-# Classements et résultats FFBB des équipes du NBB : récupérés chaque nuit (scripts/donnees_ffbb.py).
-# S'ils ont changé, data/classements-ffbb.json et data/resultats-ffbb.json sont mis à jour sur main :
-# Netlify republie le site. Si la FFBB ne répond pas, la tâche échoue sans rien modifier et le site
-# garde les dernières données.
+# Classements, résultats, calendrier des matchs et logos des clubs FFBB : récupérés chaque nuit
+# (scripts/donnees_ffbb.py). S'ils ont changé, les fichiers data/*-ffbb.json et public/logos/ sont mis
+# à jour sur main : Netlify republie le site. Si la FFBB ne répond pas, la tâche échoue sans rien
+# modifier et le site garde les dernières données.
 # Lancement manuel : onglet « Actions » du dépôt → « Données FFBB » → « Run workflow ».
 name: Données FFBB
 
@@ -33,18 +33,18 @@ jobs:
       - name: Installer la bibliothèque FFBB
         run: pip install -r scripts/requirements-ffbb.txt
 
-      - name: Récupérer les classements et les résultats
+      - name: Récupérer les classements, les résultats et les logos
         run: python scripts/donnees_ffbb.py
 
       - name: Publier si les données ont changé
         run: |
-          if git diff --quiet -- data/classements-ffbb.json data/resultats-ffbb.json; then
+          git add data/classements-ffbb.json data/resultats-ffbb.json data/matchs-ffbb.json data/logos-ffbb.json public/logos
+          if git diff --cached --quiet; then
             echo "Aucun changement."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/classements-ffbb.json data/resultats-ffbb.json
-          git commit -m "Classements et résultats FFBB mis à jour"
+          git commit -m "Données FFBB mises à jour (classements, résultats, matchs, logos)"
           git pull --rebase
           git push

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { CLUB, MENTIONS } from "@/data/nbb";
 import { aCompleter } from "@/lib/utils";
 import { BoutonCookies } from "@/components/Cookies";
-import { FilAriane } from "@/components/Page";
+import { FilAriane, TerrainEntete } from "@/components/Page";
 
 export const metadata: Metadata = {
   title: "Mentions légales et confidentialité",
@@ -15,6 +15,7 @@ export default function Mentions() {
   return (
     <>
       <section className="entete-page">
+        <TerrainEntete />
         <div className="entete-page__inner" style={{ maxWidth: 900 }}>
           <FilAriane page="Informations légales" />
           <h1 className="titre-page" style={{ margin: 0 }}>

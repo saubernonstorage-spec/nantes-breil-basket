@@ -68,13 +68,14 @@ lib/consentement.ts    choix du visiteur sur les contenus externes (carte, résu
 app/                   une page par dossier, layout, styles, actions serveur des formulaires
 components/            en-tête, pied de page, bandeau cookies, planning, matchs, formulaires…
 public/                logo, image de partage, photos (public/photos/), lignes de terrain (public/terrain/)
-data/*-ffbb.json       classements et résultats FFBB des équipes (générés, ne pas modifier à la main)
+data/*-ffbb.json       classements, résultats, calendrier des matchs et logos FFBB (générés, ne pas modifier)
+public/logos/          logos des clubs (générés, WebP 160 px)
 scripts/donnees_ffbb.py récupération de ces données (Python, bibliothèque ffbb-data-client)
 .github/workflows/     tâche GitHub quotidienne qui lance ce script et publie les changements
 NOTICE.md              mode d'emploi pour les bénévoles
 ```
 
-Les **classements** et les **résultats** sont récupérés chaque nuit par GitHub Actions (`donnees-ffbb.yml`), grâce à la
+Les **classements**, les **résultats**, le **calendrier des matchs** et les **logos des clubs** sont récupérés chaque nuit par GitHub Actions (`donnees-ffbb.yml`), grâce à la
 bibliothèque communautaire `ffbb-data-client` (non officielle). En local :
 `pip install -r scripts/requirements-ffbb.txt` puis `python scripts/donnees_ffbb.py`.
 

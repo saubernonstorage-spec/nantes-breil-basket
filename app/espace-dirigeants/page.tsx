@@ -1,12 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { emailConfigure } from "@/lib/email";
-import { manquesDuSite, type ManqueSite } from "@/lib/nbb";
+import { manquesDuSite, matchsAConvoquer, toutesLesEquipes, type ManqueSite } from "@/lib/nbb";
 import { slug } from "@/lib/utils";
 import { accesConfigure, estConnecte } from "@/lib/session";
-import { lister, STATUTS, TABLES, type Demande, type Table } from "@/lib/stockage";
+import type { Affectations, BaseAdherents } from "@/lib/adherents";
+import { lireAdherents, lireAffectations, lister, listerConvocations, STATUTS, TABLES, type Demande, type Table } from "@/lib/stockage";
 import { Connexion, Deconnexion, Statut, Supprimer } from "@/components/dirigeants/Dirigeants";
+import { Adherents } from "@/components/dirigeants/Adherents";
+import { Convocations } from "@/components/dirigeants/Convocations";
 import { TableauStages } from "@/components/dirigeants/TableauStages";
+import { TerrainEntete } from "@/components/Page";
 
 export const metadata: Metadata = {
   title: "Espace dirigeants",
@@ -17,6 +21,10 @@ const ONGLETS: Record<Table, string> = { inscriptions: "Inscriptions", stages: "
 const TITRES: Record<Table, string> = { inscriptions: "Joueur / joueuse", stages: "Enfant", contacts: "Nom" };
 /** Onglet de la liste des informations encore à fournir pour le site. */
 const A_COMPLETER = "a-completer";
+/** Onglet de saisie des convocations (arbitres, table, OTM) des matchs à domicile. */
+const CONVOCATIONS = "convocations";
+/** Onglet de la base des adhérents (export des licences). */
+const ADHERENTS = "adherents";
 
 /** Informations à fournir, regroupées par bloc (entraîneurs, mentions légales…). */
 function parSection(manques: ManqueSite[]) {
@@ -38,8 +46,26 @@ export default async function EspaceDirigeants({ searchParams }: { searchParams:
   const connecte = configure && (await estConnecte());
   const demande = (await searchParams).onglet;
   const voirManques = demande === A_COMPLETER;
+  const voirConvocations = demande === CONVOCATIONS;
+  const voirAdherents = demande === ADHERENTS;
+  const autreOnglet = voirManques || voirConvocations || voirAdherents;
   const onglet: Table = TABLES.includes(demande as Table) ? (demande as Table) : "inscriptions";
-  const manques = connecte ? manquesDuSite() : [];
+  const enLigne = connecte ? await listerConvocations() : [];
+  const manques = connecte ? manquesDuSite(enLigne) : [];
+  const aConvoquer = connecte ? matchsAConvoquer(enLigne) : null;
+  let adherents: BaseAdherents | null = null;
+  let affectations: Affectations = {};
+  if (connecte) {
+    try {
+      adherents = await lireAdherents<BaseAdherents>();
+      // Base importée avant la réduction à nom, (qualification,) catégorie et e-mail : à redéposer.
+      const champs = ["nom", "qualification", "categorie", "email"];
+      if (adherents && !adherents.adherents.every((a) => typeof a.nom === "string" && Object.keys(a).every((k) => champs.includes(k)))) adherents = null;
+      if (voirAdherents) affectations = (await lireAffectations<Affectations>()) ?? {};
+    } catch (e) {
+      console.error("[dirigeants] Base des adhérents illisible :", e);
+    }
+  }
 
   let listes: Record<Table, Demande[]> | null = null;
   let erreur = "";
@@ -57,6 +83,7 @@ export default async function EspaceDirigeants({ searchParams }: { searchParams:
   return (
     <>
       <section className="entete-page">
+        <TerrainEntete />
         <div className="entete-page__inner dirigeants-tete">
           <div>
             <div className="surtitre" style={{ marginBottom: 12 }}>
@@ -68,7 +95,8 @@ export default async function EspaceDirigeants({ searchParams }: { searchParams:
           </div>
           <p className="texte-clair" style={{ maxWidth: 520, margin: 0, fontSize: 14 }}>
             Les demandes reçues par le site : préinscriptions, stages et messages. Chaque demande a un numéro, un statut,
-            et s'exporte en CSV pour Excel. L'onglet « À compléter » liste les informations que le site attend encore.
+            et s'exporte en CSV pour Excel. « Convocations » : arbitres, table et OTM des matchs à domicile. L'onglet
+            « À compléter » liste les informations que le site attend encore.
           </p>
         </div>
       </section>
@@ -90,13 +118,29 @@ export default async function EspaceDirigeants({ searchParams }: { searchParams:
                   <Link
                     key={t}
                     href={`/espace-dirigeants?onglet=${t}`}
-                    aria-current={!voirManques && t === onglet ? "page" : undefined}
+                    aria-current={!autreOnglet && t === onglet ? "page" : undefined}
                     className="onglets__lien"
                     prefetch={false}
                   >
                     {ONGLETS[t]} · {listes?.[t].length ?? 0}
                   </Link>
                 ))}
+                <Link
+                  href={`/espace-dirigeants?onglet=${ADHERENTS}`}
+                  aria-current={voirAdherents ? "page" : undefined}
+                  className="onglets__lien"
+                  prefetch={false}
+                >
+                  Adhérents · {adherents?.adherents.filter((a) => a.qualification).length ?? 0}
+                </Link>
+                <Link
+                  href={`/espace-dirigeants?onglet=${CONVOCATIONS}`}
+                  aria-current={voirConvocations ? "page" : undefined}
+                  className="onglets__lien"
+                  prefetch={false}
+                >
+                  Convocations
+                </Link>
                 <Link
                   href={`/espace-dirigeants?onglet=${A_COMPLETER}`}
                   aria-current={voirManques ? "page" : undefined}
@@ -107,7 +151,7 @@ export default async function EspaceDirigeants({ searchParams }: { searchParams:
                 </Link>
               </nav>
               <div className="rangee rangee--10">
-                {!voirManques && lignes.length ? (
+                {!autreOnglet && lignes.length ? (
                   <a href={`/espace-dirigeants/export?table=${onglet}`} className="btn btn--s btn--petit btn--orange">
                     Exporter en CSV (Excel)
                   </a>
@@ -151,8 +195,17 @@ export default async function EspaceDirigeants({ searchParams }: { searchParams:
                 )}
               </div>
             ) : null}
-            {!voirManques && erreur ? <p className="erreur-globale">{erreur}</p> : null}
-            {!voirManques && !erreur && lignes.length === 0 ? (
+            {/* La base (données personnelles) n'est envoyée au navigateur que dans son onglet. */}
+            {voirAdherents ? <Adherents base={adherents} affectations={affectations} equipes={toutesLesEquipes()} /> : null}
+            {voirConvocations && aConvoquer ? (
+              <Convocations
+                weekends={aConvoquer.weekends}
+                // Liste des champs : adhérents (base importée), puis toutes les équipes du club.
+                choix={[...(adherents?.adherents.map((a) => a.nom) ?? []), ...aConvoquer.suggestions.noms, ...aConvoquer.suggestions.equipes]}
+              />
+            ) : null}
+            {!autreOnglet && erreur ? <p className="erreur-globale">{erreur}</p> : null}
+            {!autreOnglet && !erreur && lignes.length === 0 ? (
               <div className="vide">
                 Aucune demande pour l'instant. Elles arrivent ici depuis les formulaires{" "}
                 <Link href="/inscriptions#formulaire">Inscriptions</Link>, <Link href="/stages#inscription-stage">Stages</Link>{" "}
@@ -160,7 +213,7 @@ export default async function EspaceDirigeants({ searchParams }: { searchParams:
               </div>
             ) : null}
             {/* Stages : un tableau (une ligne par inscription) ; les autres demandes restent en cartes. */}
-            {!voirManques && onglet === "stages" && lignes.length ? (
+            {!autreOnglet && onglet === "stages" && lignes.length ? (
               <TableauStages
                 demandes={lignes}
                 // Confirmations par e-mail : messagerie SMTP configurée, sinon envoi simulé en local.
@@ -168,7 +221,7 @@ export default async function EspaceDirigeants({ searchParams }: { searchParams:
               />
             ) : null}
             <div className="grille grille--remplir" style={{ "--min": "340px" } as React.CSSProperties}>
-              {(voirManques || onglet === "stages" ? [] : lignes).map((r) => (
+              {(autreOnglet || onglet === "stages" ? [] : lignes).map((r) => (
                 <article key={r.id} className="demande">
                   <div className="demande__tete">
                     <div>

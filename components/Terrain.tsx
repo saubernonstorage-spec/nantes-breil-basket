@@ -2,6 +2,8 @@
 
 const MOTIFS = {
   angle: "/terrain/angle-clair.svg",
+  // Deux tiers du terrain (de la raquette au bord droit), pour un en-tête plus large.
+  angleLarge: "/terrain/angle-large-clair.svg",
   bout: "/terrain/bout-clair.svg",
   raquette: "/terrain/raquette-clair.svg",
   cote: "/terrain/raquette-cote-clair.svg",

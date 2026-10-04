@@ -11,13 +11,17 @@ import {
   CAPACITES,
   CATEGORIES,
   CLASSEMENTS,
+  CONVOCATIONS,
   EQUIPES_FFBB,
   CLUB,
   GYMNASES,
   LABEL_ECOLE,
   LIGNES_NAOLIB,
+  MATCHS_MANUELS,
   NAISSANCE,
+  NOMS_CLUBS,
   PHOTOS_EQUIPES,
+  SALLES_FFBB,
   SLOTS,
   STAGES,
   STAGE_A_PREVOIR,
@@ -27,11 +31,12 @@ import {
   STAGE_TARIFS,
   STATS,
   TARIFS,
-  WEEKENDS,
 } from "@/data/nbb";
 import type { Chiffre, Classement, CleCategorie, Creneau, Jour, LigneClassement, SemaineStage, Stage, StatutStage, Tarif } from "@/lib/types";
 import * as DONNEES from "@/data/nbb";
 import classementsFFBB from "@/data/classements-ffbb.json";
+import logosFFBB from "@/data/logos-ffbb.json";
+import matchsFFBB from "@/data/matchs-ffbb.json";
 import resultatsFFBB from "@/data/resultats-ffbb.json";
 import { duree, heure, heureCourte, itineraire, majuscule, MARQUE_A_COMPLETER, montant, pluriel, slug, type PrixCotisation, type PrixStage } from "@/lib/utils";
 
@@ -132,10 +137,42 @@ export type FicheEquipe = {
   classement: {
     championnat: string;
     maj: string;
-    lignes: { rang: number; equipe: string; j: number; v: number; d: number; pts: number; nbb: boolean }[];
+    lignes: { rang: number; equipe: string; j: number; v: number; d: number; pts: number; nbb: boolean; logo: string }[];
     sansCompetition: boolean;
   };
 };
+
+/* ───────── Logos des clubs (scripts/donnees_ffbb.py → public/logos/, data/logos-ffbb.json) ───────── */
+
+const LOGOS = (logosFFBB as { logos: Record<string, { nom: string; logo: string }> }).logos;
+
+/** « Rezé Basket 44 - 1 » → « rezebasket44 » : sans accents, ponctuation ni numéro d'équipe. */
+function nomCompact(nom: string, sansNumero: boolean): string {
+  let n = nom.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
+  if (sansNumero) n = n.replace(/\s*-?\s*\d+$/, "");
+  return n.replace(/[^a-z0-9]/g, "");
+}
+
+const CLUBS_FFBB = Object.values(LOGOS)
+  .filter((c) => c.logo)
+  .map((c) => ({ cle: nomCompact(c.nom, false), logo: c.logo }));
+
+/**
+ * Logo d'un club d'après son identifiant FFBB, sinon d'après son nom (MATCHS_MANUELS, CLASSEMENTS : « Erdre 2 », « IBC Indre Basket
+ * Club 2 »…) : nom identique, sinon seul club dont le nom commence par (ou contient) celui-ci. "" si
+ * aucun club ne correspond ou s'il y a un doute : le site affiche alors les initiales.
+ */
+export function logoClub(nom: string, club?: string): string {
+  if (club && LOGOS[club]?.logo) return LOGOS[club].logo;
+  const cle = nomCompact(nom, true);
+  if (cle.length < 3) return "";
+  const unique = (liste: typeof CLUBS_FFBB) => (liste.length === 1 ? liste[0].logo : "");
+  return (
+    CLUBS_FFBB.find((c) => c.cle === cle)?.logo ||
+    unique(CLUBS_FFBB.filter((c) => c.cle.startsWith(cle))) ||
+    unique(CLUBS_FFBB.filter((c) => c.cle.includes(cle)))
+  );
+}
 
 /** Classements récupérés chaque nuit à la FFBB (scripts/donnees_ffbb.py → data/classements-ffbb.json). */
 const FFBB = classementsFFBB as { maj: string; classements: Record<string, { championnat: string; lignes: LigneClassement[] }> };
@@ -171,7 +208,7 @@ export function ficheEquipe(nom: string): FicheEquipe {
     classement: {
       championnat: c?.championnat ?? "",
       maj: c?.maj ?? "",
-      lignes: (c?.lignes ?? []).map((l) => ({ ...l, nbb: !!l.nbb })),
+      lignes: (c?.lignes ?? []).map((l) => ({ ...l, nbb: !!l.nbb, logo: logoClub(l.equipe, l.club) })),
       sansCompetition,
     },
   };
@@ -191,9 +228,9 @@ export function creneauxSamedi() {
   return CRENEAUX.filter((s) => s.jour === "Samedi")
     .sort((a, b) => a.debut.localeCompare(b.debut))
     .map((s) => ({
-      nom: s.equipes.map(avecNaissance).join(" · "),
+      nom: s.equipes.join(" · "),
+      naissance: s.equipes.map((e) => NAISSANCE[e]).filter(Boolean).join(", "),
       horaire: `${heureCourte(s.debut)} – ${heureCourte(s.fin)}`,
-      coachs: s.coachs.join(", "),
     }));
 }
 
@@ -304,14 +341,160 @@ export function agendaAVenir(max?: number) {
 
 /* ───────── Matchs du week-end ───────── */
 
-function decalageJour(jour: string): number {
-  if (jour.startsWith("Dim")) return 1;
-  if (jour.startsWith("Ven")) return -1;
-  return 0;
+/** Samedi (AAAA-MM-JJ) du week-end d'un match : même semaine, du lundi au dimanche. */
+function samediDe(jour: string): string {
+  const d = dateDe(jour);
+  const j = d.getUTCDay();
+  return dateDe(jour, j === 0 ? -1 : 6 - j).toISOString().slice(0, 10);
 }
 
-function ordreMatch(jour: string, h: string): number {
-  return decalageJour(jour) * 10000 + (parseInt(h.replace("h", ""), 10) || 0);
+type MatchFFBB = {
+  equipe: string;
+  date: string;
+  heure: string;
+  domicile: boolean;
+  adversaire: string;
+  club: string;
+  salle: string;
+  /** Arbitres officiels désignés par la FFBB : « Officiels » remplace les arbitres des CONVOCATIONS. */
+  officiels?: boolean;
+};
+type SalleFFBB = { nom: string; adresse: string; cp: string; ville: string };
+/** Calendrier récupéré chaque nuit à la FFBB (scripts/donnees_ffbb.py → data/matchs-ffbb.json). */
+const CALENDRIER = (matchsFFBB as { calendrier: { matchs: MatchFFBB[]; salles: Record<string, SalleFFBB> } }).calendrier;
+
+/** Mots laissés en minuscules quand un nom FFBB (en capitales) est remis en forme. */
+const PETITS_MOTS = new Set([
+  ...["de", "du", "des", "la", "le", "les", "et", "sur", "en", "aux", "au", "d", "l", "bis", "ter"],
+  // Voies d'une adresse, après le numéro (« 38 rue Appert »).
+  ...["rue", "avenue", "allée", "allee", "boulevard", "impasse", "place", "route", "chemin", "quai"],
+]);
+/** Sigles gardés en capitales (clubs : AL, ES, BC, ASPTT…). */
+const SIGLES = new Set(["AC", "AL", "ALPC", "ALS", "AS", "ASPTT", "BC", "CS", "CTC", "EB", "ES", "IBC", "JALT", "NBH", "RC", "SC", "US"]);
+
+/**
+ * « SAINT BREVIN BASKET CLUB » → « Saint Brevin Basket Club », « 26 BIS RUE DE LA FORET » → « 26 bis Rue de
+ * la Foret » : sigles et nombres gardés tels quels. Les accents que la FFBB n'écrit pas ne peuvent pas
+ * être retrouvés : NOMS_CLUBS (data/nbb.ts) corrige le nom des clubs.
+ */
+function enForme(texte: string): string {
+  let premier = true;
+  return texte.replace(/[\p{L}\d]+/gu, (mot) => {
+    const debut = premier;
+    premier = false;
+    const minuscule = mot.toLowerCase();
+    if (/\d/.test(mot) || SIGLES.has(mot)) return mot;
+    if (!debut && PETITS_MOTS.has(minuscule)) return minuscule;
+    return minuscule.charAt(0).toUpperCase() + minuscule.slice(1);
+  });
+}
+
+/**
+ * Nom affiché d'une équipe adverse de la FFBB : « IE - CTC POLE WEST NANTAIS - ETOILE SPORTIVE DE
+ * COUERON 1 » → « Étoile Sportive de Couëron 1 » (NOMS_CLUBS, sinon remis en forme).
+ */
+export function nomAdversaire(nomFFBB: string): string {
+  const nom = nomFFBB.replace(/^IE - (?:.* - )?/, "").trim();
+  if (NOMS_CLUBS[nom]) return NOMS_CLUBS[nom];
+  const [, base, numero] = nom.match(/^(.*?)(?:\s*-?\s*(\d+))?$/) ?? [nom, nom, ""];
+  const affiche = NOMS_CLUBS[base] ?? enForme(base);
+  return numero ? `${affiche} ${numero}` : affiche;
+}
+
+/** Match du site, qu'il vienne de la FFBB ou de MATCHS_MANUELS. convocation : à domicile seulement. */
+type MatchSite = {
+  date: string;
+  equipe: string;
+  heure: string;
+  domicile: boolean;
+  adversaire: string;
+  logo: string;
+  salle: string;
+  adresse: string;
+  lieu: string;
+  manuel: boolean;
+  /** Arbitres officiels désignés par la FFBB. */
+  officiels: boolean;
+  /** Convocation saisie (Espace dirigeants, CONVOCATIONS ou match manuel), telle quelle. */
+  saisie?: { arbitres: string; table: string; otm: string };
+  /** Convocation affichée : « Officiels » si la FFBB en a désigné, « — » pour un champ vide. */
+  convocation?: { arbitres: string; table: string; otm: string };
+};
+
+/** Convocation d'un match (date AAAA-MM-JJ, équipe du site), saisie dans data/nbb.ts ou en ligne. */
+export type ConvocationSaisie = { date: string; equipe: string; arbitres: string; table: string; otm: string };
+
+/** Convocation affichée : champs vides → « — », arbitres officiels de la FFBB prioritaires. */
+function convocationAffichee(saisie: { arbitres: string; table: string; otm: string } | undefined, officiels: boolean) {
+  if (!saisie && !officiels) return undefined;
+  const ou = (v: string | undefined) => v?.trim() || "—";
+  return { arbitres: officiels ? "Officiels" : ou(saisie?.arbitres), table: ou(saisie?.table), otm: ou(saisie?.otm) };
+}
+
+/** Équipe du site d'une clé FFBB (« U15-M-2 » → « U15M2 ») : correspondance EQUIPES_FFBB. */
+function equipesParCleFFBB(): Map<string, string> {
+  return new Map(Object.entries(EQUIPES_FFBB).filter(([, cle]) => cle).map(([nom, cle]) => [cle, nom]));
+}
+
+/**
+ * Tous les matchs connus : calendrier FFBB des équipes du site (avec leurs CONVOCATIONS) et
+ * MATCHS_MANUELS. Un match manuel remplace celui de la FFBB de la même équipe le même jour.
+ */
+function matchsDuSite(enLigne: ConvocationSaisie[] = []): MatchSite[] {
+  const equipeDe = equipesParCleFFBB();
+  // Les convocations saisies dans l'Espace dirigeants l'emportent sur celles de data/nbb.ts.
+  const convocations = new Map<string, ConvocationSaisie>(
+    [...CONVOCATIONS, ...enLigne].map((c) => [`${c.date}|${c.equipe}`, c]),
+  );
+  const manuels: MatchSite[] = MATCHS_MANUELS.map((m) => {
+    const saisie = !m.salle
+      ? undefined
+      : (convocations.get(`${m.date}|${m.equipe}`) ?? { arbitres: m.arbitres ?? "", table: m.table ?? "", otm: m.otm ?? "" });
+    return {
+    date: m.date,
+    equipe: m.equipe,
+    heure: m.heure,
+    domicile: !!m.salle,
+    adversaire: m.adversaire,
+    logo: logoClub(m.adversaire),
+    salle: m.salle ?? "",
+    adresse: m.salle ? (ADRESSES_SALLES[m.salle] ?? "") : "",
+    lieu: m.lieu ?? "",
+    manuel: true,
+    officiels: false,
+    saisie,
+    convocation: convocationAffichee(saisie, false),
+    };
+  });
+  const remplaces = new Set(manuels.map((m) => `${m.date}|${m.equipe}`));
+  const ffbb = CALENDRIER.matchs.flatMap((m): MatchSite[] => {
+    const equipe = equipeDe.get(m.equipe);
+    if (!equipe || remplaces.has(`${m.date}|${equipe}`)) return [];
+    const s = CALENDRIER.salles[m.salle];
+    const salleClub = SALLES_FFBB[m.salle];
+    const lieu = s
+      ? [enForme(s.nom), enForme(s.adresse), [s.cp, enForme(s.ville)].filter(Boolean).join(" ")].filter(Boolean).join(", ")
+      : "";
+    const c = convocations.get(`${m.date}|${equipe}`);
+    return [
+      {
+        date: m.date,
+        equipe,
+        heure: m.heure,
+        domicile: m.domicile,
+        adversaire: nomAdversaire(m.adversaire),
+        logo: logoClub(m.adversaire, m.club),
+        salle: salleClub ?? (s ? enForme(s.nom) : "Salle à confirmer"),
+        adresse: salleClub ? (ADRESSES_SALLES[salleClub] ?? "") : lieu,
+        lieu,
+        manuel: false,
+        officiels: m.domicile && !!m.officiels,
+        saisie: m.domicile ? c : undefined,
+        convocation: m.domicile ? convocationAffichee(c, !!m.officiels) : undefined,
+      },
+    ];
+  });
+  return [...ffbb, ...manuels];
 }
 
 export type MatchDomicileVue = {
@@ -319,12 +502,19 @@ export type MatchDomicileVue = {
   jourCle: string;
   jourLabel: string;
   equipe: string;
+  /** "" : horaire pas encore fixé (« À confirmer »). */
   heure: string;
   adversaire: string;
+  /** Logo du club adverse ("" si inconnu). */
+  logo: string;
   salle: string;
   adresse: string;
-  arbitres: string;
-  table: string;
+  /** Fiche de la salle sur la page Infos pratiques ("" si elle n'y figure pas). */
+  lienSalle: string;
+  /** Un nom par arbitre (saisis séparés par des virgules dans CONVOCATIONS) ; « — » sans convocation. */
+  arbitres: string[];
+  /** Un nom par personne à la table (même saisie). */
+  table: string[];
   otm: string;
 };
 
@@ -335,6 +525,7 @@ export type MatchExterieurVue = {
   equipe: string;
   heure: string;
   adversaire: string;
+  logo: string;
   lieu: string;
   itineraire: string;
 };
@@ -360,8 +551,26 @@ function datesWeekend(samedi: string): string {
   return sa.getUTCMonth() === di.getUTCMonth() ? `${sa.getUTCDate()}–${court(di)}` : `${court(sa)} – ${court(di)}`;
 }
 
-function libelleJour(samedi: string, jour: string): string {
-  return majuscule(formater(dateDe(samedi, decalageJour(jour)), { weekday: "long", day: "numeric", month: "long" }));
+/** « Week-end du 3 & 4 octobre 2026 » (ou « du 31 octobre & 1 novembre 2026 »). */
+function titreWeekend(samedi: string): string {
+  const sa = dateDe(samedi);
+  const di = dateDe(samedi, 1);
+  const debut = sa.getUTCMonth() === di.getUTCMonth() ? String(sa.getUTCDate()) : formater(sa, { day: "numeric", month: "long" });
+  return `Week-end du ${debut} & ${formater(di, { day: "numeric", month: "long", year: "numeric" })}`;
+}
+
+/** Numéro de semaine ISO 8601 (« Semaine 40 »). */
+function semaineIso(jour: string): string {
+  const d = dateDe(jour);
+  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+  const debutAnnee = Date.UTC(d.getUTCFullYear(), 0, 1);
+  return `Semaine ${Math.ceil(((d.getTime() - debutAnnee) / 86400000 + 1) / 7)}`;
+}
+
+/** Fiche d'une salle de match sur la page Infos pratiques (« Breil Malville » → gymnase « Breil »). */
+function lienSalle(salle: string): string {
+  const g = GYMNASES.find((x) => salle === x.nom || salle.startsWith(`${x.nom} `));
+  return g ? `/infos#${ancreGymnase(g.nom)}` : "";
 }
 
 /** Rang d'une salle dans ADRESSES_SALLES (les salles absentes de la liste passent après). */
@@ -370,65 +579,157 @@ function rangSalle(salle: string): number {
   return i < 0 ? Infinity : i;
 }
 
-export function weekendsVue(): WeekEndVue[] {
+/** Ordre chronologique : date, puis heure (un horaire pas encore fixé passe en dernier). */
+function ordreChrono(a: { date: string; heure: string }, b: { date: string; heure: string }): number {
+  return a.date.localeCompare(b.date) || (a.heure || "99h").localeCompare(b.heure || "99h");
+}
+
+function weekendVue(samedi: string, i: number, matchs: MatchSite[]): WeekEndVue {
   const jour = aujourdhui();
-  return WEEKENDS.map((w, i) => {
-    const di = dateDe(w.samedi, 1);
-    const lundi = dateDe(w.samedi, -5).toISOString().slice(0, 10);
-    const moment: MomentWeekend = di.toISOString().slice(0, 10) < jour ? "passe" : lundi <= jour ? "semaine" : "a-venir";
-    const dates = datesWeekend(w.samedi);
-    const tri = <T extends { jour: string; heure: string }>(liste: T[]) =>
-      [...liste].sort((a, b) => ordreMatch(a.jour, a.heure) - ordreMatch(b.jour, b.heure));
-    return {
-      titre: w.titre,
-      semaine: w.semaine,
-      moment,
-      dates,
-      vide: w.domicile.length + w.exterieur.length === 0,
-      // Regroupés par salle (ordre d'ADRESSES_SALLES), puis par jour et par heure dans chaque salle.
-      domicile: tri(w.domicile)
-        .sort((a, b) => rangSalle(a.salle) - rangSalle(b.salle) || a.salle.localeCompare(b.salle, "fr"))
-        .map((m, k) => ({
-          cle: `${i}-d${k}`,
-          jourCle: `${i}|${m.jour}`,
-          jourLabel: libelleJour(w.samedi, m.jour),
-          equipe: m.equipe,
-          heure: m.heure,
-          adversaire: m.adversaire,
-          salle: m.salle,
-          adresse: ADRESSES_SALLES[m.salle] ?? "",
-          arbitres: m.arbitres,
-          table: m.table,
-          otm: m.otm,
-        })),
-      exterieur: tri(w.exterieur).map((m, k) => ({
-        cle: `${i}-e${k}`,
-        jourCle: `${i}|${m.jour}`,
-        jourLabel: libelleJour(w.samedi, m.jour),
+  const dimanche = dateDe(samedi, 1).toISOString().slice(0, 10);
+  const lundi = dateDe(samedi, -5).toISOString().slice(0, 10);
+  const moment: MomentWeekend = dimanche < jour ? "passe" : lundi <= jour ? "semaine" : "a-venir";
+  const duWeekend = matchs.filter((m) => samediDe(m.date) === samedi).sort(ordreChrono);
+  const libelle = (date: string) => majuscule(formater(dateDe(date), { weekday: "long", day: "numeric", month: "long" }));
+  const noms = (texte: string) => texte.split(/\s*,\s*/);
+  return {
+    titre: titreWeekend(samedi),
+    semaine: semaineIso(samedi),
+    moment,
+    dates: datesWeekend(samedi),
+    vide: duWeekend.length === 0,
+    // Regroupés par salle (ordre d'ADRESSES_SALLES), puis par jour et par heure dans chaque salle.
+    domicile: duWeekend
+      .filter((m) => m.domicile)
+      .sort((a, b) => rangSalle(a.salle) - rangSalle(b.salle) || a.salle.localeCompare(b.salle, "fr") || ordreChrono(a, b))
+      .map((m, k) => ({
+        cle: `${i}-d${k}`,
+        jourCle: `${i}|${m.date}`,
+        jourLabel: libelle(m.date),
         equipe: m.equipe,
         heure: m.heure,
         adversaire: m.adversaire,
-        lieu: m.lieu,
-        itineraire: itineraire(m.lieu),
+        logo: m.logo,
+        salle: m.salle,
+        adresse: m.adresse,
+        lienSalle: lienSalle(m.salle),
+        arbitres: noms(m.convocation?.arbitres ?? "—"),
+        table: noms(m.convocation?.table ?? "—"),
+        otm: m.convocation?.otm ?? "—",
       })),
-    };
-  });
+    exterieur: duWeekend
+      .filter((m) => !m.domicile)
+      .map((m, k) => ({
+        cle: `${i}-e${k}`,
+        jourCle: `${i}|${m.date}`,
+        jourLabel: libelle(m.date),
+        equipe: m.equipe,
+        heure: m.heure,
+        adversaire: m.adversaire,
+        logo: m.logo,
+        lieu: m.lieu,
+        itineraire: m.lieu ? itineraire(m.lieu) : "",
+      })),
+  };
 }
 
 /**
- * Les 3 week-ends de la page Matchs : le dernier passé, le week-end courant (le premier dont le
- * dimanche n'est pas passé : on bascule chaque lundi) et le suivant. Les plus anciens ne sont plus
- * affichés : on peut les effacer de WEEKENDS. equipes : celles qui jouent l'un de ces 3 week-ends.
+ * Week-ends à venir affichés (page Matchs) et à préparer (onglet Convocations), celui de la semaine compris.
+ * Le calendrier FFBB en couvre 6 semaines (JOURS_APRES, scripts/donnees_ffbb.py).
  */
-export function matchsAffiches(): { weekends: WeekEndVue[]; indexDefaut: number; equipes: string[] } {
-  const tous = weekendsVue();
-  const jour = aujourdhui();
-  let courant = WEEKENDS.findIndex((w) => dateDe(w.samedi, 1).toISOString().slice(0, 10) >= jour);
-  if (courant < 0) courant = tous.length - 1;
-  const premier = Math.max(0, courant - 1);
-  const weekends = tous.slice(premier, courant + 2);
+const SEMAINES_A_VENIR = 4;
+
+/** Samedi du week-end de la semaine en cours (on bascule sur le suivant chaque lundi). */
+function samediCourant(): string {
+  return samediDe(aujourdhui());
+}
+
+/**
+ * Les week-ends de la page Matchs : le précédent, celui de la semaine en cours et les SEMAINES_A_VENIR - 1 suivants.
+ * equipes : celles qui jouent l'un de ces 3 week-ends.
+ */
+export function matchsAffiches(enLigne: ConvocationSaisie[] = []): { weekends: WeekEndVue[]; indexDefaut: number; equipes: string[] } {
+  const courant = samediCourant();
+  const matchs = matchsDuSite(enLigne);
+  const weekends = [-1, ...Array.from({ length: SEMAINES_A_VENIR }, (_, k) => k)].map((semaine, i) => weekendVue(dateDe(courant, 7 * semaine).toISOString().slice(0, 10), i, matchs));
   const equipes = [...new Set(weekends.flatMap((w) => [...w.domicile, ...w.exterieur]).map((m) => m.equipe))].sort(cmp);
-  return { weekends, indexDefaut: courant - premier, equipes };
+  return { weekends, indexDefaut: 1, equipes };
+}
+
+/**
+ * Matchs à domicile (FFBB) du week-end en cours et du suivant sans convocation saisie : signalés dans
+ * l'Espace dirigeants.
+ */
+function convocationsManquantes(enLigne: ConvocationSaisie[]): MatchSite[] {
+  const courant = samediCourant();
+  const suivants = [courant, dateDe(courant, 7).toISOString().slice(0, 10)];
+  return matchsDuSite(enLigne)
+    // Sans convocation saisie (des arbitres officiels ne suffisent pas : table et OTM restent à désigner).
+    .filter((m) => m.domicile && !m.saisie && suivants.includes(samediDe(m.date)))
+    .sort(ordreChrono);
+}
+
+/** Un match à domicile dans l'onglet « Convocations » de l'Espace dirigeants. */
+export type MatchAConvoquer = {
+  cle: string;
+  date: string;
+  jour: string;
+  heure: string;
+  equipe: string;
+  adversaire: string;
+  salle: string;
+  officiels: boolean;
+  arbitres: string;
+  table: string;
+  otm: string;
+};
+
+/**
+ * Matchs à domicile des SEMAINES_A_VENIR prochains week-ends (en cours compris), avec leur convocation actuelle (champs bruts,
+ * "" si rien n'est saisi), et les suggestions des champs : équipes du club (« U11M2 ») et noms déjà utilisés.
+ */
+export function matchsAConvoquer(enLigne: ConvocationSaisie[] = []): {
+  weekends: { samedi: string; titre: string; matchs: MatchAConvoquer[] }[];
+  suggestions: { equipes: string[]; noms: string[] };
+} {
+  const courant = samediCourant();
+  const matchs = matchsDuSite(enLigne).filter((m) => m.domicile);
+  const brut = (v: string | undefined) => (v === "—" ? "" : (v ?? ""));
+  const weekends = Array.from({ length: SEMAINES_A_VENIR }, (_, k) => 7 * k).map((decalage) => {
+    const samedi = dateDe(courant, decalage).toISOString().slice(0, 10);
+    return {
+      samedi,
+      titre: titreWeekend(samedi),
+      matchs: matchs
+        .filter((m) => samediDe(m.date) === samedi)
+        .sort((a, b) => ordreChrono(a, b) || rangSalle(a.salle) - rangSalle(b.salle))
+        .map((m) => ({
+          cle: `${m.date}|${m.equipe}`,
+          date: m.date,
+          jour: majuscule(formater(dateDe(m.date), { weekday: "long", day: "numeric", month: "long" })),
+          heure: m.heure,
+          equipe: m.equipe,
+          adversaire: m.adversaire,
+          salle: m.salle,
+          officiels: m.officiels,
+          arbitres: brut(m.saisie?.arbitres),
+          table: brut(m.saisie?.table),
+          otm: brut(m.saisie?.otm),
+        })),
+    };
+  });
+  const noms = new Set<string>();
+  for (const c of [...CONVOCATIONS, ...MATCHS_MANUELS, ...enLigne]) {
+    for (const v of [c.arbitres, c.table, c.otm]) {
+      for (const n of (v ?? "").split(/\s*,\s*/)) {
+        if (n && n !== "—" && n !== "Officiels" && !/^\d+\s*×/.test(n)) noms.add(n);
+      }
+    }
+  }
+  return {
+    weekends,
+    suggestions: { equipes: toutesLesEquipes(), noms: [...noms].sort(cmp) },
+  };
 }
 
 /* ───────── Résultats FFBB ───────── */
@@ -454,13 +755,6 @@ const RESULTATS = resultatsFFBB as { maj: string; resultats: Record<string, Resu
 /** Nombre de week-ends de résultats proposés sur la page Matchs (les plus récents). */
 const WEEKENDS_RESULTATS = 10;
 
-/** Samedi (AAAA-MM-JJ) du week-end d'un match : même semaine, du lundi au dimanche. */
-function samediDe(jour: string): string {
-  const d = dateDe(jour);
-  const j = d.getUTCDay();
-  return dateDe(jour, j === 0 ? -1 : 6 - j).toISOString().slice(0, 10);
-}
-
 /**
  * Résultats des équipes du site (celles reliées dans EQUIPES_FFBB), par week-end du plus récent au plus
  * ancien, puis par jour et par heure. maj : date du dernier changement, en toutes lettres.
@@ -483,7 +777,7 @@ export function resultatsParWeekend(): { semaines: SemaineResultats[]; maj: stri
           equipe,
           heure: m.date.slice(11, 16).replace(":", "h"),
           domicile: m.domicile,
-          adversaire: m.adversaire,
+          adversaire: nomAdversaire(m.adversaire),
           nous: m.nous,
           eux: m.eux,
           issue: m.nous > m.eux ? "victoire" : m.nous < m.eux ? "defaite" : "nul",
@@ -514,7 +808,7 @@ export function resultatsParWeekend(): { semaines: SemaineResultats[]; maj: stri
 
 /** Par défaut, une semaine de stage dure 5 jours, du lundi (debut) au vendredi. */
 const JOURS_STAGE = 5;
-/** Les inscriptions d'une semaine ferment à cette heure (Paris), la veille de son dernier jour. */
+/** Les inscriptions d'une semaine ferment à cette heure (Paris), la veille de son premier jour. */
 const HEURE_CLOTURE_STAGE = "12:00";
 const HEURE_CLOTURE_STAGE_TEXTE = "midi";
 
@@ -548,21 +842,21 @@ function joursDeStage(w: SemaineStage): number {
   return Math.max(1, Math.round((dateDe(w.fin).getTime() - dateDe(w.debut).getTime()) / 86_400_000) + 1);
 }
 
-/** Veille du dernier jour d'une semaine de stage : jour de fermeture de ses inscriptions. */
-function veilleDernierJour(debut: string, w: SemaineStage): Date {
-  return dateDe(debut, joursDeStage(w) - 2);
+/** Veille du premier jour d'une semaine de stage : jour de fermeture de ses inscriptions. */
+function veillePremierJour(debut: string): Date {
+  return dateDe(debut, -1);
 }
 
-/** Les inscriptions d'une semaine ferment la veille de son dernier jour à midi (maintenant : heure de Paris). */
+/** Les inscriptions d'une semaine ferment la veille de son premier jour à midi (maintenant : heure de Paris). */
 function semaineFermee(w: SemaineStage, maintenant: string): boolean {
   if (!w.debut) return false;
-  return maintenant >= `${veilleDernierJour(w.debut, w).toISOString().slice(0, 10)}T${HEURE_CLOTURE_STAGE}`;
+  return maintenant >= `${veillePremierJour(w.debut).toISOString().slice(0, 10)}T${HEURE_CLOTURE_STAGE}`;
 }
 
 /** "jeudi 22 octobre, midi" : quand ferment les inscriptions de la semaine. */
 function clotureSemaine(w: SemaineStage): string {
   if (!w.debut) return "";
-  const jour = formater(veilleDernierJour(w.debut, w), { weekday: "long", day: "numeric", month: "long" });
+  const jour = formater(veillePremierJour(w.debut), { weekday: "long", day: "numeric", month: "long" });
   return `${jour}, ${HEURE_CLOTURE_STAGE_TEXTE}`;
 }
 
@@ -691,7 +985,8 @@ const SECTIONS_MANQUES: Record<string, { titre: string; page?: string }> = {
   GYMNASES: { titre: "Gymnases (Infos pratiques)", page: "/infos" },
   OFFRE_PARTENARIAT: { titre: "Offre de partenariat (Partenaires)", page: "/partenaires" },
   SLOTS: { titre: "Planning des entraînements", page: "/planning" },
-  WEEKENDS: { titre: "Matchs du week-end", page: "/matchs" },
+  CONVOCATIONS: { titre: "Convocations des matchs à domicile", page: "/matchs" },
+  MATCHS_MANUELS: { titre: "Matchs saisis à la main", page: "/matchs" },
 };
 
 const CHAMPS_MANQUES: Record<string, string> = {
@@ -726,7 +1021,7 @@ function nomElement(x: unknown): string {
  * Tout ce qui est encore marqué « [À COMPLÉTER] » ou « [À CONFIRMER] » dans data/nbb.ts (masqué sur le site),
  * plus les équipes du planning sans coach. Affiché dans l'Espace dirigeants.
  */
-export function manquesDuSite(): ManqueSite[] {
+export function manquesDuSite(enLigne: ConvocationSaisie[] = []): ManqueSite[] {
   const manques: ManqueSite[] = [];
   const ajouter = (racine: string, element: string, champ: string, valeur: string, chemin: string) => {
     const s = SECTIONS_MANQUES[racine];
@@ -750,6 +1045,10 @@ export function manquesDuSite(): ManqueSite[] {
   for (const [nom, valeur] of Object.entries(DONNEES)) parcourir(valeur, nom, nom, "", "", 0);
   for (const e of toutesLesEquipes()) {
     if (!ficheEquipe(e).coachs) ajouter("SLOTS", e, "Coach", "Aucun coach indiqué dans le planning", "SLOTS");
+  }
+  for (const m of convocationsManquantes(enLigne)) {
+    const jour = formater(dateDe(m.date), { weekday: "long", day: "numeric", month: "long" });
+    ajouter("CONVOCATIONS", `${m.equipe} · ${jour}${m.heure ? ` à ${m.heure}` : ""} contre ${m.adversaire}`, "Arbitres, table et OTM", "Aucune convocation saisie", "CONVOCATIONS");
   }
   return manques;
 }

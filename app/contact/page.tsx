@@ -3,7 +3,6 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { CLUB } from "@/data/nbb";
 import { EntetePage } from "@/components/Page";
-import { Terrain } from "@/components/Terrain";
 import { ContactAvecAdresse, ContactForm } from "@/components/formulaires/ContactForm";
 import { IconeWhatsapp, NouvelOnglet } from "@/components/icons";
 
@@ -26,7 +25,6 @@ export default function Contact() {
       <EntetePage
         fil="Contact"
         largeurChapo={620}
-        decor={<Terrain motif="raquette" style={{ top: 0, right: "12%", width: "min(40%, 500px)" }} />}
         titre={
           <>
             On vous <span className="accent">répond</span>

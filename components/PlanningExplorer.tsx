@@ -102,10 +102,6 @@ export function PlanningVue({
             {n} créneau{n > 1 ? "x" : ""} affiché{n > 1 ? "s" : ""}
             {filtres.equipe ? ` pour ${filtres.equipe}` : ""}
           </p>
-          <p className="planning__liens">
-            Pour la fiche complète d'une équipe : <Link href="/equipes">Nos équipes</Link> · Adresses :{" "}
-            <Link href="/infos">Gymnases &amp; accès</Link>
-          </p>
         </div>
         <div key={version} className={version ? "rafraichi" : undefined}>
         {parJour.map(({ jour, liste }) => (

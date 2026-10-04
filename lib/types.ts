@@ -32,6 +32,9 @@ export type Club = {
   reductionImpot: string;
 };
 
+/** Période d'ouverture de la boutique : dates AAAA-MM-JJ incluses. */
+export type OuvertureBoutique = { debut: string; fin: string };
+
 export type Chiffre = { valeur: string; label: string };
 
 export type DateAgenda = {
@@ -44,33 +47,30 @@ export type DateAgenda = {
   lieu: string;
   type: string;
   lien?: string;
+  /** Photo de l'affiche (fenêtre « prochain événement » à l'ouverture du site), chemin dans public/. */
+  affiche?: string;
 };
 
-export type MatchDomicile = {
-  salle: string;
+/** Convocations d'un match à domicile (le match lui-même vient de la FFBB). date : AAAA-MM-JJ. */
+export type Convocation = {
+  date: string;
   equipe: string;
-  jour: string;
-  heure: string;
-  adversaire: string;
   arbitres: string;
   table: string;
   otm: string;
 };
 
-export type MatchExterieur = {
+/** Match absent de la FFBB : salle (+ convocations) à domicile, lieu (adresse) à l'extérieur. */
+export type MatchManuel = {
+  date: string;
   equipe: string;
-  jour: string;
   heure: string;
   adversaire: string;
-  lieu: string;
-};
-
-export type WeekEnd = {
-  titre: string;
-  semaine: string;
-  samedi: string;
-  domicile: MatchDomicile[];
-  exterieur: MatchExterieur[];
+  salle?: string;
+  lieu?: string;
+  arbitres?: string;
+  table?: string;
+  otm?: string;
 };
 
 export type Diplome = { nom: string; url?: string };
@@ -91,7 +91,6 @@ export type Commission = { nom: string; role: string; temps: string; recrute?: b
 
 export type EtapeHistoire = { annee: string; titre: string; texte: string };
 export type BlocTexte = { titre: string; texte: string };
-export type Engagement = { titre: string; points: string[] };
 
 export type Tarif = {
   cle: string;
@@ -120,7 +119,7 @@ export type Gymnase = {
   partenaire?: boolean;
 };
 
-export type Partenaire = { nom: string; activite: string; ville: string; logo: string; logoClair?: boolean; site?: string };
+export type Partenaire = { nom: string; activite: string; ville: string; adresse?: string; logo: string; logoClair?: boolean; site?: string };
 
 export type OffrePartenariat = { nom: string; montant: string; inclus: string[]; vedette?: boolean };
 
@@ -169,7 +168,6 @@ export type Categorie = {
   nom: string;
   ages: string;
   resume: string;
-  image: string;
 };
 
 export type LigneClassement = {
@@ -180,6 +178,8 @@ export type LigneClassement = {
   d: number;
   pts: number;
   nbb?: boolean;
+  /** Identifiant FFBB du club (classements automatiques) : sert à retrouver son logo. */
+  club?: string;
 };
 
 export type Classement = { championnat: string; maj: string; lignes: LigneClassement[] };

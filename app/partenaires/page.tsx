@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CLUB, GYMNASES, OFFRE_PARTENARIAT, PARTENAIRES, STATS } from "@/data/nbb";
-import { aCompleter } from "@/lib/utils";
+import { CLUB, OFFRE_PARTENARIAT, PARTENAIRES, STATS } from "@/data/nbb";
+import { aCompleter, slug } from "@/lib/utils";
 import { EntetePage } from "@/components/Page";
 import { Photo } from "@/components/Photo";
-import { Terrain } from "@/components/Terrain";
 import { NouvelOnglet } from "@/components/icons";
 
 export const metadata: Metadata = {
@@ -14,12 +13,6 @@ export const metadata: Metadata = {
 };
 
 export default function Partenaires() {
-  const chiffres = [
-    { label: "Adhérents", valeur: STATS.adherents },
-    { label: "Équipes", valeur: STATS.equipes },
-    { label: "Gymnases", valeur: String(GYMNASES.length) },
-    { label: "Depuis", valeur: CLUB.fondation, accent: true },
-  ];
   const plaquette = /^https?:\/\//.test(CLUB.plaquettePartenaires) ? CLUB.plaquettePartenaires : "";
 
   return (
@@ -28,26 +21,13 @@ export default function Partenaires() {
         fil="Partenaires"
         largeurTitre={1000}
         largeurChapo={620}
-        decor={<Terrain motif="angle" style={{ right: 0, bottom: 0, width: "min(50%, 600px)", transform: "scaleY(-1)" }} />}
         titre={
           <>
             Jouez collectif <span className="accent">avec le NBB</span>
           </>
         }
-      >
-        <p className="chapo" style={{ maxWidth: 620, marginBottom: 30 }}>
-          Entreprise, commerçant ou particulier : votre soutien finance l'école de basket, le matériel, les stages et la
-          formation des coachs et arbitres.
-        </p>
-        <dl className="chiffres-partenaires">
-          {chiffres.map((c) => (
-            <div key={c.label}>
-              <dt>{c.label}</dt>
-              <dd className={c.accent ? "accent" : undefined}>{c.valeur}</dd>
-            </div>
-          ))}
-        </dl>
-      </EntetePage>
+        chapo="Entreprise, commerçant ou particulier : votre soutien finance l'école de basket, le matériel, les stages et la formation des coachs et arbitres."
+      />
 
       <section aria-labelledby="actuels-titre" className="section" style={{ paddingTop: 64, paddingBottom: 40 }}>
         <div className="surtitre">Ils nous soutiennent</div>
@@ -59,23 +39,23 @@ export default function Partenaires() {
             const contenu = (
               <>
                 <div className={p.logoClair ? "partenaire__logo partenaire__logo--sombre" : "partenaire__logo"}>
-                  <Photo src={p.logo} alt={`Logo de ${p.nom}`} sizes="300px" entiere vide={{ texte: p.nom }} />
+                  <Photo src={p.logo} alt={`Logo de ${p.nom}`} sizes="(max-width: 700px) 100vw, 400px" entiere vide={{ texte: p.nom }} />
                 </div>
                 <div>
                   <h3 className="partenaire__nom">{p.nom}</h3>
                   <p className="partenaire__activite">
-                    {p.activite} · {p.ville}
+                    {p.activite} · {p.adresse ?? p.ville}
                   </p>
                 </div>
               </>
             );
             return p.site ? (
-              <a key={p.nom} href={p.site} target="_blank" rel="noopener" className="partenaire carte-lien">
+              <a key={p.nom} id={`partenaire-${slug(p.nom)}`} href={p.site} target="_blank" rel="noopener" className="partenaire carte-lien">
                 {contenu}
                 <NouvelOnglet />
               </a>
             ) : (
-              <article key={p.nom} className="partenaire">
+              <article key={p.nom} id={`partenaire-${slug(p.nom)}`} className="partenaire">
                 {contenu}
               </article>
             );

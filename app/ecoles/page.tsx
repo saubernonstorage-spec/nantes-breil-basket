@@ -4,7 +4,6 @@ import { ARBITRAGE_SEANCES, CLUB, PHOTOS, TARIFS } from "@/data/nbb";
 import { creneauxSamedi } from "@/lib/nbb";
 import { FilAriane } from "@/components/Page";
 import { Photo } from "@/components/Photo";
-import { Terrain } from "@/components/Terrain";
 import { NouvelOnglet } from "@/components/icons";
 
 export const metadata: Metadata = {
@@ -24,7 +23,7 @@ const APPORTS = [
 const PARCOURS = [
   { titre: "Découvrir", texte: "Un entraînement consacré à l'arbitrage avant chaque période de vacances pour tous les U15 et U18." },
   { titre: "Pratiquer", texte: "Arbitrer et tenir la table lors des matchs de jeunes du club, accompagné par un référent." },
-  { titre: "Approfondir", texte: "4 samedis de formation dans l'année avec La Similienne, animés par des arbitres officiels." },
+  { titre: "Approfondir", texte: "4 samedis de formation complémentaires avec La Similienne, animés par des arbitres officiels." },
   { titre: "Devenir officiel", texte: "Pour les plus motivés : formation d'arbitre ou d'OTM auprès du comité départemental." },
 ];
 
@@ -32,14 +31,13 @@ const OBJECTIFS = [
   "Promouvoir l'arbitrage et faire découvrir cette facette du jeu",
   "Comprendre les aspects réglementaires du basket",
   "Améliorer le niveau d'arbitrage au club",
-  "Amener les plus motivés à devenir officiels",
+  "Accompagner les plus motivés pour devenir officiels",
 ];
 
 export default function Ecoles() {
   return (
     <>
-      <section className="entete-page">
-        <Terrain motif="angle" style={{ top: 0, left: 0, width: "min(44%, 520px)", transform: "scaleX(-1)" }} />
+      <section className="entete-page entete-page--ecoles">
         <div className="entete-page__inner ecoles-hero">
           <div className="ecoles-hero__texte">
             <FilAriane page="Nos écoles" />
@@ -51,9 +49,8 @@ export default function Ecoles() {
               Trois étoiles <span className="accent">au-dessus du panier</span>
             </h1>
             <p className="chapo" style={{ maxWidth: 560 }}>
-              Le NBB est labellisé École Française de Mini-Basket au niveau maximal de trois étoiles. Ce label de la
-              FFBB distingue les clubs qui offrent aux enfants un accueil éducatif et un encadrement de qualité. Le club
-              détient aussi le label FFBB Micro Basket, pour l'accueil des tout-petits dès 3 ans.
+              Le NBB est labellisé École Française de Mini-Basket trois étoiles, le niveau maximal, ainsi que Micro Basket
+              par la FFBB, ce qui atteste d'un accueil éducatif et d'un encadrement de qualité pour les enfants, dès 3 ans.
             </p>
           </div>
           <div className="ecoles-hero__photo">
@@ -67,34 +64,43 @@ export default function Ecoles() {
         <h2 id="apports-titre" className="titre-section" style={{ marginBottom: 24 }}>
           Le plaisir du ballon d'abord
         </h2>
-        <div className="grille">
+        {/* Même présentation que les valeurs de la page Club : colonnes numérotées sous un trait. */}
+        <ol className="valeurs">
           {APPORTS.map((a, i) => (
-            <div key={a.titre} className="carte etape">
-              <div className="etape__num">{String(i + 1).padStart(2, "0")}</div>
+            <li key={a.titre} className="valeur">
+              <span aria-hidden="true" className="valeur__numero">
+                {String(i + 1).padStart(2, "0")}
+              </span>
               <h3>{a.titre}</h3>
               <p>{a.texte}</p>
-            </div>
+            </li>
           ))}
-        </div>
+        </ol>
       </section>
 
       <section aria-labelledby="samedi-titre" className="section" style={{ paddingTop: 40, paddingBottom: 72 }}>
         <div className="rangee">
           <div className="samedi">
-            <div className="surtitre">Le samedi matin · gymnase Joël Paon</div>
-            <h2 id="samedi-titre" className="samedi__titre">
-              Micro-basket &amp; U7
-            </h2>
-            <div className="samedi__liste">
-              {creneauxSamedi().map((g) => (
-                <div key={g.nom} className="samedi__groupe">
-                  <div>
-                    <strong>{g.nom}</strong>
-                    {g.coachs ? <span>Coachs : {g.coachs}</span> : null}
-                  </div>
-                  <span className="samedi__horaire">{g.horaire}</span>
-                </div>
-              ))}
+            <div>
+              <div className="surtitre">Le samedi matin</div>
+              <h2 id="samedi-titre" className="samedi__titre">
+                Micro-basket &amp; U7
+              </h2>
+            </div>
+            <div>
+              <p className="samedi__lieu">Gymnase Joël Paon</p>
+              {/* Un créneau par ligne : groupe (et années de naissance) à gauche, horaire à droite. */}
+              <ol className="samedi__liste">
+                {creneauxSamedi().map((g) => (
+                  <li key={g.nom} className="samedi__groupe">
+                    <div>
+                      <strong>{g.nom}</strong>
+                      {g.naissance ? <span className="samedi__naissance">Né(e)s en {g.naissance}</span> : null}
+                    </div>
+                    <span className="samedi__horaire">{g.horaire}</span>
+                  </li>
+                ))}
+              </ol>
             </div>
           </div>
           <div className="cotisation-mini">
@@ -118,57 +124,71 @@ export default function Ecoles() {
       </section>
 
       <section id="arbitrage" aria-labelledby="arb-titre" className="bande-sombre arbitrage">
-        <Terrain
-          motif="cote"
-          style={{ top: "50%", left: 0, height: "min(88%, 760px)", transform: "translateY(-50%) scaleX(-1)" }}
-        />
         <div className="section relatif" style={{ paddingTop: 88, paddingBottom: 88 }}>
-          <div className="surtitre">École d'arbitrage · de U13 à seniors</div>
+          <div className="surtitre">École d'arbitrage</div>
           <h2 id="arb-titre" className="titre-page">
             Siffler, c'est <span className="accent">encore jouer.</span>
           </h2>
           <p className="chapo" style={{ maxWidth: 680, marginBottom: 40 }}>
-            L'école d'arbitrage fait découvrir les règles à tous les licenciés, élève le niveau d'arbitrage des matchs
-            du club et accompagne les plus motivés jusqu'au statut d'officiel.
+            L'école d'arbitrage initie tous les licenciés aux règles, fait progresser l'arbitrage des matchs du club et
+            accompagne les plus motivés jusqu'au statut d'officiel.
           </p>
-          <ol className="grille parcours" style={{ "--min": "230px", marginBottom: 40 } as React.CSSProperties}>
+          {/* Même présentation que les valeurs de la page Club, version fond sombre. */}
+          <ol className="valeurs valeurs--sombre" style={{ marginBottom: 48 }}>
             {PARCOURS.map((p, i) => (
-              <li key={p.titre} className={i === PARCOURS.length - 1 ? "parcours__etape parcours__etape--fin" : "parcours__etape"}>
-                <div className="parcours__num">{String(i + 1).padStart(2, "0")}</div>
+              <li key={p.titre} className="valeur">
+                <span aria-hidden="true" className="valeur__numero">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
                 <h3>{p.titre}</h3>
                 <p>{p.texte}</p>
               </li>
             ))}
           </ol>
+          {/* Mêmes cartes que la section du samedi : séances en lignes (carte bleue), objectifs sur la carte orange. */}
           <div className="rangee">
-            <div className="seances">
-              <h3 className="titre-bloc" style={{ marginBottom: 14 }}>
-                Séances {CLUB.saison}
-              </h3>
-              <ul>
-                {ARBITRAGE_SEANCES.map((s) => (
-                  <li key={s.date}>
-                    <strong>{s.date}</strong>
-                    <span>
-                      {s.heure} · {s.lieu}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-              <p>Ouvertes des U13 aux seniors. Le parcours complet est recommandé.</p>
+            <div className="samedi samedi--bleu">
+              <div>
+                <div className="surtitre">Ouvertes des U13 aux seniors</div>
+                <h3 className="samedi__titre">Séances {CLUB.saison}</h3>
+              </div>
+              <div>
+                <p className="samedi__lieu">Le parcours complet est recommandé</p>
+                <ol className="samedi__liste">
+                  {ARBITRAGE_SEANCES.map((s) => (
+                    <li key={s.date} className="samedi__groupe">
+                      <div>
+                        <strong>{s.date}</strong>
+                        <span className="samedi__naissance">{s.lieu}</span>
+                      </div>
+                      <span className="samedi__horaire">{s.heure}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
             </div>
-            <div className="objectifs">
-              <h3 className="titre-bloc">Nos objectifs</h3>
-              <ul>
-                {OBJECTIFS.map((o) => (
-                  <li key={o}>{o}</li>
-                ))}
-              </ul>
-              <div className="rangee rangee--10" style={{ marginTop: "auto" }}>
-                <Link href="/contact?sujet=arbitrage" className="btn btn--m btn--orange">
+            <div className="cotisation-mini">
+              <div>
+                <div className="surtitre" style={{ color: "inherit", marginBottom: 14 }}>
+                  Nos objectifs
+                </div>
+                {/* Liste : le verbe en grand, la suite de l'objectif dessous. */}
+                <ul className="objectifs-liste">
+                  {OBJECTIFS.map((o) => {
+                    const [verbe, ...suite] = o.split(" ");
+                    return (
+                      <li key={o}>
+                        <strong>{verbe}</strong> {suite.join(" ")}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+              <div className="rangee rangee--8">
+                <Link href="/contact?sujet=arbitrage" className="btn btn--m btn--nuit">
                   Participer
                 </Link>
-                <a href={CLUB.memoArbitrage} target="_blank" rel="noopener" className="btn btn--m btn--clair">
+                <a href={CLUB.memoArbitrage} target="_blank" rel="noopener" className="btn btn--m btn--contour">
                   Mémo de l'arbitrage (PDF)
                   <NouvelOnglet />
                 </a>

@@ -4,7 +4,6 @@ import { AIDES, CATEGORIES_AGE, CLUB, COMMISSIONS, DOCUMENTS, PIECES, TARIFS, TA
 import { anneeSaison, donneesCotisation, toutesLesEquipes } from "@/lib/nbb";
 import { aCompleter } from "@/lib/utils";
 import { EntetePage } from "@/components/Page";
-import { Terrain } from "@/components/Terrain";
 import { InscriptionForm } from "@/components/formulaires/InscriptionForm";
 import { NouvelOnglet } from "@/components/icons";
 
@@ -26,7 +25,6 @@ export default function Inscriptions() {
         fil={`Inscriptions · saison ${CLUB.saison}`}
         largeurTitre={900}
         largeurChapo={600}
-        decor={<Terrain motif="cote" style={{ top: "50%", right: 0, height: "112%", transform: "translateY(-50%)" }} />}
         titre={
           <>
             Rejoindre <span className="accent">le NBB</span>

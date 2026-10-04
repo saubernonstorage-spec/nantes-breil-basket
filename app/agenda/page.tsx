@@ -3,7 +3,6 @@ import { CLUB } from "@/data/nbb";
 import { agendaAVenir } from "@/lib/nbb";
 import { EntetePage } from "@/components/Page";
 import { ListeAgenda } from "@/components/ListeAgenda";
-import { Terrain } from "@/components/Terrain";
 
 export const metadata: Metadata = {
   title: "Agenda du club",
@@ -19,7 +18,6 @@ export default function Agenda() {
     <>
       <EntetePage
         fil="Agenda"
-        decor={<Terrain motif="raquette" style={{ top: 0, right: "8%", width: "min(40%, 480px)" }} />}
         titre={
           <>
             L'agenda <span className="accent">du club</span>
@@ -32,7 +30,7 @@ export default function Agenda() {
           <h2 id="agenda-titre" className="sr-only">
             Temps forts de la saison
           </h2>
-          <ListeAgenda dates={agendaAVenir()} clair />
+          <ListeAgenda dates={agendaAVenir()} clair affiches />
         </div>
       </section>
     </>

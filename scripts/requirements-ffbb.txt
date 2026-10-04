@@ -1,2 +1,4 @@
 # Bibliothèque utilisée par scripts/donnees_ffbb.py (version figée : la mettre à jour volontairement).
 ffbb-data-client==2.4.34
+# Logos des clubs : réduits et convertis en WebP avant d'être enregistrés dans public/logos/.
+pillow==12.3.0

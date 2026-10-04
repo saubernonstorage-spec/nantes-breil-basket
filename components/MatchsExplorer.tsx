@@ -1,10 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState, useSyncExternalStore } from "react";
 import type { IssueMatch, MatchDomicileVue, MomentWeekend, SemaineResultats, WeekEndVue } from "@/lib/nbb";
 import { aCompleter, pluriel } from "@/lib/utils";
 import { IconeCartes, IconeTableau, NouvelOnglet } from "@/components/icons";
+import { LogoClub } from "@/components/LogoClub";
 
 type Props = { weekends: WeekEndVue[]; indexDefaut: number; equipes: string[]; whatsapp: string };
 type Affichage = "tableau" | "cartes";
@@ -45,7 +47,7 @@ function parJour<T extends { jourCle: string; jourLabel: string }>(liste: T[]) {
 
 /** Matchs à domicile par salle, dans l'ordre reçu du serveur (celui d'ADRESSES_SALLES). */
 function parSalle(liste: MatchDomicileVue[]) {
-  return grouper(liste, (m) => m.salle).map((g) => ({ salle: g.cle, adresse: g.premier.adresse, matchs: g.matchs }));
+  return grouper(liste, (m) => m.salle).map((g) => ({ salle: g.cle, lien: g.premier.lienSalle, matchs: g.matchs }));
 }
 
 export function MatchsVue({ weekends, indexDefaut, equipes, whatsapp, equipeInitiale = "" }: Props & { equipeInitiale?: string }) {
@@ -143,8 +145,8 @@ export function MatchsVue({ weekends, indexDefaut, equipes, whatsapp, equipeInit
               {parSalle(dom).map((s) => (
                 <div key={s.salle} className="salle-matchs">
                   <div className="salle-matchs__tete">
-                    <h3 className="salle-matchs__nom">{s.salle}</h3>
-                    {s.adresse ? <span className="salle-matchs__adresse">{s.adresse}</span> : null}
+                    {/* Le nom de la salle mène à sa fiche (adresse, accès) sur la page Infos pratiques. */}
+                    <h3 className="salle-matchs__nom">{s.lien ? <Link href={s.lien}>{s.salle}</Link> : s.salle}</h3>
                     <span className="salle-matchs__nb">{pluriel(s.matchs.length, "match", "matchs")}</span>
                   </div>
                   {/* Focalisable : au clavier aussi, on peut faire défiler le tableau quand il dépasse de l'écran. */}
@@ -162,7 +164,7 @@ export function MatchsVue({ weekends, indexDefaut, equipes, whatsapp, equipeInit
                             Équipe
                           </th>
                           <th scope="col">Adversaire</th>
-                          <th scope="col" style={{ width: 190 }}>
+                          <th scope="col" style={{ width: 230 }}>
                             Arbitres
                           </th>
                           <th scope="col" style={{ width: 150 }}>
@@ -183,10 +185,27 @@ export function MatchsVue({ weekends, indexDefaut, equipes, whatsapp, equipeInit
                                   <span className="tag-equipe">{m.equipe}</span>
                                 </td>
                                 <td className="tableau-matchs__adversaire">
-                                  <span>vs</span> {m.adversaire}
+                                  <span className="avec-logo">
+                                    <span className="vs">vs</span>
+                                    <LogoClub logo={m.logo} nom={m.adversaire} />
+                                    <span>{m.adversaire}</span>
+                                  </span>
                                 </td>
-                                <td className="tableau-matchs__fort">{m.arbitres}</td>
-                                <td className="tableau-matchs__fort">{m.table}</td>
+                                {/* Arbitres et table : un nom par ligne. */}
+                                <td className="tableau-matchs__fort">
+                                  {m.arbitres.map((a) => (
+                                    <span key={a} className="tableau-matchs__ligne">
+                                      {a}
+                                    </span>
+                                  ))}
+                                </td>
+                                <td className="tableau-matchs__fort">
+                                  {m.table.map((t) => (
+                                    <span key={t} className="tableau-matchs__ligne">
+                                      {t}
+                                    </span>
+                                  ))}
+                                </td>
                                 <td className="tableau-matchs__fort">{m.otm}</td>
                               </tr>
                             ))}
@@ -205,16 +224,20 @@ export function MatchsVue({ weekends, indexDefaut, equipes, whatsapp, equipeInit
                               <span className="tag-equipe">{m.equipe}</span>
                             </div>
                             <p className="carte-match__adversaire">
-                              <span>vs</span> {m.adversaire}
+                              <span className="avec-logo">
+                                <span className="vs">vs</span>
+                                <LogoClub logo={m.logo} nom={m.adversaire} />
+                                <span>{m.adversaire}</span>
+                              </span>
                             </p>
                             <dl className="carte-match__roles">
                               <div>
                                 <dt>Arbitres</dt>
-                                <dd>{m.arbitres}</dd>
+                                <dd>{m.arbitres.join(" · ")}</dd>
                               </div>
                               <div>
                                 <dt>Table</dt>
-                                <dd>{m.table}</dd>
+                                <dd>{m.table.join(" · ")}</dd>
                               </div>
                               <div>
                                 <dt>OTM</dt>
@@ -274,7 +297,11 @@ export function MatchsVue({ weekends, indexDefaut, equipes, whatsapp, equipeInit
                               <span className="tag-equipe tag-equipe--orange">{m.equipe}</span>
                             </td>
                             <td className="tableau-matchs__adversaire">
-                              <span>chez</span> {m.adversaire}
+                              <span className="avec-logo">
+                                <span className="vs">chez</span>
+                                <LogoClub logo={m.logo} nom={m.adversaire} />
+                                <span>{m.adversaire}</span>
+                              </span>
                             </td>
                             <td className="tableau-matchs__lieu">{m.lieu}</td>
                             <td className="tableau-matchs__itineraire">
@@ -297,7 +324,11 @@ export function MatchsVue({ weekends, indexDefaut, equipes, whatsapp, equipeInit
                           <span className="tag-equipe tag-equipe--orange">{m.equipe}</span>
                         </div>
                         <p className="carte-match__adversaire">
-                          <span>chez</span> {m.adversaire}
+                          <span className="avec-logo">
+                            <span className="vs">chez</span>
+                            <LogoClub logo={m.logo} nom={m.adversaire} />
+                            <span>{m.adversaire}</span>
+                          </span>
                         </p>
                         <p className="carte-match__lieu">{m.lieu}</p>
                         <LienItineraire href={m.itineraire} />
@@ -327,8 +358,9 @@ export function MatchsVue({ weekends, indexDefaut, equipes, whatsapp, equipeInit
 }
 
 /** Horaire du match ; encore à compléter dans les données : « À confirmer ». */
+/** Horaire d'un match ; vide (pas encore fixé par la FFBB) ou « [À COMPLÉTER] » : « À confirmer ». */
 function Heure({ h }: { h: string }) {
-  return aCompleter(h) ? <span className="heure-a-confirmer">À confirmer</span> : <>{h}</>;
+  return !h || aCompleter(h) ? <span className="heure-a-confirmer">À confirmer</span> : <>{h}</>;
 }
 
 function GroupeJour({ label, n, colonnes, children }: { label: string; n: number; colonnes: number; children: React.ReactNode }) {
@@ -361,7 +393,9 @@ function JourCartes({ label, n, niveau, children }: { label: string; n: number; 
   );
 }
 
+/** Lien vers l'itinéraire ; rien si la salle n'est pas encore connue. */
 function LienItineraire({ href }: { href: string }) {
+  if (!href) return null;
   return (
     <a href={href} target="_blank" rel="noopener" className="lien-itineraire">
       Itinéraire <span className="fleche fleche--diag" aria-hidden="true">↗</span>

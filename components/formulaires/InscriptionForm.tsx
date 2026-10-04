@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { startTransition, useActionState, useEffect, useRef, useState } from "react";
 import { preinscrire } from "@/app/actions";
-import { RESULTAT_INITIAL } from "@/lib/formulaires";
+import { allerPremiereErreur, RESULTAT_INITIAL } from "@/lib/formulaires";
 import {
   aCompleter,
   categorieParAnnee,
@@ -103,6 +103,12 @@ export function InscriptionForm(props: Props) {
   const [resultat, envoyer, enCours] = useActionState(preinscrire, RESULTAT_INITIAL);
   const [termine, setTermine] = useState(false);
   const t0 = useRef(0);
+  const zone = useRef<HTMLFormElement>(null);
+
+  // Erreurs renvoyées par le serveur : même chose qu'en cas d'erreur détectée dans le navigateur.
+  useEffect(() => {
+    if (resultat.statut === "erreur" && !enCours) allerPremiereErreur(zone.current?.parentElement);
+  }, [resultat, enCours]);
   const haut = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -157,7 +163,7 @@ export function InscriptionForm(props: Props) {
     ev.preventDefault();
     const e = valider(etape);
     setErreurs(e);
-    if (Object.keys(e).length) return;
+    if (Object.keys(e).length) return allerPremiereErreur(zone.current?.parentElement);
     if (etape < 4) {
       setEtape(etape + 1);
       remonter();
@@ -233,7 +239,7 @@ export function InscriptionForm(props: Props) {
         <div style={{ width: `${etape * 25}%` }} />
       </div>
 
-      <form noValidate onSubmit={soumettre} aria-describedby="form-erreur" className="formulaire">
+      <form ref={zone} noValidate onSubmit={soumettre} aria-describedby="form-erreur" className="formulaire">
         {etape === 1 ? (
           <>
             <Choix

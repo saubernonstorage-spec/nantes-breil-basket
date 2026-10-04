@@ -63,14 +63,11 @@ export function Header({ liens }: { liens: LiensClub }) {
         </nav>
 
         <div className="entete-site__actions">
-          <a href={liens.boutique} target="_blank" rel="noopener" className="entete-site__boutique verre">
+          {/* Bouton principal de l'en-tête : la boutique du club (les inscriptions restent dans le menu et les pages). */}
+          <a href={liens.boutique} target="_blank" rel="noopener" className="entete-site__rejoindre">
             Boutique
             <NouvelOnglet />
           </a>
-          <Link href="/inscriptions" className="entete-site__rejoindre">
-            <span className="entete-site__rejoindre-long">Rejoindre le club</span>
-            <span className="entete-site__rejoindre-court">Rejoindre</span>
-          </Link>
           <button
             type="button"
             className="burger verre"

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BUREAU, CLUB, COMITE, COMMISSIONS, ENGAGEMENTS, HISTOIRE, PHOTOS, PROJET, STATS, VALEURS } from "@/data/nbb";
+import { BUREAU, COMITE, COMMISSIONS, HISTOIRE, PHOTOS, PROJET, STATS, VALEURS } from "@/data/nbb";
 import { enLettres, majuscule } from "@/lib/utils";
 import { EntetePage } from "@/components/Page";
 import { Photo } from "@/components/Photo";
@@ -27,85 +27,65 @@ export default function Club() {
     <>
       <EntetePage
         fil="Le club"
-        variante="photo"
         largeurTitre={1000}
-        decor={
-          <div aria-hidden="true" className="annee-geante">
-            {CLUB.fondation}
-          </div>
-        }
         titre={
           <>
             Un club de quartier, <span className="accent">une ambition de club formateur</span>
           </>
         }
-      >
-        <p className="chapo" style={{ marginBottom: 48 }}>
-          Association loi 1901 installée quartier des Hauts-Pavés, le Nantes Breil Basket fait jouer {STATS.adherents}{" "}
-          adhérents dans {STATS.equipes} équipes. Ici, on vient apprendre le basket — et on reste pour l'ambiance.
-        </p>
+        chapo={`Association loi 1901 installée quartier des Hauts-Pavés, le Nantes Breil Basket fait jouer ${STATS.adherents} adhérents dans ${STATS.equipes} équipes. Ici, on vient apprendre le basket — et on reste pour l'ambiance.`}
+      />
+
+      {/* Grande photo du club, sous l'en-tête (en-têtes de même hauteur sur toutes les pages). */}
+      <div className="section club-photo-bloc">
         <div className="club-photo">
           <Photo src={PHOTOS.club.src} alt={PHOTOS.club.alt} sizes="(max-width: 1360px) 100vw, 1300px" prioritaire />
         </div>
-      </EntetePage>
+      </div>
 
-      <section aria-labelledby="histoire-titre" className="section" style={{ paddingTop: 72, paddingBottom: 40 }}>
-        <div className="surtitre">Notre histoire</div>
-        <h2 id="histoire-titre" className="titre-section" style={{ marginBottom: 28 }}>
-          Presque un siècle de basket
-        </h2>
+      {/* Histoire : titre à gauche (collant sur ordinateur), frise verticale à droite. */}
+      <section aria-labelledby="histoire-titre" className="section histoire" style={{ paddingTop: 72, paddingBottom: 56 }}>
+        <div className="histoire__tete">
+          <div className="surtitre">Notre histoire</div>
+          <h2 id="histoire-titre" className="titre-section">
+            Presque un siècle de basket
+          </h2>
+        </div>
         <ol className="frise">
           {HISTOIRE.map((h) => (
             <li key={h.annee}>
               <div className="frise__annee">{h.annee}</div>
-              <h3>{h.titre}</h3>
-              <p>{h.texte}</p>
+              <div>
+                <h3>{h.titre}</h3>
+                <p>{h.texte}</p>
+              </div>
             </li>
           ))}
         </ol>
       </section>
 
-      <section aria-labelledby="valeurs-titre" className="section" style={{ paddingTop: 40, paddingBottom: 40 }}>
+      {/* Valeurs numérotées, puis le projet associatif dans un bloc sombre. */}
+      <section aria-labelledby="valeurs-titre" className="section" style={{ paddingTop: 40, paddingBottom: 56 }}>
         <div className="surtitre">Valeurs &amp; projet associatif</div>
-        <h2 id="valeurs-titre" className="titre-section" style={{ marginBottom: 24 }}>
+        <h2 id="valeurs-titre" className="titre-section" style={{ marginBottom: 28 }}>
           Ce qui nous fait avancer
         </h2>
-        <div className="grille" style={{ "--min": "280px" } as React.CSSProperties}>
-          {VALEURS.map((v) => (
-            <div key={v.titre} className="valeur">
-              <div>
-                <h3>{v.titre}</h3>
-                <p>{v.texte}</p>
-              </div>
-            </div>
+        <ol className="valeurs">
+          {VALEURS.map((v, i) => (
+            <li key={v.titre} className="valeur">
+              <span aria-hidden="true" className="valeur__numero">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <h3>{v.titre}</h3>
+              <p>{v.texte}</p>
+            </li>
           ))}
-        </div>
-        <div className="grille" style={{ "--min": "280px", marginTop: 12 } as React.CSSProperties}>
+        </ol>
+        <div className="projet">
           {PROJET.map((p) => (
-            <div key={p.titre} className="carte" style={{ borderRadius: 26 }}>
+            <div key={p.titre} className="projet__bloc">
               <div className="surtitre">{p.titre}</div>
-              <p className="texte-carte">{p.texte}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section aria-labelledby="charte-titre" className="section" style={{ paddingTop: 40, paddingBottom: 40 }}>
-        <div className="surtitre">La charte</div>
-        <h2 id="charte-titre" className="titre-section" style={{ marginBottom: 24 }}>
-          Nos engagements, les vôtres
-        </h2>
-        <div className="grille" style={{ "--min": "340px" } as React.CSSProperties}>
-          {ENGAGEMENTS.map((g) => (
-            <div key={g.titre} className="carte" style={{ padding: 26, borderRadius: 26 }}>
-              <h3 className="titre-bloc" style={{ marginBottom: 14 }}>
-                {g.titre}
-              </h3>
-              <ul className="liste-traits">
-                {g.points.map((p) => (
-                  <li key={p}>{p}</li>
-                ))}
-              </ul>
+              <p>{p.texte}</p>
             </div>
           ))}
         </div>
@@ -116,7 +96,14 @@ export default function Club() {
         <h2 id="bureau-titre" className="titre-section" style={{ marginBottom: 24 }}>
           Le bureau
         </h2>
-        <div className="grille-bureau">
+        {/* Même grille que les entraîneurs de l'accueil : cartes de même largeur ; sur mobile, une rangée qui défile de côté. */}
+        <div
+          className="grille portraits-defilants"
+          role="region"
+          aria-label="Membres du bureau"
+          tabIndex={0}
+          style={{ "--min": "250px", gap: 16 } as React.CSSProperties}
+        >
           {bureau.map((b) => (
             <article key={b.nom} className="portrait">
               <div className="portrait__rond">
@@ -159,24 +146,19 @@ export default function Club() {
           </div>
           <div className="grille" style={{ "--min": "280px", gap: 14 } as React.CSSProperties}>
             {recrutent.map((c) => (
-              <Link
-                key={c.nom}
-                href={`/contact?sujet=benevolat&commission=${encodeURIComponent(c.nom)}`}
-                className="commission-recrute carte-lien"
-              >
+              <div key={c.nom} className="commission-recrute">
                 <span className="commission-recrute__badge">On recrute</span>
                 <h3>{c.nom}</h3>
                 <p>{c.role}</p>
                 <span className="commission-recrute__temps">{c.temps}</span>
-              </Link>
+              </div>
             ))}
           </div>
-          <div className="bandeau-orange">
+          {/* Tout le bandeau est un lien vers le formulaire de contact (sujet bénévolat). */}
+          <Link href="/contact?sujet=benevolat" className="bandeau-orange carte-lien">
             <p>Table de marque, arbitrage, bar : une formation courte est proposée.</p>
-            <Link href="/contact?sujet=benevolat" className="btn btn--l btn--nuit">
-              Je deviens bénévole
-            </Link>
-          </div>
+            <span className="btn btn--l btn--nuit">Je deviens bénévole</span>
+          </Link>
           <h3 className="titre-bloc" style={{ fontSize: 32, margin: "56px 0 16px" }}>
             Les autres commissions
           </h3>
