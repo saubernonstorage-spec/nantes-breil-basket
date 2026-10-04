@@ -182,8 +182,9 @@ export default async function EspaceDirigeants({ searchParams }: { searchParams:
                         ) : null}
                       </div>
                       <ul className="manques__liste">
-                        {g.lignes.map((m) => (
-                          <li key={m.chemin + m.champ}>
+                        {g.lignes.map((m, i) => (
+                          // Plusieurs lignes peuvent partager chemin et champ (convocations manquantes) : clé avec le rang.
+                          <li key={`${m.chemin}-${m.champ}-${m.element}-${i}`}>
                             <strong>{[m.element, m.champ].filter(Boolean).join(" · ") || section}</strong>
                             <span className="manques__valeur">{m.valeur}</span>
                             <span className="mono manques__chemin">{m.chemin}</span>
