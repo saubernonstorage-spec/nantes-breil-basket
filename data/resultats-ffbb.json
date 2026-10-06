@@ -4,7 +4,7 @@
     "8649": "Nantes Breil Basket",
     "8752": "Similienne Nantes (équipes CTC)"
   },
-  "maj": "2026-10-05T05:32:20+00:00",
+  "maj": "2026-10-06T05:28:38+00:00",
   "resultats": {
     "SE-F-1": [
       {
@@ -73,14 +73,6 @@
         "adversaire": "MOINE BASKET CLUB 1",
         "nous": 114,
         "eux": 104,
-        "forfait": ""
-      },
-      {
-        "date": "2026-10-03T20:30",
-        "domicile": false,
-        "adversaire": "AVRILLE BASKET 1",
-        "nous": 49,
-        "eux": 85,
         "forfait": ""
       }
     ],
@@ -152,14 +144,6 @@
         "nous": 87,
         "eux": 78,
         "forfait": ""
-      },
-      {
-        "date": "2026-10-03T20:30",
-        "domicile": false,
-        "adversaire": "IE - CTC JALT-JCM 2",
-        "nous": 82,
-        "eux": 92,
-        "forfait": ""
       }
     ],
     "SIM-SE-M-2": [
@@ -229,14 +213,6 @@
         "adversaire": "AS SAINT ROGATIEN NANTES 1",
         "nous": 12,
         "eux": 87,
-        "forfait": ""
-      },
-      {
-        "date": "2026-10-03T13:00",
-        "domicile": true,
-        "adversaire": "TREILLIERES BASKET CLUB 1",
-        "nous": 23,
-        "eux": 35,
         "forfait": ""
       }
     ],
@@ -326,14 +302,6 @@
         "nous": 39,
         "eux": 57,
         "forfait": ""
-      },
-      {
-        "date": "2026-10-04T11:00",
-        "domicile": true,
-        "adversaire": "SAUTRON BASKET CLUB",
-        "nous": 56,
-        "eux": 58,
-        "forfait": ""
       }
     ],
     "SIM-U15-M-2": [
@@ -351,14 +319,6 @@
         "adversaire": "ALPC MOULIN NANTES BASKET 3",
         "nous": 32,
         "eux": 55,
-        "forfait": ""
-      },
-      {
-        "date": "2026-10-04T09:30",
-        "domicile": false,
-        "adversaire": "NANTES DOULON BASKET 2",
-        "nous": 20,
-        "eux": 101,
         "forfait": ""
       }
     ],
@@ -378,14 +338,6 @@
         "nous": 88,
         "eux": 69,
         "forfait": ""
-      },
-      {
-        "date": "2026-10-03T18:00",
-        "domicile": true,
-        "adversaire": "BOUGUENAIS BASKET 1",
-        "nous": 71,
-        "eux": 56,
-        "forfait": ""
       }
     ],
     "SIM-U18-M-2": [
@@ -403,14 +355,6 @@
         "adversaire": "SAINT SEBASTIEN BASKET CLUB 1",
         "nous": 57,
         "eux": 94,
-        "forfait": ""
-      },
-      {
-        "date": "2026-10-03T17:30",
-        "domicile": false,
-        "adversaire": "IE - CTC VAL DE SEVRE - ETOILE DE CLISSON BASKET 2",
-        "nous": 60,
-        "eux": 112,
         "forfait": ""
       }
     ],
@@ -507,14 +451,6 @@
         "adversaire": "CARQUEFOU BASKET 1",
         "nous": 46,
         "eux": 50,
-        "forfait": ""
-      },
-      {
-        "date": "2026-10-03T15:45",
-        "domicile": true,
-        "adversaire": "REZE BASKET 44 1",
-        "nous": 45,
-        "eux": 49,
         "forfait": ""
       }
     ],
@@ -762,14 +698,6 @@
         "nous": 61,
         "eux": 39,
         "forfait": ""
-      },
-      {
-        "date": "2026-10-04T10:45",
-        "domicile": true,
-        "adversaire": "ASPTT NANTES 2",
-        "nous": 57,
-        "eux": 60,
-        "forfait": ""
       }
     ],
     "U15-M-3": [
@@ -788,14 +716,6 @@
         "nous": 46,
         "eux": 50,
         "forfait": ""
-      },
-      {
-        "date": "2026-10-03T18:30",
-        "domicile": false,
-        "adversaire": "NANTES SULLY BASKET 1",
-        "nous": 28,
-        "eux": 65,
-        "forfait": ""
       }
     ],
     "U18-F-1": [
@@ -805,14 +725,6 @@
         "adversaire": "TREILLIERES BASKET CLUB 1",
         "nous": 68,
         "eux": 78,
-        "forfait": ""
-      },
-      {
-        "date": "2026-10-04T11:00",
-        "domicile": false,
-        "adversaire": "HERBADILLA LA CHEVROLIERE 1",
-        "nous": 50,
-        "eux": 72,
         "forfait": ""
       }
     ],
@@ -850,14 +762,6 @@
         "nous": 74,
         "eux": 88,
         "forfait": ""
-      },
-      {
-        "date": "2026-10-04T11:15",
-        "domicile": false,
-        "adversaire": "SAUTRON BASKET CLUB 1",
-        "nous": 45,
-        "eux": 104,
-        "forfait": ""
       }
     ],
     "U18-M-2": [
@@ -875,14 +779,6 @@
         "adversaire": "NANTES SULLY BASKET 3",
         "nous": 70,
         "eux": 34,
-        "forfait": ""
-      },
-      {
-        "date": "2026-10-03T18:30",
-        "domicile": false,
-        "adversaire": "AL CHAUVINIERE 2",
-        "nous": 99,
-        "eux": 45,
         "forfait": ""
       }
     ]
