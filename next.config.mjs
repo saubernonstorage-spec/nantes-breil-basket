@@ -1,6 +1,6 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
+/** @type {import("next").NextConfig} */
+// En JavaScript (et non TypeScript) : chargeable aussi sur un serveur sans les modules natifs de Next.js (Hostinger).
+const nextConfig = {
   poweredByHeader: false,
   images: {
     formats: ["image/avif", "image/webp"],
