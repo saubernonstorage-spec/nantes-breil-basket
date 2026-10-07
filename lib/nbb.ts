@@ -999,6 +999,7 @@ const CHAMPS_MANQUES: Record<string, string> = {
   responsablePublication: "Responsable de la publication",
   conservationAdhesions: "Durée de conservation des adhésions",
   conservationMessages: "Durée de conservation des messages",
+  localisationDonnees: "Pays du serveur Hostinger qui stocke les données (Mentions légales)",
   diplomes: "Diplôme",
   arrivee: "Arrivée au club",
   acces: "Accès (bus, tram, parking)",

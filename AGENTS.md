@@ -21,11 +21,11 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   les retrouve par identifiant FFBB ou d'après le nom de l'adversaire ; affichage `components/LogoClub.tsx`.
   Le calendrier des matchs aussi (`data/matchs-ffbb.json`) : `matchsAffiches()` y ajoute les `CONVOCATIONS`
   (arbitres, table, OTM) et les `MATCHS_MANUELS` (matchs absents de la FFBB) saisis dans data/nbb.ts ;
-  les convocations saisies dans l'Espace dirigeants (onglet « Convocations », `lib/stockage.ts`, Netlify Blobs)
+  les convocations saisies dans l'Espace dirigeants (onglet « Convocations », `lib/stockage.ts`)
   l'emportent et régénèrent /matchs (`revalidatePath`).
   Onglet « Adhérents » : export des licences FFBB (.xlsx) lu par `lib/adherents.ts` (exceljs), stocké dans
-  Netlify Blobs (`nbb-adherents`, clé `base`) ; équipes d'entraînement et de match saisies par adhérent dans la clé
-  `affectations` (par nom, gardées d'un import à l'autre) ; données personnelles envoyées au navigateur seulement dans cet onglet.
+  `adherents.json` ; équipes d'entraînement et de match saisies par adhérent dans `affectations.json`
+  (par nom, gardées d'un import à l'autre) ; données personnelles envoyées au navigateur seulement dans cet onglet.
 - Ne jamais inventer de tarif, de score, de date ni de nom : laisser `[À COMPLÉTER]`. Ces valeurs ne sont
   jamais affichées : tester avec `aCompleter()` (`lib/utils.ts`) et ne rien rendre ; `manquesDuSite()`
   (`lib/nbb.ts`) les liste dans l'Espace dirigeants (onglet « À compléter »).
@@ -41,7 +41,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Photos : `components/Photo.tsx` (next/image, motif de remplacement si le chemin est vide) ; lignes de
   terrain décoratives : `components/Terrain.tsx`. Fenêtres modales : `components/Fenetre.tsx` (`<dialog>`).
 - Formulaires : Server Actions dans `app/actions.ts` (validation serveur, anti-spam), enregistrement dans
-  `lib/stockage.ts` (Netlify Blobs, région UE ; fichier `.donnees/` en local) et e-mail facultatif
+  `lib/stockage.ts` (fichiers JSON du dossier `DOSSIER_DONNEES`, `.donnees/` en local ; hébergement Hostinger,
+  build `npm run build:hostinger` avec Webpack) et e-mail facultatif
   (`lib/email.ts`). Espace dirigeants : `app/espace-dirigeants/` + `lib/session.ts` (`ADMIN_PASSWORD`) ;
   onglet Stages en tableau (`components/dirigeants/TableauStages.tsx`) avec confirmation par e-mail au
   parent (confirmation du navigateur, modèle `STAGE_CONFIRMATION`, message construit côté serveur).

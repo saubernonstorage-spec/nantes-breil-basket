@@ -61,7 +61,7 @@ vers les nouvelles (`next.config.ts`).
 data/nbb.ts            tout le contenu éditable (textes, planning, matchs, stages, tarifs…)
 lib/nbb.ts             calculs à partir du contenu (équipes, gymnases, week-ends…) — serveur uniquement
 lib/utils.ts           petites fonctions pures (formats, calcul des stages, cotisation) — aussi côté navigateur
-lib/stockage.ts        enregistrement des demandes (Netlify Blobs en ligne, fichier local sinon)
+lib/stockage.ts        enregistrement des données (fichiers JSON dans DOSSIER_DONNEES)
 lib/session.ts         connexion à l'Espace dirigeants
 lib/email.ts           envoi des e-mails (SMTP)
 lib/consentement.ts    choix du visiteur sur les contenus externes (carte, résultats)
@@ -82,15 +82,15 @@ bibliothèque communautaire `ffbb-data-client` (non officielle). En local :
 Le **planning** (`SLOTS`) est la source unique : fiches équipes, filtres, créneaux du samedi,
 nombre de créneaux par gymnase en sont calculés.
 
-## Mettre en ligne (Netlify, gratuit)
+## Mettre en ligne (Hostinger)
 
-Le site est hébergé sur **Netlify** : offre gratuite sans carte bancaire, usage commercial
-autorisé (partenaires, boutique), Next.js pris en charge sans configuration (pages statiques,
-régénération horaire de l'accueil, de l'agenda et des matchs, Server Actions, `next/image`).
-Chaque modification enregistrée sur la branche `main` redéploie le site automatiquement ; si la
-construction échoue, l'ancienne version reste en ligne.
+Le site est hébergé chez **Hostinger**, en application Node.js (hPanel → Sites web → tableau de bord →
+Node.js), déployée depuis le dépôt GitHub, branche `main`. Réglages de construction : Node.js 22,
+application Next.js, script `build:hostinger` (`next build --webpack` : le serveur n'a pas les modules
+natifs de Next.js), dossier de sortie `.next`, npm. Chaque modification enregistrée sur `main` redéploie
+le site automatiquement ; si la construction échoue, l'ancienne version reste en ligne.
 
-### Variables d'environnement (Netlify → Project configuration → Environment variables)
+### Variables d'environnement (hPanel → application Node.js → variables d'environnement)
 
 | Variable | Obligatoire | Rôle |
 | --- | --- | --- |
@@ -100,8 +100,9 @@ construction échoue, l'ancienne version reste en ligne.
 | `FORM_TO` | avec SMTP | destinataire(s) des messages, séparés par des virgules |
 | `FORM_TO_INSCRIPTIONS`, `FORM_TO_STAGES` | non | destinataires des préinscriptions et des stages (sinon `FORM_TO`) |
 | `FORM_FROM` | oui avec Brevo | adresse d'expédition (sinon `SMTP_USER`) : avec Brevo, un expéditeur validé du domaine du club (`contact@nbb44.fr`) |
+| `DOSSIER_DONNEES` | oui en ligne | dossier des données saisies sur le site, hors du dossier du site (`/home/u597131010/donnees-nbb`) |
 
-Après avoir ajouté ou modifié une variable, relancez un déploiement (Deploys → Trigger deploy).
+Après avoir ajouté ou modifié une variable, relancez un déploiement depuis le hPanel.
 
 ### Envoi des e-mails avec Brevo
 
@@ -114,22 +115,22 @@ sinon il faut refaire la vérification du domaine.
    l'expéditeur `contact@nbb44.fr` (« Nantes Breil Basket ») validé.
 2. Brevo → **SMTP et API** → onglet **SMTP** : noter l'identifiant SMTP (souvent `…@smtp-brevo.com`)
    et générer une clé SMTP (affichée une seule fois ; ce n'est pas la clé API).
-3. Netlify → variables : `SMTP_HOST` = `smtp-relay.brevo.com`, `SMTP_PORT` = `587`,
+3. hPanel → variables : `SMTP_HOST` = `smtp-relay.brevo.com`, `SMTP_PORT` = `587`,
    `SMTP_USER` = l'identifiant SMTP, `SMTP_PASS` = la clé SMTP, `FORM_FROM` = `contact@nbb44.fr`,
    `FORM_TO` = l'adresse qui reçoit les demandes ; puis redéployer.
 4. Tester avec le formulaire de contact, puis **Confirmer par e-mail** sur une inscription au stage faite
    avec votre propre adresse. Les envois apparaissent dans Brevo (Transactionnel → Logs) ; en cas
-   d'échec, la raison est dans Netlify (Logs & metrics → Functions).
+   d'échec, la raison est dans les journaux de l'application Node.js du hPanel.
 
-Netlify n'a pas d'adresse IP fixe : si l'envoi échoue avec « 525 Unauthorized IP address », désactivez le
-blocage des adresses IP inconnues dans Brevo (Sécurité → IP autorisées). L'offre gratuite de Brevo
+Si l'envoi échoue avec « 525 Unauthorized IP address », autorisez l'adresse IP du serveur Hostinger (ou
+désactivez le blocage des adresses IP inconnues) dans Brevo (Sécurité → IP autorisées). L'offre gratuite de Brevo
 permet 300 e-mails par jour.
 
 ### Où vont les demandes ?
 
-Les demandes des formulaires sont enregistrées dans **Netlify Blobs** (stockage inclus dans
-Netlify, données hébergées dans l'Union européenne, à Francfort) et consultées dans l'Espace
-dirigeants. Sans SMTP, rien n'est envoyé par e-mail mais rien n'est perdu. En cas d'échec des deux,
+Les demandes des formulaires (comme les convocations et la base des adhérents) sont enregistrées dans
+des fichiers JSON du dossier `DOSSIER_DONNEES`, sur le serveur Hostinger, et consultées dans l'Espace
+dirigeants. Pensez à en garder une copie de temps en temps (gestionnaire de fichiers du hPanel). Sans SMTP, rien n'est envoyé par e-mail mais rien n'est perdu. En cas d'échec des deux,
 le visiteur est invité à écrire directement par e-mail ou WhatsApp.
 
 ### Nom de domaine

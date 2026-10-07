@@ -105,8 +105,8 @@ export default async function EspaceDirigeants({ searchParams }: { searchParams:
         {!configure ? (
           <div className="vide" style={{ maxWidth: 640, margin: "24px auto" }}>
             <strong>Accès pas encore configuré</strong>
-            Définissez la variable d'environnement ADMIN_PASSWORD dans les réglages de l'hébergeur (Netlify → Project
-            configuration → Environment variables), puis redéployez le site.
+            Définissez la variable d'environnement ADMIN_PASSWORD dans les réglages de l'hébergeur (hPanel Hostinger →
+            application Node.js → variables d'environnement), puis redéployez le site.
           </div>
         ) : !connecte ? (
           <Connexion />

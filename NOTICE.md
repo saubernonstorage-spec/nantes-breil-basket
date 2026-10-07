@@ -11,11 +11,11 @@ Aucune connaissance technique n'est nécessaire : on ne change que du texte entr
 3. Cherchez le bloc à modifier avec `Ctrl+F` / `Cmd+F` (voir le tableau plus bas).
 4. Modifiez le texte **entre les guillemets**.
 5. Cliquez sur **Commit changes…**, écrivez en une phrase ce que vous avez changé, validez.
-6. Le site se met à jour tout seul en une à deux minutes (Netlify le reconstruit).
+6. Le site se met à jour tout seul en deux à trois minutes (Hostinger le reconstruit).
 
 **En cas d'erreur** (guillemet ou virgule oubliés…), la mise en ligne est refusée et
-**l'ancienne version reste en ligne** : personne ne voit de page cassée. Dans Netlify,
-l'onglet **Deploys** affiche la construction en échec ; son journal indique le fichier et
+**l'ancienne version reste en ligne** : personne ne voit de page cassée. Dans le hPanel Hostinger,
+l'application Node.js affiche la construction en échec ; son journal indique le fichier et
 le numéro de ligne à corriger. Corrigez, réenregistrez, c'est reparti.
 
 ### Les 3 règles à respecter
@@ -99,7 +99,7 @@ proposées d'office sur téléphone). Rien à régler.
 Les **résultats** (tableau « Scores officiels FFBB » en bas de la page Matchs) et les **classements**
 (page Équipes, « Voir le classement ») sont **automatiques** : chaque nuit, une tâche GitHub (onglet
 « Actions » du dépôt → « Données FFBB ») les récupère auprès de la FFBB et met à jour
-`data/resultats-ffbb.json` et `data/classements-ffbb.json` s'ils ont changé ; Netlify republie alors le
+`data/resultats-ffbb.json` et `data/classements-ffbb.json` s'ils ont changé ; Hostinger republie alors le
 site. Rien à saisir, et ces fichiers ne se modifient pas à la main. Les 10 derniers week-ends de
 résultats sont proposés.
 
@@ -162,7 +162,7 @@ couleurs du club (ou les initiales pour un portrait) : rien n'est cassé.
 ## 6. Les demandes reçues : l'Espace dirigeants
 
 Pied de page → **Espace dirigeants** (adresse `/espace-dirigeants`). On s'y connecte avec le mot
-de passe du bureau, défini dans Netlify (variable `ADMIN_PASSWORD`, voir `README.md`).
+de passe du bureau, défini dans le hPanel Hostinger (variable `ADMIN_PASSWORD`, voir `README.md`).
 
 - Trois onglets de demandes : **Inscriptions** (préinscriptions), **Stages**, **Messages** (formulaire de
   contact) ; plus **Convocations** (matchs à domicile, voir § 3) et **À compléter sur le site**.
@@ -183,7 +183,7 @@ de passe du bureau, défini dans Netlify (variable `ADMIN_PASSWORD`, voir `READM
   reçu, **Confirmer par e-mail** (colonne Confirmation) demande une confirmation, puis envoie le message au
   parent (copie cachée au club, réponses sur l'adresse du club) ; la date d'envoi s'affiche.
   **Renvoyer l'e-mail** permet un nouvel envoi ; **Supprimer** est en fin de ligne. Le texte du message se modifie dans `STAGE_CONFIRMATION` (`data/nbb.ts`).
-  L'envoi demande que la messagerie SMTP soit configurée sur Netlify (voir `README.md`) ; sinon le
+  L'envoi demande que la messagerie SMTP soit configurée chez Hostinger (voir `README.md`) ; sinon le
   bouton reste grisé.
 
 Les demandes contiennent des données personnelles, souvent de mineurs : supprimez-les une fois

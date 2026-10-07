@@ -57,8 +57,9 @@ export default function Mentions() {
           </p>
           <p>
             Les demandes envoyées depuis le site sont conservées dans un espace réservé aux dirigeants du club, protégé
-            par mot de passe et hébergé par Netlify dans l'Union européenne (Francfort) ; elles peuvent aussi être
-            transmises par e-mail à la messagerie du club.
+            par mot de passe et hébergé par Hostinger
+            {aCompleter(MENTIONS.localisationDonnees) ? "" : ` (serveur situé en ${MENTIONS.localisationDonnees})`} ;
+            elles peuvent aussi être transmises par e-mail à la messagerie du club.
           </p>
           <p>
             Destinataires : les membres du bureau et des commissions concernées, et la FFBB pour la licence. Les données

@@ -174,7 +174,7 @@ export async function envoyerConfirmationStage(id: string): Promise<ResultatConf
   const { sujet, texte } = messageConfirmationStage(demande.champs);
   const envoi = await envoyerEmailA({ a: email, sujet, texte, repondreA: CLUB.email, copieClub: "stages" });
   if (envoi === "non-configure") {
-    return { ok: false, message: "La messagerie du site n'est pas configurée (variables SMTP sur Netlify) : e-mail non envoyé." };
+    return { ok: false, message: "La messagerie du site n'est pas configurée (variables SMTP chez l'hébergeur) : e-mail non envoyé." };
   }
   if (envoi === "echec") return { ok: false, message: "L'e-mail n'a pas pu partir. Réessayez plus tard ; rien n'a été modifié." };
 

@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 
 /**
  * Accès à l'Espace dirigeants : un mot de passe partagé par le bureau, défini dans la
- * variable d'environnement ADMIN_PASSWORD (Netlify → réglages du projet → Environment variables).
+ * variable d'environnement ADMIN_PASSWORD (hPanel Hostinger → application Node.js → variables d'environnement).
  * Une fois connecté, un cookie signé garde la session ouverte 12 heures.
  * Changer le mot de passe déconnecte tout le monde.
  */

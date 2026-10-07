@@ -82,7 +82,9 @@ export const MENTIONS = {
   rna: "W442002019",
   siret: "44791013400017",
   responsablePublication: "Sébastien Aubernon, président",
-  hebergeur: "Netlify, Inc., 101 2nd Street, San Francisco, CA 94105, États-Unis — www.netlify.com (contact : support@netlify.com).",
+  hebergeur: "Hostinger International Ltd., 61 Lordou Vironos Street, 6023 Larnaca, Chypre — www.hostinger.fr.",
+  // Pays (et ville) du serveur qui stocke les données du site, ex. "France (Paris)" : voir hPanel → Plan d'hébergement.
+  localisationDonnees: "[À COMPLÉTER]",
   conservationAdhesions: "1 ans",
   conservationMessages: "12 mois",
 };

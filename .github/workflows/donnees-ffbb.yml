@@ -1,6 +1,6 @@
 # Classements, résultats, calendrier des matchs et logos des clubs FFBB : récupérés chaque nuit
 # (scripts/donnees_ffbb.py). S'ils ont changé, les fichiers data/*-ffbb.json et public/logos/ sont mis
-# à jour sur main : Netlify republie le site. Si la FFBB ne répond pas, la tâche échoue sans rien
+# à jour sur main : Hostinger redéploie le site. Si la FFBB ne répond pas, la tâche échoue sans rien
 # modifier et le site garde les dernières données.
 # Lancement manuel : onglet « Actions » du dépôt → « Données FFBB » → « Run workflow ».
 name: Données FFBB
