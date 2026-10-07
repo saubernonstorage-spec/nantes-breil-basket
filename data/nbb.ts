@@ -64,8 +64,8 @@ export const CLUB: Club = {
   // Délais de réponse annoncés après l'envoi d'un formulaire, ex. "48 h" ou "5 jours".
   delaiReponseContact: "1 semaine",
   delaiReponseInscription: "1 semaine",
-  // Lien vers la plaquette partenaires (PDF), commençant par https://.
-  plaquettePartenaires: "[À COMPLÉTER]",
+  // Plaquette partenaires (PDF) : fichier déposé dans public/documents/ (chemin commençant par /) ou lien https://.
+  plaquettePartenaires: "/documents/plaquette-partenaires-nbb.pdf",
   // Page Partenaires, formule mécénat : retirez « [À CONFIRMER…] » une fois l'éligibilité vérifiée pour l'afficher.
   reductionImpot: "Réduction d'impôt possible (association loi 1901) [À CONFIRMER : éligibilité]",
 };
@@ -92,7 +92,7 @@ export const MENTIONS = {
  * automatiquement à partir de la liste GYMNASES (hors gymnase partenaire).
  */
 export const STATS = {
-  adherents: "411",
+  adherents: "450",
   equipes: "28", // équipes engagées en championnat
 };
 export const LABEL_ECOLE: Chiffre = { valeur: "★★★", label: "label École de Mini-Basket" };
@@ -292,7 +292,7 @@ export const HISTOIRE: EtapeHistoire[] = [
   { annee: "2000", titre: "Le renouveau", texte: "Accession à la R1. La fusion du NAB avec le Serpette Omni Sport donne naissance au NBB." },
   { annee: "2004", titre: "Place aux filles", texte: "Création des premières équipes féminines, en U9 et U11." },
   { annee: "2025", titre: "Trois étoiles", texte: "Obtention du label École Française de Mini-Basket 3 étoiles de la FFBB." },
-  { annee: "2026", titre: "Aujourd'hui", texte: "411 adhérents, 28 équipes engagées et 7 gymnases utilisés chaque semaine." },
+  { annee: "2026", titre: "Aujourd'hui", texte: "450 adhérents, 28 équipes engagées et 7 gymnases utilisés chaque semaine." },
 ];
 
 export const VALEURS: BlocTexte[] = [
@@ -427,9 +427,9 @@ export const PARTENAIRES: Partenaire[] = [
   },
 ];
 export const OFFRE_PARTENARIAT: OffrePartenariat[] = [
-  { nom: "Soutien", montant: "[À COMPLÉTER] €", inclus: ["Logo sur le site du club", "Mention sur les réseaux sociaux"] },
-  { nom: "Partenaire", montant: "[À COMPLÉTER] €", inclus: ["Logo sur le site et en pied de page", "Panneau au gymnase Joël Paon", "Invitations aux soirées de match"], vedette: true },
-  { nom: "Partenaire majeur", montant: "[À COMPLÉTER] €", inclus: ["Logo sur les maillots", "Visibilité sur tous les supports", "Soirée entreprise au gymnase"] },
+  { nom: "Soutien", montant: "200 €", inclus: ["Logo sur le site du club", "Mention sur les réseaux sociaux"] },
+  { nom: "Partenaire", montant: "400 €", inclus: ["Logo sur le site et en pied de page", "Panneau au gymnase Joël Paon", "Invitation à la soirée partenaires"] },
+  { nom: "Partenaire majeur", montant: "600 €", inclus: ["Logo sur les maillots", "Visibilité sur tous les supports", "Invitation à la soirée partenaires"] },
 ];
 
 /**

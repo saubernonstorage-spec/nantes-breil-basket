@@ -7,9 +7,13 @@ import { getStore, type Store } from "@netlify/blobs";
 
 /**
  * Demandes reçues par le site (inscriptions, stages, messages), consultées dans l'Espace dirigeants.
- * En ligne (Netlify) : Netlify Blobs, données hébergées dans l'Union européenne (Francfort).
- * En local : un fichier .donnees/demandes.json (ignoré par Git).
+ * Sur Netlify : Netlify Blobs, données hébergées dans l'Union européenne (Francfort).
+ * Ailleurs (serveur Node.js, ex. Hostinger) et en local : fichiers JSON dans le dossier DOSSIER_DONNEES
+ * (variable d'environnement ; par défaut .donnees/ à la racine du projet, ignoré par Git). Sur un serveur,
+ * le placer hors du dossier de déploiement pour qu'il survive aux mises à jour du site.
  */
+
+const DOSSIER = process.env.DOSSIER_DONNEES || path.join(process.cwd(), ".donnees");
 
 export type Table = "inscriptions" | "stages" | "contacts";
 export const TABLES: Table[] = ["inscriptions", "stages", "contacts"];
@@ -68,7 +72,7 @@ function magasinNetlify(store: Store): Magasin {
 
 /* ───────── Fichier local (développement) ───────── */
 
-const FICHIER = path.join(process.cwd(), ".donnees", "demandes.json");
+const FICHIER = path.join(DOSSIER, "demandes.json");
 
 async function lireFichier(): Promise<Record<string, Demande[]>> {
   try {
@@ -157,7 +161,7 @@ export async function supprimer(table: Table, id: string): Promise<void> {
 
 /* ───────── Base des adhérents (export des licences, déposé dans l'Espace dirigeants) ───────── */
 
-const FICHIER_ADHERENTS = path.join(process.cwd(), ".donnees", "adherents.json");
+const FICHIER_ADHERENTS = path.join(DOSSIER, "adherents.json");
 
 function magasinAdherents(): Store | null {
   try {
@@ -194,7 +198,7 @@ export async function ecrireAdherents(base: unknown | null): Promise<void> {
   await fs.writeFile(FICHIER_ADHERENTS, JSON.stringify(base), "utf8");
 }
 
-const FICHIER_AFFECTATIONS = path.join(process.cwd(), ".donnees", "affectations.json");
+const FICHIER_AFFECTATIONS = path.join(DOSSIER, "affectations.json");
 
 /** Équipes d'entraînement et de match saisies par adhérent (gardées d'un dépôt d'export à l'autre). */
 export async function lireAffectations<T>(): Promise<T | null> {
@@ -222,7 +226,7 @@ export async function ecrireAffectations(affectations: unknown): Promise<void> {
 /** Arbitres, table et OTM d'un match à domicile ; clé : date (AAAA-MM-JJ) et équipe du site. */
 export type ConvocationEnLigne = { date: string; equipe: string; arbitres: string; table: string; otm: string; modifieLe: string };
 
-const FICHIER_CONVOCATIONS = path.join(process.cwd(), ".donnees", "convocations.json");
+const FICHIER_CONVOCATIONS = path.join(DOSSIER, "convocations.json");
 const cleConvocation = (date: string, equipe: string) => `convocations/${date}_${equipe}`;
 
 function magasinConvocations(): Store | null {

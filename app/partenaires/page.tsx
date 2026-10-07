@@ -13,7 +13,8 @@ export const metadata: Metadata = {
 };
 
 export default function Partenaires() {
-  const plaquette = /^https?:\/\//.test(CLUB.plaquettePartenaires) ? CLUB.plaquettePartenaires : "";
+  // Fichier du site (/documents/…) ou lien externe (https://…) ; sinon (« [À COMPLÉTER] ») rien n'est affiché.
+  const plaquette = /^(https?:\/\/|\/)/.test(CLUB.plaquettePartenaires) ? CLUB.plaquettePartenaires : "";
 
   return (
     <>
@@ -68,44 +69,51 @@ export default function Partenaires() {
         <h2 id="formules-titre" className="titre-section" style={{ marginBottom: 24 }}>
           Partenariat ou mécénat
         </h2>
-        <div className="rangee">
-          <div className="formule formule--bleue">
+        {/* Partenariat (entreprises) avec ses niveaux à l'intérieur ; mécénat (particuliers) à côté. */}
+        <div className="engagements">
+          <div className="formule formule--bleue engagements__partenariat">
             <div className="surtitre">Entreprises</div>
             <h3 className="formule__titre">Partenariat</h3>
-            <p>Un contrat avec le club, en échange d'un soutien financier ou matériel.</p>
-            <ul>
-              <li>Visibilité au gymnase et sur les maillots</li>
-              <li>Présence sur le site et les réseaux du club</li>
-              <li>Invitations aux temps forts de la saison</li>
-            </ul>
-          </div>
-          <div className="formule">
-            <div className="surtitre">Entreprises et particuliers</div>
-            <h3 className="formule__titre">Mécénat</h3>
-            <p>Un don sans contrepartie commerciale, pour soutenir directement le projet du club.</p>
-            <ul>
-              {aCompleter(CLUB.reductionImpot) ? null : <li>{CLUB.reductionImpot}</li>}
-              <li>Reçu fiscal délivré par le club</li>
-              <li>Don fléché : école de basket, matériel, stages…</li>
-            </ul>
-          </div>
-        </div>
-        <div className="grille" style={{ "--min": "280px", marginTop: 14 } as React.CSSProperties}>
-          {OFFRE_PARTENARIAT.map((o) => (
-            <div key={o.nom} className="offre">
-              {o.vedette ? <span className="pastille pastille--orange">La plus choisie</span> : null}
-              <h3 className="titre-bloc">{o.nom}</h3>
-              {aCompleter(o.montant) ? null : <div className="offre__montant">{o.montant}</div>}
-              <ul className="liste-coches liste-coches--traits">
-                {o.inclus.map((i) => (
-                  <li key={i}>
-                    <span aria-hidden="true">✓</span>
-                    {i}
-                  </li>
-                ))}
-              </ul>
+            <p>Un contrat avec le club, en échange d'un soutien financier ou matériel. Trois niveaux au choix :</p>
+            <div className="engagements__offres">
+              {OFFRE_PARTENARIAT.map((o) => (
+                <div key={o.nom} className={o.vedette ? "offre offre--vedette" : "offre"}>
+                  {o.vedette ? <span className="pastille pastille--orange">La plus choisie</span> : null}
+                  <h4 className="titre-bloc">{o.nom}</h4>
+                  {aCompleter(o.montant) ? null : <div className="offre__montant">{o.montant}</div>}
+                  <ul className="liste-coches liste-coches--traits">
+                    {o.inclus.map((i) => (
+                      <li key={i}>
+                        <span aria-hidden="true">✓</span>
+                        {i}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+          <div className="formule engagements__mecenat">
+            <div className="surtitre">Particuliers</div>
+            <h3 className="formule__titre">Mécénat</h3>
+            <p>Un don sans contrepartie, pour soutenir directement le projet du club.</p>
+            <ul className="liste-coches liste-coches--traits">
+              {aCompleter(CLUB.reductionImpot) ? null : (
+                <li>
+                  <span aria-hidden="true">✓</span>
+                  {CLUB.reductionImpot}
+                </li>
+              )}
+              <li>
+                <span aria-hidden="true">✓</span>
+                Reçu fiscal délivré par le club
+              </li>
+              <li>
+                <span aria-hidden="true">✓</span>
+                Don fléché : école de basket, matériel, stages…
+              </li>
+            </ul>
+          </div>
         </div>
       </section>
 

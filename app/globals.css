@@ -5915,6 +5915,72 @@ a.badge-label:hover {
   color: rgba(245, 243, 238, 0.85);
 }
 
+/* Partenaires : le partenariat (entreprises) contient ses niveaux ; le mécénat (particuliers) à côté. */
+.engagements {
+  display: grid;
+  grid-template-columns: minmax(0, 2.4fr) minmax(0, 1fr);
+  gap: 14px;
+  align-items: stretch;
+}
+
+.engagements .formule {
+  display: flex;
+  flex-direction: column;
+}
+
+.engagements__offres {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.engagements__offres .offre {
+  gap: 10px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 0;
+  color: var(--encre);
+}
+
+.engagements__offres .offre--vedette {
+  box-shadow: 0 0 0 3px var(--orange);
+}
+
+.engagements__offres .titre-bloc {
+  margin: 0;
+  font-size: 26px;
+  line-height: 0.95;
+}
+
+/* Section resserrée : marges intérieures, titres et lignes de liste plus compacts. */
+.engagements .formule {
+  padding: clamp(20px, 2.4vw, 28px);
+  border-radius: 24px;
+}
+
+.engagements .formule__titre {
+  margin-bottom: 8px;
+  font-size: 38px;
+}
+
+.engagements .formule p {
+  margin-bottom: 14px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.engagements .liste-coches--traits li {
+  padding: 7px 0;
+  font-size: 14px;
+}
+
+@media (max-width: 1000px) {
+  .engagements {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 .offre {
   display: flex;
   flex-direction: column;
