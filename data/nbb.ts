@@ -181,9 +181,9 @@ export const PHOTOS: Record<"accueil" | "accueilEcole" | "accueilVieClub" | "clu
 export const AGENDA: DateAgenda[] = [
   { date: "2026-09-26", jour: "Sam", num: "26", mois: "sept", titre: "Soirée grillades & match RM2", texte: "Premier match à domicile de l'équipe fanion (SM1, 20 h 30).", lieu: "Gymnase Joël Paon · NBB vs Moine Basket", type: "Soirée" },
   { date: "2026-11-11", jour: "Mer", num: "11", mois: "nov", titre: "Tournoi jeunes", texte: "Tournoi du club pour les équipes U9 à U13.", lieu: "Gymnases Joël Paon et Similienne", type: "Tournoi", affiche: "/photos/affiche-tournoi-jeunes-2026.webp" },
-  { date: "2026-11-21", jour: "Sam", num: "21", mois: "nov", titre: "Soirée burgers", texte: "Un burger, des tribunes pleines, le derby RM2 contre Rezé.", lieu: "NBB vs Basket Club Rezé", type: "Soirée", affiche: "/photos/club-gymnase-groupe.jpg" },
+  { date: "2026-11-21", jour: "Sam", num: "21", mois: "nov", titre: "Soirée burgers", texte: "Un burger, des tribunes pleines, le derby RM2 contre Rezé.", lieu: "NBB vs Basket Club Rezé", type: "Soirée", affiche: "/photos/affiche-derby-rm2-reze-2026.jpg" },
   { date: "2026-12-12", jour: "Sam", num: "12", mois: "déc", titre: "Noël du NBB", texte: "Animations et jeux pour les enfants l'après-midi.", lieu: "Gymnase Joël Paon", type: "Fête", affiche: "/photos/club-groupe-jeunes.jpg" },
-  { date: "2027-05-06", jour: "Jeu", num: "6", mois: "mai", titre: "Challenge Éric Canonnet", texte: "Challenge U11M Élite entre seize équipes.", lieu: "Joël Paon, Similienne, Breil et Coubertin", type: "Tournoi", affiche: "/photos/affiche-challenge-eric-canonnet-2027.webp" },
+  { date: "2027-05-06", jour: "Jeu", num: "6", mois: "mai", titre: "Challenge Éric Canonnet", texte: "Challenge U11M Élite entre seize équipes.", lieu: "Joël Paon, Similienne, Breil et Coubertin", type: "Tournoi", affiche: "/photos/affiche-challenge-eric-canonnet-2027-v2.webp" },
 ];
 
 /**
