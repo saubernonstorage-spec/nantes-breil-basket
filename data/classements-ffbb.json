@@ -4,7 +4,7 @@
     "8649": "Nantes Breil Basket",
     "8752": "Similienne Nantes (équipes CTC)"
   },
-  "maj": "2026-10-06T05:28:38+00:00",
+  "maj": "2026-10-07T05:30:10+00:00",
   "classements": {
     "SE-F-1": {
       "championnat": "Pré régionale féminine · Poule A",
@@ -125,55 +125,55 @@
         {
           "rang": 1,
           "equipe": "BASKET CLUB REZE 2",
-          "j": 2,
-          "v": 2,
+          "j": 3,
+          "v": 3,
           "d": 0,
-          "pts": 4,
+          "pts": 6,
           "nbb": false
         },
         {
           "rang": 2,
-          "equipe": "NANTES BREIL BASKET 2",
-          "j": 2,
-          "v": 1,
+          "equipe": "SAINT SEBASTIEN BASKET CLUB 3",
+          "j": 3,
+          "v": 2,
           "d": 1,
-          "pts": 3,
-          "nbb": true
+          "pts": 5,
+          "nbb": false
         },
         {
           "rang": 3,
-          "equipe": "SAINT SEBASTIEN BASKET CLUB 3",
-          "j": 2,
+          "equipe": "NANTES BREIL BASKET 2",
+          "j": 3,
           "v": 1,
-          "d": 1,
-          "pts": 3,
-          "nbb": false
+          "d": 2,
+          "pts": 4,
+          "nbb": true
         },
         {
           "rang": 4,
           "equipe": "NANTES SULLY BASKET",
-          "j": 2,
+          "j": 3,
           "v": 1,
-          "d": 1,
-          "pts": 3,
+          "d": 2,
+          "pts": 4,
           "nbb": false
         },
         {
           "rang": 5,
           "equipe": "BASKET SUD LOIRE 3",
-          "j": 2,
+          "j": 3,
           "v": 1,
-          "d": 1,
-          "pts": 3,
+          "d": 2,
+          "pts": 4,
           "nbb": false
         },
         {
           "rang": 6,
           "equipe": "ERDRE BASKET CLUB 2",
-          "j": 2,
-          "v": 0,
+          "j": 3,
+          "v": 1,
           "d": 2,
-          "pts": 2,
+          "pts": 4,
           "nbb": false
         }
       ]
@@ -183,128 +183,128 @@
       "lignes": [
         {
           "rang": 1,
-          "equipe": "I.B.C. - Indre Basket Club 1",
-          "j": 2,
-          "v": 2,
+          "equipe": "CARQUEFOU BASKET 1",
+          "j": 3,
+          "v": 3,
           "d": 0,
-          "pts": 4,
+          "pts": 6,
           "nbb": false
         },
         {
           "rang": 2,
-          "equipe": "CARQUEFOU BASKET 1",
-          "j": 2,
-          "v": 2,
+          "equipe": "LE MANS C.S.S.G. 1",
+          "j": 3,
+          "v": 3,
           "d": 0,
-          "pts": 4,
+          "pts": 6,
           "nbb": false
         },
         {
           "rang": 3,
-          "equipe": "LE MANS C.S.S.G. 1",
-          "j": 2,
+          "equipe": "AVRILLE BASKET 1",
+          "j": 3,
           "v": 2,
-          "d": 0,
-          "pts": 4,
+          "d": 1,
+          "pts": 5,
           "nbb": false
         },
         {
           "rang": 4,
-          "equipe": "CHOLTIERE PAULX MER MORTE 1",
-          "j": 2,
-          "v": 1,
+          "equipe": "I.B.C. - Indre Basket Club 1",
+          "j": 3,
+          "v": 2,
           "d": 1,
-          "pts": 3,
+          "pts": 5,
           "nbb": false
         },
         {
           "rang": 5,
-          "equipe": "AVRILLE BASKET 1",
-          "j": 2,
-          "v": 1,
+          "equipe": "MORTAGNE SUR SEVRE 1",
+          "j": 3,
+          "v": 2,
           "d": 1,
-          "pts": 3,
+          "pts": 5,
           "nbb": false
         },
         {
           "rang": 6,
-          "equipe": "MOINE BASKET CLUB 1",
-          "j": 2,
-          "v": 1,
+          "equipe": "ORVAULT SPORTS BASKET 1",
+          "j": 3,
+          "v": 2,
           "d": 1,
-          "pts": 3,
+          "pts": 5,
           "nbb": false
         },
         {
           "rang": 7,
-          "equipe": "ORVAULT SPORTS BASKET 1",
-          "j": 2,
-          "v": 1,
+          "equipe": "BASKET CLUB REZE 1",
+          "j": 3,
+          "v": 2,
           "d": 1,
-          "pts": 3,
+          "pts": 5,
           "nbb": false
         },
         {
           "rang": 8,
-          "equipe": "NANTES BREIL BASKET 1",
-          "j": 2,
+          "equipe": "CHOLTIERE PAULX MER MORTE 1",
+          "j": 3,
           "v": 1,
-          "d": 1,
-          "pts": 3,
-          "nbb": true
+          "d": 2,
+          "pts": 4,
+          "nbb": false
         },
         {
           "rang": 9,
-          "equipe": "BASKET CLUB REZE 1",
-          "j": 2,
+          "equipe": "ANDARD BRAIN 1",
+          "j": 3,
           "v": 1,
-          "d": 1,
-          "pts": 3,
+          "d": 2,
+          "pts": 4,
           "nbb": false
         },
         {
           "rang": 10,
-          "equipe": "ST MARS D OUTILLE LES MOUETTES 1",
-          "j": 2,
+          "equipe": "MOINE BASKET CLUB 1",
+          "j": 3,
           "v": 1,
-          "d": 1,
-          "pts": 3,
+          "d": 2,
+          "pts": 4,
           "nbb": false
         },
         {
           "rang": 11,
-          "equipe": "MORTAGNE SUR SEVRE 1",
-          "j": 2,
+          "equipe": "NANTES BREIL BASKET 1",
+          "j": 3,
           "v": 1,
-          "d": 1,
-          "pts": 3,
-          "nbb": false
+          "d": 2,
+          "pts": 4,
+          "nbb": true
         },
         {
           "rang": 12,
-          "equipe": "ANDARD BRAIN 1",
-          "j": 2,
-          "v": 0,
+          "equipe": "ST MARS D OUTILLE LES MOUETTES 1",
+          "j": 3,
+          "v": 1,
           "d": 2,
-          "pts": 2,
+          "pts": 4,
           "nbb": false
         },
         {
           "rang": 13,
           "equipe": "AL GARENNES NANTES 1",
-          "j": 2,
+          "j": 3,
           "v": 0,
-          "d": 2,
-          "pts": 2,
+          "d": 3,
+          "pts": 3,
           "nbb": false
         },
         {
           "rang": 14,
           "equipe": "NANTES DOULON BASKET 1",
-          "j": 2,
+          "j": 3,
           "v": 0,
-          "d": 2,
-          "pts": 2,
+          "d": 3,
+          "pts": 3,
           "nbb": false
         }
       ]
@@ -433,127 +433,127 @@
         {
           "rang": 1,
           "equipe": "CHANTONNAY-ST GERMAIN BASKET 1",
-          "j": 2,
-          "v": 2,
+          "j": 3,
+          "v": 3,
           "d": 0,
-          "pts": 4,
+          "pts": 6,
           "nbb": false
         },
         {
           "rang": 2,
-          "equipe": "PUY SAINT BONNET BASKET 1",
-          "j": 2,
-          "v": 2,
+          "equipe": "LE MANS JALT 2",
+          "j": 3,
+          "v": 3,
           "d": 0,
-          "pts": 4,
+          "pts": 6,
           "nbb": false
         },
         {
           "rang": 3,
-          "equipe": "LE MANS JALT 2",
-          "j": 2,
+          "equipe": "PUY SAINT BONNET BASKET 1",
+          "j": 3,
           "v": 2,
-          "d": 0,
-          "pts": 4,
+          "d": 1,
+          "pts": 5,
           "nbb": false
         },
         {
           "rang": 4,
-          "equipe": "SIMILIENNE NANTES 1",
-          "j": 2,
+          "equipe": "LE MANS SAINT PAVIN 1",
+          "j": 3,
           "v": 2,
-          "d": 0,
-          "pts": 4,
-          "nbb": true
+          "d": 1,
+          "pts": 5,
+          "nbb": false
         },
         {
           "rang": 5,
           "equipe": "ETOILE DE CLISSON BASKET 1",
-          "j": 2,
-          "v": 1,
+          "j": 3,
+          "v": 2,
           "d": 1,
-          "pts": 3,
+          "pts": 5,
           "nbb": false
         },
         {
           "rang": 6,
-          "equipe": "LE MANS SAINT PAVIN 1",
-          "j": 2,
-          "v": 1,
+          "equipe": "SIMILIENNE NANTES 1",
+          "j": 3,
+          "v": 2,
           "d": 1,
-          "pts": 3,
-          "nbb": false
+          "pts": 5,
+          "nbb": true
         },
         {
           "rang": 7,
           "equipe": "POMJEANNAIS BASKET CLUB 1",
-          "j": 2,
-          "v": 1,
+          "j": 3,
+          "v": 2,
           "d": 1,
-          "pts": 3,
+          "pts": 5,
           "nbb": false
         },
         {
           "rang": 8,
-          "equipe": "SALLERTAINE BASKET CLUB 1",
-          "j": 2,
-          "v": 1,
+          "equipe": "ETOILE ANGERS BASKET 2",
+          "j": 3,
+          "v": 2,
           "d": 1,
-          "pts": 3,
+          "pts": 5,
           "nbb": false
         },
         {
           "rang": 9,
-          "equipe": "ETOILE ANGERS BASKET 2",
-          "j": 2,
+          "equipe": "SALLERTAINE BASKET CLUB 1",
+          "j": 3,
           "v": 1,
-          "d": 1,
-          "pts": 3,
+          "d": 2,
+          "pts": 4,
           "nbb": false
         },
         {
           "rang": 10,
           "equipe": "CHAMBRETAUD SAINT-MALO VENDÉE BASKET 1",
-          "j": 2,
+          "j": 3,
           "v": 1,
-          "d": 1,
-          "pts": 3,
+          "d": 2,
+          "pts": 4,
           "nbb": false
         },
         {
           "rang": 11,
-          "equipe": "MOUTIERS SUR LAY 1",
-          "j": 2,
-          "v": 0,
+          "equipe": "MONTAIGU VENDEE BASKET CLUB 2",
+          "j": 3,
+          "v": 1,
           "d": 2,
-          "pts": 2,
+          "pts": 4,
           "nbb": false
         },
         {
           "rang": 12,
-          "equipe": "GREZ NEUVILLE 1",
-          "j": 2,
+          "equipe": "MOUTIERS SUR LAY 1",
+          "j": 3,
           "v": 0,
-          "d": 2,
-          "pts": 2,
+          "d": 3,
+          "pts": 3,
           "nbb": false
         },
         {
           "rang": 13,
-          "equipe": "AVENIR TREMENTINES BASKET 1",
-          "j": 2,
+          "equipe": "GREZ NEUVILLE 1",
+          "j": 3,
           "v": 0,
-          "d": 2,
-          "pts": 2,
+          "d": 3,
+          "pts": 3,
           "nbb": false
         },
         {
           "rang": 14,
-          "equipe": "MONTAIGU VENDEE BASKET CLUB 2",
-          "j": 2,
+          "equipe": "AVENIR TREMENTINES BASKET 1",
+          "j": 3,
           "v": 0,
-          "d": 2,
-          "pts": 2,
+          "d": 3,
+          "pts": 3,
           "nbb": false
         }
       ]
@@ -677,55 +677,55 @@
         {
           "rang": 1,
           "equipe": "AS SAINT ROGATIEN NANTES 3",
-          "j": 2,
-          "v": 2,
+          "j": 3,
+          "v": 3,
           "d": 0,
-          "pts": 4,
+          "pts": 6,
           "nbb": false
         },
         {
           "rang": 2,
           "equipe": "SIMILIENNE NANTES 3",
-          "j": 2,
-          "v": 2,
+          "j": 3,
+          "v": 3,
           "d": 0,
-          "pts": 4,
+          "pts": 6,
           "nbb": true
         },
         {
           "rang": 3,
           "equipe": "AL OUCHE DINIER REZE 2",
-          "j": 2,
+          "j": 3,
+          "v": 1,
+          "d": 2,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 4,
+          "equipe": "SPORTING CLUB ORVAULT",
+          "j": 3,
+          "v": 1,
+          "d": 2,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "NANTES DOULON BASKET 3",
+          "j": 3,
           "v": 1,
           "d": 1,
           "pts": 3,
           "nbb": false
         },
         {
-          "rang": 4,
-          "equipe": "NANTES DOULON BASKET 3",
-          "j": 2,
-          "v": 1,
-          "d": 0,
-          "pts": 2,
-          "nbb": false
-        },
-        {
-          "rang": 5,
-          "equipe": "SPORTING CLUB ORVAULT",
-          "j": 2,
-          "v": 0,
-          "d": 2,
-          "pts": 2,
-          "nbb": false
-        },
-        {
           "rang": 6,
           "equipe": "RC DONGES 2",
-          "j": 2,
+          "j": 3,
           "v": 0,
-          "d": 2,
-          "pts": 2,
+          "d": 3,
+          "pts": 3,
           "nbb": false
         }
       ]
@@ -795,6 +795,15 @@
         {
           "rang": 1,
           "equipe": "NANTES BREIL BASKET 3",
+          "j": 3,
+          "v": 3,
+          "d": 0,
+          "pts": 6,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "BASKET CLUB REZE 2",
           "j": 2,
           "v": 2,
           "d": 0,
@@ -802,26 +811,17 @@
           "nbb": false
         },
         {
-          "rang": 2,
+          "rang": 3,
           "equipe": "SIMILIENNE NANTES 2",
-          "j": 2,
+          "j": 3,
           "v": 1,
-          "d": 1,
-          "pts": 3,
+          "d": 2,
+          "pts": 4,
           "nbb": true
         },
         {
-          "rang": 3,
-          "equipe": "BASKET CLUB REZE 2",
-          "j": 1,
-          "v": 1,
-          "d": 0,
-          "pts": 2,
-          "nbb": false
-        },
-        {
           "rang": 4,
-          "equipe": "BOUGUENAIS BASKET",
+          "equipe": "ALPC MOULIN NANTES BASKET 2",
           "j": 2,
           "v": 0,
           "d": 2,
@@ -830,11 +830,11 @@
         },
         {
           "rang": 5,
-          "equipe": "ALPC MOULIN NANTES BASKET 2",
-          "j": 1,
+          "equipe": "BOUGUENAIS BASKET",
+          "j": 2,
           "v": 0,
-          "d": 1,
-          "pts": 1,
+          "d": 2,
+          "pts": 2,
           "nbb": false
         }
       ]
@@ -845,55 +845,55 @@
         {
           "rang": 1,
           "equipe": "BASKET SUD LOIRE",
-          "j": 2,
-          "v": 2,
+          "j": 3,
+          "v": 3,
           "d": 0,
-          "pts": 4,
+          "pts": 6,
           "nbb": false
         },
         {
           "rang": 2,
-          "equipe": "NORT SUR ERDRE AC LES TOUCHES BASKET 1",
-          "j": 2,
-          "v": 1,
+          "equipe": "CARQUEFOU BASKET 2",
+          "j": 3,
+          "v": 2,
           "d": 1,
-          "pts": 3,
+          "pts": 5,
           "nbb": false
         },
         {
           "rang": 3,
           "equipe": "SIMILIENNE NANTES 1",
-          "j": 2,
-          "v": 1,
+          "j": 3,
+          "v": 2,
           "d": 1,
-          "pts": 3,
+          "pts": 5,
           "nbb": true
         },
         {
           "rang": 4,
-          "equipe": "ASPTT NANTES 2",
-          "j": 2,
+          "equipe": "NORT SUR ERDRE AC LES TOUCHES BASKET 1",
+          "j": 3,
           "v": 1,
-          "d": 1,
-          "pts": 3,
+          "d": 2,
+          "pts": 4,
           "nbb": false
         },
         {
           "rang": 5,
-          "equipe": "CARQUEFOU BASKET 2",
-          "j": 2,
+          "equipe": "ASPTT NANTES 2",
+          "j": 3,
           "v": 1,
-          "d": 1,
-          "pts": 3,
+          "d": 2,
+          "pts": 4,
           "nbb": false
         },
         {
           "rang": 6,
           "equipe": "HIRONDELLE BASKET 1",
-          "j": 2,
+          "j": 3,
           "v": 0,
-          "d": 2,
-          "pts": 2,
+          "d": 3,
+          "pts": 3,
           "nbb": false
         }
       ]
@@ -1249,55 +1249,55 @@
         {
           "rang": 1,
           "equipe": "NANTES BREIL BASKET 1",
-          "j": 2,
-          "v": 2,
+          "j": 3,
+          "v": 3,
           "d": 0,
-          "pts": 4,
+          "pts": 6,
           "nbb": true
         },
         {
           "rang": 2,
-          "equipe": "ERDRE BASKET CLUB",
-          "j": 2,
-          "v": 1,
+          "equipe": "ORVAULT SPORTS BASKET 1",
+          "j": 3,
+          "v": 2,
           "d": 1,
-          "pts": 3,
+          "pts": 5,
           "nbb": false
         },
         {
           "rang": 3,
-          "equipe": "ASPTT NANTES",
-          "j": 2,
-          "v": 1,
+          "equipe": "ERDRE BASKET CLUB",
+          "j": 3,
+          "v": 2,
           "d": 1,
-          "pts": 3,
+          "pts": 5,
           "nbb": false
         },
         {
           "rang": 4,
           "equipe": "BASKET CLUB SUCE/ERDRE 1",
-          "j": 2,
+          "j": 3,
           "v": 1,
-          "d": 1,
-          "pts": 3,
+          "d": 2,
+          "pts": 4,
           "nbb": false
         },
         {
           "rang": 5,
-          "equipe": "ORVAULT SPORTS BASKET 1",
-          "j": 2,
+          "equipe": "ASPTT NANTES",
+          "j": 3,
           "v": 1,
-          "d": 1,
-          "pts": 3,
+          "d": 2,
+          "pts": 4,
           "nbb": false
         },
         {
           "rang": 6,
           "equipe": "AL CHAUVINIERE",
-          "j": 2,
+          "j": 3,
           "v": 0,
-          "d": 2,
-          "pts": 2,
+          "d": 3,
+          "pts": 3,
           "nbb": false
         }
       ]
@@ -1308,56 +1308,56 @@
         {
           "rang": 1,
           "equipe": "LES MONTAGNARDS LA MONTAGNE 1",
-          "j": 2,
-          "v": 2,
+          "j": 3,
+          "v": 3,
           "d": 0,
-          "pts": 4,
+          "pts": 6,
           "nbb": false
         },
         {
           "rang": 2,
           "equipe": "CHABOSSIERE BASKET CLUB 2",
-          "j": 2,
+          "j": 3,
           "v": 2,
-          "d": 0,
-          "pts": 4,
+          "d": 1,
+          "pts": 5,
           "nbb": false
         },
         {
           "rang": 3,
-          "equipe": "NANTES SULLY BASKET",
-          "j": 1,
+          "equipe": "GARS D'HERBAUGES BOUAYE 2",
+          "j": 3,
           "v": 1,
-          "d": 0,
-          "pts": 2,
+          "d": 2,
+          "pts": 4,
           "nbb": false
         },
         {
           "rang": 4,
-          "equipe": "GARS D'HERBAUGES BOUAYE 2",
+          "equipe": "NANTES SULLY BASKET",
           "j": 2,
-          "v": 0,
-          "d": 2,
-          "pts": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
           "nbb": false
         },
         {
           "rang": 5,
-          "equipe": "NANTES BREIL BASKET 2",
+          "equipe": "GOLF BASKET CLUB HERBLINOIS 2",
           "j": 2,
-          "v": 0,
-          "d": 2,
-          "pts": 2,
-          "nbb": true
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
         },
         {
           "rang": 6,
-          "equipe": "GOLF BASKET CLUB HERBLINOIS 2",
-          "j": 1,
+          "equipe": "NANTES BREIL BASKET 2",
+          "j": 3,
           "v": 0,
-          "d": 1,
-          "pts": 1,
-          "nbb": false
+          "d": 3,
+          "pts": 3,
+          "nbb": true
         }
       ]
     },
@@ -1367,55 +1367,55 @@
         {
           "rang": 1,
           "equipe": "NANTES BASKET HERMINE (NBH) 1",
-          "j": 2,
-          "v": 2,
+          "j": 3,
+          "v": 3,
           "d": 0,
-          "pts": 4,
+          "pts": 6,
           "nbb": false
         },
         {
           "rang": 2,
           "equipe": "REZE BASKET 44 1",
-          "j": 2,
-          "v": 2,
+          "j": 3,
+          "v": 3,
           "d": 0,
-          "pts": 4,
+          "pts": 6,
           "nbb": false
         },
         {
           "rang": 3,
-          "equipe": "CARQUEFOU BASKET 1",
-          "j": 2,
-          "v": 1,
-          "d": 1,
-          "pts": 3,
-          "nbb": false
-        },
-        {
-          "rang": 4,
           "equipe": "NANTES BREIL BASKET 1",
-          "j": 2,
+          "j": 3,
           "v": 1,
-          "d": 1,
-          "pts": 3,
+          "d": 2,
+          "pts": 4,
           "nbb": true
         },
         {
-          "rang": 5,
+          "rang": 4,
           "equipe": "SAINT NAZAIRE BASKET CLUB 1",
-          "j": 2,
-          "v": 0,
+          "j": 3,
+          "v": 1,
           "d": 2,
-          "pts": 2,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "CARQUEFOU BASKET 1",
+          "j": 3,
+          "v": 1,
+          "d": 2,
+          "pts": 4,
           "nbb": false
         },
         {
           "rang": 6,
           "equipe": "AL GARENNES NANTES 1",
-          "j": 2,
+          "j": 3,
           "v": 0,
-          "d": 2,
-          "pts": 2,
+          "d": 3,
+          "pts": 3,
           "nbb": false
         }
       ]
@@ -1425,34 +1425,43 @@
       "lignes": [
         {
           "rang": 1,
-          "equipe": "SAINT SEBASTIEN BASKET CLUB 2",
-          "j": 2,
-          "v": 2,
+          "equipe": "NANTES BREIL BASKET 2",
+          "j": 3,
+          "v": 3,
           "d": 0,
-          "pts": 4,
-          "nbb": false
+          "pts": 6,
+          "nbb": true
         },
         {
           "rang": 2,
-          "equipe": "NANTES BREIL BASKET 2",
-          "j": 2,
-          "v": 2,
+          "equipe": "SAINT SEBASTIEN BASKET CLUB 2",
+          "j": 3,
+          "v": 3,
           "d": 0,
-          "pts": 4,
-          "nbb": true
+          "pts": 6,
+          "nbb": false
         },
         {
           "rang": 3,
           "equipe": "SAINTE LUCE BASKET 1",
-          "j": 2,
+          "j": 3,
           "v": 1,
-          "d": 1,
-          "pts": 3,
+          "d": 2,
+          "pts": 4,
           "nbb": false
         },
         {
           "rang": 4,
           "equipe": "AL GARENNES NANTES 2",
+          "j": 3,
+          "v": 1,
+          "d": 2,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 5,
+          "equipe": "BEAUJOIRE BASKET CLUB 2",
           "j": 2,
           "v": 0,
           "d": 2,
@@ -1460,21 +1469,12 @@
           "nbb": false
         },
         {
-          "rang": 5,
-          "equipe": "BEAUJOIRE BASKET CLUB 2",
-          "j": 1,
-          "v": 0,
-          "d": 1,
-          "pts": 1,
-          "nbb": false
-        },
-        {
           "rang": 6,
           "equipe": "BOUGUENAIS BASKET 2",
-          "j": 1,
+          "j": 2,
           "v": 0,
-          "d": 1,
-          "pts": 1,
+          "d": 2,
+          "pts": 2,
           "nbb": false
         }
       ]
@@ -1535,55 +1535,55 @@
         {
           "rang": 1,
           "equipe": "ERDRE BASKET CLUB 2",
-          "j": 2,
-          "v": 2,
+          "j": 3,
+          "v": 3,
           "d": 0,
-          "pts": 4,
+          "pts": 6,
           "nbb": false
         },
         {
           "rang": 2,
           "equipe": "ALPC MOULIN NANTES BASKET 1",
-          "j": 2,
-          "v": 2,
+          "j": 3,
+          "v": 3,
           "d": 0,
-          "pts": 4,
+          "pts": 6,
           "nbb": false
         },
         {
           "rang": 3,
           "equipe": "ETOILE SPORTIVE DE COUERON 1",
-          "j": 2,
-          "v": 1,
+          "j": 3,
+          "v": 2,
           "d": 1,
-          "pts": 3,
+          "pts": 5,
           "nbb": false
         },
         {
           "rang": 4,
           "equipe": "TREILLIERES BASKET CLUB 1",
-          "j": 2,
+          "j": 3,
           "v": 1,
-          "d": 1,
-          "pts": 3,
+          "d": 2,
+          "pts": 4,
           "nbb": false
         },
         {
           "rang": 5,
           "equipe": "LOIRE & SILLON BASKET CLUB 1",
-          "j": 2,
+          "j": 3,
           "v": 0,
-          "d": 2,
-          "pts": 2,
+          "d": 3,
+          "pts": 3,
           "nbb": false
         },
         {
           "rang": 6,
           "equipe": "NANTES BREIL BASKET 1",
-          "j": 2,
+          "j": 3,
           "v": 0,
-          "d": 2,
-          "pts": 2,
+          "d": 3,
+          "pts": 3,
           "nbb": true
         }
       ]
@@ -1594,55 +1594,55 @@
         {
           "rang": 1,
           "equipe": "ORVAULT SPORTS BASKET 2",
-          "j": 2,
-          "v": 2,
+          "j": 3,
+          "v": 3,
           "d": 0,
-          "pts": 4,
+          "pts": 6,
           "nbb": false
         },
         {
           "rang": 2,
           "equipe": "I.B.C. - Indre Basket Club",
-          "j": 2,
+          "j": 3,
           "v": 2,
-          "d": 0,
-          "pts": 4,
+          "d": 1,
+          "pts": 5,
           "nbb": false
         },
         {
           "rang": 3,
           "equipe": "NANTES SULLY BASKET",
-          "j": 2,
-          "v": 1,
+          "j": 3,
+          "v": 2,
           "d": 1,
-          "pts": 3,
+          "pts": 5,
           "nbb": false
         },
         {
           "rang": 4,
           "equipe": "TREILLIERES BASKET CLUB 2",
-          "j": 2,
-          "v": 1,
+          "j": 3,
+          "v": 2,
           "d": 1,
-          "pts": 3,
+          "pts": 5,
           "nbb": false
         },
         {
           "rang": 5,
           "equipe": "CHABOSSIERE BASKET CLUB 3",
-          "j": 2,
+          "j": 3,
           "v": 0,
-          "d": 2,
-          "pts": 2,
+          "d": 3,
+          "pts": 3,
           "nbb": false
         },
         {
           "rang": 6,
           "equipe": "NANTES BREIL BASKET 2",
-          "j": 2,
+          "j": 3,
           "v": 0,
-          "d": 1,
-          "pts": 1,
+          "d": 2,
+          "pts": 2,
           "nbb": true
         }
       ]
@@ -1811,38 +1811,38 @@
       "lignes": [
         {
           "rang": 1,
-          "equipe": "ES PORNICHET 1",
-          "j": 1,
-          "v": 1,
+          "equipe": "ESPERANCE SPORTIVE DE CROSSAC",
+          "j": 2,
+          "v": 2,
           "d": 0,
-          "pts": 2,
+          "pts": 4,
           "nbb": false
         },
         {
           "rang": 2,
-          "equipe": "ESPERANCE SPORTIVE DE CROSSAC",
-          "j": 1,
+          "equipe": "SAINT HERBLAIN BASKET CLUB 1",
+          "j": 2,
           "v": 1,
-          "d": 0,
-          "pts": 2,
+          "d": 1,
+          "pts": 3,
           "nbb": false
         },
         {
           "rang": 3,
-          "equipe": "SAINT HERBLAIN BASKET CLUB 1",
-          "j": 1,
-          "v": 0,
+          "equipe": "ES PORNICHET 1",
+          "j": 2,
+          "v": 1,
           "d": 1,
-          "pts": 1,
+          "pts": 3,
           "nbb": false
         },
         {
           "rang": 4,
           "equipe": "NANTES BREIL BASKET 1",
-          "j": 1,
+          "j": 2,
           "v": 0,
-          "d": 1,
-          "pts": 1,
+          "d": 2,
+          "pts": 2,
           "nbb": true
         }
       ]
@@ -1912,6 +1912,15 @@
         {
           "rang": 1,
           "equipe": "HIRONDELLE BASKET 1",
+          "j": 3,
+          "v": 2,
+          "d": 1,
+          "pts": 5,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "AL GARENNES NANTES 1",
           "j": 2,
           "v": 2,
           "d": 0,
@@ -1919,7 +1928,7 @@
           "nbb": false
         },
         {
-          "rang": 2,
+          "rang": 3,
           "equipe": "NANTES BREIL BASKET 1",
           "j": 2,
           "v": 1,
@@ -1928,30 +1937,21 @@
           "nbb": true
         },
         {
-          "rang": 3,
-          "equipe": "AL GARENNES NANTES 1",
-          "j": 1,
-          "v": 1,
-          "d": 0,
-          "pts": 2,
-          "nbb": false
-        },
-        {
           "rang": 4,
-          "equipe": "SUD RETZ BASKET 1",
+          "equipe": "SAINTE LUCE BASKET 2",
           "j": 2,
-          "v": 0,
-          "d": 2,
-          "pts": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
           "nbb": false
         },
         {
           "rang": 5,
-          "equipe": "SAINTE LUCE BASKET 2",
-          "j": 1,
+          "equipe": "SUD RETZ BASKET 1",
+          "j": 3,
           "v": 0,
-          "d": 1,
-          "pts": 1,
+          "d": 3,
+          "pts": 3,
           "nbb": false
         }
       ]
@@ -2020,57 +2020,57 @@
       "lignes": [
         {
           "rang": 1,
-          "equipe": "NANTES DOULON BASKET 1",
-          "j": 2,
-          "v": 2,
+          "equipe": "NANTES SULLY BASKET 1",
+          "j": 3,
+          "v": 3,
           "d": 0,
-          "pts": 4,
+          "pts": 6,
           "nbb": false
         },
         {
           "rang": 2,
-          "equipe": "NANTES SULLY BASKET 1",
-          "j": 2,
+          "equipe": "ERDRE BASKET CLUB 2",
+          "j": 3,
           "v": 2,
-          "d": 0,
-          "pts": 4,
+          "d": 1,
+          "pts": 5,
           "nbb": false
         },
         {
           "rang": 3,
-          "equipe": "ERDRE BASKET CLUB 2",
-          "j": 2,
-          "v": 1,
+          "equipe": "NANTES DOULON BASKET 1",
+          "j": 3,
+          "v": 2,
           "d": 1,
-          "pts": 3,
+          "pts": 5,
           "nbb": false
         },
         {
           "rang": 4,
-          "equipe": "AL GARENNES NANTES 2",
-          "j": 2,
+          "equipe": "BEAUJOIRE BASKET CLUB 2",
+          "j": 3,
           "v": 1,
-          "d": 1,
-          "pts": 3,
+          "d": 2,
+          "pts": 4,
           "nbb": false
         },
         {
           "rang": 5,
-          "equipe": "NANTES BREIL BASKET 3",
-          "j": 2,
-          "v": 0,
+          "equipe": "AL GARENNES NANTES 2",
+          "j": 3,
+          "v": 1,
           "d": 2,
-          "pts": 2,
-          "nbb": true
+          "pts": 4,
+          "nbb": false
         },
         {
           "rang": 6,
-          "equipe": "BEAUJOIRE BASKET CLUB 2",
-          "j": 2,
+          "equipe": "NANTES BREIL BASKET 3",
+          "j": 3,
           "v": 0,
-          "d": 2,
-          "pts": 2,
-          "nbb": false
+          "d": 3,
+          "pts": 3,
+          "nbb": true
         }
       ]
     },
@@ -2079,16 +2079,16 @@
       "lignes": [
         {
           "rang": 1,
-          "equipe": "PAYS D'ANCENIS BASKET 1",
-          "j": 2,
+          "equipe": "TREILLIERES BASKET CLUB 1",
+          "j": 3,
           "v": 2,
-          "d": 0,
-          "pts": 4,
+          "d": 1,
+          "pts": 5,
           "nbb": false
         },
         {
           "rang": 2,
-          "equipe": "TREILLIERES BASKET CLUB 1",
+          "equipe": "PAYS D'ANCENIS BASKET 1",
           "j": 2,
           "v": 2,
           "d": 0,
@@ -2098,29 +2098,29 @@
         {
           "rang": 3,
           "equipe": "HERBADILLA LA CHEVROLIERE 1",
-          "j": 2,
-          "v": 0,
+          "j": 3,
+          "v": 1,
           "d": 2,
-          "pts": 2,
+          "pts": 4,
           "nbb": false
         },
         {
           "rang": 4,
-          "equipe": "NANTES BREIL BASKET 1",
-          "j": 1,
-          "v": 0,
+          "equipe": "PAMPRES VALLETAIS 2",
+          "j": 2,
+          "v": 1,
           "d": 1,
-          "pts": 1,
-          "nbb": true
+          "pts": 3,
+          "nbb": false
         },
         {
           "rang": 5,
-          "equipe": "PAMPRES VALLETAIS 2",
-          "j": 1,
+          "equipe": "NANTES BREIL BASKET 1",
+          "j": 2,
           "v": 0,
-          "d": 1,
-          "pts": 1,
-          "nbb": false
+          "d": 2,
+          "pts": 2,
+          "nbb": true
         }
       ]
     },
@@ -2129,6 +2129,33 @@
       "lignes": [
         {
           "rang": 1,
+          "equipe": "BASKET CLUB REZE 3",
+          "j": 2,
+          "v": 2,
+          "d": 0,
+          "pts": 4,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "NANTES BREIL BASKET 2",
+          "j": 3,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": true
+        },
+        {
+          "rang": 3,
+          "equipe": "BASKET CLUB BASSE LOIRE 2",
+          "j": 2,
+          "v": 1,
+          "d": 1,
+          "pts": 3,
+          "nbb": false
+        },
+        {
+          "rang": 4,
           "equipe": "SAINT HERBLAIN BASKET CLUB 2",
           "j": 1,
           "v": 1,
@@ -2137,40 +2164,13 @@
           "nbb": false
         },
         {
-          "rang": 2,
-          "equipe": "BASKET CLUB REZE 3",
-          "j": 1,
-          "v": 1,
-          "d": 0,
-          "pts": 2,
-          "nbb": false
-        },
-        {
-          "rang": 3,
-          "equipe": "BASKET CLUB BASSE LOIRE 2",
-          "j": 1,
-          "v": 1,
-          "d": 0,
-          "pts": 2,
-          "nbb": false
-        },
-        {
-          "rang": 4,
-          "equipe": "CHABOSSIERE BASKET CLUB 2",
-          "j": 1,
-          "v": 0,
-          "d": 1,
-          "pts": 1,
-          "nbb": false
-        },
-        {
           "rang": 5,
-          "equipe": "NANTES BREIL BASKET 2",
+          "equipe": "CHABOSSIERE BASKET CLUB 2",
           "j": 2,
           "v": 0,
-          "d": 1,
-          "pts": 1,
-          "nbb": true
+          "d": 2,
+          "pts": 2,
+          "nbb": false
         }
       ]
     },
@@ -2180,6 +2180,15 @@
         {
           "rang": 1,
           "equipe": "SAUTRON BASKET CLUB 1",
+          "j": 3,
+          "v": 3,
+          "d": 0,
+          "pts": 6,
+          "nbb": false
+        },
+        {
+          "rang": 2,
+          "equipe": "BASKET CLUB REZE 2",
           "j": 2,
           "v": 2,
           "d": 0,
@@ -2187,21 +2196,12 @@
           "nbb": false
         },
         {
-          "rang": 2,
-          "equipe": "EB SORINIERES 1",
-          "j": 2,
-          "v": 1,
-          "d": 1,
-          "pts": 3,
-          "nbb": false
-        },
-        {
           "rang": 3,
-          "equipe": "BASKET CLUB REZE 2",
-          "j": 1,
+          "equipe": "EB SORINIERES 1",
+          "j": 3,
           "v": 1,
-          "d": 0,
-          "pts": 2,
+          "d": 2,
+          "pts": 4,
           "nbb": false
         },
         {
@@ -2216,10 +2216,10 @@
         {
           "rang": 5,
           "equipe": "NANTES BREIL BASKET 1",
-          "j": 1,
+          "j": 2,
           "v": 0,
-          "d": 1,
-          "pts": 1,
+          "d": 2,
+          "pts": 2,
           "nbb": true
         }
       ]
