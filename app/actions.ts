@@ -1,9 +1,9 @@
 "use server";
 
-import { CATEGORIES_AGE, STAGE_REDUCTIONS } from "@/data/nbb";
-import { envoyerEmail, type Destinataire } from "@/lib/email";
+import { CATEGORIES_AGE, CLUB, INSCRIPTIONS_OUVERTES, STAGE_REDUCTIONS } from "@/data/nbb";
+import { envoyerEmail, envoyerEmailA, type Destinataire } from "@/lib/email";
 import { DELAI_MINIMUM_MS, reponseRobotValide, STATUTS_STAGE, SUJETS_CONTACT, type Resultat } from "@/lib/formulaires";
-import { donneesCotisation, estMineur, prixStage, semainesOuvertes, toutesLesEquipes } from "@/lib/nbb";
+import { donneesCotisation, estMineur, messageAccuseContact, prixStage, semainesOuvertes, toutesLesEquipes } from "@/lib/nbb";
 import { enregistrer, type Table } from "@/lib/stockage";
 import type { StatutStage } from "@/lib/types";
 import {
@@ -108,7 +108,13 @@ export async function envoyerContact(_: Resultat, donnees: FormData): Promise<Re
     repondreA: v.email,
     champs: { Nom: v.nom, "E-mail": v.email, Sujet: sujet, Message: v.message },
   });
-  return reference ? { statut: "succes", reference } : ECHEC;
+  if (!reference) return ECHEC;
+  // Accusé de réception à la personne (modèle CONTACT_ACCUSE) ; un échec d'envoi ne bloque pas la demande.
+  if (/^[A-Z]{3}-/.test(reference)) {
+    const accuse = messageAccuseContact({ nom: v.nom, sujet, reference });
+    await envoyerEmailA({ a: v.email, sujet: accuse.sujet, texte: accuse.texte, repondreA: CLUB.email });
+  }
+  return { statut: "succes", reference };
 }
 
 /* ───────── Stages ───────── */
@@ -198,6 +204,10 @@ export async function inscrireStage(_: Resultat, donnees: FormData): Promise<Res
 
 export async function preinscrire(_: Resultat, donnees: FormData): Promise<Resultat> {
   if (estSpam(donnees)) return { statut: "succes", reference: "EN-ATTENTE" };
+  // Inscriptions fermées (INSCRIPTIONS_OUVERTES) : aucune préinscription n'est enregistrée.
+  if (!INSCRIPTIONS_OUVERTES) {
+    return { statut: "erreur", message: "Les inscriptions sont fermées pour le moment : contactez le club depuis la page Contact." };
+  }
 
   const equipes = toutesLesEquipes();
   const v = {

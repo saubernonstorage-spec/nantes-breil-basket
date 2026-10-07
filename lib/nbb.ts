@@ -26,6 +26,7 @@ import {
   STAGES,
   STAGE_A_PREVOIR,
   STAGE_CONFIRMATION,
+  CONTACT_ACCUSE,
   STAGE_CONTACT,
   STAGE_JOURNEE,
   STAGE_TARIFS,
@@ -38,7 +39,7 @@ import classementsFFBB from "@/data/classements-ffbb.json";
 import logosFFBB from "@/data/logos-ffbb.json";
 import matchsFFBB from "@/data/matchs-ffbb.json";
 import resultatsFFBB from "@/data/resultats-ffbb.json";
-import { duree, heure, heureCourte, itineraire, majuscule, MARQUE_A_COMPLETER, montant, pluriel, slug, type PrixCotisation, type PrixStage } from "@/lib/utils";
+import { aCompleter, duree, heure, heureCourte, itineraire, majuscule, MARQUE_A_COMPLETER, montant, pluriel, slug, type PrixCotisation, type PrixStage } from "@/lib/utils";
 
 export const JOURS: Jour[] = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
 
@@ -933,6 +934,17 @@ function ligneSemaineStage(recap: string): string {
 }
 
 export type MessageConfirmation = { sujet: string; texte: string };
+
+/** Accusé de réception d'un message de contact (modèle CONTACT_ACCUSE), tel qu'il sera envoyé. */
+export function messageAccuseContact(v: { nom: string; sujet: string; reference: string }): MessageConfirmation {
+  const valeurs: Record<string, string> = {
+    ...v,
+    delai: aCompleter(CLUB.delaiReponseContact) ? "dès que possible" : `sous ${CLUB.delaiReponseContact}`,
+    email: CLUB.email,
+  };
+  const remplir = (modele: string) => modele.replace(/\{(\w+)\}/g, (repere, cle: string) => valeurs[cle] ?? repere);
+  return { sujet: remplir(CONTACT_ACCUSE.sujet), texte: remplir(CONTACT_ACCUSE.texte) };
+}
 
 /** E-mail de confirmation d'une inscription au stage (modèle STAGE_CONFIRMATION), tel qu'il sera envoyé. */
 export function messageConfirmationStage(champs: Record<string, string>): MessageConfirmation {

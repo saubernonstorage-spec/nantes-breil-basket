@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { AIDES, CATEGORIES_AGE, CLUB, COMMISSIONS, DOCUMENTS, PIECES, TARIFS, TARIF_NOTE } from "@/data/nbb";
+import { AIDES, CATEGORIES_AGE, CLUB, COMMISSIONS, DOCUMENTS, INSCRIPTIONS_OUVERTES, PIECES, TARIFS, TARIF_NOTE } from "@/data/nbb";
 import { anneeSaison, donneesCotisation, toutesLesEquipes } from "@/lib/nbb";
 import { aCompleter } from "@/lib/utils";
 import { EntetePage } from "@/components/Page";
 import { InscriptionForm } from "@/components/formulaires/InscriptionForm";
+import { TEXTE_INSCRIPTIONS_FERMEES } from "@/components/InscriptionsFermees";
 import { NouvelOnglet } from "@/components/icons";
 
 const prixMin = Math.min(...TARIFS.map((t) => t.prix));
@@ -157,6 +158,16 @@ export default function Inscriptions() {
             </p>
           </div>
           <div className="bloc-formulaire__carte">
+            {/* Inscriptions fermées (INSCRIPTIONS_OUVERTES, data/nbb.ts) : message et lien vers Contact. */}
+            {!INSCRIPTIONS_OUVERTES ? (
+              <div className="inscriptions-fermees">
+                <h3 className="titre-bloc">Inscriptions fermées</h3>
+                <p>{TEXTE_INSCRIPTIONS_FERMEES}</p>
+                <Link href="/contact" className="btn btn--l btn--orange">
+                  Nous contacter
+                </Link>
+              </div>
+            ) : (
             <InscriptionForm
               equipes={toutesLesEquipes()}
               categoriesAge={CATEGORIES_AGE}
@@ -168,6 +179,7 @@ export default function Inscriptions() {
               delaiReponse={CLUB.delaiReponseInscription}
               emailLicence={CLUB.emailLicenceFFBB}
             />
+            )}
           </div>
         </div>
       </section>

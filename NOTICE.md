@@ -39,6 +39,8 @@ information. La liste de ce qui reste à fournir est dans l'Espace dirigeants, o
 | Je veux modifier… | Bloc à chercher dans `data/nbb.ts` |
 | --- | --- |
 | E-mail, téléphone, adresse, réseaux sociaux, boutique, saison, délais de réponse | `CLUB` |
+| Texte de l'accusé de réception envoyé automatiquement après un message de la page Contact (repères {nom}, {sujet}, {reference}, {delai}, {email}) | `CONTACT_ACCUSE` |
+| Ouvrir ou fermer les inscriptions au club (`false` : fenêtre « Inscriptions fermées » sur les boutons d'inscription, formulaire remplacé par un message, lien vers Contact) | `INSCRIPTIONS_OUVERTES` |
 | Périodes d'ouverture de la boutique (en dehors, les boutons « Boutique » affichent « Boutique fermée » et la prochaine ouverture) | `OUVERTURES_BOUTIQUE` |
 | Les chiffres de l'accueil (adhérents, équipes engagées) | `STATS` — le nombre de gymnases est calculé tout seul |
 | Les grandes photos (accueil, club, écoles, stages) | `PHOTOS` |

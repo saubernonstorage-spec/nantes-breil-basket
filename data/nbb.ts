@@ -77,6 +77,13 @@ export const CLUB: Club = {
  */
 export const OUVERTURES_BOUTIQUE: OuvertureBoutique[] = [{ debut: "2026-10-20", fin: "2026-11-20" }];
 
+/**
+ * Inscriptions au club (préinscription en ligne). false : les boutons « S'inscrire » ouvrent une fenêtre
+ * « Inscriptions fermées » avec un lien vers la page Contact, et le formulaire de la page Inscriptions est
+ * remplacé par ce message. Les liens d'information (menu, pied de page, tarifs) restent accessibles.
+ */
+export const INSCRIPTIONS_OUVERTES = false;
+
 /** Mentions légales (page /mentions-legales). */
 export const MENTIONS = {
   rna: "W442002019",
@@ -489,6 +496,28 @@ export const STAGE_JOURNEE: { heure: string; texte: string }[] = [
 ];
 export const STAGE_A_PREVOIR: string[] = ["Chaussures de salle propres et tenue de sport", "Gourde (1 L minimum) et goûter", "Pique-nique pour le midi", "Licence FFBB ou attestation d'assurance (non-licenciés)", "Autorisation parentale signée"];
 export const STAGE_CONTACT = { nom: "Hervé Deleaune", telephone: "06 34 37 09 72" };
+
+/**
+ * Accusé de réception envoyé automatiquement à la personne qui écrit depuis la page Contact. Modifiable
+ * librement ; les repères entre accolades sont remplacés automatiquement :
+ *   {nom} · {sujet} · {reference} (numéro du message) · {delai} (« sous 1 semaine », d'après
+ *   CLUB.delaiReponseContact, sinon « dès que possible ») · {email} (e-mail du club)
+ * Le message de la personne n'est volontairement pas recopié (le formulaire ne doit pas servir à envoyer
+ * un texte quelconque à une adresse quelconque).
+ */
+export const CONTACT_ACCUSE = {
+  sujet: "Nous avons bien reçu votre message ({reference})",
+  texte: `Bonjour {nom},
+
+Merci pour votre message ({sujet}) : il est bien arrivé au Nantes Breil Basket, sous la référence {reference}.
+
+Le club est géré par des bénévoles : nous vous répondons {delai}, à cette adresse.
+
+Ceci est un message automatique. Pour compléter votre demande, répondez simplement à cet e-mail ou écrivez à {email}.
+
+Sportivement,
+Le Nantes Breil Basket`,
+};
 
 /**
  * E-mail de confirmation d'inscription au stage, envoyé depuis l'Espace dirigeants (onglet Stages,
