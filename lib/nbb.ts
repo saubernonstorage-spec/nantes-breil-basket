@@ -936,11 +936,10 @@ function ligneSemaineStage(recap: string): string {
 export type MessageConfirmation = { sujet: string; texte: string };
 
 /** Accusé de réception d'un message de contact (modèle CONTACT_ACCUSE), tel qu'il sera envoyé. */
-export function messageAccuseContact(v: { nom: string; sujet: string; reference: string }): MessageConfirmation {
+export function messageAccuseContact(v: { nom: string; sujet: string; reference: string; email: string }): MessageConfirmation {
   const valeurs: Record<string, string> = {
     ...v,
     delai: aCompleter(CLUB.delaiReponseContact) ? "dès que possible" : `sous ${CLUB.delaiReponseContact}`,
-    email: CLUB.email,
   };
   const remplir = (modele: string) => modele.replace(/\{(\w+)\}/g, (repere, cle: string) => valeurs[cle] ?? repere);
   return { sujet: remplir(CONTACT_ACCUSE.sujet), texte: remplir(CONTACT_ACCUSE.texte) };

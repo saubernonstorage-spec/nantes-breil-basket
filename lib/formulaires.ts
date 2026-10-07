@@ -10,13 +10,12 @@ export const RESULTAT_INITIAL: Resultat = { statut: "initial" };
 export const SUJETS_CONTACT = [
   { valeur: "inscription", label: "Inscription / réinscription" },
   { valeur: "essai", label: "Séance d'essai" },
-  { valeur: "creneau", label: "Créneau d'entraînement" },
-  { valeur: "match", label: "Match, convocation, déplacement" },
   { valeur: "arbitrage", label: "École d'arbitrage" },
   { valeur: "stage", label: "Stage vacances" },
   { valeur: "benevolat", label: "Bénévolat / commissions" },
   { valeur: "partenariat", label: "Partenariat / mécénat" },
   { valeur: "image", label: "Droit à l'image / retrait d'une photo" },
+  { valeur: "erreur", label: "Signaler une erreur sur le site" },
   { valeur: "autre", label: "Autre" },
 ] as const;
 

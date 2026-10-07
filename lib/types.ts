@@ -35,6 +35,9 @@ export type Club = {
 /** Période d'ouverture de la boutique : dates AAAA-MM-JJ incluses. */
 export type OuvertureBoutique = { debut: string; fin: string };
 
+/** Services de l'association qui reçoivent les e-mails du site (EMAILS_SERVICES). */
+export type ServiceEmail = "contact" | "inscriptions" | "arbitrage" | "stages" | "partenariat" | "benevolat" | "site";
+
 export type Chiffre = { valeur: string; label: string };
 
 export type DateAgenda = {

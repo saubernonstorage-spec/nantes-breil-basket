@@ -151,9 +151,6 @@ export function PlanningVue({
             Vérifiez toujours la présence du coach avant de laisser votre enfant au gymnase. Un changement de dernière
             minute ? Il est annoncé sur le groupe WhatsApp du club.
           </p>
-          <Link href="/contact?sujet=creneau" className="btn btn--s btn--petit btn--bleu">
-            Signaler une erreur
-          </Link>
         </div>
       </section>
     </>

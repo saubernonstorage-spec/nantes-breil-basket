@@ -39,6 +39,7 @@ import type {
   Convocation,
   MatchManuel,
   OuvertureBoutique,
+  ServiceEmail,
 } from "@/lib/types";
 
 export const CLUB: Club = {
@@ -76,6 +77,40 @@ export const CLUB: Club = {
  * prochaine ouverture. Liste vide : la boutique est considérée comme toujours ouverte.
  */
 export const OUVERTURES_BOUTIQUE: OuvertureBoutique[] = [{ debut: "2026-10-20", fin: "2026-11-20" }];
+
+/**
+ * E-MAILS DU SITE. Tous partent de l'adresse unique EMAIL_EXPEDITEUR (à déclarer comme expéditeur dans Brevo) ;
+ * « Répondre » renvoie toujours vers une vraie personne : la famille pour les e-mails reçus par le club, le
+ * service concerné pour les e-mails envoyés aux familles (accusé de réception, confirmation de stage).
+ */
+export const EMAIL_EXPEDITEUR = "noreply@nbb44.fr";
+
+/**
+ * Adresse de chaque service (plusieurs adresses : séparées par des virgules). Une adresse vide renvoie vers
+ * contact. Dans Microsoft 365, chaque adresse doit accepter les e-mails venant de l'extérieur.
+ */
+export const EMAILS_SERVICES: Record<ServiceEmail, string> = {
+  contact: "contact@nbb44.fr",
+  inscriptions: "inscriptions@nbb44.fr", // préinscriptions (page Inscriptions)
+  arbitrage: "arbitrage@nbb44.fr",
+  stages: "stages@nbb44.fr", // inscriptions aux stages et copie des confirmations envoyées aux parents
+  partenariat: "partenariat@nbb44.fr",
+  benevolat: "benevolat@nbb44.fr",
+  site: "site@nbb44.fr", // erreurs sur le site et droit à l'image
+};
+
+/** Service qui reçoit chaque sujet du formulaire Contact (sujet absent de la liste : contact). */
+export const SERVICE_PAR_SUJET: Record<string, ServiceEmail> = {
+  inscription: "contact",
+  essai: "contact",
+  arbitrage: "arbitrage",
+  stage: "contact",
+  benevolat: "benevolat",
+  partenariat: "partenariat",
+  image: "site",
+  erreur: "site",
+  autre: "contact",
+};
 
 /**
  * Inscriptions au club (préinscription en ligne). false : les boutons « S'inscrire » ouvrent une fenêtre
@@ -501,7 +536,7 @@ export const STAGE_CONTACT = { nom: "Hervé Deleaune", telephone: "06 34 37 09 7
  * Accusé de réception envoyé automatiquement à la personne qui écrit depuis la page Contact. Modifiable
  * librement ; les repères entre accolades sont remplacés automatiquement :
  *   {nom} · {sujet} · {reference} (numéro du message) · {delai} (« sous 1 semaine », d'après
- *   CLUB.delaiReponseContact, sinon « dès que possible ») · {email} (e-mail du club)
+ *   CLUB.delaiReponseContact, sinon « dès que possible ») · {email} (adresse du service qui traite le message)
  * Le message de la personne n'est volontairement pas recopié (le formulaire ne doit pas servir à envoyer
  * un texte quelconque à une adresse quelconque).
  */

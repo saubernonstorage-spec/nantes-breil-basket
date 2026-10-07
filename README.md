@@ -97,12 +97,18 @@ le site automatiquement ; si la construction échoue, l'ancienne version reste e
 | `ADMIN_PASSWORD` | oui, pour l'Espace dirigeants | mot de passe du bureau (phrase longue) ; le changer déconnecte tout le monde |
 | `ADMIN_SECRET` | non | chaîne aléatoire supplémentaire pour signer la session |
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` | pour les confirmations de stage | serveur d'envoi des e-mails (Brevo, voir ci-dessous ; Gmail : mot de passe d'application) : transmission des demandes au club et e-mails de confirmation d'inscription au stage envoyés aux parents depuis l'Espace dirigeants |
-| `FORM_TO` | avec SMTP | destinataire(s) des messages, séparés par des virgules |
-| `FORM_TO_INSCRIPTIONS`, `FORM_TO_STAGES` | non | destinataires des préinscriptions et des stages (sinon `FORM_TO`) |
-| `FORM_FROM` | oui avec Brevo | adresse d'expédition (sinon `SMTP_USER`) : avec Brevo, un expéditeur validé du domaine du club (`contact@nbb44.fr`) |
 | `DOSSIER_DONNEES` | oui en ligne | dossier des données saisies sur le site, hors du dossier du site (`/home/u597131010/donnees-nbb`) |
 
 Après avoir ajouté ou modifié une variable, relancez un déploiement depuis le hPanel.
+
+### Adresses des e-mails (data/nbb.ts)
+
+Tous les e-mails partent de l'adresse unique `EMAIL_EXPEDITEUR` (`noreply@nbb44.fr`), à déclarer comme
+expéditeur dans Brevo. Chaque demande arrive au service concerné (`EMAILS_SERVICES`) : préinscriptions →
+inscriptions@, stages → stages@, et pour le formulaire Contact le service de chaque sujet (`SERVICE_PAR_SUJET`).
+« Répondre » écrit toujours à une vraie personne : la famille pour les e-mails reçus par le club, le service
+pour les e-mails envoyés aux familles (accusé de réception, confirmation de stage, avec copie cachée à stages@).
+Dans Microsoft 365, chaque adresse de service doit accepter les e-mails venant de l'extérieur.
 
 ### Envoi des e-mails avec Brevo
 
@@ -116,8 +122,7 @@ sinon il faut refaire la vérification du domaine.
 2. Brevo → **SMTP et API** → onglet **SMTP** : noter l'identifiant SMTP (souvent `…@smtp-brevo.com`)
    et générer une clé SMTP (affichée une seule fois ; ce n'est pas la clé API).
 3. hPanel → variables : `SMTP_HOST` = `smtp-relay.brevo.com`, `SMTP_PORT` = `587`,
-   `SMTP_USER` = l'identifiant SMTP, `SMTP_PASS` = la clé SMTP, `FORM_FROM` = `contact@nbb44.fr`,
-   `FORM_TO` = l'adresse qui reçoit les demandes ; puis redéployer.
+   `SMTP_USER` = l'identifiant SMTP, `SMTP_PASS` = la clé SMTP ; puis redéployer.
 4. Tester avec le formulaire de contact, puis **Confirmer par e-mail** sur une inscription au stage faite
    avec votre propre adresse. Les envois apparaissent dans Brevo (Transactionnel → Logs) ; en cas
    d'échec, la raison est dans les journaux de l'application Node.js du hPanel.

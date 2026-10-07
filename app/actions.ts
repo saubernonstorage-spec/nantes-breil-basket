@@ -1,11 +1,11 @@
 "use server";
 
-import { CATEGORIES_AGE, CLUB, INSCRIPTIONS_OUVERTES, STAGE_REDUCTIONS } from "@/data/nbb";
-import { envoyerEmail, envoyerEmailA, type Destinataire } from "@/lib/email";
+import { CATEGORIES_AGE, INSCRIPTIONS_OUVERTES, SERVICE_PAR_SUJET, STAGE_REDUCTIONS } from "@/data/nbb";
+import { adresseService, envoyerEmail, envoyerEmailA } from "@/lib/email";
 import { DELAI_MINIMUM_MS, reponseRobotValide, STATUTS_STAGE, SUJETS_CONTACT, type Resultat } from "@/lib/formulaires";
 import { donneesCotisation, estMineur, messageAccuseContact, prixStage, semainesOuvertes, toutesLesEquipes } from "@/lib/nbb";
 import { enregistrer, type Table } from "@/lib/stockage";
-import type { StatutStage } from "@/lib/types";
+import type { ServiceEmail, StatutStage } from "@/lib/types";
 import {
   appliquerReduction,
   categorieParAnnee,
@@ -45,13 +45,13 @@ const ERREUR_CHAMPS: Resultat = { statut: "erreur", message: "Certains champs so
 async function transmettre({
   table,
   champs,
-  destinataire,
+  service,
   sujet,
   repondreA,
 }: {
   table: Table;
   champs: Record<string, string>;
-  destinataire: Destinataire;
+  service: ServiceEmail;
   sujet: string;
   repondreA: string;
 }): Promise<string | null> {
@@ -64,7 +64,7 @@ async function transmettre({
     "— Pour répondre, utilisez simplement « Répondre » : la réponse part vers l'expéditeur.",
   ].join("\n");
   const envoye = await envoyerEmail({
-    destinataire,
+    service,
     sujet: `[Site NBB] ${sujet}${reference ? ` (${reference})` : ""}`,
     texte,
     repondreA,
@@ -101,9 +101,11 @@ export async function envoyerContact(_: Resultat, donnees: FormData): Promise<Re
   if (Object.keys(erreurs).length) return { ...ERREUR_CHAMPS, erreurs } as Resultat;
 
   const sujet = SUJETS_CONTACT.find((s) => s.valeur === v.sujet)?.label ?? "Autre";
+  // Service de l'association qui reçoit ce sujet (SERVICE_PAR_SUJET, data/nbb.ts).
+  const service = SERVICE_PAR_SUJET[v.sujet] ?? "contact";
   const reference = await transmettre({
     table: "contacts",
-    destinataire: "general",
+    service,
     sujet: `${sujet} — ${v.nom}`,
     repondreA: v.email,
     champs: { Nom: v.nom, "E-mail": v.email, Sujet: sujet, Message: v.message },
@@ -111,8 +113,8 @@ export async function envoyerContact(_: Resultat, donnees: FormData): Promise<Re
   if (!reference) return ECHEC;
   // Accusé de réception à la personne (modèle CONTACT_ACCUSE) ; un échec d'envoi ne bloque pas la demande.
   if (/^[A-Z]{3}-/.test(reference)) {
-    const accuse = messageAccuseContact({ nom: v.nom, sujet, reference });
-    await envoyerEmailA({ a: v.email, sujet: accuse.sujet, texte: accuse.texte, repondreA: CLUB.email });
+    const accuse = messageAccuseContact({ nom: v.nom, sujet, reference, email: adresseService(service) });
+    await envoyerEmailA({ a: v.email, sujet: accuse.sujet, texte: accuse.texte, service });
   }
   return { statut: "succes", reference };
 }
@@ -180,7 +182,7 @@ export async function inscrireStage(_: Resultat, donnees: FormData): Promise<Res
 
   const reference = await transmettre({
     table: "stages",
-    destinataire: "stages",
+    service: "stages",
     sujet: `Inscription stage — ${enfant}`,
     repondreA: v.email,
     champs: {
@@ -258,7 +260,7 @@ export async function preinscrire(_: Resultat, donnees: FormData): Promise<Resul
 
   const reference = await transmettre({
     table: "inscriptions",
-    destinataire: "inscriptions",
+    service: "inscriptions",
     sujet: `${v.type} — ${v.prenom} ${v.nom}`,
     repondreA: v.email,
     champs: {

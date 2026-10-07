@@ -1,7 +1,7 @@
 "use server";
 
 import { refresh, revalidatePath } from "next/cache";
-import { CLUB, CONVOCATIONS } from "@/data/nbb";
+import { CONVOCATIONS } from "@/data/nbb";
 import { lireExport, TAILLE_MAX, type Affectations } from "@/lib/adherents";
 import { envoyerEmailA } from "@/lib/email";
 import { matchsAConvoquer, messageConfirmationStage, toutesLesEquipes } from "@/lib/nbb";
@@ -172,7 +172,7 @@ export async function envoyerConfirmationStage(id: string): Promise<ResultatConf
   if (!estEmail(email)) return { ok: false, message: "L'adresse e-mail du parent n'est pas valide : e-mail non envoyé." };
 
   const { sujet, texte } = messageConfirmationStage(demande.champs);
-  const envoi = await envoyerEmailA({ a: email, sujet, texte, repondreA: CLUB.email, copieClub: "stages" });
+  const envoi = await envoyerEmailA({ a: email, sujet, texte, service: "stages", copieService: true });
   if (envoi === "non-configure") {
     return { ok: false, message: "La messagerie du site n'est pas configurée (variables SMTP chez l'hébergeur) : e-mail non envoyé." };
   }
