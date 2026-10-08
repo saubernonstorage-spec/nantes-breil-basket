@@ -8,7 +8,7 @@ import { IconeWhatsapp, NouvelOnglet } from "@/components/icons";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: `Contacter le Nantes Breil Basket, club de basket à Nantes : formulaire, e-mail ${CLUB.email}, réseaux sociaux et groupe WhatsApp.`,
+  description: `Contacter le Nantes Breil Basket, club de basket à Nantes : formulaire de contact, adresse, réseaux sociaux et groupe WhatsApp.`,
   alternates: { canonical: "/contact" },
 };
 
@@ -52,9 +52,6 @@ export default function Contact() {
           <aside className="contact-cote">
             <div className="contact-bloc contact-bloc--nuit">
               <h2 className="titre-bloc">Coordonnées</h2>
-              <a href={`mailto:${CLUB.email}`} className="contact-bloc__email">
-                {CLUB.email}
-              </a>
               <p>
                 {CLUB.adresse.split("\n").map((l, i) => (
                   <span key={l}>

@@ -985,7 +985,7 @@ export function messageConfirmationStage(champs: Record<string, string>): Messag
     montant: champs["Montant"] ?? "",
     journee: STAGE_JOURNEE.map((j) => `- ${j.heure} : ${j.texte}`).join("\n"),
     a_prevoir: STAGE_A_PREVOIR.map((a) => `- ${a}`).join("\n"),
-    contact: `${STAGE_CONTACT.nom} au ${STAGE_CONTACT.telephone}, ou par e-mail à ${CLUB.email}`,
+    contact: `${STAGE_CONTACT.nom} au ${STAGE_CONTACT.telephone}, ou en répondant à cet e-mail`,
   };
   const remplir = (modele: string) => modele.replace(/\{(\w+)\}/g, (repere, cle: string) => valeurs[cle] ?? repere);
   return { sujet: remplir(STAGE_CONFIRMATION.sujet), texte: remplir(STAGE_CONFIRMATION.texte) };

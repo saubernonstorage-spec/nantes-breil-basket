@@ -3,9 +3,7 @@ import { CLUB, ENCADREMENT, PHOTOS, STATS } from "@/data/nbb";
 import { agendaAVenir, chiffresAccueil, CRENEAUX, matchsALAffiche } from "@/lib/nbb";
 import { aCompleter, enLettres } from "@/lib/utils";
 import { JsonLdClub } from "@/components/JsonLdClub";
-import { ListeAgenda } from "@/components/ListeAgenda";
 import { ChiffreAnime } from "@/components/ChiffreAnime";
-import { CompteARebours } from "@/components/CompteARebours";
 import { MatchsALAffiche } from "@/components/MatchsALAffiche";
 import { Photo } from "@/components/Photo";
 import { TeteSection } from "@/components/Page";
@@ -14,14 +12,6 @@ import { Etoiles, IconeFacebook, IconeInstagram, IconeWhatsapp, NouvelOnglet } f
 
 // L'agenda n'affiche que les dates à venir : la page est régénérée toutes les heures.
 export const revalidate = 3600;
-
-/** Accès rapides : titres toujours sur deux lignes. */
-const ACCES = [
-  { href: "/planning", titre: ["Planning des", "entraînements"], texte: "Par équipe, gymnase ou jour" },
-  { href: "/matchs", titre: ["Matchs &", "convocations"], texte: "Horaires, lieux, arbitrage, table" },
-  { href: "/stages", titre: ["Stages", "vacances"], texte: "Inscription en ligne" },
-  { href: "/infos", titre: ["Gymnases &", "accès"], texte: "Adresses, carte, bus" },
-];
 
 const ETAPES_ARBITRAGE = [
   "Découvrir les règles",
@@ -46,7 +36,6 @@ function introEncadrement(): string {
 }
 
 export default function Accueil() {
-  const agenda = agendaAVenir(5);
 
   return (
     <>
@@ -80,6 +69,18 @@ export default function Accueil() {
                 Inscription aux stages
               </Link>
             </div>
+            {/* Réseaux du club : trois icônes discrètes sous les boutons (plus de carte dédiée sur l'accueil). */}
+            <div className="hero__reseaux" aria-label="Réseaux du club" role="group">
+              <a href={CLUB.instagram} target="_blank" rel="noopener" aria-label="Instagram du club (nouvel onglet)" className="hero__reseau">
+                <IconeInstagram />
+              </a>
+              <a href={CLUB.facebook} target="_blank" rel="noopener" aria-label="Facebook du club (nouvel onglet)" className="hero__reseau">
+                <IconeFacebook />
+              </a>
+              <a href={CLUB.whatsapp} target="_blank" rel="noopener" aria-label="Groupe WhatsApp du club (nouvel onglet)" className="hero__reseau">
+                <IconeWhatsapp />
+              </a>
+            </div>
           </div>
         </div>
         <div className="hero__chiffres">
@@ -97,81 +98,8 @@ export default function Accueil() {
         </div>
       </section>
 
-      {/* Prochain match à domicile des équipes à l'affiche (EQUIPES_A_L_AFFICHE), avec compte à rebours. */}
-      <MatchsALAffiche matchs={matchsALAffiche()} />
-
-      <section aria-labelledby="acces-titre" className="section" style={{ paddingTop: 64, paddingBottom: 24 }}>
-        <TeteSection
-          grand
-          equilibre
-          surtitre="Accès rapides"
-          titre="Ce que les familles cherchent"
-          id="acces-titre"
-        />
-        <div className="grille acces-grille" style={{ "--min": "200px" } as React.CSSProperties}>
-          {ACCES.map((a) => (
-            <Link key={a.href} href={a.href} className="acces carte-lien">
-              <span className="acces__titre">
-                {a.titre[0]}
-                <br />
-                {a.titre[1]}
-              </span>
-              <span className="acces__texte">{a.texte}</span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      <section aria-labelledby="reseaux-titre" className="section" style={{ paddingBottom: 24 }}>
-        {/* Deux cartes de même largeur (50/50), l'une sous l'autre sur mobile. */}
-        <div className="rangee">
-          <div className="reseaux">
-            <div>
-              <div className="surtitre">Réseaux sociaux</div>
-              <h2 id="reseaux-titre" className="titre-section titre-section--carte">
-                Le club en direct
-              </h2>
-            </div>
-            <div className="reseaux__cote">
-              <p>
-                Suivez le NBB et rejoignez la communauté WhatsApp pour ne rater aucune information.
-              </p>
-              {/* Trois boutons de même largeur sur toute la carte ; l'un sous l'autre sur mobile. */}
-              <div className="reseaux__boutons">
-                <a href={CLUB.instagram} target="_blank" rel="noopener" className="btn btn--s btn--petit btn--orange">
-                  <IconeInstagram />
-                  Instagram
-                  <NouvelOnglet />
-                </a>
-                <a href={CLUB.facebook} target="_blank" rel="noopener" className="btn btn--s btn--petit btn--orange">
-                  <IconeFacebook />
-                  Facebook
-                  <NouvelOnglet />
-                </a>
-                <a href={CLUB.whatsapp} target="_blank" rel="noopener" className="btn btn--s btn--petit btn--contour">
-                  <IconeWhatsapp />
-                  WhatsApp
-                  <NouvelOnglet />
-                </a>
-              </div>
-            </div>
-          </div>
-          {/* Même structure que la carte réseaux : surtitre, titre, texte, bouton. */}
-          <a href={CLUB.boutique} target="_blank" rel="noopener" className="boutique carte-lien">
-            <div>
-              <div className="surtitre">Boutique du club</div>
-              <h2 className="titre-section titre-section--carte">Commandez en ligne</h2>
-            </div>
-            <div className="boutique__bas">
-              <p>T-shirts, polos, sweats : portons haut les couleurs du club.</p>
-              <span className="btn btn--s btn--petit btn--nuit">
-                Voir la boutique <span className="fleche fleche--diag" aria-hidden="true">↗</span>
-              </span>
-            </div>
-            <NouvelOnglet />
-          </a>
-        </div>
-      </section>
+      {/* Prochain match à domicile des équipes à l'affiche (EQUIPES_A_L_AFFICHE) et prochain événement de l'agenda, avec comptes à rebours. */}
+      <MatchsALAffiche matchs={matchsALAffiche()} evenements={agendaAVenir()} />
 
       <div className="bande-sombre" style={{ marginTop: 40 }}>
         <div className="section" style={{ paddingTop: 80, paddingBottom: 80 }}>
@@ -190,19 +118,6 @@ export default function Accueil() {
           </div>
           {/* Agenda à gauche (dates sous le titre), appel aux bénévoles et partenaires à droite. */}
           <div className="agenda-accueil">
-            <section aria-labelledby="agenda-titre" className="agenda-accueil__agenda">
-              <div>
-                <div className="surtitre">Agenda</div>
-                <h2 id="agenda-titre" className="titre-section titre-section--grand">
-                  Les dates à retenir
-                </h2>
-              </div>
-              <CompteARebours dates={agendaAVenir()} />
-              <ListeAgenda dates={agenda} compacte />
-              <Link href="/agenda" className="btn btn--petit btn--clair">
-                Tout l'agenda
-              </Link>
-            </section>
             <section aria-labelledby="aide-titre" className="agenda-accueil__aide">
               <div className="surtitre">Le club, c'est vous</div>
               <h2 id="aide-titre" className="titre-section titre-section--grand" style={{ marginBottom: 18 }}>

@@ -198,6 +198,7 @@ textarea {
     .menu-mobile,
     .fenetre__tete,
     .affiche,
+    .rebours,
     .carte-arbitrage,
     .appel--bleu,
     .projet,
@@ -1568,58 +1569,6 @@ a.badge-label:hover {
   color: var(--creme);
 }
 
-/* Accès rapides */
-
-.acces {
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  min-height: 112px;
-  padding: 20px 20px 24px;
-  border-radius: 24px;
-  background: var(--blanc);
-  border: 1px solid var(--bord);
-  color: var(--encre);
-  text-decoration: none;
-}
-
-.acces:hover {
-  color: var(--encre);
-}
-
-.acces--orange,
-.acces--orange:hover {
-  background: var(--orange);
-  border-color: var(--orange);
-  color: var(--nuit);
-}
-
-.acces--orange:hover {
-  box-shadow: 0 18px 40px rgba(247, 166, 25, 0.35);
-}
-
-.acces__titre {
-  display: block;
-  font-family: var(--f-titre);
-  font-weight: 800;
-  font-size: 27px;
-  line-height: 0.95;
-  text-transform: uppercase;
-}
-
-.acces__texte {
-  display: block;
-  margin-top: 6px;
-  font-size: 14px;
-  color: var(--gris);
-}
-
-.acces--orange .acces__texte {
-  color: inherit;
-}
-
 /* Nos écoles */
 
 /* École (60 %) et arbitrage (40 %), l'une sous l'autre sous 900 px. */
@@ -1750,93 +1699,29 @@ a.badge-label:hover {
 
 /* Réseaux sociaux + boutique : deux cartes de même largeur (50/50), l'une sous l'autre sur mobile. */
 
-.reseaux {
-  flex: 1 1 340px;
+/* Bandeau d'accueil : réseaux du club en trois icônes rondes sous les boutons. */
+.hero__reseaux {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 16px;
-  padding: clamp(22px, 2.6vw, 32px);
-  border-radius: 30px;
-  background: var(--blanc);
-  border: 1px solid var(--bord);
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
 }
 
-.reseaux .surtitre {
-  margin-bottom: 10px;
-}
-
-.reseaux__cote {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.reseaux__cote p {
-  margin: 0;
-  font-size: 16px;
-  line-height: 1.6;
-  color: var(--gris);
-}
-
-.reseaux__boutons {
+.hero__reseau {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(245, 243, 238, 0.3);
+  background: rgba(10, 23, 51, 0.35);
+  color: var(--creme);
 }
 
-/* Boutique : même structure et mêmes marges que la carte réseaux, sur l'aplat orange de la charte. */
-.boutique {
-  flex: 1 1 340px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: clamp(22px, 2.6vw, 32px);
-  border-radius: 30px;
+.hero__reseau:hover {
+  border-color: var(--orange);
   background: var(--orange);
-  border: 1px solid var(--orange); /* même bordure que la carte réseaux : textes alignés */
   color: var(--nuit);
-  text-decoration: none;
-}
-
-.boutique:hover {
-  color: var(--nuit);
-  box-shadow: 0 18px 40px rgba(247, 166, 25, 0.35);
-}
-
-.boutique .surtitre {
-  margin-bottom: 10px;
-  color: var(--nuit);
-}
-
-/* Texte juste sous le titre ; le bouton reste en bas de la carte, aligné sur celui de la carte réseaux. */
-.boutique__bas {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 16px;
-}
-
-.boutique__bas .btn {
-  margin-top: auto;
-}
-
-.boutique__bas p {
-  margin: 0;
-  font-size: 16px;
-  line-height: 1.6;
-}
-
-/* Sur mobile : boutons des cartes Réseaux et Boutique sur toute la largeur. */
-@media (max-width: 699px) {
-  .reseaux__boutons {
-    grid-template-columns: 1fr;
-  }
-
-  .boutique__bas {
-    align-items: stretch;
-  }
 }
 
 /* Agenda de l'accueil */
@@ -1880,38 +1765,21 @@ a.badge-label:hover {
 }
 
 /* Deux colonnes de même largeur : agenda (dates sous le titre) et « Le club, c'est vous » (cartes l'une sous l'autre). */
-.agenda-accueil {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-items: start;
-  gap: 56px 64px;
-}
-
-@media (max-width: 899px) {
-  .agenda-accueil {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-.agenda-accueil__agenda {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 24px;
-}
-
-.agenda-accueil__agenda .agenda {
-  align-self: stretch;
-}
-
-.agenda-accueil :is(.agenda-accueil__agenda, .agenda-accueil__aide) > .surtitre {
+.agenda-accueil__aide > .surtitre {
   margin-bottom: 12px;
 }
 
+/* « On a besoin de vous » : les deux cartes côte à côte, l'une sous l'autre sous 900 px. */
 .agenda-accueil__cartes {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
+}
+
+@media (max-width: 899px) {
+  .agenda-accueil__cartes {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .agenda-accueil__cartes .appel {
@@ -2192,30 +2060,9 @@ a.badge-label:hover {
   text-wrap: pretty;
 }
 
-/* Accueil sur mobile : accès rapides en 2 × 2, entraîneurs dans une rangée qui défile de côté
-   (la carte suivante dépasse pour montrer qu'il y en a d'autres). */
+/* Accueil sur mobile : entraîneurs dans une rangée qui défile de côté (la carte suivante dépasse pour
+   montrer qu'il y en a d'autres). */
 @media (max-width: 699px) {
-  .acces-grille {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-  }
-
-  .acces-grille .acces {
-    min-height: 104px;
-    padding: 16px 14px 18px;
-    border-radius: 20px;
-  }
-
-  .acces-grille .acces__titre {
-    font-size: 21px;
-    overflow-wrap: break-word;
-  }
-
-  .acces-grille .acces__texte {
-    font-size: 13px;
-    line-height: 1.35;
-  }
-
   .portraits-defilants {
     display: flex;
     margin-inline: calc(var(--gouttiere) * -1);
@@ -3773,22 +3620,14 @@ a.badge-label:hover {
   break-inside: avoid;
 }
 
-/* Liseré orange sur le bord gauche de la carte (créneaux du planning, matchs ; en bas pour les accès rapides). */
+/* Liseré orange sur le bord gauche de la carte (créneaux du planning, matchs). */
 .creneau::before,
-.acces::before,
 .carte-match::before {
   content: "";
   position: absolute;
   inset: 0 auto 0 0;
   width: 5px;
   background: linear-gradient(180deg, var(--orange), rgba(247, 166, 25, 0.6));
-}
-
-.acces::before {
-  inset: auto 0 0 0;
-  width: auto;
-  height: 5px;
-  background: linear-gradient(90deg, var(--orange), rgba(247, 166, 25, 0.6));
 }
 
 .creneau__tete {
@@ -6186,7 +6025,7 @@ a.badge-label:hover {
   color: var(--orange);
 }
 
-.a-l-affiche__lien {
+.a-l-affiche__liens {
   margin-top: 18px;
 }
 
@@ -6521,8 +6360,162 @@ a.badge-label:hover {
   color: var(--orange);
 }
 
-.agenda-accueil__agenda .rebours {
-  margin-bottom: 8px;
+/* Carte « événement » de « À l'affiche » : même construction qu'une carte de match, affiche entière à droite. */
+.match-affiche--evenement {
+  width: 100%;
+  border: 0;
+  color: var(--creme);
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: zoom-in;
+}
+
+a.match-affiche--evenement {
+  cursor: pointer;
+}
+
+.evenement-affiche__texte,
+.evenement-affiche__titre,
+.evenement-affiche__quand,
+.evenement-affiche__lieu {
+  display: block;
+}
+
+.match-affiche--evenement .match-affiche__tete {
+  display: flex;
+}
+
+.match-affiche--evenement .rebours__unites {
+  display: grid;
+}
+
+.match-affiche--evenement .rebours__unite {
+  display: flex;
+}
+
+.match-affiche--evenement:hover {
+  color: var(--creme);
+}
+
+.match-affiche--evenement .match-affiche__equipe {
+  text-transform: uppercase;
+}
+
+.evenement-affiche__milieu {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+}
+
+.evenement-affiche__titre {
+  margin: 0 0 8px;
+  font-family: var(--f-titre);
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.evenement-affiche__quand {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--orange);
+}
+
+.evenement-affiche__lieu {
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 1.4;
+  color: rgba(245, 243, 238, 0.75);
+}
+
+.evenement-affiche__affiche {
+  position: relative;
+  width: 140px;
+  aspect-ratio: 210 / 297;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--bleu);
+}
+
+/* Grand écran : les deux matchs et l'événement sur une seule ligne (trois colonnes), contenu resserré. */
+@media (min-width: 1100px) {
+  .a-l-affiche__grille {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .a-l-affiche__grille .match-affiche {
+    gap: 14px;
+    padding: 20px;
+  }
+
+  .a-l-affiche__grille .match-affiche__logo {
+    width: 68px;
+    height: 68px;
+  }
+
+  .a-l-affiche__grille .match-affiche__logo img {
+    width: 52px;
+  }
+
+  .a-l-affiche__grille .match-affiche__club strong {
+    font-size: 16px;
+  }
+
+  /* Noms sur deux lignes réservées et décompte en bas : les cartes restent alignées entre elles. */
+  .a-l-affiche__grille .match-affiche__face {
+    align-items: start;
+  }
+
+  .a-l-affiche__grille .match-affiche__vs {
+    align-self: center;
+    margin-top: -24px;
+  }
+
+  .a-l-affiche__grille .match-affiche__club strong {
+    min-height: 2em;
+  }
+
+  .a-l-affiche__grille .match-affiche__rebours {
+    margin-top: auto;
+  }
+
+  .a-l-affiche__grille .evenement-affiche__titre {
+    font-size: 24px;
+  }
+
+  .a-l-affiche__grille .evenement-affiche__affiche {
+    width: 118px;
+  }
+
+  .a-l-affiche__grille .match-affiche__vs {
+    font-size: 26px;
+  }
+
+  .a-l-affiche__grille .match-affiche__quand {
+    font-size: 14px;
+  }
+
+  .a-l-affiche__grille .rebours__unites {
+    gap: 6px;
+  }
+
+  .a-l-affiche__grille .rebours__unite {
+    padding: 6px 2px;
+  }
+
+  .a-l-affiche__grille .rebours__unite strong {
+    font-size: 24px;
+  }
+
+  .a-l-affiche__grille .rebours__unite span {
+    font-size: 9px;
+    letter-spacing: 0.04em;
+  }
 }
 
 .rebours-agenda {
@@ -6770,18 +6763,7 @@ a.badge-label:hover {
   color: rgba(245, 243, 238, 0.85);
 }
 
-.contact-bloc__email {
-  color: var(--orange);
-  font-size: 18px;
-  font-weight: 700;
-  text-decoration: none;
-  overflow-wrap: anywhere;
-}
 
-.contact-bloc__email:hover {
-  color: var(--orange-vif);
-  text-decoration: underline;
-}
 
 .contact-bloc--orange {
   gap: 10px;

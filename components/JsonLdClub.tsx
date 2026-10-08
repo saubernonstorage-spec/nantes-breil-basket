@@ -9,7 +9,6 @@ export function JsonLdClub() {
     "@type": "SportsClub",
     name: CLUB.nom,
     sport: "Basketball",
-    email: CLUB.email,
     url: CLUB.siteUrl,
     logo: `${CLUB.siteUrl}/logo-nbb.png`,
     foundingDate: CLUB.fondation,

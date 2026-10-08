@@ -44,7 +44,8 @@ export default function Inscriptions() {
             <div className="etape__num">01</div>
             <h3>Essayer</h3>
             <p>
-              Deux séances d'essai dans la catégorie. Planifiez-les à <a href={`mailto:${CLUB.email}`}>{CLUB.email}</a>.
+              Deux séances d'essai dans la catégorie. Planifiez-les avec le{" "}
+              <Link href="/contact?sujet=essai">formulaire de contact</Link>.
             </p>
           </li>
           <li className="carte etape etape--petite">

@@ -53,6 +53,7 @@ export const CLUB: Club = {
   siteUrl: "https://nantes-breil-basket.fr",
   adresse: "Gymnase Joël Paon\n42 bis rue des Hauts-Pavés\n44000 Nantes",
   boiteAuxLettres: "42 rue des Hauts-Pavés — 1re boîte en haut à gauche, sur le petit parking",
+  // Messagerie du club : n'est plus affichée sur le site, les visiteurs écrivent par le formulaire de contact.
   email: "contact@nbb44.fr",
   facebook: "https://www.facebook.com/people/Nantes-Breil-Basket/100063796590330/",
   instagram: "https://www.instagram.com/nantesbreilbasket44/",
@@ -404,7 +405,7 @@ export const CAPACITES: Record<string, Capacite> = {
 
 export const FAQ: QuestionFaq[] = [
   { q: "À partir de quel âge peut-on commencer ?", r: "Dès 3 ans au micro-basket, le samedi matin au gymnase Joël Paon : Micro 1 pour les enfants né(e)s en 2021, Micro 2 pour les enfants né(e)s en 2022 et 2023. Ensuite U7, U9, U11… jusqu'aux seniors et aux loisirs adultes." },
-  { q: "Peut-on essayer avant de s'inscrire ?", r: "Oui, deux séances d'essai sont possibles dans la catégorie concernée. Écrivez à contact@nbb44.fr pour les planifier." },
+  { q: "Peut-on essayer avant de s'inscrire ?", r: "Oui, deux séances d'essai sont possibles dans la catégorie concernée. Demandez-les avec le formulaire de contact (sujet « Séance d'essai »)." },
   { q: "Combien coûte la licence ?", r: "De 160 € (mini-basket, loisirs adultes) à 220 € (jeunes CTC, seniors), selon le nombre d'entraînements par semaine. Assurance de base comprise ; formule B : +5 €." },
   { q: "Y a-t-il de la place dans toutes les équipes ?", r: "Non : chaque équipe a un effectif maximum et certaines catégories sont complètes. Les réinscriptions sont prioritaires ; en cas de saturation, une liste d'attente est proposée." },
   { q: "Comment est créée la licence FFBB ?", r: "Après réception du règlement, vous recevez un lien personnalisé envoyé par pdl0044034@ffbb.com. Ajoutez cette adresse à vos contacts pour éviter les indésirables." },
@@ -557,7 +558,7 @@ Merci pour votre message ({sujet}) : il est bien arrivé au Nantes Breil Basket,
 
 Le club est géré par des bénévoles : nous vous répondons {delai}, à cette adresse.
 
-Ceci est un message automatique. Pour compléter votre demande, répondez simplement à cet e-mail ou écrivez à {email}.
+Ceci est un message automatique. Pour compléter votre demande, répondez simplement à cet e-mail.
 
 Sportivement,
 Le Nantes Breil Basket`,

@@ -41,7 +41,7 @@ export default function Mentions() {
             {aCompleter(MENTIONS.responsablePublication) ? null : (
               <>Responsable de la publication : {MENTIONS.responsablePublication}. </>
             )}
-            Contact : <a href={`mailto:${CLUB.email}`}>{CLUB.email}</a>.
+            Contact : <Link href="/contact">formulaire de contact</Link>, ou par courrier à l'adresse du club.
           </p>
         </section>
         <section className="mentions__bloc">
@@ -72,8 +72,9 @@ export default function Mentions() {
             )}
           </p>
           <p>
-            Vous pouvez demander l'accès, la rectification ou la suppression de vos données à{" "}
-            <a href={`mailto:${CLUB.email}`}>{CLUB.email}</a>. Réclamation possible auprès de la CNIL (cnil.fr).
+            Vous pouvez demander l'accès, la rectification ou la suppression de vos données avec le{" "}
+            <Link href="/contact">formulaire de contact</Link> (sujet « Autre ») ou par courrier à l'adresse du club.
+            Réclamation possible auprès de la CNIL (cnil.fr).
           </p>
         </section>
         <section id="cookies" className="mentions__bloc">

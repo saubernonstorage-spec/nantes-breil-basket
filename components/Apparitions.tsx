@@ -9,9 +9,6 @@ import { useEffect } from "react";
  * (planning, tableaux de matchs, FAQ, formulaires, mentions légales).
  */
 const CIBLES = [
-  ".acces",
-  ".reseaux",
-  ".boutique",
   ".carte-ecole",
   ".carte-arbitrage",
   ".banniere-photo",
