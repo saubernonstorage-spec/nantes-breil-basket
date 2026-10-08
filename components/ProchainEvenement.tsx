@@ -6,6 +6,7 @@ import { useEffect, useId, useState } from "react";
 import { Fenetre } from "@/components/Fenetre";
 import { Photo } from "@/components/Photo";
 import type { DateAgenda } from "@/lib/types";
+import { IconeFermer } from "@/components/icons";
 
 /** Clé de session : la fenêtre ne s'ouvre qu'une fois par visite (par onglet). */
 const CLE = "nbb-prochain-evenement";
@@ -57,7 +58,7 @@ export function ProchainEvenement({ dates }: { dates: DateAgenda[] }) {
             <Photo src={e.affiche} alt={`Affiche : ${e.titre}`} sizes="400px" />
             <span className="affiche__type">{e.type}</span>
             <button type="button" className="bouton-rond bouton-rond--clair affiche__fermer" aria-label="Fermer" onClick={fermer}>
-              ×
+              <IconeFermer />
             </button>
           </div>
           <div className="affiche__corps">

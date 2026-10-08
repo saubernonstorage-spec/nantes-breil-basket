@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useState, useSyncExternalStore } from "react";
+import { useSyncExternalStore } from "react";
 import type { Jour } from "@/lib/types";
 import type { CreneauPlanning } from "@/lib/nbb";
 import { memoriserEquipe, useMonEquipe } from "@/lib/preferences";
 import { Sommaire } from "@/components/Navigation";
+import { CarteAnimee, ListeAnimee, ZoneAnimee } from "@/components/Glisse";
 
 type Filtres = { equipe: string; gymnase: string; jour: string };
 type Donnees = { creneaux: CreneauPlanning[]; equipes: string[]; gymnases: string[]; jours: Jour[] };
@@ -36,12 +37,8 @@ export function PlanningVue({
   memorisee = false,
 }: Donnees & { filtres?: Filtres; onChange?: (f: Filtres) => void; memorisee?: boolean }) {
   const aujourdhui = useJourCourant();
-  // Chaque changement de filtre rejoue un fondu très court sur la liste : on voit qu'elle a été mise à jour.
-  const [version, setVersion] = useState(0);
-  const changer = (f: Filtres) => {
-    setVersion((v) => v + 1);
-    onChange?.(f);
-  };
+  // Un changement de filtre fait glisser les cartes restantes à leur nouvelle place (components/Glisse.tsx).
+  const changer = (f: Filtres) => onChange?.(f);
   const maj = (f: Partial<Filtres>) => changer({ ...filtres, ...f });
   const affiches = creneaux.filter(
     (s) =>
@@ -108,9 +105,11 @@ export function PlanningVue({
           {memorisee ? <p className="planning__memoire">Équipe mémorisée sur cet appareil</p> : null}
         </div>
         <Sommaire label="Jours de la semaine" sections={parJour.map(({ jour }) => ({ id: `jour-${jour.toLowerCase()}`, titre: jour }))} />
-        <div key={version} className={version ? "rafraichi" : undefined}>
+        <ZoneAnimee>
+        <ListeAnimee>
         {parJour.map(({ jour, liste }) => (
-          <div key={jour} id={`jour-${jour.toLowerCase()}`} className="planning__jour">
+          <CarteAnimee as="div" key={jour}>
+          <div id={`jour-${jour.toLowerCase()}`} className="planning__jour">
             <h2 className="planning__titre-jour">
               {jour}
               {jour === aujourdhui ? <span className="planning__aujourdhui">Aujourd'hui</span> : null}
@@ -120,8 +119,9 @@ export function PlanningVue({
               </span>
             </h2>
             <div className="grille grille--remplir" style={{ "--min": "290px" } as React.CSSProperties}>
+              <ListeAnimee>
               {liste.map((c) => (
-                <article key={c.cle} className="creneau">
+                <CarteAnimee key={c.cle} className="creneau">
                   <div className="creneau__tete">
                     <div className="creneau__horaire">{c.horaire}</div>
                     <span className="creneau__duree">{c.duree}</span>
@@ -139,12 +139,15 @@ export function PlanningVue({
                       Coach : <strong>{c.coachs}</strong>
                     </div>
                   ) : null}
-                </article>
+                </CarteAnimee>
               ))}
+              </ListeAnimee>
             </div>
           </div>
+          </CarteAnimee>
         ))}
-        </div>
+        </ListeAnimee>
+        </ZoneAnimee>
         {n === 0 ? (
           <div className="vide">
             <strong>Aucun créneau trouvé</strong>

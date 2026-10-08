@@ -4,7 +4,7 @@ import { ARBITRAGE_SEANCES, CLUB, PHOTOS, TARIFS } from "@/data/nbb";
 import { creneauxSamedi } from "@/lib/nbb";
 import { FilAriane } from "@/components/Page";
 import { Photo } from "@/components/Photo";
-import { NouvelOnglet } from "@/components/icons";
+import { Etoiles, NouvelOnglet } from "@/components/icons";
 
 export const metadata: Metadata = {
   title: "École de mini-basket 3 étoiles et école d'arbitrage",
@@ -42,7 +42,9 @@ export default function Ecoles() {
           <div className="ecoles-hero__texte">
             <FilAriane page="Nos écoles" />
             <div className="badge-label" style={{ marginBottom: 20 }}>
-              <span className="badge-label__etoiles">★★★</span>
+              <span className="badge-label__etoiles">
+                <Etoiles />
+              </span>
               École Française de Mini-Basket · Label Micro Basket
             </div>
             <h1 className="titre-page">

@@ -3,6 +3,7 @@
 import { useEffect, useId, useState } from "react";
 import { Fenetre } from "@/components/Fenetre";
 import type { OuvertureBoutique } from "@/lib/types";
+import { IconeFermer } from "@/components/icons";
 
 /** Date du jour à Nantes, au format AAAA-MM-JJ (comparable aux dates de OUVERTURES_BOUTIQUE). */
 function aujourdhui(): string {
@@ -58,7 +59,7 @@ export function BoutiqueFermee({ url, ouvertures }: { url: string; ouvertures: O
           </h2>
         </div>
         <button type="button" className="bouton-rond bouton-rond--clair" aria-label="Fermer" onClick={fermer}>
-          ×
+          <IconeFermer />
         </button>
       </div>
       <div className="fenetre__corps">

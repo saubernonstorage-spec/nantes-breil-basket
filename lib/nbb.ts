@@ -12,6 +12,7 @@ import {
   CATEGORIES,
   CLASSEMENTS,
   CONVOCATIONS,
+  EQUIPES_A_L_AFFICHE,
   EQUIPES_FFBB,
   CLUB,
   GYMNASES,
@@ -517,7 +518,12 @@ export type MatchDomicileVue = {
   /** Un nom par personne à la table (même saisie). */
   table: string[];
   otm: string;
+  /** Score du match une fois joué (résultats FFBB). */
+  resultat?: ScoreMatch;
 };
+
+/** Score d'un match joué, NBB en premier. */
+export type ScoreMatch = { nous: number; eux: number; issue: IssueMatch };
 
 export type MatchExterieurVue = {
   cle: string;
@@ -529,6 +535,7 @@ export type MatchExterieurVue = {
   logo: string;
   lieu: string;
   itineraire: string;
+  resultat?: ScoreMatch;
 };
 
 /** Place d'un week-end par rapport à aujourd'hui : « semaine » = du lundi au dimanche de ce week-end. */
@@ -585,6 +592,24 @@ function ordreChrono(a: { date: string; heure: string }, b: { date: string; heur
   return a.date.localeCompare(b.date) || (a.heure || "99h").localeCompare(b.heure || "99h");
 }
 
+/** Scores FFBB par « date|équipe du site » (calculés une seule fois). */
+let scoresParMatch: Map<string, ScoreMatch> | null = null;
+function scoreDe(date: string, equipe: string): ScoreMatch | undefined {
+  if (!scoresParMatch) {
+    scoresParMatch = new Map();
+    const equipeDe = equipesParCleFFBB();
+    for (const [cle, matchs] of Object.entries(RESULTATS.resultats)) {
+      const nom = equipeDe.get(cle);
+      if (!nom) continue;
+      for (const m of matchs) {
+        const issue: IssueMatch = m.nous > m.eux ? "victoire" : m.nous < m.eux ? "defaite" : "nul";
+        scoresParMatch.set(`${m.date.slice(0, 10)}|${nom}`, { nous: m.nous, eux: m.eux, issue });
+      }
+    }
+  }
+  return scoresParMatch.get(`${date}|${equipe}`);
+}
+
 function weekendVue(samedi: string, i: number, matchs: MatchSite[]): WeekEndVue {
   const jour = aujourdhui();
   const dimanche = dateDe(samedi, 1).toISOString().slice(0, 10);
@@ -617,6 +642,7 @@ function weekendVue(samedi: string, i: number, matchs: MatchSite[]): WeekEndVue 
         arbitres: noms(m.convocation?.arbitres ?? "—"),
         table: noms(m.convocation?.table ?? "—"),
         otm: m.convocation?.otm ?? "—",
+        resultat: scoreDe(m.date, m.equipe),
       })),
     exterieur: duWeekend
       .filter((m) => !m.domicile)
@@ -630,6 +656,7 @@ function weekendVue(samedi: string, i: number, matchs: MatchSite[]): WeekEndVue 
         logo: m.logo,
         lieu: m.lieu,
         itineraire: m.lieu ? itineraire(m.lieu) : "",
+        resultat: scoreDe(m.date, m.equipe),
       })),
   };
 }
@@ -1063,4 +1090,45 @@ export function manquesDuSite(enLigne: ConvocationSaisie[] = []): ManqueSite[] {
     ajouter("CONVOCATIONS", `${m.equipe} · ${jour}${m.heure ? ` à ${m.heure}` : ""} contre ${m.adversaire}`, "Arbitres, table et OTM", "Aucune convocation saisie", "CONVOCATIONS");
   }
   return manques;
+}
+
+/* ───────── Matchs à l'affiche (accueil) ───────── */
+
+/** Prochain match à domicile d'une équipe mise en avant (EQUIPES_A_L_AFFICHE). heure : « HH:MM » ou "". */
+export type MatchAffiche = {
+  equipe: string;
+  nom: string;
+  date: string;
+  jourLabel: string;
+  heure: string;
+  adversaire: string;
+  logo: string;
+  salle: string;
+  lienSalle: string;
+};
+
+/**
+ * Les prochains matchs à domicile (jusqu'à 3 par équipe, pour que l'accueil passe seul au suivant entre deux
+ * régénérations) des équipes de EQUIPES_A_L_AFFICHE, d'après le calendrier FFBB et MATCHS_MANUELS.
+ */
+export function matchsALAffiche(): MatchAffiche[] {
+  const jour = aujourdhui();
+  const tous = matchsDuSite().filter((m) => m.domicile && m.date >= jour);
+  return EQUIPES_A_L_AFFICHE.flatMap(({ equipe, nom }) =>
+    tous
+      .filter((m) => m.equipe === equipe)
+      .sort(ordreChrono)
+      .slice(0, 3)
+      .map((m) => ({
+        equipe,
+        nom,
+        date: m.date,
+        jourLabel: majuscule(formater(dateDe(m.date), { weekday: "long", day: "numeric", month: "long" })),
+        heure: /^\d{1,2}h\d{2}$/.test(m.heure) ? m.heure.replace("h", ":").padStart(5, "0") : "",
+        adversaire: m.adversaire,
+        logo: m.logo,
+        salle: m.salle,
+        lienSalle: lienSalle(m.salle),
+      })),
+  );
 }

@@ -9,6 +9,7 @@ import { BoutiqueFermee } from "@/components/BoutiqueFermee";
 import { InscriptionsFermees } from "@/components/InscriptionsFermees";
 import { ProchainEvenement } from "@/components/ProchainEvenement";
 import { BarreAcces, BoutonHaut } from "@/components/Navigation";
+import { ViewTransition } from "react";
 import "./globals.css";
 
 // Polices téléchargées au moment de la construction et servies par le site : aucune requête vers Google.
@@ -60,7 +61,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Header liens={{ boutique: CLUB.boutique, facebook: CLUB.facebook, instagram: CLUB.instagram, whatsapp: CLUB.whatsapp }} />
         <main id="contenu" tabIndex={-1}>
-          {children}
+          {/* Changement de page : fondu court (transitions de vue de React, styles « ::view-transition » dans globals.css). */}
+          <ViewTransition>{children}</ViewTransition>
         </main>
         <Footer />
         <BoutonHaut />

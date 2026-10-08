@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useId, useState } from "react";
 import { Fenetre } from "@/components/Fenetre";
+import { IconeFermer } from "@/components/icons";
 
 /** Texte commun à la fenêtre et à la page Inscriptions quand les inscriptions sont fermées. */
 export const TEXTE_INSCRIPTIONS_FERMEES =
@@ -46,7 +47,7 @@ export function InscriptionsFermees() {
           </h2>
         </div>
         <button type="button" className="bouton-rond bouton-rond--clair" aria-label="Fermer" onClick={fermer}>
-          ×
+          <IconeFermer />
         </button>
       </div>
       <div className="fenetre__corps">

@@ -1,45 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useSyncExternalStore } from "react";
 import { Photo } from "@/components/Photo";
 import type { DateAgenda } from "@/lib/types";
-
-/** Instant (UTC) correspondant à une date et une heure à Nantes (heure d'été ou d'hiver comprise). */
-function instantParis(date: string, heure = "00:00"): number {
-  const naif = Date.parse(`${date}T${heure}:00Z`);
-  const parties = Object.fromEntries(
-    new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Paris", hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" })
-      .formatToParts(new Date(naif))
-      .map((p) => [p.type, p.value]),
-  );
-  const vuAParis = Date.parse(`${parties.year}-${parties.month}-${parties.day}T${parties.hour}:${parties.minute}:00Z`);
-  return naif - (vuAParis - naif);
-}
+import { decompte, instantParis, useHorloge } from "@/lib/temps";
 
 const deux = (n: number) => String(n).padStart(2, "0");
-
-/** Horloge partagée, mise à jour chaque seconde tant qu'un compte à rebours est affiché. */
-let heure = 0;
-const abonnes = new Set<() => void>();
-let minuterie = 0;
-function sAbonner(prevenir: () => void) {
-  abonnes.add(prevenir);
-  if (abonnes.size === 1) {
-    minuterie = window.setInterval(() => {
-      heure = Date.now();
-      abonnes.forEach((f) => f());
-    }, 1000);
-  }
-  return () => {
-    abonnes.delete(prevenir);
-    if (!abonnes.size) window.clearInterval(minuterie);
-  };
-}
-function heureActuelle(): number {
-  if (!heure) heure = Date.now();
-  return heure;
-}
 
 /**
  * Compte à rebours jusqu'au prochain événement de l'agenda, avec son affiche (d'après la « Event Countdown
@@ -48,7 +14,7 @@ function heureActuelle(): number {
  * Les chiffres changent chaque seconde, sans animation en boucle.
  */
 export function CompteARebours({ dates }: { dates: DateAgenda[] }) {
-  const maintenant = useSyncExternalStore(sAbonner, heureActuelle, () => null);
+  const maintenant = useHorloge();
 
   // Avant le chargement de la page dans le navigateur : rien (l'heure exacte n'est connue que là).
   if (maintenant === null) return null;
@@ -56,13 +22,7 @@ export function CompteARebours({ dates }: { dates: DateAgenda[] }) {
   if (!prochain) return null;
   const { d, t } = prochain;
 
-  const reste = Math.floor((t - maintenant) / 1000);
-  const unites = [
-    { valeur: Math.floor(reste / 86400), label: "jours" },
-    { valeur: Math.floor((reste % 86400) / 3600), label: "heures" },
-    { valeur: Math.floor((reste % 3600) / 60), label: "min" },
-    { valeur: reste % 60, label: "sec" },
-  ];
+  const { reste, unites } = decompte(t, maintenant);
   const bientot = reste < 86400;
 
   return (

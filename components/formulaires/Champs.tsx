@@ -1,6 +1,7 @@
 "use client";
 
 import { useId } from "react";
+import { IconeCoche } from "@/components/icons";
 
 /** Message d'erreur relié à son champ (lu par les lecteurs d'écran dès qu'il apparaît). */
 export function Erreur({ id, message }: { id?: string; message?: string }) {
@@ -134,7 +135,7 @@ export function Confirmation({ titre, children }: { titre: string; children: Rea
   return (
     <div role="status" className="confirmation">
       <span aria-hidden="true" className="confirmation__coche">
-        ✓
+        <IconeCoche taille={30} />
       </span>
       <h3 className="confirmation__titre">{titre}</h3>
       {children}

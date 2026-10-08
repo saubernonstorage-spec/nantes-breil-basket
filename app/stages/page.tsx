@@ -5,6 +5,7 @@ import { lienTel, majuscule } from "@/lib/utils";
 import { FilAriane } from "@/components/Page";
 import { Photo } from "@/components/Photo";
 import { StageForm } from "@/components/formulaires/StageForm";
+import { IconeCoche } from "@/components/icons";
 
 export const metadata: Metadata = {
   title: "Stages de basket vacances scolaires",
@@ -177,7 +178,7 @@ export default function Stages() {
             <ul className="liste-coches">
               {STAGE_A_PREVOIR.map((a) => (
                 <li key={a}>
-                  <span aria-hidden="true">✓</span>
+                  <span aria-hidden="true"><IconeCoche /></span>
                   {a}
                 </li>
               ))}

@@ -48,6 +48,7 @@ information. La liste de ce qui reste à fournir est dans l'Espace dirigeants, o
 | Les chiffres de l'accueil (adhérents, équipes engagées) | `STATS` — le nombre de gymnases est calculé tout seul |
 | Les grandes photos (accueil, club, écoles, stages) | `PHOTOS` |
 | Les dates de l'agenda | `AGENDA` |
+| Équipes dont le prochain match à domicile est mis en avant en haut de l'accueil, avec compte à rebours (date, heure, adversaire viennent de la FFBB) | `EQUIPES_A_L_AFFICHE` |
 | Heure de début d'une date (`heure: "20:30"`), utilisée par le compte à rebours du prochain événement (accueil et page Agenda ; sans heure : minuit) | `heure` dans `AGENDA` |
 | Affiche ou flyer de chaque date, format portrait A4 (page Agenda et fenêtre « prochain événement » ouverte une fois par visite) | `affiche` dans `AGENDA` |
 | Les convocations des matchs (les matchs eux-mêmes viennent de la FFBB, voir § 3) | `CONVOCATIONS`, `MATCHS_MANUELS` (et `ADRESSES_SALLES`, `SALLES_FFBB`, `NOMS_CLUBS`) |

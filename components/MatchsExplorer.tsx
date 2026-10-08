@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState, useSyncExternalStore } from "react";
-import type { IssueMatch, MatchDomicileVue, MomentWeekend, SemaineResultats, WeekEndVue } from "@/lib/nbb";
+import type { IssueMatch, MatchDomicileVue, MomentWeekend, ScoreMatch, SemaineResultats, WeekEndVue } from "@/lib/nbb";
 import { aCompleter, pluriel } from "@/lib/utils";
 import { IconeCartes, IconeTableau, NouvelOnglet } from "@/components/icons";
 import { LogoClub } from "@/components/LogoClub";
 import { memoriserEquipe, useMonEquipe } from "@/lib/preferences";
+import { CarteAnimee, ListeAnimee, ZoneAnimee } from "@/components/Glisse";
 
 type Props = { weekends: WeekEndVue[]; indexDefaut: number; equipes: string[]; whatsapp: string };
 type Affichage = "tableau" | "cartes";
@@ -72,10 +73,11 @@ export function MatchsVue({
     choisirSemaine(i);
     setVersion((v) => v + 1);
   };
+  // Changer d'équipe fait glisser les cartes restantes (components/Glisse.tsx) ; changer de week-end ou
+  // d'affichage remplace tout le contenu (fondu court).
   const setEquipe = (e: string) => {
     choisirEquipe(e);
     onEquipe?.(e);
-    setVersion((v) => v + 1);
   };
   const setVue = (a: Affichage) => {
     choisirAffichage(a);
@@ -95,6 +97,7 @@ export function MatchsVue({
   );
 
   return (
+    <ZoneAnimee>
     <div className="matchs" data-vue={affichage ?? "auto"}>
       {/* Même barre de filtres que la page Entraînements, posée à cheval sur l'en-tête. */}
       <div className="filtres-planning">
@@ -151,7 +154,7 @@ export function MatchsVue({
             Pas disponible pour arbitrer ? Trouvez un remplaçant et prévenez le plus rapidement possible votre coach.
           </p>
         </div>
-        <div key={version} className={rafraichi}>
+        <div key={`${sel}-${vue}`} className={rafraichi}>
           {dom.length > 0 ? (
             <>
               {glisser}
@@ -203,6 +206,7 @@ export function MatchsVue({
                                     <LogoClub logo={m.logo} nom={m.adversaire} />
                                     <span>{m.adversaire}</span>
                                   </span>
+                                  <Score r={m.resultat} />
                                 </td>
                                 {/* Arbitres et table : un nom par ligne. */}
                                 <td className="tableau-matchs__fort">
@@ -231,7 +235,7 @@ export function MatchsVue({
                     {parJour(s.matchs).map((j) => (
                       <JourCartes key={j.cle} label={j.label} n={j.matchs.length} niveau={4}>
                         {j.matchs.map((m) => (
-                          <li key={m.cle} className="carte-match">
+                          <CarteAnimee as="li" key={m.cle} className="carte-match">
                             <div className="carte-match__tete">
                               <span className="carte-match__heure"><Heure h={m.heure} /></span>
                               <span className="tag-equipe">{m.equipe}</span>
@@ -242,6 +246,7 @@ export function MatchsVue({
                                 <LogoClub logo={m.logo} nom={m.adversaire} />
                                 <span>{m.adversaire}</span>
                               </span>
+                              <Score r={m.resultat} />
                             </p>
                             <dl className="carte-match__roles">
                               <div>
@@ -257,7 +262,7 @@ export function MatchsVue({
                                 <dd>{m.otm}</dd>
                               </div>
                             </dl>
-                          </li>
+                          </CarteAnimee>
                         ))}
                       </JourCartes>
                     ))}
@@ -278,7 +283,7 @@ export function MatchsVue({
         <h2 id="ext-titre" className="titre-section" style={{ marginBottom: 22 }}>
           On se déplace
         </h2>
-        <div key={version} className={rafraichi}>
+        <div key={`${sel}-${vue}`} className={rafraichi}>
           {ext.length > 0 ? (
             <>
               {glisser}
@@ -315,6 +320,7 @@ export function MatchsVue({
                                 <LogoClub logo={m.logo} nom={m.adversaire} />
                                 <span>{m.adversaire}</span>
                               </span>
+                              <Score r={m.resultat} />
                             </td>
                             <td className="tableau-matchs__lieu">{m.lieu}</td>
                             <td className="tableau-matchs__itineraire">
@@ -331,7 +337,7 @@ export function MatchsVue({
                 {parJour(ext).map((j) => (
                   <JourCartes key={j.cle} label={j.label} n={j.matchs.length} niveau={3}>
                     {j.matchs.map((m) => (
-                      <li key={m.cle} className="carte-match">
+                      <CarteAnimee as="li" key={m.cle} className="carte-match">
                         <div className="carte-match__tete">
                           <span className="carte-match__heure"><Heure h={m.heure} /></span>
                           <span className="tag-equipe tag-equipe--orange">{m.equipe}</span>
@@ -342,10 +348,11 @@ export function MatchsVue({
                             <LogoClub logo={m.logo} nom={m.adversaire} />
                             <span>{m.adversaire}</span>
                           </span>
+                          <Score r={m.resultat} />
                         </p>
                         <p className="carte-match__lieu">{m.lieu}</p>
                         <LienItineraire href={m.itineraire} />
-                      </li>
+                      </CarteAnimee>
                     ))}
                   </JourCartes>
                 ))}
@@ -367,6 +374,7 @@ export function MatchsVue({
         </div>
       </section>
     </div>
+    </ZoneAnimee>
   );
 }
 
@@ -401,7 +409,9 @@ function JourCartes({ label, n, niveau, children }: { label: string; n: number; 
         <span className="tableau-matchs__jour-nom">{label}</span>
         <span className="tableau-matchs__jour-nb">{pluriel(n, "match", "matchs")}</span>
       </Titre>
-      <ul className="cartes-matchs__liste">{children}</ul>
+      <ul className="cartes-matchs__liste">
+        <ListeAnimee>{children}</ListeAnimee>
+      </ul>
     </div>
   );
 }
@@ -431,6 +441,17 @@ export function MatchsAvecAdresse(props: Props) {
 
 
 const ISSUES: Record<IssueMatch, string> = { victoire: "Victoire", defaite: "Défaite", nul: "Nul" };
+
+/** Score d'un match joué, en couleur : vert (victoire), rouge (défaite), gris (nul) ; NBB en premier. */
+function Score({ r }: { r?: ScoreMatch }) {
+  if (!r) return null;
+  return (
+    <span className={`score score--${r.issue}`}>
+      <span className="sr-only">{ISSUES[r.issue]}, </span>
+      <span aria-hidden="true">{r.issue === "victoire" ? "V" : r.issue === "defaite" ? "D" : "N"}</span> {r.nous}–{r.eux}
+    </span>
+  );
+}
 
 /** Résultats FFBB (récupérés chaque nuit) : un week-end à la fois, dans un tableau groupé par jour. */
 export function ResultatsFFBB({ semaines, maj, ffbb }: { semaines: SemaineResultats[]; maj: string; ffbb: string }) {

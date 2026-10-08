@@ -187,6 +187,15 @@ export const AGENDA: DateAgenda[] = [
 ];
 
 /**
+ * Équipes dont le prochain match à domicile est mis en avant en haut de l'accueil, avec un compte à rebours
+ * (date, heure, adversaire et salle viennent du calendrier FFBB). nom : libellé affiché.
+ */
+export const EQUIPES_A_L_AFFICHE: { equipe: string; nom: string }[] = [
+  { equipe: "SM1", nom: "Seniors masculins 1" },
+  { equipe: "SF1", nom: "Seniors féminines 1" },
+];
+
+/**
  * MATCHS DU WEEK-END. La liste des matchs (date, heure, adversaire, salle) vient chaque nuit de la FFBB
  * (data/matchs-ffbb.json, à ne pas modifier) : ici, on ne saisit que ce que la FFBB ne connaît pas.
  *

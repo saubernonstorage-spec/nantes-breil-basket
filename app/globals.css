@@ -833,7 +833,8 @@ textarea {
 }
 
 .menu-mobile::backdrop {
-  background: var(--nuit);
+  /* Voile translucide : on voit le panneau du menu glisser par-dessus la page. */
+  background: rgba(10, 23, 51, 0.55);
 }
 
 .menu-mobile__contenu {
@@ -3533,6 +3534,33 @@ a.badge-label:hover {
   font-weight: 700;
 }
 
+.classement__nom {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+/* Bilan d'une équipe : part des victoires (vert) et des défaites (rouge) sur ses matchs joués. */
+.bilan {
+  display: flex;
+  gap: 2px;
+  width: 100%;
+  max-width: 160px;
+  height: 5px;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.bilan__v {
+  background: var(--vert);
+}
+
+.bilan__d {
+  background: var(--rouge);
+  opacity: 0.75;
+}
+
 .classement__nbb {
   background: var(--orange-pale);
   font-weight: 700;
@@ -4401,6 +4429,11 @@ a.badge-label:hover {
 .issue--victoire {
   background: var(--vert-pale);
   color: var(--vert);
+}
+
+.issue--defaite {
+  background: #fdecea;
+  color: var(--rouge);
 }
 
 .resultats__maj {
@@ -5483,6 +5516,109 @@ a.badge-label:hover {
   color: var(--gris);
 }
 
+/* Galerie en mosaïque : le premier album en grand, un album large plus loin, photo en fond et titre posé dessus. */
+.mosaique {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: 220px;
+  grid-auto-flow: dense;
+  gap: 14px;
+}
+
+.mosaique .album {
+  position: relative;
+  border: 0;
+  background: var(--nuit);
+}
+
+.mosaique .album:nth-child(6n + 1) {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+/* Par groupe de six : un grand, deux petits, puis trois larges : chaque rangée est pleine. */
+.mosaique .album:nth-child(6n + 4),
+.mosaique .album:nth-child(6n + 5),
+.mosaique .album:nth-child(6n + 6) {
+  grid-column: span 2;
+}
+
+.mosaique .album__couverture {
+  position: absolute;
+  inset: 0;
+  aspect-ratio: auto;
+}
+
+/* Voile en bas de la photo : le titre reste lisible sur n'importe quelle image. */
+.mosaique .album__couverture::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10, 23, 51, 0.92), rgba(10, 23, 51, 0.15) 55%, transparent);
+  pointer-events: none;
+}
+
+.mosaique .album__bas {
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+  color: var(--creme);
+}
+
+.mosaique .album__meta {
+  color: rgba(245, 243, 238, 0.75);
+}
+
+.mosaique .album:nth-child(6n + 1) .album__titre {
+  font-size: clamp(30px, 3.4vw, 44px);
+}
+
+@media (max-width: 899px) {
+  .mosaique {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 180px;
+  }
+
+  .mosaique .album:nth-child(6n + 4),
+  .mosaique .album:nth-child(6n + 5) {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 499px) {
+  .mosaique {
+    grid-auto-rows: 160px;
+    gap: 10px;
+  }
+
+  .mosaique .album__bas {
+    padding: 12px 14px 14px;
+  }
+
+  .mosaique .album__titre {
+    font-size: 20px;
+  }
+}
+
+/* Photos d'un album : colonnes, chaque photo garde son format (portrait ou paysage). */
+.fenetre-album__colonnes {
+  columns: 3 260px;
+  column-gap: 10px;
+}
+
+.fenetre-album__colonnes .fenetre-album__photo {
+  aspect-ratio: auto;
+  margin-bottom: 10px;
+  break-inside: avoid;
+}
+
+.fenetre-album__colonnes .fenetre-album__photo .photo {
+  /* next/image « fill » place l'image en absolu (style en ligne) : ici elle reprend sa hauteur naturelle. */
+  position: static !important;
+  width: 100% !important;
+  height: auto !important;
+}
+
 /* ==========================================================================
    Infos pratiques
    ========================================================================== */
@@ -5918,6 +6054,215 @@ a.badge-label:hover {
 
 .formule--bleue p {
   color: rgba(245, 243, 238, 0.85);
+}
+
+/* Icônes SVG (components/icons.tsx) : alignées sur le texte qui les entoure. */
+.icone {
+  flex: none;
+  vertical-align: -0.15em;
+}
+
+.etoiles {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  vertical-align: -0.1em;
+}
+
+.bouton-rond {
+  display: inline-grid;
+  place-items: center;
+}
+
+/* Accueil : prochains matchs à domicile des équipes à l'affiche (MatchsALAffiche). */
+.a-l-affiche {
+  padding-top: 56px;
+  padding-bottom: 8px;
+}
+
+.a-l-affiche__grille {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: 16px;
+  margin-top: 22px;
+}
+
+.match-affiche {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: clamp(18px, 2.4vw, 26px);
+  border-radius: 26px;
+  background: var(--nuit);
+  color: var(--creme);
+}
+
+.match-affiche__tete {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.match-affiche__equipe {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--orange);
+  color: var(--nuit);
+  font-family: var(--f-titre);
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.match-affiche__nom {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(245, 243, 238, 0.7);
+}
+
+/* Face-à-face : logo du NBB, « VS », logo de l'adversaire. */
+.match-affiche__face {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+}
+
+.match-affiche__club {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.match-affiche__club strong {
+  font-family: var(--f-titre);
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.match-affiche__logo {
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: var(--blanc);
+  overflow: hidden;
+}
+
+.match-affiche__logo img {
+  width: 64px;
+  height: auto;
+  object-fit: contain;
+}
+
+.match-affiche__vs {
+  font-family: var(--f-titre);
+  font-size: 34px;
+  font-weight: 900;
+  color: var(--orange);
+}
+
+.match-affiche__quand {
+  margin: 0;
+  text-align: center;
+  font-size: 15px;
+  color: rgba(245, 243, 238, 0.8);
+}
+
+.match-affiche__quand a {
+  color: var(--orange);
+}
+
+.match-affiche__direct {
+  margin: 0;
+  text-align: center;
+  font-weight: 700;
+  color: var(--orange);
+}
+
+.a-l-affiche__lien {
+  margin-top: 18px;
+}
+
+@media (max-width: 479px) {
+  .match-affiche__logo {
+    width: 68px;
+    height: 68px;
+  }
+
+  .match-affiche__logo img {
+    width: 52px;
+  }
+
+  .match-affiche__club strong {
+    font-size: 16px;
+  }
+}
+
+/* Score d'un match joué (page Matchs) : vert victoire, rouge défaite, gris nul ; NBB en premier. */
+.score {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 8px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.score--victoire {
+  background: var(--vert-pale);
+  color: var(--vert);
+}
+
+.score--defaite {
+  background: #fdecea;
+  color: var(--rouge);
+}
+
+.score--nul {
+  background: var(--gris-pale);
+  color: var(--gris-fonce);
+}
+
+/* Transitions de vue (changement de page, app/layout.tsx) : l'en-tête et la barre du bas ne bougent pas,
+   la page reste cliquable pendant le fondu. */
+::view-transition-group(entete-site),
+::view-transition-group(barre-acces) {
+  animation: none;
+  z-index: 100;
+}
+
+::view-transition-old(entete-site),
+::view-transition-old(barre-acces) {
+  display: none;
+}
+
+::view-transition-new(entete-site),
+::view-transition-new(barre-acces) {
+  animation: none;
+}
+
+::view-transition {
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
 }
 
 /* ---------- Navigation mobile : barre d'accès rapide, haut de page, sommaire collant ---------- */
@@ -7377,6 +7722,40 @@ a.tableau-admin__petit {
     animation: nbbBattement 0.5s ease-out 0.8s;
   }
 
+  /* Classement : les barres de bilan se remplissent de gauche à droite à l'ouverture, ligne après ligne. */
+  @keyframes nbbRemplit {
+    from {
+      scale: 0 1;
+    }
+  }
+
+  .fenetre[open] .bilan {
+    transform-origin: left center;
+    animation: nbbRemplit 0.6s var(--ease-pose) both;
+    animation-delay: calc(120ms + var(--i, 0) * 35ms);
+  }
+
+  /* Menu mobile : le panneau arrive de la droite avec un léger rebond (ressort). */
+  @keyframes nbbMenuArrive {
+    from {
+      translate: 100% 0;
+    }
+  }
+
+  .menu-mobile[open] {
+    animation: nbbMenuArrive 0.45s cubic-bezier(0.34, 1.32, 0.64, 1) both;
+  }
+
+  /* Changement de page : fondu court du contenu ; en-tête et barre du bas restent en place. */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 200ms;
+  }
+
+  ::view-transition-group(*) {
+    animation-duration: 200ms;
+  }
+
   /* ---------- 5. Survol : ce qui est cliquable répond ---------- */
 
   /* Cartes-liens : la photo « respire » lentement (en plus du léger soulèvement de la maquette). */
@@ -7537,7 +7916,7 @@ a.tableau-admin__petit {
   .fenetre[open]::backdrop,
   .fenetre-zoom[open],
   .fenetre-album[open],
-  .menu-mobile[open] {
+  .menu-mobile[open]::backdrop {
     animation: nbbFondu 0.2s ease-out;
   }
 

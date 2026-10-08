@@ -1,15 +1,16 @@
 import Link from "next/link";
 import { CLUB, ENCADREMENT, PHOTOS, STATS } from "@/data/nbb";
-import { agendaAVenir, chiffresAccueil, CRENEAUX } from "@/lib/nbb";
+import { agendaAVenir, chiffresAccueil, CRENEAUX, matchsALAffiche } from "@/lib/nbb";
 import { aCompleter, enLettres } from "@/lib/utils";
 import { JsonLdClub } from "@/components/JsonLdClub";
 import { ListeAgenda } from "@/components/ListeAgenda";
 import { ChiffreAnime } from "@/components/ChiffreAnime";
 import { CompteARebours } from "@/components/CompteARebours";
+import { MatchsALAffiche } from "@/components/MatchsALAffiche";
 import { Photo } from "@/components/Photo";
 import { TeteSection } from "@/components/Page";
 import { Terrain } from "@/components/Terrain";
-import { IconeFacebook, IconeInstagram, IconeWhatsapp, NouvelOnglet } from "@/components/icons";
+import { Etoiles, IconeFacebook, IconeInstagram, IconeWhatsapp, NouvelOnglet } from "@/components/icons";
 
 // L'agenda n'affiche que les dates à venir : la page est régénérée toutes les heures.
 export const revalidate = 3600;
@@ -59,7 +60,9 @@ export default function Accueil() {
         <div className="hero__contenu">
           <div className="hero__texte">
             <Link href="/ecoles" className="badge-label">
-              <span className="badge-label__etoiles">★★★</span>
+              <span className="badge-label__etoiles">
+                <Etoiles />
+              </span>
               École Française de Mini-Basket
             </Link>
             <h1 id="hero-titre" className="hero__titre">
@@ -85,13 +88,17 @@ export default function Accueil() {
               <div key={c.label}>
                 <dt>{c.label}</dt>
                 <dd>
-                  <ChiffreAnime valeur={c.valeur} />
+                  {/* Label en étoiles (« ★★★ ») : icônes ; chiffres : défilement. */}
+                  {/^★+$/.test(c.valeur) ? <Etoiles n={c.valeur.length} taille={34} /> : <ChiffreAnime valeur={c.valeur} />}
                 </dd>
               </div>
             ))}
           </dl>
         </div>
       </section>
+
+      {/* Prochain match à domicile des équipes à l'affiche (EQUIPES_A_L_AFFICHE), avec compte à rebours. */}
+      <MatchsALAffiche matchs={matchsALAffiche()} />
 
       <section aria-labelledby="acces-titre" className="section" style={{ paddingTop: 64, paddingBottom: 24 }}>
         <TeteSection
@@ -243,7 +250,9 @@ export default function Accueil() {
             </div>
             <div aria-hidden="true" className="carte-ecole__voile" />
             <div className="carte-ecole__texte">
-              <div className="pastille-orange">★★★ Labels FFBB</div>
+              <div className="pastille-orange">
+                <Etoiles /> Labels FFBB
+              </div>
               <h3 className="carte-ecole__titre">Trois étoiles au-dessus du panier</h3>
               <p>
                 Micro-basket, U7, U9 et U11 : notre école de mini-basket est reconnue au plus haut niveau du label de

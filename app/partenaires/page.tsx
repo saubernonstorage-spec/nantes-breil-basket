@@ -4,7 +4,7 @@ import { CLUB, OFFRE_PARTENARIAT, PARTENAIRES, STATS } from "@/data/nbb";
 import { aCompleter, slug } from "@/lib/utils";
 import { EntetePage } from "@/components/Page";
 import { Photo } from "@/components/Photo";
-import { NouvelOnglet } from "@/components/icons";
+import { IconeCoche, NouvelOnglet } from "@/components/icons";
 
 export const metadata: Metadata = {
   title: "Partenaires et mécénat",
@@ -84,7 +84,7 @@ export default function Partenaires() {
                   <ul className="liste-coches liste-coches--traits">
                     {o.inclus.map((i) => (
                       <li key={i}>
-                        <span aria-hidden="true">✓</span>
+                        <span aria-hidden="true"><IconeCoche /></span>
                         {i}
                       </li>
                     ))}
@@ -100,16 +100,16 @@ export default function Partenaires() {
             <ul className="liste-coches liste-coches--traits">
               {aCompleter(CLUB.reductionImpot) ? null : (
                 <li>
-                  <span aria-hidden="true">✓</span>
+                  <span aria-hidden="true"><IconeCoche /></span>
                   {CLUB.reductionImpot}
                 </li>
               )}
               <li>
-                <span aria-hidden="true">✓</span>
+                <span aria-hidden="true"><IconeCoche /></span>
                 Reçu fiscal délivré par le club
               </li>
               <li>
-                <span aria-hidden="true">✓</span>
+                <span aria-hidden="true"><IconeCoche /></span>
                 Don fléché : école de basket, matériel, stages…
               </li>
             </ul>

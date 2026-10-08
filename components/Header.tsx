@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Fenetre } from "@/components/Fenetre";
-import { IconeFacebook, IconeInstagram, IconeWhatsapp, NouvelOnglet } from "@/components/icons";
+import { IconeFacebook, IconeFermer, IconeInstagram, IconeWhatsapp, NouvelOnglet } from "@/components/icons";
 
 const NAV = [
   { href: "/club", label: "Le club" },
@@ -35,7 +35,7 @@ export function Header({ liens }: { liens: LiensClub }) {
   const fermer = () => setOuvert(false);
 
   return (
-    <header className="entete-site">
+    <header className="entete-site" style={{ viewTransitionName: "entete-site" }}>
       <a className="evitement" href="#contenu">
         Aller au contenu
       </a>
@@ -91,7 +91,7 @@ export function Header({ liens }: { liens: LiensClub }) {
             <span className="menu-mobile__titre">Menu</span>
             {/* Premier élément focalisable : il reçoit le focus à l'ouverture. */}
             <button type="button" className="menu-mobile__fermer" aria-label="Fermer le menu" onClick={fermer}>
-              ✕
+              <IconeFermer />
             </button>
           </div>
           <nav aria-label="Navigation mobile" className="menu-mobile__nav">

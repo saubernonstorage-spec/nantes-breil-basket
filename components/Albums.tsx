@@ -5,19 +5,23 @@ import type { Album } from "@/lib/types";
 import { pluriel } from "@/lib/utils";
 import { Fenetre } from "@/components/Fenetre";
 import { Photo } from "@/components/Photo";
+import { IconeFermer } from "@/components/icons";
 
-/** Albums de la galerie ; chaque album s'ouvre dans une fenêtre. */
+/**
+ * Albums de la galerie en mosaïque (le premier en grand, formats variés) ; chaque album s'ouvre dans une
+ * fenêtre où les photos gardent leur format (colonnes).
+ */
 export function Albums({ albums }: { albums: Album[] }) {
   const [ouvert, setOuvert] = useState<string | null>(null);
   const album = albums.find((a) => a.id === ouvert);
 
   return (
     <>
-      <div className="grille grille--remplir" style={{ "--min": "300px", gap: 14 } as React.CSSProperties}>
+      <div className="mosaique">
         {albums.map((a) => (
-          <article key={a.id} className="album">
+          <article key={a.id} className={a.photos.length ? "album album--ouvrable" : "album"}>
             <div className="album__couverture">
-              <Photo src={a.couverture} alt={`Couverture de l'album ${a.titre}`} sizes="(max-width: 700px) 100vw, 440px" />
+              <Photo src={a.couverture} alt={`Couverture de l'album ${a.titre}`} sizes="(max-width: 700px) 100vw, 680px" />
             </div>
             <div className="album__bas">
               <div>
@@ -39,10 +43,10 @@ export function Albums({ albums }: { albums: Album[] }) {
             <div className="fenetre-album__tete">
               <h2>{album.titre}</h2>
               <button type="button" className="bouton-rond bouton-rond--clair bouton-rond--grand" aria-label="Fermer l'album" onClick={() => setOuvert(null)}>
-                ✕
+                <IconeFermer />
               </button>
             </div>
-            <div className="grille grille--remplir" style={{ "--min": "260px", gap: 10 } as React.CSSProperties}>
+            <div className="fenetre-album__colonnes">
               {album.photos.map((p) => (
                 <a key={p.src} href={p.src} target="_blank" rel="noopener" className="fenetre-album__photo">
                   <Photo src={p.src} alt={p.alt} sizes="(max-width: 600px) 100vw, 400px" />

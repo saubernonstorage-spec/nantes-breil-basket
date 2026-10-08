@@ -6,7 +6,7 @@ import { aCompleter } from "@/lib/utils";
 import { EntetePage } from "@/components/Page";
 import { InscriptionForm } from "@/components/formulaires/InscriptionForm";
 import { TEXTE_INSCRIPTIONS_FERMEES } from "@/components/InscriptionsFermees";
-import { NouvelOnglet } from "@/components/icons";
+import { IconeCoche, NouvelOnglet } from "@/components/icons";
 
 const prixMin = Math.min(...TARIFS.map((t) => t.prix));
 const prixMax = Math.max(...TARIFS.map((t) => t.prix));
@@ -113,7 +113,7 @@ export default function Inscriptions() {
             <ul className="liste-validee">
               {DOCUMENTS.map((d) => (
                 <li key={d}>
-                  <span aria-hidden="true">✓</span>
+                  <span aria-hidden="true"><IconeCoche /></span>
                   {d}
                 </li>
               ))}

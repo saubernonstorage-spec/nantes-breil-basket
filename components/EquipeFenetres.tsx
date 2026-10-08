@@ -4,7 +4,7 @@ import { useId, useState } from "react";
 import { Fenetre } from "@/components/Fenetre";
 import { LogoClub } from "@/components/LogoClub";
 import { Photo } from "@/components/Photo";
-import { NouvelOnglet } from "@/components/icons";
+import { IconeFermer, NouvelOnglet } from "@/components/icons";
 
 type Classement = {
   championnat: string;
@@ -28,7 +28,7 @@ export function ZoomPhoto({ src, nom, libelle }: { src: string; nom: string; lib
         <div className="fenetre-zoom__bas">
           <span>{libelle}</span>
           <button type="button" className="bouton-rond bouton-rond--clair" aria-label="Fermer" onClick={() => setOuvert(false)}>
-            ×
+            <IconeFermer />
           </button>
         </div>
       </Fenetre>
@@ -68,7 +68,7 @@ export function BoutonClassement({
             {c.championnat ? <div className="fenetre__sous-titre">{c.championnat}</div> : null}
           </div>
           <button type="button" className="bouton-rond bouton-rond--clair" aria-label="Fermer" onClick={() => setOuvert(false)}>
-            ×
+            <IconeFermer />
           </button>
         </div>
         <div className="fenetre__corps">
@@ -86,13 +86,22 @@ export function BoutonClassement({
                   </tr>
                 </thead>
                 <tbody>
-                  {c.lignes.map((l) => (
-                    <tr key={`${l.rang}-${l.equipe}`} className={l.nbb ? "classement__nbb" : undefined}>
+                  {c.lignes.map((l, i) => (
+                    <tr key={`${l.rang}-${l.equipe}`} className={l.nbb ? "classement__nbb" : undefined} style={{ "--i": i } as React.CSSProperties}>
                       <td>{l.rang}</td>
                       <td>
                         <span className="avec-logo">
                           <LogoClub logo={l.logo} nom={l.equipe} taille={34} />
-                          {l.equipe}
+                          <span className="classement__nom">
+                            {l.equipe}
+                            {/* Bilan victoires / défaites : la barre se remplit à l'ouverture du classement. */}
+                            {l.v + l.d > 0 ? (
+                              <span className="bilan" aria-hidden="true">
+                                <span className="bilan__v" style={{ flexGrow: l.v }} />
+                                <span className="bilan__d" style={{ flexGrow: l.d }} />
+                              </span>
+                            ) : null}
+                          </span>
                         </span>
                       </td>
                       <td>{l.j}</td>

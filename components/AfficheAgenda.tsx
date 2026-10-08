@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Fenetre } from "@/components/Fenetre";
 import { Photo } from "@/components/Photo";
+import { IconeFermer } from "@/components/icons";
 
 /**
  * Affiche (flyer) d'une date de l'agenda, au format portrait : cliquable, elle s'agrandit en entier dans une
@@ -29,7 +30,7 @@ export function AfficheAgenda({ src, titre }: { src?: string; titre: string }) {
         <div className="fenetre-zoom__bas">
           <span>{titre}</span>
           <button type="button" className="bouton-rond bouton-rond--clair" aria-label="Fermer" onClick={() => setOuvert(false)}>
-            ×
+            <IconeFermer />
           </button>
         </div>
       </Fenetre>

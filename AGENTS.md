@@ -58,4 +58,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   Parallaxe et en-tête au défilement en CSS (`animation-timeline`). Les animations utilisent
   `translate`/`scale`/`opacity` ; `transform` est réservé au survol et au placement des motifs de terrain.
   Flèches animées : `<span className="fleche fleche--bas|diag|gauche" aria-hidden="true">`.
+  Exceptions en JavaScript : changement de page par `<ViewTransition>` de React (app/layout.tsx, styles
+  `::view-transition` ; en-tête et barre du bas ancrés) et cartes filtrées qui glissent (framer-motion,
+  `components/Glisse.tsx`, `MotionConfig reducedMotion="user"`).
 - Avant de livrer : `npm run lint` puis `npm run build`.

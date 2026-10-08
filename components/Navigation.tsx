@@ -46,7 +46,7 @@ export function BarreAcces() {
   const chemin = usePathname();
   if (chemin.startsWith("/espace-dirigeants")) return null;
   return (
-    <nav aria-label="Accès rapide" className="barre-acces" data-noprint="">
+    <nav aria-label="Accès rapide" className="barre-acces" data-noprint="" style={{ viewTransitionName: "barre-acces" }}>
       {ACCES.map((a) => {
         const actif = chemin === a.href || chemin.startsWith(`${a.href}/`);
         return (
