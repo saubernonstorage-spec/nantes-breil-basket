@@ -40,7 +40,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   intérieures commencent par `EntetePage` (`components/Page.tsx`), qui remonte sous l'en-tête collant :
   fil d'Ariane, titre et chapô, sans bouton (les appels à l'action sont dans le corps de la page).
 - Photos : `components/Photo.tsx` (next/image, motif de remplacement si le chemin est vide) ; lignes de
-  terrain décoratives : `components/Terrain.tsx`. Fenêtres modales : `components/Fenetre.tsx` (`<dialog>`).
+  terrain décoratives : `components/Terrain.tsx` ; dessins (sifflet de l'accueil) : `components/Illustrations.tsx`. Fenêtres modales : `components/Fenetre.tsx` (`<dialog>`).
 - Formulaires : Server Actions dans `app/actions.ts` (validation serveur, anti-spam), enregistrement dans
   `lib/stockage.ts` (fichiers JSON du dossier `DOSSIER_DONNEES`, `.donnees/` en local ; hébergement Hostinger,
   build `npm run build:hostinger` avec Webpack) et e-mail facultatif

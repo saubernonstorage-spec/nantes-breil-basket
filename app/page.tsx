@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { CLUB, ENCADREMENT, PHOTOS, STATS } from "@/data/nbb";
-import { agendaAVenir, chiffresAccueil, CRENEAUX, matchsALAffiche } from "@/lib/nbb";
-import { aCompleter, enLettres } from "@/lib/utils";
+import { agendaAVenir, chiffresAccueil, matchsALAffiche, resultatsParWeekend } from "@/lib/nbb";
+import { aCompleter } from "@/lib/utils";
 import { JsonLdClub } from "@/components/JsonLdClub";
 import { ChiffreAnime } from "@/components/ChiffreAnime";
+import { DerniersResultats } from "@/components/DerniersResultats";
 import { MatchsALAffiche } from "@/components/MatchsALAffiche";
 import { Photo } from "@/components/Photo";
 import { TeteSection } from "@/components/Page";
-import { Terrain } from "@/components/Terrain";
+import { Sifflet } from "@/components/Illustrations";
 import { Etoiles, IconeFacebook, IconeInstagram, IconeWhatsapp, NouvelOnglet } from "@/components/icons";
 
 // L'agenda n'affiche que les dates à venir : la page est régénérée toutes les heures.
@@ -20,22 +21,9 @@ const ETAPES_ARBITRAGE = [
   "Devenir arbitre ou OTM officiel",
 ];
 
-/** 46 → "plus de 45" ; 45 → "45". */
-function environ(n: number): string {
-  return n % 5 === 0 ? String(n) : `plus de ${n - (n % 5)}`;
-}
-
-function introEncadrement(): string {
-  const salaries = ENCADREMENT.filter((c) => /salarié/i.test(c.role)).length;
-  const apprentis = ENCADREMENT.filter((c) => /apprenti/i.test(c.role)).length;
-  const dont = [
-    salaries ? `${enLettres(salaries)} salarié${salaries > 1 ? "s" : ""}` : "",
-    apprentis ? `${enLettres(apprentis, true)} apprentie${apprentis > 1 ? "s" : ""}` : "",
-  ].filter(Boolean);
-  return `Des entraîneurs formés${dont.length ? `, dont ${dont.join(" et ")}` : ""}, pour animer ${environ(CRENEAUX.length)} créneaux chaque semaine.`;
-}
-
 export default function Accueil() {
+  // Week-end le plus récent des résultats FFBB (aucun en début de saison : la boîte n'est pas affichée).
+  const dernierWeekend = resultatsParWeekend().semaines[0];
 
   return (
     <>
@@ -48,12 +36,6 @@ export default function Accueil() {
         <div aria-hidden="true" className="hero__voile" />
         <div className="hero__contenu">
           <div className="hero__texte">
-            <Link href="/ecoles" className="badge-label">
-              <span className="badge-label__etoiles">
-                <Etoiles />
-              </span>
-              École Française de Mini-Basket
-            </Link>
             <h1 id="hero-titre" className="hero__titre">
               Viens dribbler <span className="accent">dans ton quartier</span>
             </h1>
@@ -90,7 +72,7 @@ export default function Accueil() {
                 <dt>{c.label}</dt>
                 <dd>
                   {/* Label en étoiles (« ★★★ ») : icônes ; chiffres : défilement. */}
-                  {/^★+$/.test(c.valeur) ? <Etoiles n={c.valeur.length} taille={34} /> : <ChiffreAnime valeur={c.valeur} />}
+                  {/^★+$/.test(c.valeur) ? <Etoiles n={c.valeur.length} taille={26} /> : <ChiffreAnime valeur={c.valeur} />}
                 </dd>
               </div>
             ))}
@@ -101,8 +83,9 @@ export default function Accueil() {
       {/* Prochain match à domicile des équipes à l'affiche (EQUIPES_A_L_AFFICHE) et prochain événement de l'agenda, avec comptes à rebours. */}
       <MatchsALAffiche matchs={matchsALAffiche()} evenements={agendaAVenir()} />
 
+      {/* Photo sur toute la largeur, puis appel aux bénévoles et partenaires à gauche et résultats du dernier week-end à droite. */}
       <div className="bande-sombre" style={{ marginTop: 40 }}>
-        <div className="section" style={{ paddingTop: 80, paddingBottom: 80 }}>
+        <div className="section" style={{ paddingTop: 72, paddingBottom: 72 }}>
           <div className="banniere-photo">
             <Photo
               src={PHOTOS.accueilVieClub.src}
@@ -116,88 +99,92 @@ export default function Accueil() {
               <span className="ligne accent">on reste pour l'ambiance.</span>
             </div>
           </div>
-          {/* Agenda à gauche (dates sous le titre), appel aux bénévoles et partenaires à droite. */}
-          <div className="agenda-accueil">
-            <section aria-labelledby="aide-titre" className="agenda-accueil__aide">
-              <div className="surtitre">Le club, c'est vous</div>
-              <h2 id="aide-titre" className="titre-section titre-section--grand" style={{ marginBottom: 18 }}>
-                On a besoin de vous
-              </h2>
-              <div className="agenda-accueil__cartes">
-                <Link href="/club#commissions" className="appel carte-lien">
-                  <div className="surtitre surtitre--gris">Parents &amp; bénévoles</div>
-                  <h3 className="appel__titre">Un peu de votre temps, et le club tourne.</h3>
-                  <p>Pas besoin de connaissance particulière, on vous forme.</p>
-                  <div className="appel__bas">
-                    <span className="btn btn--m btn--petit btn--nuit">Proposer votre aide</span>
-                  </div>
-                </Link>
-                <Link href="/partenaires" className="appel appel--bleu carte-lien carte-lien--sombre">
-                  <Terrain
-                    motif="angle"
-                    style={{ right: 0, bottom: 0, width: "min(58%, 360px)", transform: "scaleY(-1)" }}
-                  />
-                  <div className="surtitre relatif">Entreprise &amp; parents</div>
-                  <h3 className="appel__titre relatif">Soutenez le développement du club.</h3>
-                  <p className="relatif">
-                    Partenariat ou mécénat avec reçu fiscal : chaque soutien finance le matériel et l'encadrement.
-                  </p>
-                  <div className="appel__bas relatif">
-                    <span className="btn btn--m btn--petit btn--orange">Devenir partenaire</span>
-                  </div>
-                </Link>
-              </div>
-            </section>
+          {/* Sous la photo : « Le club, c'est vous » puis « Nos écoles » à gauche (60 %), derniers résultats à droite (40 %). */}
+          <div className={dernierWeekend ? "tableau-de-bord" : "tableau-de-bord tableau-de-bord--seul"}>
+            <div className="tableau-de-bord__gauche">
+              <section aria-labelledby="aide-titre">
+                <div className="surtitre">Le club, c'est vous</div>
+                <h2 id="aide-titre" className="tableau-de-bord__titre">
+                  On a besoin de vous
+                </h2>
+                <div className="duo-boites">
+                  <article className="boite-appel boite-appel--orange">
+                    <div className="surtitre">Parents &amp; bénévoles</div>
+                    <h3 className="boite-appel__titre">Un peu de votre temps, et le club tourne.</h3>
+                    <p>Pas besoin de connaissance particulière, on vous forme.</p>
+                    <Link href="/club#commissions" className="btn btn--l btn--nuit">
+                      Proposer votre aide
+                    </Link>
+                  </article>
+                  <article className="boite-appel">
+                    <div className="surtitre">Entreprises &amp; parents</div>
+                    <h3 className="boite-appel__titre">Soutenez le développement du club.</h3>
+                    <p>
+                      Partenariat ou mécénat avec reçu fiscal : chaque soutien finance le matériel et l'encadrement.
+                    </p>
+                    <Link href="/partenaires" className="btn btn--l btn--orange">
+                      Devenir partenaire
+                    </Link>
+                  </article>
+                </div>
+              </section>
+
+              <section aria-labelledby="vie-titre">
+                <div className="surtitre">Nos écoles</div>
+                <h2 id="vie-titre" className="tableau-de-bord__titre">
+                  Apprendre, arbitrer, grandir
+                </h2>
+                <div className="duo-boites">
+                  <article className="ecole-carte">
+                    <div className="ecole-carte__visuel">
+                      <Photo
+                        src={PHOTOS.accueilEcole.src}
+                        alt={PHOTOS.accueilEcole.alt}
+                        sizes="(max-width: 699px) 100vw, 400px"
+                      />
+                    </div>
+                    <div className="ecole-carte__corps">
+                      <div className="pastille-orange">
+                        <Etoiles /> Labels FFBB
+                      </div>
+                      <h3 className="ecole-carte__titre">Trois étoiles au-dessus du panier</h3>
+                      <p>
+                        Micro-basket, U7, U9 et U11 : notre école de mini-basket est reconnue au plus haut niveau du
+                        label de la Fédération. Le club détient aussi le label FFBB Micro Basket.
+                      </p>
+                      <Link href="/ecoles" className="btn btn--l btn--nuit">
+                        Découvrir l'école de basket
+                      </Link>
+                    </div>
+                  </article>
+                  <article className="ecole-carte">
+                    <div className="ecole-carte__visuel ecole-carte__visuel--dessin">
+                      <Sifflet className="ecole-carte__dessin" />
+                    </div>
+                    <div className="ecole-carte__corps">
+                      <div className="surtitre">École d'arbitrage</div>
+                      <h3 className="ecole-carte__titre">Siffler, c'est encore jouer.</h3>
+                      <ol className="etapes-arbitrage">
+                        {ETAPES_ARBITRAGE.map((e, i) => (
+                          <li key={e}>
+                            <span>{String(i + 1).padStart(2, "0")}</span>
+                            {e}
+                          </li>
+                        ))}
+                      </ol>
+                      <Link href="/ecoles#arbitrage" className="btn btn--l btn--orange">
+                        Le parcours d'arbitrage
+                      </Link>
+                    </div>
+                  </article>
+                </div>
+              </section>
+            </div>
+            {/* Résultats FFBB du dernier week-end (data/resultats-ffbb.json, mis à jour chaque nuit). */}
+            {dernierWeekend ? <DerniersResultats semaine={dernierWeekend} /> : null}
           </div>
         </div>
       </div>
-
-      <section aria-labelledby="vie-titre" className="section">
-        <TeteSection grand equilibre surtitre="Nos écoles" titre="Apprendre, arbitrer, grandir" id="vie-titre" />
-        <div className="rangee">
-          <Link href="/ecoles" className="carte-ecole carte-lien carte-lien--sombre">
-            <div className="couvrir">
-              <Photo
-                src={PHOTOS.accueilEcole.src}
-                alt={PHOTOS.accueilEcole.alt}
-                sizes="(max-width: 900px) 100vw, 60vw"
-              />
-            </div>
-            <div aria-hidden="true" className="carte-ecole__voile" />
-            <div className="carte-ecole__texte">
-              <div className="pastille-orange">
-                <Etoiles /> Labels FFBB
-              </div>
-              <h3 className="carte-ecole__titre">Trois étoiles au-dessus du panier</h3>
-              <p>
-                Micro-basket, U7, U9 et U11 : notre école de mini-basket est reconnue au plus haut niveau du label de
-                la Fédération. Le club détient aussi le label FFBB Micro Basket.
-              </p>
-              <span className="btn btn--m btn--petit btn--creme">Découvrir l'école de basket</span>
-            </div>
-          </Link>
-          <Link href="/ecoles#arbitrage" className="carte-arbitrage carte-lien carte-lien--sombre">
-            <Terrain motif="angle" style={{ top: 0, right: 0, width: "min(78%, 420px)" }} />
-            <div className="relatif">
-              <div className="surtitre" style={{ marginBottom: 14 }}>
-                École d'arbitrage
-              </div>
-              <h3 className="carte-arbitrage__titre">Siffler, c'est encore jouer.</h3>
-            </div>
-            <ol className="etapes-arbitrage">
-              {ETAPES_ARBITRAGE.map((e, i) => (
-                <li key={e}>
-                  <span>{String(i + 1).padStart(2, "0")}</span>
-                  {e}
-                </li>
-              ))}
-            </ol>
-            <span className="btn btn--m btn--petit btn--orange relatif carte-arbitrage__bouton">
-              Le parcours d'arbitrage
-            </span>
-          </Link>
-        </div>
-      </section>
 
       <section aria-labelledby="coachs-titre" className="section">
         <TeteSection
@@ -205,7 +192,6 @@ export default function Accueil() {
           surtitre="Encadrement"
           titre="Celles et ceux qui entraînent"
           id="coachs-titre"
-          texte={introEncadrement()}
         />
         {/* Sur mobile, les cartes forment une rangée qui défile de côté (focalisable au clavier). */}
         <div
