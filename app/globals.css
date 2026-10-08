@@ -1582,96 +1582,86 @@ a.badge-label:hover {
   }
 }
 
+/* Carte école : image plein cadre, texte et bouton posés en bas sur un voile sombre. */
 .ecole-carte {
+  position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
+  /* Bande d'image libre au-dessus du texte. */
+  padding-top: clamp(130px, 12vw, 170px);
   border-radius: 30px;
   overflow: hidden;
-  background: var(--blanc);
-  border: 1px solid var(--bord);
-  color: var(--encre);
+  background: var(--nuit);
+  color: var(--creme);
+  text-decoration: none;
 }
 
+.ecole-carte:hover {
+  color: var(--creme);
+}
+
+/* Image en haut de la carte (photo entière visible), fondue dans le bleu nuit sous le texte. */
 .ecole-carte__visuel {
-  position: relative;
-  aspect-ratio: 16 / 9;
+  position: absolute;
+  inset: 0 0 auto;
+  height: 62%;
   overflow: hidden;
   background: var(--nuit);
+}
+
+.ecole-carte__visuel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(0deg, var(--nuit) 0%, rgba(10, 23, 51, 0.75) 30%, rgba(10, 23, 51, 0) 65%);
 }
 
 .ecole-carte__visuel--dessin {
   background: var(--orange-pale);
 }
 
+/* Le sifflet reste dans la moitié haute, au-dessus du voile. */
 .ecole-carte__dessin {
   position: absolute;
-  inset: 0;
+  top: 4%;
+  left: 0;
   width: 100%;
-  height: 100%;
+  height: 62%;
 }
 
 .ecole-carte__corps {
-  flex: 1;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: clamp(22px, 2.6vw, 32px);
+  padding: clamp(20px, 2.4vw, 28px);
 }
 
-.ecole-carte__corps .pastille-orange {
-  margin-bottom: 14px;
+.ecole-carte__corps .surtitre {
+  margin-bottom: 6px;
 }
 
 .ecole-carte__titre {
-  margin: 0 0 14px;
+  margin: 0 0 10px;
   font-family: var(--f-titre);
   font-weight: 900;
-  font-size: clamp(28px, 2.4vw, 36px);
+  font-size: clamp(26px, 2.2vw, 34px);
   line-height: 0.9;
   text-transform: uppercase;
 }
 
 .ecole-carte__corps p {
-  margin: 0 0 22px;
-  font-size: 16px;
-  line-height: 1.6;
-  color: var(--gris);
+  margin: 0 0 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(245, 243, 238, 0.88);
 }
 
-/* Bouton en bas de carte (cartes de même hauteur) ; sur toute la largeur sur mobile. */
+/* Bouton sur toute la largeur de la carte. */
 .ecole-carte__corps .btn {
-  margin-top: auto;
-}
-
-@media (max-width: 699px) {
-  .ecole-carte__corps .btn {
-    align-self: stretch;
-  }
-}
-
-.etapes-arbitrage {
   align-self: stretch;
-  margin: 0 0 22px;
-  padding: 0;
-  list-style: none;
-}
-
-.etapes-arbitrage li {
-  display: flex;
-  gap: 14px;
-  padding: 9px 0;
-  border-top: 1px solid var(--bord);
-  font-size: 16px;
-}
-
-.etapes-arbitrage li:last-child {
-  border-bottom: 1px solid var(--bord);
-}
-
-.etapes-arbitrage span {
-  font-family: var(--f-mono);
-  font-weight: 700;
-  color: var(--orange-texte);
 }
 
 /* Bandeau d'accueil : réseaux du club en trois icônes rondes sous les boutons. */
@@ -6649,7 +6639,7 @@ a.match-affiche--evenement {
 }
 
 /* Surtitres des boîtes claires de la bande sombre : caramel (orange vif illisible sur fond clair), nuit sur l'orange. */
-.bande-sombre :is(.boite-appel, .ecole-carte) .surtitre {
+.bande-sombre .boite-appel .surtitre {
   color: var(--orange-texte);
 }
 

@@ -14,13 +14,6 @@ import { Etoiles, IconeFacebook, IconeInstagram, IconeWhatsapp, NouvelOnglet } f
 // L'agenda n'affiche que les dates à venir : la page est régénérée toutes les heures.
 export const revalidate = 3600;
 
-const ETAPES_ARBITRAGE = [
-  "Découvrir les règles",
-  "Arbitrer les matchs de jeunes du club",
-  "Approfondir : 4 samedis de formation",
-  "Devenir arbitre ou OTM officiel",
-];
-
 export default function Accueil() {
   // Week-end le plus récent des résultats FFBB (aucun en début de saison : la boîte n'est pas affichée).
   const dernierWeekend = resultatsParWeekend().semaines[0];
@@ -135,7 +128,8 @@ export default function Accueil() {
                   Apprendre, arbitrer, grandir
                 </h2>
                 <div className="duo-boites">
-                  <article className="ecole-carte">
+                  {/* Cartes entièrement cliquables. */}
+                  <Link href="/ecoles" className="ecole-carte carte-lien">
                     <div className="ecole-carte__visuel">
                       <Photo
                         src={PHOTOS.accueilEcole.src}
@@ -144,39 +138,29 @@ export default function Accueil() {
                       />
                     </div>
                     <div className="ecole-carte__corps">
-                      <div className="pastille-orange">
-                        <Etoiles /> Labels FFBB
-                      </div>
+                      <div className="surtitre">École de basket</div>
                       <h3 className="ecole-carte__titre">Trois étoiles au-dessus du panier</h3>
                       <p>
                         Micro-basket, U7, U9 et U11 : notre école de mini-basket est reconnue au plus haut niveau du
                         label de la Fédération. Le club détient aussi le label FFBB Micro Basket.
                       </p>
-                      <Link href="/ecoles" className="btn btn--l btn--nuit">
-                        Découvrir l'école de basket
-                      </Link>
+                      <span className="btn btn--l btn--creme">Découvrir l'école de basket</span>
                     </div>
-                  </article>
-                  <article className="ecole-carte">
+                  </Link>
+                  <Link href="/ecoles#arbitrage" className="ecole-carte carte-lien">
                     <div className="ecole-carte__visuel ecole-carte__visuel--dessin">
                       <Sifflet className="ecole-carte__dessin" />
                     </div>
                     <div className="ecole-carte__corps">
                       <div className="surtitre">École d'arbitrage</div>
                       <h3 className="ecole-carte__titre">Siffler, c'est encore jouer.</h3>
-                      <ol className="etapes-arbitrage">
-                        {ETAPES_ARBITRAGE.map((e, i) => (
-                          <li key={e}>
-                            <span>{String(i + 1).padStart(2, "0")}</span>
-                            {e}
-                          </li>
-                        ))}
-                      </ol>
-                      <Link href="/ecoles#arbitrage" className="btn btn--l btn--orange">
-                        Le parcours d'arbitrage
-                      </Link>
+                      <p>
+                        Un parcours progressif pour découvrir les règles, arbitrer les rencontres de jeunes, se
+                        perfectionner en formation et accéder au statut d’arbitre ou d’OTM officiel.
+                      </p>
+                      <span className="btn btn--l btn--orange">Le parcours d'arbitrage</span>
                     </div>
-                  </article>
+                  </Link>
                 </div>
               </section>
             </div>
