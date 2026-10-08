@@ -5,6 +5,8 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useState, useSyncExternalStore } from "react";
 import type { Jour } from "@/lib/types";
 import type { CreneauPlanning } from "@/lib/nbb";
+import { memoriserEquipe, useMonEquipe } from "@/lib/preferences";
+import { Sommaire } from "@/components/Navigation";
 
 type Filtres = { equipe: string; gymnase: string; jour: string };
 type Donnees = { creneaux: CreneauPlanning[]; equipes: string[]; gymnases: string[]; jours: Jour[] };
@@ -31,7 +33,8 @@ export function PlanningVue({
   jours,
   filtres = AUCUN,
   onChange,
-}: Donnees & { filtres?: Filtres; onChange?: (f: Filtres) => void }) {
+  memorisee = false,
+}: Donnees & { filtres?: Filtres; onChange?: (f: Filtres) => void; memorisee?: boolean }) {
   const aujourdhui = useJourCourant();
   // Chaque changement de filtre rejoue un fondu très court sur la liste : on voit qu'elle a été mise à jour.
   const [version, setVersion] = useState(0);
@@ -102,10 +105,12 @@ export function PlanningVue({
             {n} créneau{n > 1 ? "x" : ""} affiché{n > 1 ? "s" : ""}
             {filtres.equipe ? ` pour ${filtres.equipe}` : ""}
           </p>
+          {memorisee ? <p className="planning__memoire">Équipe mémorisée sur cet appareil</p> : null}
         </div>
+        <Sommaire label="Jours de la semaine" sections={parJour.map(({ jour }) => ({ id: `jour-${jour.toLowerCase()}`, titre: jour }))} />
         <div key={version} className={version ? "rafraichi" : undefined}>
         {parJour.map(({ jour, liste }) => (
-          <div key={jour} className="planning__jour">
+          <div key={jour} id={`jour-${jour.toLowerCase()}`} className="planning__jour">
             <h2 className="planning__titre-jour">
               {jour}
               {jour === aujourdhui ? <span className="planning__aujourdhui">Aujourd'hui</span> : null}
@@ -157,20 +162,28 @@ export function PlanningVue({
   );
 }
 
-/** Planning dont les filtres sont gardés dans l'adresse (/planning?equipe=U11F1) : liens partageables. */
+/**
+ * Planning dont les filtres sont gardés dans l'adresse (/planning?equipe=U11F1) : liens partageables. Sans
+ * équipe dans l'adresse, l'équipe mémorisée sur l'appareil (« mon équipe », lib/preferences.ts) est reprise.
+ */
 export function PlanningAvecAdresse(props: Donnees) {
   const params = useSearchParams();
   const chemin = usePathname();
+  const monEquipe = useMonEquipe();
+  const equipeAdresse = props.equipes.includes(params.get("equipe") ?? "") ? (params.get("equipe") as string) : "";
+  const equipeMemorisee = props.equipes.includes(monEquipe) ? monEquipe : "";
   const lire = (cle: string, valides: string[]) => {
     const v = params.get(cle) ?? "";
     return valides.includes(v) ? v : "";
   };
   const filtres: Filtres = {
-    equipe: lire("equipe", props.equipes),
+    equipe: equipeAdresse || equipeMemorisee,
     gymnase: lire("gymnase", props.gymnases),
     jour: lire("jour", props.jours),
   };
   const changer = (f: Filtres) => {
+    // Choisir une équipe la mémorise ; « Toutes les équipes » (ou Réinitialiser) l'oublie.
+    if (f.equipe !== filtres.equipe) memoriserEquipe(f.equipe);
     const q = new URLSearchParams();
     if (f.equipe) q.set("equipe", f.equipe);
     if (f.gymnase) q.set("gymnase", f.gymnase);
@@ -178,5 +191,5 @@ export function PlanningAvecAdresse(props: Donnees) {
     const texte = q.toString();
     window.history.replaceState(null, "", texte ? `${chemin}?${texte}` : chemin);
   };
-  return <PlanningVue {...props} filtres={filtres} onChange={changer} />;
+  return <PlanningVue {...props} filtres={filtres} onChange={changer} memorisee={!!filtres.equipe && filtres.equipe === equipeMemorisee} />;
 }

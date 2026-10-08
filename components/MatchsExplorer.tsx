@@ -7,6 +7,7 @@ import type { IssueMatch, MatchDomicileVue, MomentWeekend, SemaineResultats, Wee
 import { aCompleter, pluriel } from "@/lib/utils";
 import { IconeCartes, IconeTableau, NouvelOnglet } from "@/components/icons";
 import { LogoClub } from "@/components/LogoClub";
+import { memoriserEquipe, useMonEquipe } from "@/lib/preferences";
 
 type Props = { weekends: WeekEndVue[]; indexDefaut: number; equipes: string[]; whatsapp: string };
 type Affichage = "tableau" | "cartes";
@@ -50,7 +51,15 @@ function parSalle(liste: MatchDomicileVue[]) {
   return grouper(liste, (m) => m.salle).map((g) => ({ salle: g.cle, lien: g.premier.lienSalle, matchs: g.matchs }));
 }
 
-export function MatchsVue({ weekends, indexDefaut, equipes, whatsapp, equipeInitiale = "" }: Props & { equipeInitiale?: string }) {
+export function MatchsVue({
+  weekends,
+  indexDefaut,
+  equipes,
+  whatsapp,
+  equipeInitiale = "",
+  onEquipe,
+  equipeMemorisee = "",
+}: Props & { equipeInitiale?: string; onEquipe?: (e: string) => void; equipeMemorisee?: string }) {
   const [sel, choisirSemaine] = useState(indexDefaut);
   const [equipe, choisirEquipe] = useState(equipeInitiale);
   // Tant que le visiteur n'a pas choisi, le CSS décide : cartes sur petit écran, tableau au-delà.
@@ -65,6 +74,7 @@ export function MatchsVue({ weekends, indexDefaut, equipes, whatsapp, equipeInit
   };
   const setEquipe = (e: string) => {
     choisirEquipe(e);
+    onEquipe?.(e);
     setVersion((v) => v + 1);
   };
   const setVue = (a: Affichage) => {
@@ -125,6 +135,9 @@ export function MatchsVue({ weekends, indexDefaut, equipes, whatsapp, equipeInit
           </div>
         </form>
       </div>
+      {equipe && equipe === equipeMemorisee ? (
+        <p className="section planning__memoire planning__memoire--matchs">Équipe mémorisée sur cet appareil</p>
+      ) : null}
 
       <section aria-labelledby="dom-titre" className="section" style={{ paddingTop: 40, paddingBottom: 24 }}>
         <div className="tete-section" style={{ marginBottom: 10 }}>
@@ -404,10 +417,16 @@ function LienItineraire({ href }: { href: string }) {
   );
 }
 
-/** Même vue, avec l'équipe éventuellement choisie dans l'adresse (/matchs?equipe=U11F1). */
+/**
+ * Même vue, avec l'équipe choisie dans l'adresse (/matchs?equipe=U11F1) ou, à défaut, l'équipe mémorisée sur
+ * l'appareil (« mon équipe », lib/preferences.ts). Choisir une équipe la mémorise, « Toutes les équipes » l'oublie.
+ */
 export function MatchsAvecAdresse(props: Props) {
   const equipe = useSearchParams().get("equipe") ?? "";
-  return <MatchsVue {...props} equipeInitiale={props.equipes.includes(equipe) ? equipe : ""} />;
+  const monEquipe = useMonEquipe();
+  const initiale = props.equipes.includes(equipe) ? equipe : props.equipes.includes(monEquipe) ? monEquipe : "";
+  // key : la vue repart de l'équipe mémorisée dès qu'elle est lue sur l'appareil (après le premier affichage).
+  return <MatchsVue key={initiale} {...props} equipeInitiale={initiale} onEquipe={memoriserEquipe} equipeMemorisee={monEquipe} />;
 }
 
 

@@ -4,6 +4,7 @@ import { CLUB, STATS } from "@/data/nbb";
 import { equipesParCategorie, toutesLesEquipes } from "@/lib/nbb";
 import { EntetePage } from "@/components/Page";
 import { BoutonClassement, ZoomPhoto } from "@/components/EquipeFenetres";
+import { Sommaire } from "@/components/Navigation";
 
 export const metadata: Metadata = {
   title: `Nos équipes ${CLUB.saison}`,
@@ -28,6 +29,7 @@ export default function Equipes() {
       />
 
       <div className="section" style={{ paddingTop: 24, paddingBottom: 88 }}>
+        <Sommaire label="Catégories d'équipes" sections={groupes.map((g) => ({ id: g.cle, titre: g.nom }))} />
         {groupes.map((g) => (
           <section key={g.cle} id={g.cle} aria-labelledby={`t-${g.cle}`} className="groupe-equipes">
             <div className="groupe-equipes__tete">

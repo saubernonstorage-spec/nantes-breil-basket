@@ -8,6 +8,7 @@ import { Apparitions } from "@/components/Apparitions";
 import { BoutiqueFermee } from "@/components/BoutiqueFermee";
 import { InscriptionsFermees } from "@/components/InscriptionsFermees";
 import { ProchainEvenement } from "@/components/ProchainEvenement";
+import { BarreAcces, BoutonHaut } from "@/components/Navigation";
 import "./globals.css";
 
 // Polices téléchargées au moment de la construction et servies par le site : aucune requête vers Google.
@@ -62,6 +63,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </main>
         <Footer />
+        <BoutonHaut />
+        <BarreAcces />
         <Apparitions />
         <BoutiqueFermee url={CLUB.boutique} ouvertures={OUVERTURES_BOUTIQUE} />
         {INSCRIPTIONS_OUVERTES ? null : <InscriptionsFermees />}

@@ -31,8 +31,9 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   (`lib/nbb.ts`) les liste dans l'Espace dirigeants (onglet « À compléter »).
 - Le planning (`SLOTS`) est la source unique ; équipes, gymnases, week-ends et chiffres sont calculés dans
   `lib/nbb.ts` (réservé au serveur, `import "server-only"`). Les composants client reçoivent les données en
-  props et n'importent que `lib/utils.ts` (fonctions pures), `lib/formulaires.ts`, `lib/consentement.ts`
-  et des types (`import type`).
+  props et n'importent que `lib/utils.ts` (fonctions pures), `lib/formulaires.ts`, `lib/consentement.ts`,
+  `lib/preferences.ts` (« mon équipe » gardée sur l'appareil, reprise par Entraînements et Matchs) et des types
+  (`import type`). Navigation mobile (barre d'accès rapide, haut de page, sommaire collant) : `components/Navigation.tsx`.
 - Styles : `app/globals.css` (variables de la charte sous `:root`, une section par page). Texte orange sur fond clair :
   `--orange-texte` (caramel, contraste AA) ; l'orange vif `--orange` est réservé aux fonds sombres, boutons et aplats
   (liste des blocs sombres dans la règle `:is(...) .surtitre`). Les pages
