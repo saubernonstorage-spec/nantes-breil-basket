@@ -4,7 +4,7 @@
     "8649": "Nantes Breil Basket",
     "8752": "Similienne Nantes (équipes CTC)"
   },
-  "maj": "2026-09-30T09:34:53+00:00",
+  "maj": "2026-10-08T05:29:56+00:00",
   "logos": {
     "200000002675702": {
       "nom": "BASKET SUD LOIRE",
@@ -438,8 +438,8 @@
     },
     "9038": {
       "nom": "LE MANS A.S.MADELEINE",
-      "logo": "",
-      "image": ""
+      "logo": "/logos/9038.webp",
+      "image": "527892e6-6d49-4442-944d-a714390fa2da"
     },
     "9059": {
       "nom": "LA CHAPELLE ST AUBIN",

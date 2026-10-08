@@ -4,29 +4,9 @@
     "8649": "Nantes Breil Basket",
     "8752": "Similienne Nantes (équipes CTC)"
   },
-  "maj": "2026-09-30T09:47:29+00:00",
+  "maj": "2026-10-08T05:29:55+00:00",
   "calendrier": {
     "matchs": [
-      {
-        "equipe": "SIM-SE-M-1",
-        "date": "2026-09-12",
-        "heure": "20h30",
-        "domicile": false,
-        "adversaire": "MOUTIERS SUR LAY 1",
-        "club": "9131",
-        "salle": "9000000175",
-        "officiels": false
-      },
-      {
-        "equipe": "SIM-SE-M-1",
-        "date": "2026-09-13",
-        "heure": "15h30",
-        "domicile": false,
-        "adversaire": "BASKET CLUB SAINT BARTHELEMY. 2",
-        "club": "8935",
-        "salle": "1000000260",
-        "officiels": true
-      },
       {
         "equipe": "SIM-U11-M-1",
         "date": "2026-09-19",
@@ -365,7 +345,7 @@
         "adversaire": "ORVAULT SPORTS BASKET 1",
         "club": "8677",
         "salle": "200000002673404",
-        "officiels": false
+        "officiels": true
       },
       {
         "equipe": "U11-M-1",
@@ -375,7 +355,7 @@
         "adversaire": "CARQUEFOU BASKET 1",
         "club": "8695",
         "salle": "35000000932",
-        "officiels": false
+        "officiels": true
       },
       {
         "equipe": "U11-M-2",
@@ -385,7 +365,7 @@
         "adversaire": "BOUGUENAIS BASKET 2",
         "club": "8623",
         "salle": "200000002674239",
-        "officiels": false
+        "officiels": true
       },
       {
         "equipe": "U13-M-3",
@@ -395,7 +375,7 @@
         "adversaire": "SAINT HERBLAIN BASKET CLUB 2",
         "club": "8755",
         "salle": "200000002674336",
-        "officiels": false
+        "officiels": true
       },
       {
         "equipe": "U13-F-2",
@@ -405,7 +385,7 @@
         "adversaire": "ORVAULT SPORTS BASKET 2",
         "club": "8677",
         "salle": "200000002673404",
-        "officiels": false
+        "officiels": true
       },
       {
         "equipe": "SIM-U11-M-2",
@@ -415,7 +395,7 @@
         "adversaire": "ALPC MOULIN NANTES BASKET 2",
         "club": "8630",
         "salle": "200000002672993",
-        "officiels": false
+        "officiels": true
       },
       {
         "equipe": "U11-F-2",
@@ -425,7 +405,7 @@
         "adversaire": "CHABOSSIERE BASKET CLUB 2",
         "club": "8722",
         "salle": "35000000932",
-        "officiels": false
+        "officiels": true
       },
       {
         "equipe": "U18-M-1",
@@ -455,7 +435,7 @@
         "adversaire": "ALPC MOULIN NANTES BASKET 2",
         "club": "8630",
         "salle": "6428",
-        "officiels": false
+        "officiels": true
       },
       {
         "equipe": "SIM-U13-M-1",
@@ -475,7 +455,7 @@
         "adversaire": "ALPC MOULIN NANTES BASKET 1",
         "club": "8630",
         "salle": "35000000932",
-        "officiels": false
+        "officiels": true
       },
       {
         "equipe": "U15-M-3",
@@ -485,7 +465,7 @@
         "adversaire": "AL GARENNES NANTES 2",
         "club": "8627",
         "salle": "200000002674239",
-        "officiels": false
+        "officiels": true
       },
       {
         "equipe": "U13-M-2",
@@ -495,7 +475,7 @@
         "adversaire": "BOUGUENAIS BASKET 2",
         "club": "8623",
         "salle": "1001000845",
-        "officiels": false
+        "officiels": true
       },
       {
         "equipe": "SIM-U18-M-1",
@@ -515,7 +495,7 @@
         "adversaire": "ORVAULT SPORTS BASKET 2",
         "club": "8677",
         "salle": "533001003403",
-        "officiels": false
+        "officiels": true
       },
       {
         "equipe": "U18-M-2",
@@ -525,7 +505,7 @@
         "adversaire": "NANTES SULLY BASKET 3",
         "club": "8737",
         "salle": "531001015808",
-        "officiels": false
+        "officiels": true
       },
       {
         "equipe": "SE-M-1",
@@ -575,7 +555,7 @@
         "adversaire": "IE - CTC POLE WEST NANTAIS - SAINT HERBLAIN BASKET CLUB 2",
         "club": "8755",
         "salle": "35000000932",
-        "officiels": false
+        "officiels": true
       },
       {
         "equipe": "U15-M-1",
@@ -595,7 +575,7 @@
         "adversaire": "ALPC MOULIN NANTES BASKET 3",
         "club": "8630",
         "salle": "6428",
-        "officiels": false
+        "officiels": true
       },
       {
         "equipe": "SIM-U18-M-2",
@@ -605,7 +585,7 @@
         "adversaire": "SAINT SEBASTIEN BASKET CLUB 1",
         "club": "8705",
         "salle": "200000002672993",
-        "officiels": false
+        "officiels": true
       },
       {
         "equipe": "U11-M-3",
@@ -615,7 +595,7 @@
         "adversaire": "BOUGUENAIS BASKET",
         "club": "8623",
         "salle": "200000002674637",
-        "officiels": false
+        "officiels": true
       },
       {
         "equipe": "U15-F-1",
@@ -635,7 +615,7 @@
         "adversaire": "AS SAINT ROGATIEN NANTES 1",
         "club": "8647",
         "salle": "8000000019",
-        "officiels": false
+        "officiels": true
       },
       {
         "equipe": "SE-F-2",
@@ -645,7 +625,7 @@
         "adversaire": "IE - CTC NANTES ERDRE CARQUEFOU BASKET - ERDRE BASKET CLUB 2",
         "club": "8778",
         "salle": "86001000171",
-        "officiels": false
+        "officiels": true
       },
       {
         "equipe": "SIM-SE-M-3",
@@ -655,7 +635,7 @@
         "adversaire": "RC DONGES 2",
         "club": "8681",
         "salle": "6424",
-        "officiels": false
+        "officiels": true
       },
       {
         "equipe": "SIM-U21-M-1",
@@ -675,7 +655,7 @@
         "adversaire": "GOLF BASKET CLUB HERBLINOIS 2",
         "club": "8776",
         "salle": "533001003421",
-        "officiels": false
+        "officiels": true
       },
       {
         "equipe": "SE-M-2",
@@ -885,7 +865,7 @@
         "adversaire": "SAINT HERBLAIN BASKET CLUB 2",
         "club": "8755",
         "salle": "35000000932",
-        "officiels": false
+        "officiels": true
       },
       {
         "equipe": "SIM-SE-M-1",
@@ -1035,7 +1015,7 @@
         "adversaire": "AL OUCHE DINIER REZE 2",
         "club": "8782",
         "salle": "533001003410",
-        "officiels": false
+        "officiels": true
       },
       {
         "equipe": "U11-F-2",
@@ -1484,7 +1464,7 @@
         "domicile": false,
         "adversaire": "I.B.C. - Indre Basket Club",
         "club": "8704",
-        "salle": "29001001282",
+        "salle": "6427",
         "officiels": false
       },
       {
@@ -1535,17 +1515,7 @@
         "adversaire": "GAZELLES BLINOISES 1",
         "club": "8669",
         "salle": "200000002672993",
-        "officiels": false
-      },
-      {
-        "equipe": "U18-F-1",
-        "date": "2026-10-17",
-        "heure": "18h00",
-        "domicile": false,
-        "adversaire": "IE - CTC HAVRE ET LOIRE BASKET - PAYS D'ANCENIS BASKET 1",
-        "club": "8744",
-        "salle": "533001011191",
-        "officiels": false
+        "officiels": true
       },
       {
         "equipe": "U18-F-2",
@@ -1615,7 +1585,7 @@
         "adversaire": "GUERANDE BASKET 1",
         "club": "8694",
         "salle": "35000000932",
-        "officiels": false
+        "officiels": true
       },
       {
         "equipe": "U15-M-1",
@@ -1625,7 +1595,7 @@
         "adversaire": "AL GARENNES NANTES 1",
         "club": "8627",
         "salle": "200000002673946",
-        "officiels": false
+        "officiels": true
       },
       {
         "equipe": "U18-M-1",
@@ -1658,6 +1628,16 @@
         "officiels": false
       },
       {
+        "equipe": "U18-F-1",
+        "date": "2026-10-18",
+        "heure": "11h00",
+        "domicile": false,
+        "adversaire": "IE - CTC HAVRE ET LOIRE BASKET - PAYS D'ANCENIS BASKET 1",
+        "club": "8744",
+        "salle": "6419",
+        "officiels": true
+      },
+      {
         "equipe": "SE-F-2",
         "date": "2026-10-18",
         "heure": "13h15",
@@ -1675,7 +1655,7 @@
         "adversaire": "SAINT BREVIN BASKET CLUB",
         "club": "8718",
         "salle": "35000000932",
-        "officiels": false
+        "officiels": true
       },
       {
         "equipe": "SE-M-2",
@@ -1685,7 +1665,7 @@
         "adversaire": "AS BRAINS BASKET",
         "club": "8794",
         "salle": "536001004869",
-        "officiels": false
+        "officiels": true
       },
       {
         "equipe": "SE-M-3",
@@ -1786,6 +1766,96 @@
         "club": "8670",
         "salle": "200000002674620",
         "officiels": false
+      },
+      {
+        "equipe": "SE-M-1",
+        "date": "2026-11-14",
+        "heure": "20h30",
+        "domicile": false,
+        "adversaire": "CARQUEFOU BASKET 1",
+        "club": "8695",
+        "salle": "6421",
+        "officiels": false
+      },
+      {
+        "equipe": "SIM-SE-M-1",
+        "date": "2026-11-14",
+        "heure": "20h30",
+        "domicile": false,
+        "adversaire": "PUY SAINT BONNET BASKET 1",
+        "club": "8894",
+        "salle": "1001000145",
+        "officiels": false
+      },
+      {
+        "equipe": "SIM-SE-M-3",
+        "date": "2026-11-15",
+        "heure": "",
+        "domicile": true,
+        "adversaire": "RC DONGES 2",
+        "club": "8681",
+        "salle": "200000002672993",
+        "officiels": false
+      },
+      {
+        "equipe": "SE-F-2",
+        "date": "2026-11-15",
+        "heure": "13h15",
+        "domicile": true,
+        "adversaire": "IE - CTC NANTES ERDRE CARQUEFOU BASKET - ERDRE BASKET CLUB 2",
+        "club": "8778",
+        "salle": "35000000932",
+        "officiels": false
+      },
+      {
+        "equipe": "SIM-U21-M-1",
+        "date": "2026-11-15",
+        "heure": "13h15",
+        "domicile": false,
+        "adversaire": "CHOLET BASKET 1",
+        "club": "8849",
+        "salle": "1001000144",
+        "officiels": false
+      },
+      {
+        "equipe": "SE-F-1",
+        "date": "2026-11-15",
+        "heure": "15h30",
+        "domicile": false,
+        "adversaire": "SUD RETZ BASKET 2",
+        "club": "8670",
+        "salle": "200000002674620",
+        "officiels": false
+      },
+      {
+        "equipe": "SE-M-2",
+        "date": "2026-11-15",
+        "heure": "15h30",
+        "domicile": true,
+        "adversaire": "I.B.C. - Indre Basket Club 2",
+        "club": "8704",
+        "salle": "35000000932",
+        "officiels": false
+      },
+      {
+        "equipe": "SIM-SE-M-2",
+        "date": "2026-11-15",
+        "heure": "15h30",
+        "domicile": false,
+        "adversaire": "TRELAZE BASKET 1",
+        "club": "8550",
+        "salle": "1001000231",
+        "officiels": false
+      },
+      {
+        "equipe": "SE-M-3",
+        "date": "2026-11-15",
+        "heure": "17h45",
+        "domicile": true,
+        "adversaire": "GOLF BASKET CLUB HERBLINOIS 2",
+        "club": "8776",
+        "salle": "35000000932",
+        "officiels": false
       }
     ],
     "salles": {
@@ -1795,11 +1865,23 @@
         "cp": "44100",
         "ville": "NANTES"
       },
-      "1000000260": {
-        "nom": "SALLE DES ARDOISES - ST BARTH.",
-        "adresse": "RUE VICTOR HUGO",
-        "cp": "49124",
-        "ville": "SAINT-BARTHELEMY-D'ANJOU"
+      "1001000144": {
+        "nom": "SALLE CHAMBORD",
+        "adresse": "Rue de Chambord",
+        "cp": "49300",
+        "ville": "CHOLET"
+      },
+      "1001000145": {
+        "nom": "SALLE DU PUY ST BONNET",
+        "adresse": "RUE VICTOR MENARD",
+        "cp": "49300",
+        "ville": "LE PUY-SAINT-BONNET"
+      },
+      "1001000231": {
+        "nom": "SALLE LA GODUCIERE - TRELAZE",
+        "adresse": "Avenue de la République",
+        "cp": "49800",
+        "ville": "TRELAZE"
       },
       "1001000642": {
         "nom": "SALLE OMNISPORTS B - Y. SOUVRE",
@@ -1957,12 +2039,6 @@
         "cp": "72000",
         "ville": "LE MANS"
       },
-      "29001001282": {
-        "nom": "SALLE GENOIS - COMPLEXE TABARLY",
-        "adresse": "7 RUE DE L'ALLIER",
-        "cp": "44610",
-        "ville": "INDRE"
-      },
       "35000000932": {
         "nom": "SALLE JOEL PAON",
         "adresse": "42 BIS RUE DES HAUTS PAVES",
@@ -2065,6 +2141,12 @@
         "cp": "44220",
         "ville": "COUERON"
       },
+      "6419": {
+        "nom": "COMPLEXE PRESSOIR ROUGE ANCENIS",
+        "adresse": "RUE DU PRESSOIR ROUGE",
+        "cp": "44150",
+        "ville": "ANCENIS"
+      },
       "6421": {
         "nom": "COMPLEXE JEAN GAUVRIT N1",
         "adresse": "Rue Louis Armand",
@@ -2160,12 +2242,6 @@
         "adresse": "11 RUE JULIEN DOUILLARD",
         "cp": "44400",
         "ville": "REZE"
-      },
-      "9000000175": {
-        "nom": "SALLE SPORTS 1 - MOUTIERS S/LAY",
-        "adresse": "ROUTE DE SAINTE HERMINE",
-        "cp": "85320",
-        "ville": "MOUTIERS-SUR-LE-LAY"
       },
       "9000000808": {
         "nom": "GYMNASE PIERRE ROUZIERE/ EPAU",

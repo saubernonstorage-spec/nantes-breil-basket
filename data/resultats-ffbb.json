@@ -4,7 +4,7 @@
     "8649": "Nantes Breil Basket",
     "8752": "Similienne Nantes (équipes CTC)"
   },
-  "maj": "2026-10-07T05:30:10+00:00",
+  "maj": "2026-10-08T05:29:49+00:00",
   "resultats": {
     "SE-F-1": [
       {
@@ -881,8 +881,8 @@
         "date": "2026-10-03T18:30",
         "domicile": false,
         "adversaire": "AL CHAUVINIERE 2",
-        "nous": 99,
-        "eux": 45,
+        "nous": 0,
+        "eux": 0,
         "forfait": ""
       }
     ]
