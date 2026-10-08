@@ -4,6 +4,8 @@ import { agendaAVenir, chiffresAccueil, CRENEAUX } from "@/lib/nbb";
 import { aCompleter, enLettres } from "@/lib/utils";
 import { JsonLdClub } from "@/components/JsonLdClub";
 import { ListeAgenda } from "@/components/ListeAgenda";
+import { ChiffreAnime } from "@/components/ChiffreAnime";
+import { CompteARebours } from "@/components/CompteARebours";
 import { Photo } from "@/components/Photo";
 import { TeteSection } from "@/components/Page";
 import { Terrain } from "@/components/Terrain";
@@ -82,7 +84,9 @@ export default function Accueil() {
             {chiffresAccueil().map((c) => (
               <div key={c.label}>
                 <dt>{c.label}</dt>
-                <dd>{c.valeur}</dd>
+                <dd>
+                  <ChiffreAnime valeur={c.valeur} />
+                </dd>
               </div>
             ))}
           </dl>
@@ -186,6 +190,7 @@ export default function Accueil() {
                   Les dates à retenir
                 </h2>
               </div>
+              <CompteARebours dates={agendaAVenir()} />
               <ListeAgenda dates={agenda} compacte />
               <Link href="/agenda" className="btn btn--petit btn--clair">
                 Tout l'agenda

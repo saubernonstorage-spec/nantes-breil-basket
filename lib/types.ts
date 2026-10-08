@@ -50,6 +50,8 @@ export type DateAgenda = {
   lieu: string;
   type: string;
   lien?: string;
+  /** Heure de début (HH:MM, heure de Nantes) : sert au compte à rebours de l'accueil (sinon minuit). */
+  heure?: string;
   /** Photo de l'affiche (fenêtre « prochain événement » à l'ouverture du site), chemin dans public/. */
   affiche?: string;
 };

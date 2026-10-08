@@ -5915,6 +5915,142 @@ a.badge-label:hover {
   color: rgba(245, 243, 238, 0.85);
 }
 
+/* Chiffres de l'accueil qui défilent (ChiffreAnime) : largeur fixe, le texte ne bouge pas pendant le défilement. */
+.chiffre-anime {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Compte à rebours du prochain événement (CompteARebours) : affiche à gauche, décompte à droite. */
+.rebours {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  overflow: hidden;
+  border-radius: 22px;
+  background: var(--nuit);
+  border: 1px solid rgba(245, 243, 238, 0.14);
+  color: var(--creme);
+  text-decoration: none;
+}
+
+.rebours:hover {
+  color: var(--creme);
+}
+
+.rebours__affiche {
+  position: relative;
+  min-height: 200px;
+  background: var(--bleu);
+}
+
+.rebours__bientot {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--orange);
+  color: var(--nuit);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.rebours__corps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px 20px;
+  min-width: 0;
+}
+
+.rebours__corps .surtitre {
+  margin: 0;
+  font-size: 12px;
+}
+
+.rebours__titre {
+  margin: 0;
+  font-family: var(--f-titre);
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.rebours__quand {
+  margin: 0;
+  font-size: 14px;
+  color: rgba(245, 243, 238, 0.75);
+}
+
+.rebours__unites {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.rebours__unite {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 4px 7px;
+  border-radius: 12px;
+  background: rgba(245, 243, 238, 0.07);
+  border: 1px solid rgba(245, 243, 238, 0.12);
+}
+
+.rebours__unite strong {
+  font-family: var(--f-titre);
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--orange);
+  font-variant-numeric: tabular-nums;
+}
+
+.rebours__unite span {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(245, 243, 238, 0.65);
+}
+
+.rebours__lien {
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--orange);
+}
+
+.agenda-accueil__agenda .rebours {
+  margin-bottom: 8px;
+}
+
+.rebours-agenda {
+  max-width: 640px;
+  margin-bottom: 28px;
+}
+
+@media (max-width: 479px) {
+  .rebours {
+    grid-template-columns: 104px minmax(0, 1fr);
+  }
+
+  .rebours__corps {
+    padding: 14px;
+  }
+
+  .rebours__titre {
+    font-size: 24px;
+  }
+
+  .rebours__unite strong {
+    font-size: 22px;
+  }
+}
+
 /* Inscriptions fermées : message à la place du formulaire (page Inscriptions) et boutons de la fenêtre. */
 .inscriptions-fermees {
   display: flex;

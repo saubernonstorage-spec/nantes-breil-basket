@@ -3,6 +3,7 @@ import { CLUB } from "@/data/nbb";
 import { agendaAVenir } from "@/lib/nbb";
 import { EntetePage } from "@/components/Page";
 import { ListeAgenda } from "@/components/ListeAgenda";
+import { CompteARebours } from "@/components/CompteARebours";
 
 export const metadata: Metadata = {
   title: "Agenda du club",
@@ -30,6 +31,9 @@ export default function Agenda() {
           <h2 id="agenda-titre" className="sr-only">
             Temps forts de la saison
           </h2>
+          <div className="rebours-agenda">
+            <CompteARebours dates={agendaAVenir()} />
+          </div>
           <ListeAgenda dates={agendaAVenir()} clair affiches />
         </div>
       </section>
