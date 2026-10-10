@@ -4,7 +4,7 @@
     "8649": "Nantes Breil Basket",
     "8752": "Similienne Nantes (équipes CTC)"
   },
-  "maj": "2026-10-08T05:29:55+00:00",
+  "maj": "2026-10-10T05:28:06+00:00",
   "calendrier": {
     "matchs": [
       {
@@ -1856,6 +1856,36 @@
         "club": "8776",
         "salle": "35000000932",
         "officiels": false
+      },
+      {
+        "equipe": "SE-M-1",
+        "date": "2026-11-21",
+        "heure": "20h30",
+        "domicile": true,
+        "adversaire": "BASKET CLUB REZE 1",
+        "club": "200000002678845",
+        "salle": "35000000932",
+        "officiels": false
+      },
+      {
+        "equipe": "SE-M-2",
+        "date": "2026-11-21",
+        "heure": "20h30",
+        "domicile": false,
+        "adversaire": "AS HEULINOISE BASKET BALL 1",
+        "club": "8767",
+        "salle": "9000000485",
+        "officiels": false
+      },
+      {
+        "equipe": "SIM-SE-M-1",
+        "date": "2026-11-21",
+        "heure": "20h30",
+        "domicile": true,
+        "adversaire": "MONTAIGU VENDEE BASKET CLUB 2",
+        "club": "9144",
+        "salle": "200000002672993",
+        "officiels": false
       }
     ],
     "salles": {
@@ -2242,6 +2272,12 @@
         "adresse": "11 RUE JULIEN DOUILLARD",
         "cp": "44400",
         "ville": "REZE"
+      },
+      "9000000485": {
+        "nom": "SALLE OMNISPORTS A. BABONNEAU",
+        "adresse": "RUE SANTOS AMARO",
+        "cp": "44330",
+        "ville": "LA CHAPELLE-HEULIN"
       },
       "9000000808": {
         "nom": "GYMNASE PIERRE ROUZIERE/ EPAU",

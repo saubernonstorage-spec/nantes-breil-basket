@@ -4,7 +4,7 @@
     "8649": "Nantes Breil Basket",
     "8752": "Similienne Nantes (équipes CTC)"
   },
-  "maj": "2026-10-08T05:29:49+00:00",
+  "maj": "2026-10-10T05:28:02+00:00",
   "classements": {
     "SE-F-1": {
       "championnat": "Pré régionale féminine · Poule A",
@@ -136,13 +136,13 @@
       "lignes": [
         {
           "rang": 1,
-          "equipe": "BASKET CLUB REZE 2",
-          "club": "200000002678845",
+          "equipe": "NANTES BREIL BASKET 2",
+          "club": "8649",
           "j": 3,
-          "v": 3,
-          "d": 0,
-          "pts": 6,
-          "nbb": false
+          "v": 2,
+          "d": 1,
+          "pts": 5,
+          "nbb": true
         },
         {
           "rang": 2,
@@ -156,13 +156,13 @@
         },
         {
           "rang": 3,
-          "equipe": "NANTES BREIL BASKET 2",
-          "club": "8649",
+          "equipe": "BASKET CLUB REZE 2",
+          "club": "200000002678845",
           "j": 3,
-          "v": 1,
-          "d": 2,
+          "v": 2,
+          "d": 0,
           "pts": 4,
-          "nbb": true
+          "nbb": false
         },
         {
           "rang": 4,
@@ -176,8 +176,8 @@
         },
         {
           "rang": 5,
-          "equipe": "BASKET SUD LOIRE 3",
-          "club": "200000002675702",
+          "equipe": "ERDRE BASKET CLUB 2",
+          "club": "8778",
           "j": 3,
           "v": 1,
           "d": 2,
@@ -186,12 +186,12 @@
         },
         {
           "rang": 6,
-          "equipe": "ERDRE BASKET CLUB 2",
-          "club": "8778",
+          "equipe": "BASKET SUD LOIRE 3",
+          "club": "200000002675702",
           "j": 3,
           "v": 1,
-          "d": 2,
-          "pts": 4,
+          "d": 1,
+          "pts": 3,
           "nbb": false
         }
       ]

@@ -4,7 +4,7 @@
     "8649": "Nantes Breil Basket",
     "8752": "Similienne Nantes (équipes CTC)"
   },
-  "maj": "2026-10-08T05:29:49+00:00",
+  "maj": "2026-10-10T05:28:02+00:00",
   "resultats": {
     "SE-F-1": [
       {
@@ -53,8 +53,8 @@
         "date": "2026-10-04T17:45",
         "domicile": true,
         "adversaire": "BASKET CLUB REZE 2",
-        "nous": 59,
-        "eux": 73,
+        "nous": 0,
+        "eux": 0,
         "forfait": ""
       }
     ],
