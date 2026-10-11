@@ -4,7 +4,7 @@
     "8649": "Nantes Breil Basket",
     "8752": "Similienne Nantes (équipes CTC)"
   },
-  "maj": "2026-10-10T05:28:02+00:00",
+  "maj": "2026-10-11T05:28:36+00:00",
   "resultats": {
     "SE-F-1": [
       {
@@ -29,6 +29,14 @@
         "adversaire": "ESPERANCE SPORTIVE DE CROSSAC 2",
         "nous": 87,
         "eux": 62,
+        "forfait": ""
+      },
+      {
+        "date": "2026-10-10T21:00",
+        "domicile": false,
+        "adversaire": "JOUE BASKET 1",
+        "nous": 39,
+        "eux": 60,
         "forfait": ""
       }
     ],
@@ -81,6 +89,14 @@
         "adversaire": "AVRILLE BASKET 1",
         "nous": 49,
         "eux": 85,
+        "forfait": ""
+      },
+      {
+        "date": "2026-10-10T20:30",
+        "domicile": true,
+        "adversaire": "ORVAULT SPORTS BASKET 1",
+        "nous": 83,
+        "eux": 78,
         "forfait": ""
       }
     ],
@@ -160,6 +176,14 @@
         "nous": 82,
         "eux": 92,
         "forfait": ""
+      },
+      {
+        "date": "2026-10-10T20:30",
+        "domicile": true,
+        "adversaire": "MOUTIERS SUR LAY 1",
+        "nous": 81,
+        "eux": 79,
+        "forfait": ""
       }
     ],
     "SIM-SE-M-2": [
@@ -185,6 +209,14 @@
         "adversaire": "ALS PLAISANCE SAINT NAZAIRE 1",
         "nous": 57,
         "eux": 63,
+        "forfait": ""
+      },
+      {
+        "date": "2026-10-10T20:30",
+        "domicile": false,
+        "adversaire": "IE - CTC HAVRE ET LOIRE BASKET - OUDON BASKET 1",
+        "nous": 43,
+        "eux": 107,
         "forfait": ""
       }
     ],
@@ -238,6 +270,14 @@
         "nous": 23,
         "eux": 35,
         "forfait": ""
+      },
+      {
+        "date": "2026-10-10T14:30",
+        "domicile": false,
+        "adversaire": "SPORTING CLUB ORVAULT 1",
+        "nous": 26,
+        "eux": 38,
+        "forfait": ""
       }
     ],
     "SIM-U11-M-2": [
@@ -290,6 +330,14 @@
         "nous": 51,
         "eux": 46,
         "forfait": ""
+      },
+      {
+        "date": "2026-10-10T14:30",
+        "domicile": true,
+        "adversaire": "HIRONDELLE BASKET 1",
+        "nous": 36,
+        "eux": 46,
+        "forfait": ""
       }
     ],
     "SIM-U13-M-2": [
@@ -315,6 +363,14 @@
         "adversaire": "NANTES BREIL BASKET 3",
         "nous": 45,
         "eux": 41,
+        "forfait": ""
+      },
+      {
+        "date": "2026-10-10T14:00",
+        "domicile": false,
+        "adversaire": "SAINT HERBLAIN BASKET CLUB 2",
+        "nous": 33,
+        "eux": 32,
         "forfait": ""
       }
     ],
@@ -385,6 +441,14 @@
         "adversaire": "BOUGUENAIS BASKET 1",
         "nous": 71,
         "eux": 56,
+        "forfait": ""
+      },
+      {
+        "date": "2026-10-10T18:00",
+        "domicile": false,
+        "adversaire": "CHABOSSIERE BASKET CLUB 1",
+        "nous": 72,
+        "eux": 77,
         "forfait": ""
       }
     ],
@@ -464,6 +528,14 @@
         "nous": 52,
         "eux": 39,
         "forfait": ""
+      },
+      {
+        "date": "2026-10-10T16:00",
+        "domicile": true,
+        "adversaire": "ERDRE BASKET CLUB",
+        "nous": 32,
+        "eux": 40,
+        "forfait": ""
       }
     ],
     "U11-F-2": [
@@ -489,6 +561,14 @@
         "adversaire": "GARS D'HERBAUGES BOUAYE 2",
         "nous": 12,
         "eux": 30,
+        "forfait": ""
+      },
+      {
+        "date": "2026-10-10T13:30",
+        "domicile": false,
+        "adversaire": "GOLF BASKET CLUB HERBLINOIS 2",
+        "nous": 18,
+        "eux": 6,
         "forfait": ""
       }
     ],
@@ -516,6 +596,14 @@
         "nous": 45,
         "eux": 49,
         "forfait": ""
+      },
+      {
+        "date": "2026-10-10T15:00",
+        "domicile": false,
+        "adversaire": "NANTES BASKET HERMINE (NBH) 1",
+        "nous": 30,
+        "eux": 67,
+        "forfait": ""
       }
     ],
     "U11-M-2": [
@@ -542,6 +630,14 @@
         "nous": 56,
         "eux": 20,
         "forfait": ""
+      },
+      {
+        "date": "2026-10-10T14:00",
+        "domicile": false,
+        "adversaire": "AL GARENNES NANTES 2",
+        "nous": 55,
+        "eux": 25,
+        "forfait": ""
       }
     ],
     "U11-M-3": [
@@ -567,6 +663,14 @@
         "adversaire": "ALPC MOULIN NANTES BASKET 2",
         "nous": 36,
         "eux": 21,
+        "forfait": ""
+      },
+      {
+        "date": "2026-10-10T13:30",
+        "domicile": true,
+        "adversaire": "BASKET CLUB REZE 2",
+        "nous": 17,
+        "eux": 19,
         "forfait": ""
       }
     ],
@@ -682,6 +786,14 @@
         "nous": 41,
         "eux": 45,
         "forfait": ""
+      },
+      {
+        "date": "2026-10-10T16:15",
+        "domicile": true,
+        "adversaire": "ASPTT NANTES 3",
+        "nous": 38,
+        "eux": 35,
+        "forfait": ""
       }
     ],
     "U15-F-1": [
@@ -725,6 +837,14 @@
         "adversaire": "TREILLIERES BASKET CLUB 3",
         "nous": 30,
         "eux": 60,
+        "forfait": ""
+      },
+      {
+        "date": "2026-10-10T18:00",
+        "domicile": true,
+        "adversaire": "IE - CTC HERIC GRANDCHAMP - BASKET CLUB HERICOIS",
+        "nous": 71,
+        "eux": 21,
         "forfait": ""
       }
     ],
@@ -770,6 +890,14 @@
         "nous": 57,
         "eux": 60,
         "forfait": ""
+      },
+      {
+        "date": "2026-10-10T15:00",
+        "domicile": false,
+        "adversaire": "AS SAINT ROGATIEN NANTES",
+        "nous": 52,
+        "eux": 42,
+        "forfait": ""
       }
     ],
     "U15-M-3": [
@@ -795,6 +923,14 @@
         "adversaire": "NANTES SULLY BASKET 1",
         "nous": 28,
         "eux": 65,
+        "forfait": ""
+      },
+      {
+        "date": "2026-10-10T14:45",
+        "domicile": true,
+        "adversaire": "BEAUJOIRE BASKET CLUB 2",
+        "nous": 52,
+        "eux": 55,
         "forfait": ""
       }
     ],
@@ -857,6 +993,14 @@
         "adversaire": "SAUTRON BASKET CLUB 1",
         "nous": 45,
         "eux": 104,
+        "forfait": ""
+      },
+      {
+        "date": "2026-10-10T20:30",
+        "domicile": false,
+        "adversaire": "BASKET CLUB REZE 2",
+        "nous": 65,
+        "eux": 121,
         "forfait": ""
       }
     ],

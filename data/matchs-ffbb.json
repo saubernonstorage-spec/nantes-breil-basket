@@ -4,209 +4,9 @@
     "8649": "Nantes Breil Basket",
     "8752": "Similienne Nantes (équipes CTC)"
   },
-  "maj": "2026-10-10T05:28:06+00:00",
+  "maj": "2026-10-11T05:28:37+00:00",
   "calendrier": {
     "matchs": [
-      {
-        "equipe": "SIM-U11-M-1",
-        "date": "2026-09-19",
-        "heure": "12h00",
-        "domicile": true,
-        "adversaire": "NANTES BASKET HERMINE (NBH) 2",
-        "club": "8673",
-        "salle": "200000002672993",
-        "officiels": true
-      },
-      {
-        "equipe": "U11-M-2",
-        "date": "2026-09-19",
-        "heure": "12h30",
-        "domicile": false,
-        "adversaire": "SAINTE LUCE BASKET 1",
-        "club": "8680",
-        "salle": "109000000133",
-        "officiels": true
-      },
-      {
-        "equipe": "SIM-U11-M-2",
-        "date": "2026-09-19",
-        "heure": "13h30",
-        "domicile": false,
-        "adversaire": "NANTES BREIL BASKET 3",
-        "club": "8649",
-        "salle": "35000000932",
-        "officiels": true
-      },
-      {
-        "equipe": "U11-M-3",
-        "date": "2026-09-19",
-        "heure": "13h30",
-        "domicile": true,
-        "adversaire": "SIMILIENNE NANTES 2",
-        "club": "8752",
-        "salle": "35000000932",
-        "officiels": true
-      },
-      {
-        "equipe": "U13-M-3",
-        "date": "2026-09-19",
-        "heure": "13h30",
-        "domicile": true,
-        "adversaire": "ALPC MOULIN NANTES BASKET 2",
-        "club": "8630",
-        "salle": "200000002674239",
-        "officiels": true
-      },
-      {
-        "equipe": "SIM-U13-M-1",
-        "date": "2026-09-19",
-        "heure": "14h00",
-        "domicile": false,
-        "adversaire": "CARQUEFOU BASKET 2",
-        "club": "8695",
-        "salle": "6421",
-        "officiels": true
-      },
-      {
-        "equipe": "U11-F-2",
-        "date": "2026-09-19",
-        "heure": "14h00",
-        "domicile": false,
-        "adversaire": "LES MONTAGNARDS LA MONTAGNE 1",
-        "club": "8741",
-        "salle": "200000002673034",
-        "officiels": true
-      },
-      {
-        "equipe": "U13-F-2",
-        "date": "2026-09-19",
-        "heure": "14h45",
-        "domicile": true,
-        "adversaire": "TREILLIERES BASKET CLUB 2",
-        "club": "8788",
-        "salle": "35000000932",
-        "officiels": true
-      },
-      {
-        "equipe": "U13-F-1",
-        "date": "2026-09-19",
-        "heure": "15h00",
-        "domicile": false,
-        "adversaire": "ERDRE BASKET CLUB 2",
-        "club": "8778",
-        "salle": "200000002674448",
-        "officiels": true
-      },
-      {
-        "equipe": "U18-M-2",
-        "date": "2026-09-19",
-        "heure": "15h00",
-        "domicile": true,
-        "adversaire": "GOLF BASKET CLUB HERBLINOIS",
-        "club": "8776",
-        "salle": "200000002674239",
-        "officiels": true
-      },
-      {
-        "equipe": "SIM-U13-M-2",
-        "date": "2026-09-19",
-        "heure": "15h30",
-        "domicile": true,
-        "adversaire": "NANTES SULLY BASKET 2",
-        "club": "8737",
-        "salle": "200000002672993",
-        "officiels": true
-      },
-      {
-        "equipe": "SIM-U18-M-2",
-        "date": "2026-09-19",
-        "heure": "16h00",
-        "domicile": false,
-        "adversaire": "AL GARENNES NANTES 2",
-        "club": "8627",
-        "salle": "531001043008",
-        "officiels": true
-      },
-      {
-        "equipe": "SIM-U18-M-1",
-        "date": "2026-09-19",
-        "heure": "16h15",
-        "domicile": false,
-        "adversaire": "IE - CTC CAP BASKET 44 - ABC DES TROIS RIVIERES 1",
-        "club": "8725",
-        "salle": "109000000131",
-        "officiels": true
-      },
-      {
-        "equipe": "U15-M-2",
-        "date": "2026-09-19",
-        "heure": "16h15",
-        "domicile": true,
-        "adversaire": "GRAND LIEU BASKET 1",
-        "club": "8697",
-        "salle": "35000000932",
-        "officiels": true
-      },
-      {
-        "equipe": "U15-M-3",
-        "date": "2026-09-19",
-        "heure": "17h00",
-        "domicile": false,
-        "adversaire": "ERDRE BASKET CLUB 2",
-        "club": "8778",
-        "salle": "200000002674449",
-        "officiels": true
-      },
-      {
-        "equipe": "U18-F-1",
-        "date": "2026-09-19",
-        "heure": "18h00",
-        "domicile": true,
-        "adversaire": "TREILLIERES BASKET CLUB 1",
-        "club": "8788",
-        "salle": "35000000932",
-        "officiels": true
-      },
-      {
-        "equipe": "SIM-U15-M-1",
-        "date": "2026-09-19",
-        "heure": "18h30",
-        "domicile": false,
-        "adversaire": "SAINT ANDRE BASKET BALL",
-        "club": "8682",
-        "salle": "200000002674312",
-        "officiels": true
-      },
-      {
-        "equipe": "SE-F-2",
-        "date": "2026-09-19",
-        "heure": "20h30",
-        "domicile": true,
-        "adversaire": "NANTES SULLY BASKET",
-        "club": "8737",
-        "salle": "35000000932",
-        "officiels": true
-      },
-      {
-        "equipe": "SE-M-1",
-        "date": "2026-09-19",
-        "heure": "20h30",
-        "domicile": false,
-        "adversaire": "LE MANS C.S.S.G. 1",
-        "club": "9027",
-        "salle": "9000000808",
-        "officiels": true
-      },
-      {
-        "equipe": "SIM-SE-M-1",
-        "date": "2026-09-19",
-        "heure": "20h30",
-        "domicile": false,
-        "adversaire": "GREZ NEUVILLE 1",
-        "club": "8867",
-        "salle": "1001000870",
-        "officiels": true
-      },
       {
         "equipe": "U11-M-1",
         "date": "2026-09-20",
@@ -1140,11 +940,11 @@
       {
         "equipe": "U13-M-3",
         "date": "2026-10-10",
-        "heure": "17h15",
+        "heure": "16h15",
         "domicile": true,
         "adversaire": "ASPTT NANTES 3",
         "club": "8712",
-        "salle": "200000002674239",
+        "salle": "35000000932",
         "officiels": false
       },
       {
@@ -1886,6 +1686,66 @@
         "club": "9144",
         "salle": "200000002672993",
         "officiels": false
+      },
+      {
+        "equipe": "SE-F-2",
+        "date": "2026-11-22",
+        "heure": "",
+        "domicile": false,
+        "adversaire": "BASKET CLUB REZE 2",
+        "club": "200000002678845",
+        "salle": "9000000094",
+        "officiels": false
+      },
+      {
+        "equipe": "SE-F-1",
+        "date": "2026-11-22",
+        "heure": "13h15",
+        "domicile": true,
+        "adversaire": "BOUGUENAIS BASKET 1",
+        "club": "8623",
+        "salle": "35000000932",
+        "officiels": false
+      },
+      {
+        "equipe": "SE-M-3",
+        "date": "2026-11-22",
+        "heure": "13h15",
+        "domicile": false,
+        "adversaire": "SAINT HERBLAIN BASKET CLUB 2",
+        "club": "8755",
+        "salle": "200000002674336",
+        "officiels": false
+      },
+      {
+        "equipe": "SIM-U21-M-1",
+        "date": "2026-11-22",
+        "heure": "13h15",
+        "domicile": true,
+        "adversaire": "IE - CTC CAP BASKET 44 - ABC DES TROIS RIVIERES 1",
+        "club": "8725",
+        "salle": "200000002672993",
+        "officiels": false
+      },
+      {
+        "equipe": "SIM-SE-M-2",
+        "date": "2026-11-22",
+        "heure": "15h30",
+        "domicile": true,
+        "adversaire": "HERBIERS VENDEE BASKET 1",
+        "club": "9115",
+        "salle": "200000002672993",
+        "officiels": false
+      },
+      {
+        "equipe": "SIM-SE-M-3",
+        "date": "2026-11-22",
+        "heure": "17h45",
+        "domicile": true,
+        "adversaire": "AL OUCHE DINIER REZE 2",
+        "club": "8782",
+        "salle": "200000002672993",
+        "officiels": false
       }
     ],
     "salles": {
@@ -1931,35 +1791,17 @@
         "cp": "44340",
         "ville": "BOUGUENAIS"
       },
-      "1001000870": {
-        "nom": "SALLE B - GREZ NEUVILLE",
-        "adresse": "3, rue du Port",
-        "cp": "49220",
-        "ville": "GREZ-NEUVILLE"
-      },
       "109000000131": {
         "nom": "STADE PIERRE CHAUSSEE",
         "adresse": "RUE DES SPORTS",
         "cp": "44530",
         "ville": "SAINT-GILDAS-DES-BOIS"
       },
-      "109000000133": {
-        "nom": "SALLE MARCEL LE BONNIEC",
-        "adresse": "BOULEVARD LOUIS PASTEUR",
-        "cp": "44980",
-        "ville": "SAINTE-LUCE-SUR-LOIRE"
-      },
       "200000002672993": {
         "nom": "SALLE DE LA SIMILIENNE",
         "adresse": "26 BIS RUE DES HAUTS PAVES",
         "cp": "44000",
         "ville": "NANTES"
-      },
-      "200000002673034": {
-        "nom": "SALLE ST EXUPERY",
-        "adresse": "RUE ALBERT CAMUS",
-        "cp": "44620",
-        "ville": "LA MONTAGNE"
       },
       "200000002673404": {
         "nom": "SALLE ASTERION DE LA FREBAUDIERE",
@@ -2021,12 +1863,6 @@
         "cp": "44000",
         "ville": "NANTES"
       },
-      "200000002674312": {
-        "nom": "Salle Asie",
-        "adresse": "Parking Complexe Sportif, Rue du Stade",
-        "cp": "44117",
-        "ville": "SAINT-ANDRE-DES-EAUX"
-      },
       "200000002674336": {
         "nom": "GYMNASE DE LA CHANGETTERIE",
         "adresse": "15 BIS RUE THEOPHILE GUILLOU ",
@@ -2035,12 +1871,6 @@
       },
       "200000002674448": {
         "nom": "HALLE DES SPORTS DE MAZAIRE - T1",
-        "adresse": "5 RUE DE LA HAUTIERE",
-        "cp": "44240",
-        "ville": "LA CHAPELLE-SUR-ERDRE"
-      },
-      "200000002674449": {
-        "nom": "HALLE DES SPORTS DE MAZAIRE - T2",
         "adresse": "5 RUE DE LA HAUTIERE",
         "cp": "44240",
         "ville": "LA CHAPELLE-SUR-ERDRE"
@@ -2079,12 +1909,6 @@
         "nom": "GYMNASE SULLY",
         "adresse": "RUE HENRI COCHARD",
         "cp": "44000",
-        "ville": "NANTES"
-      },
-      "531001043008": {
-        "nom": "COMPLEXE SPORTIF LA DURANTIERE",
-        "adresse": "68 RUE DE LA DURANTIERE",
-        "cp": "44100",
         "ville": "NANTES"
       },
       "533001003384": {
@@ -2278,12 +2102,6 @@
         "adresse": "RUE SANTOS AMARO",
         "cp": "44330",
         "ville": "LA CHAPELLE-HEULIN"
-      },
-      "9000000808": {
-        "nom": "GYMNASE PIERRE ROUZIERE/ EPAU",
-        "adresse": "82 RUE DU DANEMARK",
-        "cp": "72100",
-        "ville": "LE MANS"
       },
       "92001000114": {
         "nom": "SALLE DES SPORTS",
