@@ -4,7 +4,7 @@
     "8649": "Nantes Breil Basket",
     "8752": "Similienne Nantes (équipes CTC)"
   },
-  "maj": "2026-10-11T05:28:36+00:00",
+  "maj": "2026-10-12T05:31:45+00:00",
   "resultats": {
     "SE-F-1": [
       {
@@ -63,6 +63,14 @@
         "adversaire": "BASKET CLUB REZE 2",
         "nous": 0,
         "eux": 0,
+        "forfait": ""
+      },
+      {
+        "date": "2026-10-11T17:45",
+        "domicile": false,
+        "adversaire": "SAINT SEBASTIEN BASKET CLUB 3",
+        "nous": 51,
+        "eux": 37,
         "forfait": ""
       }
     ],
@@ -124,6 +132,14 @@
         "nous": 83,
         "eux": 65,
         "forfait": ""
+      },
+      {
+        "date": "2026-10-11T15:30",
+        "domicile": false,
+        "adversaire": "GRAND LIEU BASKET 1",
+        "nous": 52,
+        "eux": 64,
+        "forfait": ""
       }
     ],
     "SE-M-3": [
@@ -149,6 +165,14 @@
         "adversaire": "SAINT HERBLAIN BASKET CLUB 2",
         "nous": 64,
         "eux": 78,
+        "forfait": ""
+      },
+      {
+        "date": "2026-10-11T15:30",
+        "domicile": false,
+        "adversaire": "REZE BASKET 44 4",
+        "nous": 75,
+        "eux": 69,
         "forfait": ""
       }
     ],
@@ -243,6 +267,14 @@
         "adversaire": "AL OUCHE DINIER REZE 2",
         "nous": 68,
         "eux": 41,
+        "forfait": ""
+      },
+      {
+        "date": "2026-10-11T17:45",
+        "domicile": true,
+        "adversaire": "AS SAINT ROGATIEN NANTES 3",
+        "nous": 56,
+        "eux": 50,
         "forfait": ""
       }
     ],
@@ -390,6 +422,14 @@
         "nous": 56,
         "eux": 58,
         "forfait": ""
+      },
+      {
+        "date": "2026-10-11T11:00",
+        "domicile": true,
+        "adversaire": "CARQUEFOU BASKET 1",
+        "nous": 48,
+        "eux": 43,
+        "forfait": ""
       }
     ],
     "SIM-U15-M-2": [
@@ -415,6 +455,14 @@
         "adversaire": "NANTES DOULON BASKET 2",
         "nous": 20,
         "eux": 101,
+        "forfait": ""
+      },
+      {
+        "date": "2026-10-11T09:00",
+        "domicile": true,
+        "adversaire": "AL CHAUVINIERE",
+        "nous": 23,
+        "eux": 58,
         "forfait": ""
       }
     ],
@@ -476,6 +524,14 @@
         "nous": 60,
         "eux": 112,
         "forfait": ""
+      },
+      {
+        "date": "2026-10-11T15:30",
+        "domicile": true,
+        "adversaire": "MONTBERT GENESTON LE BIGNON B. 1",
+        "nous": 60,
+        "eux": 108,
+        "forfait": ""
       }
     ],
     "SIM-U21-M-1": [
@@ -501,6 +557,14 @@
         "adversaire": "BASKET CLUB ROEZEEN 1",
         "nous": 65,
         "eux": 73,
+        "forfait": ""
+      },
+      {
+        "date": "2026-10-11T13:15",
+        "domicile": true,
+        "adversaire": "IE - CTC MMB SBC - SALLERTAINE BASKET CLUB 1",
+        "nous": 60,
+        "eux": 82,
         "forfait": ""
       }
     ],
@@ -698,6 +762,14 @@
         "nous": 17,
         "eux": 85,
         "forfait": ""
+      },
+      {
+        "date": "2026-10-11T09:00",
+        "domicile": false,
+        "adversaire": "TREILLIERES BASKET CLUB 1",
+        "nous": 33,
+        "eux": 28,
+        "forfait": ""
       }
     ],
     "U13-F-2": [
@@ -742,6 +814,14 @@
         "nous": 75,
         "eux": 41,
         "forfait": ""
+      },
+      {
+        "date": "2026-10-11T11:00",
+        "domicile": false,
+        "adversaire": "BEAUJOIRE BASKET CLUB 1",
+        "nous": 50,
+        "eux": 34,
+        "forfait": ""
       }
     ],
     "U13-M-2": [
@@ -759,6 +839,14 @@
         "adversaire": "BASKET CLUB BASSE LOIRE 1",
         "nous": 33,
         "eux": 59,
+        "forfait": ""
+      },
+      {
+        "date": "2026-10-10T14:30",
+        "domicile": true,
+        "adversaire": "SAINT HERBLAIN BASKET CLUB 1",
+        "nous": 49,
+        "eux": 54,
         "forfait": ""
       }
     ],
@@ -812,6 +900,14 @@
         "nous": 27,
         "eux": 72,
         "forfait": ""
+      },
+      {
+        "date": "2026-10-11T11:45",
+        "domicile": false,
+        "adversaire": "IE - CTC POLE WEST NANTAIS - SAINT HERBLAIN BASKET CLUB 1",
+        "nous": 33,
+        "eux": 75,
+        "forfait": ""
       }
     ],
     "U15-F-2": [
@@ -863,6 +959,14 @@
         "adversaire": "HIRONDELLE BASKET 1",
         "nous": 49,
         "eux": 76,
+        "forfait": ""
+      },
+      {
+        "date": "2026-10-11T09:00",
+        "domicile": true,
+        "adversaire": "SUD RETZ BASKET 1",
+        "nous": 95,
+        "eux": 59,
         "forfait": ""
       }
     ],
@@ -950,6 +1054,14 @@
         "nous": 50,
         "eux": 72,
         "forfait": ""
+      },
+      {
+        "date": "2026-10-11T10:45",
+        "domicile": true,
+        "adversaire": "IE - CTC BASKET VIGNOBLE NANTAIS - PAMPRES VALLETAIS 2",
+        "nous": 78,
+        "eux": 64,
+        "forfait": ""
       }
     ],
     "U18-F-2": [
@@ -1027,6 +1139,14 @@
         "adversaire": "AL CHAUVINIERE 2",
         "nous": 0,
         "eux": 0,
+        "forfait": ""
+      },
+      {
+        "date": "2026-10-11T13:15",
+        "domicile": true,
+        "adversaire": "AL CREMETTERIE ST HERBLAIN",
+        "nous": 161,
+        "eux": 15,
         "forfait": ""
       }
     ]
